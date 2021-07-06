@@ -1,0 +1,169 @@
+// Copyright (c) Steinwurf ApS 2020.
+// All Rights Reserved
+//
+// Distributed under the "BSD License". See the accompanying LICENSE.rst file.
+
+#pragma once
+
+#include <cassert>
+#include <vector>
+
+#include "version.hpp"
+
+namespace abacus
+{
+inline namespace STEINWURF_ABACUS_VERSION
+{
+class metrics
+{
+public:
+    // The header consists of two 64 bit values:
+    // 1. 8 bit endian flag
+    // 2. 8 bit size of values
+    // 3. 16 bit size of name
+    // 4. 16 bit number of counters
+    // 5. 16 bit unused
+    static constexpr std::size_t header_size = 8;
+
+    /// The maximum number of counters supported
+    // static constexpr std::size_t max_counters = 64;
+
+    /// The maximum size of a name in bytes
+    // static constexpr std::size_t max_name_size = 64;
+
+    /// The offset to the names
+    // static constexpr std::size_t names_offset = header_size;
+
+    /// The offset to the values
+    // static constexpr std::size_t values_offset =
+    //   header_size + (max_counters * max_name_size);
+
+public:
+    /// Wrapper for the value of a counter.
+    class metric
+    {
+    private:
+        /// Default constructor
+        metric() = default;
+
+        /// Create a new counter value from the pointer to an integer
+        metric(uint64_t* memory);
+
+    public:
+        /// Assign the counter a new value
+        auto operator=(uint64_t value) -> metric&;
+
+        /// Increment the counter
+        auto operator+=(uint64_t value) -> metric&;
+
+        /// Increment the value of the counter
+        auto operator++() -> metric&;
+
+        /// @return True of valid
+        auto is_initialized() const -> bool;
+
+    private:
+        /// Enable creation from the storage class
+        friend class metrics;
+
+    private:
+        /// The counter
+        uint64_t* m_memory = nullptr;
+    };
+
+public:
+    /// Default constructor
+    metrics(uint64_t max_metrics, uint64_t max_name_bytes,
+            const std::string& title);
+
+    /// Destructor
+    ~metrics();
+
+    /// Set the name of all the metrics contained within
+    void set_metrics_title(const std::string& title);
+
+    /// @return The name of a counter as a string
+    auto metric_name(std::size_t index) const -> std::string;
+
+    /// @return A specific count
+    auto metric_value(std::size_t index) const -> uint64_t;
+
+    /// @return The value of the counter
+    auto initialize_metric(std::size_t index, const std::string& name)
+        -> metric;
+
+    /// @return True if the counter has been initialized
+    auto is_metric_initialized(std::size_t index) const -> bool;
+
+    /// @return The memory backing the counter storage
+    auto copy_storage(uint8_t* data) const;
+
+    /// @return The size of the counter storage in bytes
+    auto storage_bytes() const -> std::size_t;
+
+    /// @return All counters in json format
+    auto to_json() const -> std::string;
+
+    /// Reset all the counters
+    void reset_metrics();
+
+    /// Reset specific counter
+    void reset_metric(std::size_t index);
+
+    /// @return The number of counters
+    auto metrics_count() const -> std::size_t;
+
+private:
+    /// @return A pointer to the title of the counter
+    auto raw_title() const -> const char*;
+
+    /// @return A pointer to the title of the counter
+    auto raw_title() -> char*;
+
+    /// @return A pointer to the name of the counter
+    auto raw_name(std::size_t index) const -> const char*;
+
+    /// @return A pointer to the name of the counter
+    auto raw_name(std::size_t index) -> char*;
+
+    /// @return A pointer to the value of the counter
+    auto raw_value(std::size_t index) const -> const uint64_t*;
+
+    /// @return A pointer to the value of the counter
+    auto raw_value(std::size_t index) -> uint64_t*;
+
+    /// @return The byte offset to the title section
+    auto title_offset() const -> std::size_t;
+
+    /// @return The byte offset to the names section
+    auto names_offset() const -> std::size_t;
+
+    /// @return The byte offset to the values section
+    auto values_offset() const -> std::size_t;
+
+private:
+    /// No copy
+    metrics(metrics&) = delete;
+
+    /// No copy assignment
+    metrics& operator=(metrics&) = delete;
+
+    /// No move
+    metrics(metrics&&) = delete;
+
+    /// No move assignment
+    metrics& operator=(metrics&&) = delete;
+
+private:
+    // The number of values
+    uint64_t m_max_metrics = 0;
+
+    // The number of values
+    uint64_t m_max_name_bytes = 0;
+
+    // The raw memory for the counters (both value and name)
+    uint8_t* m_data = nullptr;
+};
+
+}
+}
