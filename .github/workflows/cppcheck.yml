@@ -1,7 +1,6 @@
 name: Cppcheck
 on:
   push:
-  pull_request:
 
 jobs:
   build:
@@ -13,5 +12,3 @@ jobs:
 
       - name: Cppcheck
         uses: deep5050/cppcheck-action@main
-        with:
-          other_options: --verbose
