@@ -22,7 +22,8 @@ public:
     // 2. 8 bit size of values
     // 3. 16 bit size of name
     // 4. 16 bit number of counters
-    // 5. 16 bit unused
+    // 5. 8 bit level
+    // 6. 8 bit unused
     static constexpr std::size_t header_size = 8;
 
     /// The maximum number of counters supported
@@ -74,13 +75,16 @@ public:
 public:
     /// Default constructor
     metrics(uint64_t max_metrics, uint64_t max_name_bytes,
-            const std::string& title);
+            const std::string& title, uint8_t level);
 
     /// Destructor
     ~metrics();
 
     /// Set the name of all the metrics contained within
     void set_metrics_title(const std::string& title);
+
+    /// Set the level of all the metrics contained within
+    void set_metrics_level(uint8_t level);
 
     /// @return The name of a counter as a string
     auto metric_name(std::size_t index) const -> std::string;
@@ -113,6 +117,9 @@ public:
     /// @return The number of counters
     auto metrics_count() const -> std::size_t;
 
+    /// @return The level of the metrics
+    auto metrics_level() const -> uint8_t;
+
 private:
     /// @return A pointer to the title of the counter
     auto raw_title() const -> const char*;
@@ -134,6 +141,9 @@ private:
 
     /// @return The byte offset to the title section
     auto title_offset() const -> std::size_t;
+
+    /// @return The byte offset to the level section
+    auto level_offset() const -> std::size_t;
 
     /// @return The byte offset to the names section
     auto names_offset() const -> std::size_t;
@@ -160,6 +170,9 @@ private:
 
     // The number of values
     uint64_t m_max_name_bytes = 0;
+
+    // The level
+    uint32_t m_level = 0;
 
     // The raw memory for the counters (both value and name)
     uint8_t* m_data = nullptr;
