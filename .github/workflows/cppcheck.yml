@@ -1,0 +1,13 @@
+name: Cppcheck
+on: [push]
+
+jobs:
+  build:
+    name: cppcheck
+    runs-on: [self-hosted, linux]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Cppcheck
+        uses: deep5050/cppcheck-action@main
