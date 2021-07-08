@@ -75,16 +75,13 @@ public:
 public:
     /// Default constructor
     metrics(uint64_t max_metrics, uint64_t max_name_bytes,
-            const std::string& title, uint8_t level);
+            const std::string& title, uint32_t level);
 
     /// Destructor
     ~metrics();
 
     /// Set the name of all the metrics contained within
     void set_metrics_title(const std::string& title);
-
-    /// Set the level of all the metrics contained within
-    void set_metrics_level(uint8_t level);
 
     /// @return The name of a counter as a string
     auto metric_name(std::size_t index) const -> std::string;
@@ -118,7 +115,7 @@ public:
     auto metrics_count() const -> std::size_t;
 
     /// @return The level of the metrics
-    auto metrics_level() const -> uint8_t;
+    auto metrics_level() const -> uint32_t;
 
 private:
     /// @return A pointer to the title of the counter

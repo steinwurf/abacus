@@ -51,12 +51,12 @@ auto metrics::metric::is_initialized() const -> bool
 }
 
 metrics::metrics(uint64_t max_metrics, uint64_t max_name_bytes,
-                 const std::string& title, uint8_t level) :
+                 const std::string& title, uint32_t level) :
     m_max_metrics(max_metrics),
     m_max_name_bytes(max_name_bytes), m_level(level)
 {
     assert(m_max_metrics > 0);
-    assert(max_name_bytes > 0);
+    assert(m_max_name_bytes > 0);
     assert(title.size() < m_max_name_bytes);
 
     // Allocate the memory for the counters
@@ -69,9 +69,9 @@ metrics::metrics(uint64_t max_metrics, uint64_t max_name_bytes,
     // Write the header
     new (m_data) uint8_t(endian::is_big_endian());
     new (m_data + 1) uint8_t(8);
-    new (m_data + 2) uint16_t(m_max_name_bytes);
-    new (m_data + 4) uint16_t(m_max_metrics);
-    new (m_data + 6) uint8_t(m_level);
+    new (m_data + 2) uint8_t(m_level);
+    new (m_data + 3) uint16_t(m_max_name_bytes);
+    new (m_data + 5) uint16_t(m_max_metrics);
 
     // Write the title
     set_metrics_title(title);
@@ -87,11 +87,6 @@ void metrics::set_metrics_title(const std::string& title)
     // Write the title
     char* title_data = raw_title();
     std::memcpy(title_data, title.data(), title.size());
-}
-
-void metrics::set_metrics_level(uint8_t level)
-{
-    m_level = level;
 }
 
 auto metrics::metric_name(std::size_t index) const -> std::string
@@ -197,7 +192,7 @@ auto metrics::metrics_count() const -> std::size_t
     return m_max_metrics;
 }
 
-auto metrics::metrics_level() const -> uint8_t
+auto metrics::metrics_level() const -> uint32_t
 {
     return m_level;
 }
@@ -257,12 +252,6 @@ auto metrics::raw_value(std::size_t index) -> uint64_t*
 auto metrics::title_offset() const -> std::size_t
 {
     return header_size;
-}
-
-auto metrics::level_offset() const -> std::size_t
-{
-    // Skip header + title
-    return header_size + m_max_name_bytes;
 }
 
 auto metrics::names_offset() const -> std::size_t
