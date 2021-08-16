@@ -2,7 +2,7 @@
 Abacus
 ========
 
-.. image:: https://raw.githubusercontent.com/steinwurf/abacus/master/abacus.gif
+.. image:: ./abacus.gif
 
 Abacus is a C++ metrics library. With this, you can create metrics for a library that can be carried through dependencies all the way to the top-level application like so:
 
