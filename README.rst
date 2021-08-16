@@ -19,7 +19,7 @@ Abacus is a C++ metrics library. With this, you can create metrics for a library
             v                                             v
     +-------+-------+                             +-------+-------+
     |               |                             |               |
-    |    Metrics    | Library 1 inherits metrics  |    Metrics    |
+    |    Metrics    | Library 0 inherits metrics  |    Metrics    |
     |       1       +---------------------------> |     0 + 1     |
     +---------------+                             +---------------+
 
