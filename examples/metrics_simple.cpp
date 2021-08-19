@@ -17,7 +17,7 @@ int main()
 
     abacus::metrics metrics(max_metrics, max_name_bytes, "Car", level);
 
-    auto acceleration = metrics.initialize_metric(0, "0 to 100 in seconds");
+    auto acceleration = metrics.initialize_metric(0, "0 to 100 / s");
 
     acceleration += 3;
 
