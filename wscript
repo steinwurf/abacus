@@ -43,6 +43,25 @@ def build(bld):
             use=["abacus", "gtest"],
         )
 
+        bld.program(
+            features="cxx",
+            source="examples/metrics_simple.cpp",
+            target="metrics_simple",
+            install_path=None,
+            use=["abacus"],
+        )
+
+        sourcepath = bld.path.find_node("src")
+
+        bld.install_files(
+            dest="${PREFIX}/include",
+            files=sourcepath.ant_glob("**/*.hpp"),
+            cwd=sourcepath,
+            relative_trick=True,
+        )
+
+        bld.install_files(dest="${PREFIX}/", files=bld.path.ant_glob("NEWS.rst"))
+
 
 class ReleaseContext(BuildContext):
     cmd = "prepare_release"

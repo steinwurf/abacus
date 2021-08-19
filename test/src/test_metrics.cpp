@@ -11,15 +11,43 @@ TEST(test_metric, default_constructor)
 {
     uint64_t max_metrics = 10;
     uint64_t max_name_bytes = 32;
+    uint8_t level = 0;
 
-    abacus::metrics metrics(max_metrics, max_name_bytes, "test_metrics");
+    abacus::metrics metrics(max_metrics, max_name_bytes, "test_metrics", level);
 
     auto count1 = metrics.initialize_metric(0, "count_1");
 
     EXPECT_EQ(metrics.metric_name(0), "count_1");
     EXPECT_EQ(metrics.metric_value(0), 0U);
+    EXPECT_EQ(metrics.metrics_level(), 0U);
 
     ++count1;
 
     EXPECT_EQ(metrics.metric_value(0), 1U);
+
+    abacus::metrics metrics1(max_metrics, max_name_bytes, "test_metrics1",
+                             level + 1);
+
+    auto count2 = metrics1.initialize_metric(0, "count_2");
+
+    EXPECT_EQ(metrics1.metric_name(0), "count_2");
+    EXPECT_EQ(metrics1.metric_value(0), 0U);
+    EXPECT_EQ(metrics1.metrics_level(), 1U);
+
+    ++count2;
+
+    EXPECT_EQ(metrics1.metric_value(0), 1U);
+
+    abacus::metrics metrics2(max_metrics, max_name_bytes, "test_metrics2",
+                             level + 2);
+
+    auto count3 = metrics2.initialize_metric(0, "count_3");
+
+    EXPECT_EQ(metrics2.metric_name(0), "count_3");
+    EXPECT_EQ(metrics2.metric_value(0), 0U);
+    EXPECT_EQ(metrics2.metrics_level(), 2U);
+
+    count3 += 5;
+
+    EXPECT_EQ(metrics2.metric_value(0), 5U);
 }
