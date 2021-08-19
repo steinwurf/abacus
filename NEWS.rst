@@ -6,4 +6,4 @@ every change, see the Git log.
 
 Latest
 ------
-* tbd
+* Major: Added level member to metrics class
