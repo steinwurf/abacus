@@ -8,6 +8,7 @@
 #include <cassert>
 #include <vector>
 
+#include "metric.hpp"
 #include "version.hpp"
 
 namespace abacus
@@ -38,39 +39,6 @@ public:
     /// The offset to the values
     // static constexpr std::size_t values_offset =
     //   header_size + (max_counters * max_name_size);
-
-public:
-    /// Wrapper for the value of a counter.
-    class metric
-    {
-    private:
-        /// Default constructor
-        metric() = default;
-
-        /// Create a new counter value from the pointer to an integer
-        metric(uint64_t* memory);
-
-    public:
-        /// Assign the counter a new value
-        auto operator=(uint64_t value) -> metric&;
-
-        /// Increment the counter
-        auto operator+=(uint64_t value) -> metric&;
-
-        /// Increment the value of the counter
-        auto operator++() -> metric&;
-
-        /// @return True of valid
-        auto is_initialized() const -> bool;
-
-    private:
-        /// Enable creation from the storage class
-        friend class metrics;
-
-    private:
-        /// The counter
-        uint64_t* m_memory = nullptr;
-    };
 
 public:
     /// Default constructor

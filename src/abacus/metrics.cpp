@@ -16,40 +16,6 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-metrics::metric::metric(uint64_t* memory) : m_memory(memory)
-{
-    assert(m_memory != nullptr);
-}
-
-auto metrics::metric::operator=(uint64_t value) -> metric&
-{
-    assert(m_memory != nullptr);
-
-    *m_memory = value;
-    return *this;
-}
-
-auto metrics::metric::operator+=(uint64_t value) -> metric&
-{
-    assert(m_memory != nullptr);
-
-    *m_memory += value;
-    return *this;
-}
-
-auto metrics::metric::operator++() -> metric&
-{
-    assert(m_memory != nullptr);
-
-    *m_memory += 1U;
-    return *this;
-}
-
-auto metrics::metric::is_initialized() const -> bool
-{
-    return m_memory != nullptr;
-}
-
 metrics::metrics(uint64_t max_metrics, uint64_t max_name_bytes,
                  const std::string& title, uint32_t level) :
     m_max_metrics(max_metrics),
