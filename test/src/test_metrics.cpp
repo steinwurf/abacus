@@ -9,8 +9,8 @@
 #include <abacus/metrics.hpp>
 TEST(test_metric, default_constructor)
 {
-    uint64_t max_metrics = 10;
-    uint64_t max_name_bytes = 32;
+    uint16_t max_metrics = 10;
+    uint16_t max_name_bytes = 32;
     uint8_t level = 0;
 
     abacus::metrics metrics(max_metrics, max_name_bytes, "test_metrics", level);

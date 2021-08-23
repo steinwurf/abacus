@@ -16,8 +16,8 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-metrics::metrics(uint64_t max_metrics, uint64_t max_name_bytes,
-                 const std::string& title, uint32_t level) :
+metrics::metrics(uint16_t max_metrics, uint16_t max_name_bytes,
+                 const std::string& title, uint8_t level) :
     m_max_metrics(max_metrics),
     m_max_name_bytes(max_name_bytes), m_level(level)
 {
@@ -52,7 +52,7 @@ void metrics::set_metrics_title(const std::string& title)
 {
     // Write the title
     char* title_data = raw_title();
-    std::memcpy(title_data, title.data(), title.size());
+    std::memcpy(title_data, title.data(), m_max_name_bytes);
 }
 
 auto metrics::metric_name(std::size_t index) const -> std::string
@@ -98,7 +98,7 @@ auto metrics::storage_bytes() const -> std::size_t
     std::size_t names_bytes = m_max_name_bytes * m_max_metrics;
     std::size_t value_bytes = sizeof(uint64_t) * m_max_metrics;
 
-    return header_size + names_bytes + value_bytes;
+    return header_size + m_max_name_bytes + names_bytes + value_bytes;
 }
 
 auto metrics::is_metric_initialized(std::size_t index) const -> bool
@@ -158,7 +158,7 @@ auto metrics::metrics_count() const -> std::size_t
     return m_max_metrics;
 }
 
-auto metrics::metrics_level() const -> uint32_t
+auto metrics::metrics_level() const -> uint8_t
 {
     return m_level;
 }
@@ -222,15 +222,14 @@ auto metrics::title_offset() const -> std::size_t
 
 auto metrics::names_offset() const -> std::size_t
 {
-    // Skip header + title + level
-    return header_size + m_max_name_bytes + m_level;
+    // Skip header + title
+    return header_size + m_max_name_bytes;
 }
 
 auto metrics::values_offset() const -> std::size_t
 {
-    // Skip header + title + level + names
-    return header_size + m_level + m_max_name_bytes +
-           (m_max_metrics * m_max_name_bytes);
+    // Skip header + title + names
+    return header_size + m_max_name_bytes + (m_max_metrics * m_max_name_bytes);
 }
 
 }
