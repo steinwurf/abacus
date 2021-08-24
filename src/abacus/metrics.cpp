@@ -88,7 +88,13 @@ auto metrics::initialize_metric(std::size_t index, const std::string& name)
     return metric{value_data};
 }
 
-auto metrics::copy_storage(uint8_t* data) const
+void metrics::read_storage(uint8_t* data, std::size_t size) const
+{
+    std::size_t metrics_size = storage_bytes();
+    std::memcpy(m_data + metrics_size, data + header_size, size - header_size);
+}
+
+void metrics::copy_storage(uint8_t* data) const
 {
     std::size_t metrics_size = storage_bytes();
     std::memcpy(data, m_data, metrics_size);

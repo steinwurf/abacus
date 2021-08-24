@@ -64,8 +64,11 @@ public:
     /// @return True if the counter has been initialized
     auto is_metric_initialized(std::size_t index) const -> bool;
 
-    /// @return The memory backing the counter storage
-    auto copy_storage(uint8_t* data) const;
+    /// Copies the memory backing the counter storage to a data pointer
+    void copy_storage(uint8_t* data) const;
+
+    /// Reads a data pointer into the raw memory
+    void read_storage(uint8_t* data, std::size_t size) const;
 
     /// @return The size of the counter storage in bytes
     auto storage_bytes() const -> std::size_t;
