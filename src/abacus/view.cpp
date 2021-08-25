@@ -141,5 +141,25 @@ auto view::view_bytes() const -> std::size_t
            view::max_metrics() * (view::max_name_bytes() + sizeof(uint64_t));
 }
 
+auto view::to_json() const -> std::string
+{
+    bourne::json counters = bourne::json::object();
+
+    for (std::size_t i = 0; i < view::max_metrics(); ++i)
+    {
+        if ((raw_name(i)[0] == 0))
+        {
+            continue;
+        }
+
+        auto n = raw_name(i);
+        auto v = *raw_value(i);
+
+        counters[n] = v;
+    }
+
+    return counters.dump();
+}
+
 }
 }

@@ -58,7 +58,11 @@ public:
     /// @return The byte offset to the values section
     auto values_offset() const -> std::size_t;
 
+    /// @return The number of bytes in the view memory
     auto view_bytes() const -> std::size_t;
+
+    /// @return All counters in json format
+    auto to_json() const -> std::string;
 
 private:
     uint8_t* m_data = nullptr;

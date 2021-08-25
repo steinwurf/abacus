@@ -69,9 +69,6 @@ public:
     /// @return The size of the counter storage in bytes
     auto storage_bytes() const -> std::size_t;
 
-    /// @return All counters in json format
-    auto to_json() const -> std::string;
-
     /// Reset all the counters
     void reset_metrics();
 

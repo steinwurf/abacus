@@ -8,9 +8,6 @@
 #include <algorithm>
 #include <cstring>
 
-#include <bourne/json.hpp>
-#include <endian/is_big_endian.hpp>
-
 namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
@@ -109,26 +106,6 @@ auto metrics::is_metric_initialized(std::size_t index) const -> bool
     // If the name is non-zero it is initialized and valid. We just check the
     // first byte to see if it's zero.
     return name_data[0] != 0;
-}
-
-auto metrics::to_json() const -> std::string
-{
-    bourne::json counters = bourne::json::object();
-
-    for (std::size_t i = 0; i < m_max_metrics; ++i)
-    {
-        if (!is_metric_initialized(i))
-        {
-            continue;
-        }
-
-        auto n = view::raw_name(i);
-        auto v = *view::raw_value(i);
-
-        counters[n] = v;
-    }
-
-    return counters.dump();
 }
 
 void metrics::reset_metrics()

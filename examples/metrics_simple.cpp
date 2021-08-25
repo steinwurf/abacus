@@ -32,4 +32,6 @@ int main()
     wheels += 5;
 
     std::cout << metrics.to_json();
+
+    return 0;
 }
