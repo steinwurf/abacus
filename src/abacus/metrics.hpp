@@ -19,14 +19,12 @@ inline namespace STEINWURF_ABACUS_VERSION
 class metrics : public view
 {
 public:
-    // The header consists of two 64 bit values:
-    // 1. 8 bit endian flag
-    // 2. 8 bit size of values
-    // 3. 16 bit size of name
-    // 4. 16 bit number of counters
-    // 5. 8 bit level
-    // 6. 16 bit title
-    static constexpr std::size_t header_size = 9;
+    // The header consists of one 64 bit values:
+    // 1. 8 bit size of values
+    // 2. 16 bit size of name
+    // 3. 16 bit number of counters
+    // 4. 8 bit level
+    static constexpr std::size_t header_size = 8;
 
     /// The maximum number of counters supported
     // static constexpr std::size_t max_counters = 64;

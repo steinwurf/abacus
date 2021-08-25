@@ -27,7 +27,7 @@ auto view::max_metrics() const -> const uint16_t
 {
     assert(m_data != nullptr);
 
-    const uint8_t* max_metrics_data = m_data + 5;
+    const uint8_t* max_metrics_data = m_data + 4;
     return *reinterpret_cast<const uint16_t*>(max_metrics_data);
 }
 
@@ -35,7 +35,7 @@ auto view::max_name_bytes() const -> const uint16_t
 {
     assert(m_data != nullptr);
 
-    const uint8_t* max_name_bytes_data = m_data + 3;
+    const uint8_t* max_name_bytes_data = m_data + 2;
     return *reinterpret_cast<const uint16_t*>(max_name_bytes_data);
 }
 
@@ -43,7 +43,7 @@ auto view::level() const -> const uint8_t
 {
     assert(m_data != nullptr);
 
-    const uint8_t* level_data = m_data + 2;
+    const uint8_t* level_data = m_data + 1;
     return *level_data;
 }
 
@@ -133,6 +133,12 @@ auto view::values_offset() const -> std::size_t
     // Skip header + title + names
     return header_size + view::max_name_bytes() +
            (view::max_metrics() * view::max_name_bytes());
+}
+
+auto view::view_bytes() const -> std::size_t
+{
+    return header_size + view::max_name_bytes() +
+           view::max_metrics() * (view::max_name_bytes() + sizeof(uint64_t));
 }
 
 }

@@ -17,7 +17,7 @@ inline namespace STEINWURF_ABACUS_VERSION
 class view
 {
 public:
-    static constexpr std::size_t header_size = 9;
+    static constexpr std::size_t header_size = 8;
 
 public:
     void set_data(uint8_t* data);
@@ -57,6 +57,8 @@ public:
 
     /// @return The byte offset to the values section
     auto values_offset() const -> std::size_t;
+
+    auto view_bytes() const -> std::size_t;
 
 private:
     uint8_t* m_data = nullptr;

@@ -34,11 +34,10 @@ metrics::metrics(uint16_t max_metrics, uint16_t max_name_bytes,
     std::memset(m_data, 0, memory_needed);
 
     // Write the header
-    new (m_data) uint8_t(endian::is_big_endian());
-    new (m_data + 1) uint8_t(8);
-    new (m_data + 2) uint8_t(m_level);
-    new (m_data + 3) uint16_t(m_max_name_bytes);
-    new (m_data + 5) uint16_t(m_max_metrics);
+    new (m_data) uint8_t(8);
+    new (m_data + 1) uint8_t(m_level);
+    new (m_data + 2) uint16_t(m_max_name_bytes);
+    new (m_data + 4) uint16_t(m_max_metrics);
 
     // Write the title
     set_metrics_title(title);

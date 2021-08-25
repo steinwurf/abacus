@@ -18,23 +18,17 @@ inline namespace STEINWURF_ABACUS_VERSION
 class view_iterator
 {
 public:
-    static constexpr std::size_t header_size = 9;
+    static constexpr std::size_t header_size = 8;
 
 public:
     /// Default constructor
     view_iterator(uint8_t* data, std::size_t size);
 
-    ~view_iterator();
-
     auto get_view(std::size_t index) const -> view;
 
+    auto view_count() const -> std::size_t;
+
 private:
-    uint8_t* m_data = nullptr;
-
-    std::size_t m_data_size = 0;
-
-    std::size_t m_view_count = 0;
-
     std::vector<view> m_views = {};
 };
 }
