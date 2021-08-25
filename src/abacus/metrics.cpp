@@ -28,6 +28,7 @@ metrics::metrics(uint16_t max_metrics, uint16_t max_name_bytes,
     // Allocate the memory for the counters
     std::size_t memory_needed = storage_bytes();
     m_data = static_cast<uint8_t*>(::operator new(memory_needed));
+    view::set_data(m_data);
 
     // Zero out all memory
     std::memset(m_data, 0, memory_needed);
@@ -51,20 +52,20 @@ metrics::~metrics()
 void metrics::set_metrics_title(const std::string& title)
 {
     // Write the title
-    char* title_data = raw_title();
+    char* title_data = view::raw_title();
     std::memcpy(title_data, title.data(), m_max_name_bytes);
 }
 
 auto metrics::metric_name(std::size_t index) const -> std::string
 {
     assert(is_metric_initialized(index));
-    return {raw_name(index)};
+    return {view::raw_name(index)};
 }
 
 auto metrics::metric_value(std::size_t index) const -> uint64_t
 {
     assert(is_metric_initialized(index));
-    return *raw_value(index);
+    return *view::raw_value(index);
 }
 
 auto metrics::initialize_metric(std::size_t index, const std::string& name)
@@ -76,8 +77,8 @@ auto metrics::initialize_metric(std::size_t index, const std::string& name)
     // zero terminating byte
     assert(name.size() < m_max_name_bytes);
 
-    char* name_data = raw_name(index);
-    uint64_t* value_data = raw_value(index);
+    char* name_data = view::raw_name(index);
+    uint64_t* value_data = view::raw_value(index);
 
     // Copy the name
     std::memcpy(name_data, name.data(), name.size());
@@ -86,12 +87,6 @@ auto metrics::initialize_metric(std::size_t index, const std::string& name)
     new (value_data) uint64_t{0U};
 
     return metric{value_data};
-}
-
-void metrics::read_storage(uint8_t* data, std::size_t size) const
-{
-    std::size_t metrics_size = storage_bytes();
-    std::memcpy(m_data + metrics_size, data + header_size, size - header_size);
 }
 
 void metrics::copy_storage(uint8_t* data) const
@@ -110,7 +105,7 @@ auto metrics::storage_bytes() const -> std::size_t
 auto metrics::is_metric_initialized(std::size_t index) const -> bool
 {
     assert(index < m_max_metrics);
-    const char* name_data = raw_name(index);
+    const char* name_data = view::raw_name(index);
 
     // If the name is non-zero it is initialized and valid. We just check the
     // first byte to see if it's zero.
@@ -128,8 +123,8 @@ auto metrics::to_json() const -> std::string
             continue;
         }
 
-        auto n = raw_name(i);
-        auto v = *raw_value(i);
+        auto n = view::raw_name(i);
+        auto v = *view::raw_value(i);
 
         counters[n] = v;
     }
@@ -155,7 +150,7 @@ void metrics::reset_metric(std::size_t index)
 {
     assert(is_metric_initialized(index));
 
-    uint64_t* value = raw_value(index);
+    uint64_t* value = view::raw_value(index);
     *value = 0;
 }
 
@@ -167,75 +162,6 @@ auto metrics::metrics_count() const -> std::size_t
 auto metrics::metrics_level() const -> uint8_t
 {
     return m_level;
-}
-
-auto metrics::raw_title() const -> const char*
-{
-    const uint8_t* title_data = m_data + title_offset();
-
-    return reinterpret_cast<const char*>(title_data);
-}
-
-auto metrics::raw_title() -> char*
-{
-    uint8_t* title_data = m_data + title_offset();
-
-    return reinterpret_cast<char*>(title_data);
-}
-
-auto metrics::raw_name(std::size_t index) const -> const char*
-{
-    assert(index < m_max_metrics);
-
-    const uint8_t* name_data =
-        m_data + names_offset() + (index * m_max_name_bytes);
-
-    return reinterpret_cast<const char*>(name_data);
-}
-
-auto metrics::raw_name(std::size_t index) -> char*
-{
-    assert(index < m_max_metrics);
-
-    uint8_t* name_data = m_data + names_offset() + (index * m_max_name_bytes);
-
-    return reinterpret_cast<char*>(name_data);
-}
-
-auto metrics::raw_value(std::size_t index) const -> const uint64_t*
-{
-    assert(index < m_max_metrics);
-
-    const uint8_t* value_data =
-        m_data + values_offset() + (index * sizeof(uint64_t));
-
-    return reinterpret_cast<const uint64_t*>(value_data);
-}
-
-auto metrics::raw_value(std::size_t index) -> uint64_t*
-{
-    assert(index < m_max_metrics);
-
-    uint8_t* value_data = m_data + values_offset() + (index * sizeof(uint64_t));
-
-    return reinterpret_cast<uint64_t*>(value_data);
-}
-
-auto metrics::title_offset() const -> std::size_t
-{
-    return header_size;
-}
-
-auto metrics::names_offset() const -> std::size_t
-{
-    // Skip header + title
-    return header_size + m_max_name_bytes;
-}
-
-auto metrics::values_offset() const -> std::size_t
-{
-    // Skip header + title + names
-    return header_size + m_max_name_bytes + (m_max_metrics * m_max_name_bytes);
 }
 
 }

@@ -10,12 +10,13 @@
 
 #include "metric.hpp"
 #include "version.hpp"
+#include "view.hpp"
 
 namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-class metrics
+class metrics : public view
 {
 public:
     // The header consists of two 64 bit values:
@@ -67,9 +68,6 @@ public:
     /// Copies the memory backing the counter storage to a data pointer
     void copy_storage(uint8_t* data) const;
 
-    /// Reads a data pointer into the raw memory
-    void read_storage(uint8_t* data, std::size_t size) const;
-
     /// @return The size of the counter storage in bytes
     auto storage_bytes() const -> std::size_t;
 
@@ -87,37 +85,6 @@ public:
 
     /// @return The level of the metrics
     auto metrics_level() const -> uint8_t;
-
-private:
-    /// @return A pointer to the title of the counter
-    auto raw_title() const -> const char*;
-
-    /// @return A pointer to the title of the counter
-    auto raw_title() -> char*;
-
-    /// @return A pointer to the name of the counter
-    auto raw_name(std::size_t index) const -> const char*;
-
-    /// @return A pointer to the name of the counter
-    auto raw_name(std::size_t index) -> char*;
-
-    /// @return A pointer to the value of the counter
-    auto raw_value(std::size_t index) const -> const uint64_t*;
-
-    /// @return A pointer to the value of the counter
-    auto raw_value(std::size_t index) -> uint64_t*;
-
-    /// @return The byte offset to the title section
-    auto title_offset() const -> std::size_t;
-
-    /// @return The byte offset to the level section
-    auto level_offset() const -> std::size_t;
-
-    /// @return The byte offset to the names section
-    auto names_offset() const -> std::size_t;
-
-    /// @return The byte offset to the values section
-    auto values_offset() const -> std::size_t;
 
 private:
     /// No copy
