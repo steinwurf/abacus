@@ -85,9 +85,6 @@ private:
     // The number of values
     uint16_t m_max_name_bytes = 0;
 
-    // The level
-    uint8_t m_level = 0;
-
     // The raw memory for the counters (both value and name)
     uint8_t* m_data = nullptr;
 };
