@@ -19,30 +19,17 @@ inline namespace STEINWURF_ABACUS_VERSION
 class metrics : public view
 {
 public:
-    // The header consists of one 64 bit values:
-    // 1. 8 bit size of values
-    // 2. 16 bit size of name
-    // 3. 16 bit number of counters
-    // 4. 8 bit level
-    static constexpr std::size_t header_size = 8;
+    // The header consists of 42 bits of 3 values:
+    // 1. 16 bit denoting the max size of name
+    // 2. 16 bit denoting the max number of counters
+    // 3. 8 bit denoting the max size of values
 
-    /// The maximum number of counters supported
-    // static constexpr std::size_t max_counters = 64;
-
-    /// The maximum size of a name in bytes
-    // static constexpr std::size_t max_name_size = 64;
-
-    /// The offset to the names
-    // static constexpr std::size_t names_offset = header_size;
-
-    /// The offset to the values
-    // static constexpr std::size_t values_offset =
-    //   header_size + (max_counters * max_name_size);
+    static constexpr std::size_t header_size = 5;
 
 public:
     /// Default constructor
     metrics(uint16_t max_metrics, uint16_t max_name_bytes,
-            const std::string& title, uint8_t level);
+            const std::string& title);
 
     /// Destructor
     ~metrics();
@@ -77,9 +64,6 @@ public:
 
     /// @return The number of counters
     auto metrics_count() const -> std::size_t;
-
-    /// @return The level of the metrics
-    auto metrics_level() const -> uint8_t;
 
 private:
     /// No copy

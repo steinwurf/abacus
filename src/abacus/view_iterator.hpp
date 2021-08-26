@@ -18,7 +18,7 @@ inline namespace STEINWURF_ABACUS_VERSION
 class view_iterator
 {
 public:
-    static constexpr std::size_t header_size = 8;
+    static constexpr std::size_t header_size = 5;
 
 public:
     /// Default constructor

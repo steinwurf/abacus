@@ -13,9 +13,8 @@ int main()
 {
     uint64_t max_metrics = 10;
     uint64_t max_name_bytes = 32;
-    uint8_t level = 0;
 
-    abacus::metrics metrics(max_metrics, max_name_bytes, "Car", level);
+    abacus::metrics metrics(max_metrics, max_name_bytes, "Car");
 
     auto acceleration = metrics.initialize_metric(0, "0 to 100 / s");
 

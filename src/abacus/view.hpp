@@ -17,16 +17,17 @@ inline namespace STEINWURF_ABACUS_VERSION
 class view
 {
 public:
-    static constexpr std::size_t header_size = 8;
+    static constexpr std::size_t header_size = 5;
 
 public:
+    /// Sets the data pointer of the view to read the memory of
     void set_data(uint8_t* data);
 
-    auto max_metrics() const -> uint16_t;
-
+    /// Accesses the maximum name size from a metrics data pointer
     auto max_name_bytes() const -> uint16_t;
 
-    auto level() const -> uint8_t;
+    /// Accesses the maximum number of metrics from a metrics data pointer
+    auto max_metrics() const -> uint16_t;
 
     /// @return A pointer to the title of the counter
     auto raw_title() const -> const char*;

@@ -11,10 +11,9 @@ TEST(test_metrics, default_constructor)
 {
     uint16_t max_metrics = 10;
     uint16_t max_name_bytes = 32;
-    uint8_t level = 0;
     std::string title = "test_metrics";
 
-    abacus::metrics metrics(max_metrics, max_name_bytes, title, level);
+    abacus::metrics metrics(max_metrics, max_name_bytes, title);
 
     auto count1 = metrics.initialize_metric(0, "count_1");
 
@@ -24,7 +23,6 @@ TEST(test_metrics, default_constructor)
     EXPECT_TRUE(metrics.is_metric_initialized(0));
     EXPECT_EQ(metrics.metric_name(0), "count_1");
     EXPECT_EQ(metrics.metric_value(0), 0U);
-    EXPECT_EQ(metrics.metrics_level(), 0U);
     EXPECT_EQ(metrics.storage_bytes(), storage_size);
 
     ++count1;
@@ -33,28 +31,26 @@ TEST(test_metrics, default_constructor)
 
     std::string title1 = "test_metrics1";
 
-    abacus::metrics metrics1(max_metrics, max_name_bytes, title1, level + 1);
+    abacus::metrics metrics1(max_metrics, max_name_bytes, title1);
 
     auto count2 = metrics1.initialize_metric(0, "count_2");
 
     EXPECT_TRUE(metrics1.is_metric_initialized(0));
     EXPECT_EQ(metrics1.metric_name(0), "count_2");
     EXPECT_EQ(metrics1.metric_value(0), 0U);
-    EXPECT_EQ(metrics1.metrics_level(), 1U);
 
     ++count2;
 
     EXPECT_EQ(metrics1.metric_value(0), 1U);
 
     std::string title2 = "test_metrics2";
-    abacus::metrics metrics2(max_metrics, max_name_bytes, title2, level + 2);
+    abacus::metrics metrics2(max_metrics, max_name_bytes, title2);
 
     auto count3 = metrics2.initialize_metric(0, "count_3");
 
     EXPECT_TRUE(metrics2.is_metric_initialized(0));
     EXPECT_EQ(metrics2.metric_name(0), "count_3");
     EXPECT_EQ(metrics2.metric_value(0), 0U);
-    EXPECT_EQ(metrics2.metrics_level(), 2U);
 
     count3 += 5;
 
@@ -65,9 +61,8 @@ TEST(test_metrics, copy_storage)
 {
     uint16_t max_metrics = 10;
     uint16_t max_name_bytes = 32;
-    uint8_t level = 0;
 
-    abacus::metrics metrics(max_metrics, max_name_bytes, "test_metrics", level);
+    abacus::metrics metrics(max_metrics, max_name_bytes, "test_metrics");
 
     metrics.initialize_metric(0, "count_1");
 
@@ -88,8 +83,8 @@ TEST(test_metrics, reset_counters)
     uint64_t count = 1;
     uint16_t max_name_bytes = 32;
     uint16_t max_metrics = 10;
-    uint8_t level = 0;
-    abacus::metrics metrics(max_metrics, max_name_bytes, "metrics", level);
+
+    abacus::metrics metrics(max_metrics, max_name_bytes, "metrics");
 
     for (std::size_t i = 0; i < max_metrics; i++)
     {

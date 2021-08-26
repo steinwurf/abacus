@@ -23,28 +23,20 @@ void view::set_data(uint8_t* data)
     m_data = data;
 }
 
-auto view::max_metrics() const -> uint16_t
-{
-    assert(m_data != nullptr);
-
-    const uint8_t* max_metrics_data = m_data + 4;
-    return *reinterpret_cast<const uint16_t*>(max_metrics_data);
-}
-
 auto view::max_name_bytes() const -> uint16_t
 {
     assert(m_data != nullptr);
 
-    const uint8_t* max_name_bytes_data = m_data + 2;
+    const uint8_t* max_name_bytes_data = m_data;
     return *reinterpret_cast<const uint16_t*>(max_name_bytes_data);
 }
 
-auto view::level() const -> uint8_t
+auto view::max_metrics() const -> uint16_t
 {
     assert(m_data != nullptr);
 
-    const uint8_t* level_data = m_data + 1;
-    return *level_data;
+    const uint8_t* max_metrics_data = m_data + 2;
+    return *reinterpret_cast<const uint16_t*>(max_metrics_data);
 }
 
 auto view::raw_title() const -> const char*

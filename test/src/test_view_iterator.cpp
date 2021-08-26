@@ -15,11 +15,9 @@ TEST(test_view_iterator, default_constructor)
     uint16_t max_name_bytes = 32;
     std::string title1 = "metrics1";
     std::string title2 = "metrics2";
-    uint8_t level1 = 10;
-    uint8_t level2 = 85;
 
-    abacus::metrics metrics1(max_metrics, max_name_bytes, title1, 10);
-    abacus::metrics metrics2(max_metrics, max_name_bytes, title2, 85);
+    abacus::metrics metrics1(max_metrics, max_name_bytes, title1);
+    abacus::metrics metrics2(max_metrics, max_name_bytes, title2);
 
     std::vector<uint8_t> combined_data(metrics1.storage_bytes() +
                                        metrics2.storage_bytes());
@@ -35,11 +33,9 @@ TEST(test_view_iterator, default_constructor)
 
     EXPECT_EQ(max_metrics, iterator_view1.max_metrics());
     EXPECT_EQ(max_name_bytes, iterator_view1.max_name_bytes());
-    EXPECT_EQ(level1, iterator_view1.level());
     EXPECT_EQ(title1, iterator_view1.raw_title());
 
     EXPECT_EQ(max_metrics, iterator_view2.max_metrics());
     EXPECT_EQ(max_name_bytes, iterator_view2.max_name_bytes());
-    EXPECT_EQ(level2, iterator_view2.level());
     EXPECT_EQ(title2, iterator_view2.raw_title());
 }

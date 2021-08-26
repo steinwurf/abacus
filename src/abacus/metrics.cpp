@@ -14,9 +14,9 @@ inline namespace STEINWURF_ABACUS_VERSION
 {
 
 metrics::metrics(uint16_t max_metrics, uint16_t max_name_bytes,
-                 const std::string& title, uint8_t level) :
+                 const std::string& title) :
     m_max_metrics(max_metrics),
-    m_max_name_bytes(max_name_bytes), m_level(level)
+    m_max_name_bytes(max_name_bytes)
 {
     assert(m_max_metrics > 0);
     assert(m_max_name_bytes > 0);
@@ -31,10 +31,9 @@ metrics::metrics(uint16_t max_metrics, uint16_t max_name_bytes,
     std::memset(m_data, 0, memory_needed);
 
     // Write the header
-    new (m_data) uint8_t(8);
-    new (m_data + 1) uint8_t(m_level);
-    new (m_data + 2) uint16_t(m_max_name_bytes);
-    new (m_data + 4) uint16_t(m_max_metrics);
+    new (m_data) uint16_t(m_max_name_bytes);
+    new (m_data + 2) uint16_t(m_max_metrics);
+    new (m_data + 4) uint8_t(8);
 
     // Write the title
     set_metrics_title(title);
@@ -133,11 +132,6 @@ void metrics::reset_metric(std::size_t index)
 auto metrics::metrics_count() const -> std::size_t
 {
     return m_max_metrics;
-}
-
-auto metrics::metrics_level() const -> uint8_t
-{
-    return m_level;
 }
 
 }
