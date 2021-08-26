@@ -22,11 +22,11 @@ public:
 public:
     void set_data(uint8_t* data);
 
-    auto max_metrics() const -> const uint16_t;
+    auto max_metrics() const -> uint16_t;
 
-    auto max_name_bytes() const -> const uint16_t;
+    auto max_name_bytes() const -> uint16_t;
 
-    auto level() const -> const uint8_t;
+    auto level() const -> uint8_t;
 
     /// @return A pointer to the title of the counter
     auto raw_title() const -> const char*;

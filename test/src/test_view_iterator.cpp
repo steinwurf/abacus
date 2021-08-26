@@ -28,7 +28,7 @@ TEST(test_view_iterator, default_constructor)
 
     abacus::view_iterator iterator(combined_data.data(), combined_data.size());
 
-    EXPECT_EQ(iterator.view_count(), 2);
+    EXPECT_EQ(iterator.view_count(), 2U);
 
     abacus::view iterator_view1 = iterator.get_view(0);
     abacus::view iterator_view2 = iterator.get_view(1);

@@ -49,7 +49,7 @@ void metrics::set_metrics_title(const std::string& title)
 {
     // Write the title
     char* title_data = view::raw_title();
-    std::memcpy(title_data, title.data(), m_max_name_bytes);
+    std::memcpy(title_data, title.data(), title.size());
 }
 
 auto metrics::metric_name(std::size_t index) const -> std::string

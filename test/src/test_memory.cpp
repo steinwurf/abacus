@@ -7,7 +7,7 @@
 #include <gtest/gtest.h>
 
 #include <abacus/metrics.hpp>
-TEST(test_memory, default_constructor)
+TEST(test_memory, default_test)
 {
     uint64_t count = 0xFFFFFFFFFFFFFFFFU;
     uint16_t max_name_bytes = 32;
