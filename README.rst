@@ -4,13 +4,21 @@ Abacus
 
 .. image:: ./abacus.gif
 
-Abacus is a C++ metrics library. With this, you can create metrics for a library that can be carried through dependencies all the way to the top-level application like so:
+Abacus is a C++ metrics library. We wanted to create a library that allows us to create counters in our other libraries that:
+
+* Are fast to increment/update
+* Are fast to copy/transfer between dependencies
+* Can separate hot and cold memory
+* Can keep everything in one contiguous memory block
+
+
+With this, you can create metrics for a library that can be carried through dependencies all the way to the top-level application like so:
 
 .. code-block:: text
 
     +---------------+                             +---------------+
     |    Library    |          Dependency         |    Library    |
-    |    Level 1    |            ----->           |    Level 0    |
+    |       1       |            ----->           |       0       |
     +-------+-------+                             +-------+-------+
             |                                             |
             |                                             |
@@ -44,6 +52,7 @@ The class metric is the fundamental class. It's constructed with a pointer to a 
 One can increment the metric using either the regular integer +, += or ++ operators.
 
 The class metrics contains metrics. It takes 3 arguments in it's constructor:
+
 * max_name_bytes - The maximum number of bytes allowed for the title of the metrics object and for the name of each metric
 * max_metrics - The maximum number of metrics it will hold
 * title - A string containing the title of the metrics object
@@ -52,4 +61,6 @@ The metrics allocates at construction sequential memory to hold the names and va
 
 The class view takes the memory of a metrics object and contains functions to read this memory and its pointed to Contents
 
-The class view_iterator takes the memory of multiple metrics objects and separates them into views. This class is for example used in cases, when you want to access metrics from a dependency and mix them with the metrics of the current library.
+The class view_iterator takes the memory of multiple metrics objects and separates them into views. This class is for example used in cases, when you want to access metrics from a dependency and use with the metrics of the current library.
+
+There is also some documentation in the header-files of the classes for supplementary info.

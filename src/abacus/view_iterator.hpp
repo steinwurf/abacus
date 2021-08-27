@@ -17,6 +17,10 @@ inline namespace STEINWURF_ABACUS_VERSION
 {
 class view_iterator
 {
+    /// This class takes a data buffer containing information from one or more
+    /// metrics objects and separates them into views.
+
+    /// See view.hpp for more about views.
 public:
     static constexpr std::size_t header_size = 5;
 

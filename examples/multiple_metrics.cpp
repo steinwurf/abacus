@@ -81,5 +81,13 @@ int main()
         std::cout << std::endl;
     }
 
+    /// Or you can use view::to_json() for the metrics in json-format:
+    for (std::size_t i = 0; i < car_iterator.view_count(); i++)
+    {
+        auto view = car_iterator.get_view(i);
+        std::cout << view.raw_title()
+                  << " has the following metrics:" << std::endl;
+        std::cout << view.to_json() << std::endl;
+    }
     return 0;
 }

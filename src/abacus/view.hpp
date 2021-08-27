@@ -16,6 +16,15 @@ inline namespace STEINWURF_ABACUS_VERSION
 {
 class view
 {
+    /// This class contains utility functions that are inherited by the metrics
+    /// class.
+
+    /// It's main use-case is for when the data of a metrics object is
+    /// copied to a data buffer. abacus::view can then be used to extract the
+    /// information from the metrics-data.
+
+    /// Note that this class has no constructor, so it can only be declared and
+    /// then view.set_data() can be called to update the data
 public:
     static constexpr std::size_t header_size = 5;
 
