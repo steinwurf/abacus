@@ -17,8 +17,8 @@ TEST(test_metrics, default_constructor)
 
     auto count1 = metrics.initialize_metric(0, "count_1");
 
-    auto storage_size = metrics.header_size + max_name_bytes +
-                        max_metrics * (max_name_bytes + sizeof(uint64_t));
+    auto storage_size =
+        5 + max_name_bytes + max_metrics * (max_name_bytes + sizeof(uint64_t));
 
     EXPECT_TRUE(metrics.is_metric_initialized(0));
     EXPECT_EQ(metrics.metric_name(0), "count_1");

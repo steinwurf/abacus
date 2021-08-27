@@ -62,21 +62,21 @@ int main()
     for (std::size_t i = 0; i < car_iterator.view_count(); i++)
     {
         auto view = car_iterator.get_view(i);
-        std::cout << view.raw_title()
+        std::cout << view.get_title()
                   << " has the following metrics:" << std::endl;
 
         for (std::size_t i = 0; i < view.max_metrics(); i++)
         {
             /// If a counter in memory has no name, it's not yet initialized.
             /// We will ignore it.
-            if (view.raw_name(i)[0] == 0)
+            if (!view.is_metric_initialized(i))
             {
                 continue;
             }
             /// Get the name from memory and the address of the value and
             /// dereference it.
-            std::cout << "\t" << view.raw_name(i) << ": " << *view.raw_value(i)
-                      << std::endl;
+            std::cout << "\t" << view.metric_name(i) << ": "
+                      << view.metric_value(i) << std::endl;
         }
         std::cout << std::endl;
     }
@@ -85,7 +85,7 @@ int main()
     for (std::size_t i = 0; i < car_iterator.view_count(); i++)
     {
         auto view = car_iterator.get_view(i);
-        std::cout << view.raw_title()
+        std::cout << view.get_title()
                   << " has the following metrics:" << std::endl;
         std::cout << view.to_json() << std::endl;
     }

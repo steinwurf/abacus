@@ -16,12 +16,15 @@ inline namespace STEINWURF_ABACUS_VERSION
 {
 class view
 {
-    /// This class contains utility functions that are inherited by the metrics
-    /// class.
+    /// This class contains utility functions used to read a metrics data
+    /// buffer.
 
     /// It's main use-case is for when the data of a metrics object is
     /// copied to a data buffer. abacus::view can then be used to extract the
     /// information from the metrics-data.
+
+    /// The class cannot manipulate the memory, only access the
+    /// pointed to values
 
     /// Note that this class has no constructor, so it can only be declared and
     /// then view.set_data() can be called to update the data
@@ -38,35 +41,17 @@ public:
     /// Accesses the maximum number of metrics from a metrics data pointer
     auto max_metrics() const -> uint16_t;
 
-    /// @return A pointer to the title of the counter
-    auto raw_title() const -> const char*;
+    /// Accesses the title of the metrics object
+    auto get_title() const -> std::string;
 
-    /// @return A pointer to the title of the counter
-    auto raw_title() -> char*;
+    /// @return The name of a counter as a string
+    auto metric_name(std::size_t index) const -> std::string;
 
-    /// @return A pointer to the name of the counter
-    auto raw_name(std::size_t index) const -> const char*;
+    /// @return A specific count
+    auto metric_value(std::size_t index) const -> uint64_t;
 
-    /// @return A pointer to the name of the counter
-    auto raw_name(std::size_t index) -> char*;
-
-    /// @return A pointer to the value of the counter
-    auto raw_value(std::size_t index) const -> const uint64_t*;
-
-    /// @return A pointer to the value of the counter
-    auto raw_value(std::size_t index) -> uint64_t*;
-
-    /// @return The byte offset to the title section
-    auto title_offset() const -> std::size_t;
-
-    /// @return The byte offset to the level section
-    auto level_offset() const -> std::size_t;
-
-    /// @return The byte offset to the names section
-    auto names_offset() const -> std::size_t;
-
-    /// @return The byte offset to the values section
-    auto values_offset() const -> std::size_t;
+    /// @return True if the counter has been initialized
+    auto is_metric_initialized(std::size_t index) const -> bool;
 
     /// @return The number of bytes in the view memory
     auto view_bytes() const -> std::size_t;

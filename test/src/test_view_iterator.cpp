@@ -33,9 +33,9 @@ TEST(test_view_iterator, default_constructor)
 
     EXPECT_EQ(max_metrics, iterator_view1.max_metrics());
     EXPECT_EQ(max_name_bytes, iterator_view1.max_name_bytes());
-    EXPECT_EQ(title1, iterator_view1.raw_title());
+    EXPECT_EQ(title1, iterator_view1.get_title());
 
     EXPECT_EQ(max_metrics, iterator_view2.max_metrics());
     EXPECT_EQ(max_name_bytes, iterator_view2.max_name_bytes());
-    EXPECT_EQ(title2, iterator_view2.raw_title());
+    EXPECT_EQ(title2, iterator_view2.get_title());
 }

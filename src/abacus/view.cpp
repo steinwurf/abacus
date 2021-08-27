@@ -3,6 +3,7 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
+#include "detail/raw.hpp"
 #include "view.hpp"
 
 #include <algorithm>
@@ -25,111 +26,41 @@ void view::set_data(uint8_t* data)
 
 auto view::max_name_bytes() const -> uint16_t
 {
-    assert(m_data != nullptr);
-
-    const uint8_t* max_name_bytes_data = m_data;
-    return *reinterpret_cast<const uint16_t*>(max_name_bytes_data);
+    return detail::max_name_bytes(m_data);
 }
 
 auto view::max_metrics() const -> uint16_t
 {
-    assert(m_data != nullptr);
-
-    const uint8_t* max_metrics_data = m_data + 2;
-    return *reinterpret_cast<const uint16_t*>(max_metrics_data);
+    return detail::max_metrics(m_data);
 }
 
-auto view::raw_title() const -> const char*
+auto view::get_title() const -> std::string
 {
-    assert(m_data != nullptr);
-
-    const uint8_t* title_data = m_data + title_offset();
-
-    return reinterpret_cast<const char*>(title_data);
+    std::string title = detail::raw_title(m_data);
+    return title;
 }
 
-auto view::raw_title() -> char*
+auto view::metric_name(std::size_t index) const -> std::string
 {
-    assert(m_data != nullptr);
-
-    uint8_t* title_data = m_data + title_offset();
-
-    return reinterpret_cast<char*>(title_data);
+    assert(view::is_metric_initialized(index));
+    std::string name = detail::raw_name(m_data, index);
+    return name;
 }
 
-auto view::raw_name(std::size_t index) const -> const char*
+auto view::metric_value(std::size_t index) const -> uint64_t
 {
-    assert(m_data != nullptr);
-
-    const uint16_t max_metrics = view::max_metrics();
-    assert(index < max_metrics);
-
-    const uint16_t max_name_bytes = view::max_name_bytes();
-    const uint8_t* name_data =
-        m_data + names_offset() + (index * max_name_bytes);
-
-    return reinterpret_cast<const char*>(name_data);
+    assert(view::is_metric_initialized(index));
+    return *detail::raw_value(m_data, index);
 }
 
-auto view::raw_name(std::size_t index) -> char*
+auto view::is_metric_initialized(std::size_t index) const -> bool
 {
-    assert(m_data != nullptr);
-
-    const uint16_t max_metrics = view::max_metrics();
-    assert(index < max_metrics);
-
-    const uint16_t max_name_bytes = view::max_name_bytes();
-    uint8_t* name_data = m_data + names_offset() + (index * max_name_bytes);
-
-    return reinterpret_cast<char*>(name_data);
-}
-
-auto view::raw_value(std::size_t index) const -> const uint64_t*
-{
-    assert(m_data != nullptr);
-
-    const uint16_t max_metrics = view::max_metrics();
-    assert(index < max_metrics);
-
-    const uint8_t* value_data =
-        m_data + values_offset() + (index * sizeof(uint64_t));
-
-    return reinterpret_cast<const uint64_t*>(value_data);
-}
-
-auto view::raw_value(std::size_t index) -> uint64_t*
-{
-    assert(m_data != nullptr);
-
-    const uint16_t max_metrics = view::max_metrics();
-    assert(index < max_metrics);
-
-    uint8_t* value_data = m_data + values_offset() + (index * sizeof(uint64_t));
-
-    return reinterpret_cast<uint64_t*>(value_data);
-}
-
-auto view::title_offset() const -> std::size_t
-{
-    return header_size;
-}
-
-auto view::names_offset() const -> std::size_t
-{
-    // Skip header + title
-    return header_size + view::max_name_bytes();
-}
-
-auto view::values_offset() const -> std::size_t
-{
-    // Skip header + title + names
-    return header_size + view::max_name_bytes() +
-           (view::max_metrics() * view::max_name_bytes());
+    return detail::is_metric_initialized(m_data, index);
 }
 
 auto view::view_bytes() const -> std::size_t
 {
-    return header_size + view::max_name_bytes() +
+    return detail::header_size() + view::max_name_bytes() +
            view::max_metrics() * (view::max_name_bytes() + sizeof(uint64_t));
 }
 
@@ -139,13 +70,13 @@ auto view::to_json() const -> std::string
 
     for (std::size_t i = 0; i < view::max_metrics(); ++i)
     {
-        if ((raw_name(i)[0] == 0))
+        if ((!view::is_metric_initialized(i)))
         {
             continue;
         }
 
-        auto n = raw_name(i);
-        auto v = *raw_value(i);
+        auto n = view::metric_name(i);
+        auto v = view::metric_value(i);
 
         counters[n] = v;
     }

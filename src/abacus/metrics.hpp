@@ -16,7 +16,7 @@ namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-class metrics : public view
+class metrics
 {
     /// This class preallocates memory at construction to hold a header, a title
     /// of size max_name_bytes, max_metrics metrics, each having a name of size
@@ -36,8 +36,6 @@ public:
     // 2. 16 bit denoting the max number of counters
     // 3. 8 bit denoting the max size of values
 
-    static constexpr std::size_t header_size = 5;
-
 public:
     /// Default constructor
     metrics(uint16_t max_metrics, uint16_t max_name_bytes,
@@ -45,6 +43,14 @@ public:
 
     /// Destructor
     ~metrics();
+
+    /// Return the maximum number of metrics that was provided to the
+    /// constructor
+    auto max_metrics() const -> std::size_t;
+
+    /// Return the maximum number of bytes used for a metric name that was
+    /// provided to the constructor
+    auto max_name_bytes() const -> std::size_t;
 
     /// Set the name of all the metrics contained within
     void set_metrics_title(const std::string& title);
@@ -74,8 +80,8 @@ public:
     /// Reset specific counter
     void reset_metric(std::size_t index);
 
-    /// @return The number of counters
-    auto metrics_count() const -> std::size_t;
+    /// @return All counters in json format
+    auto to_json() const -> std::string;
 
 private:
     /// No copy

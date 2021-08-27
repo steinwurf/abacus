@@ -54,14 +54,14 @@ int main()
     {
         /// If a counter in memory has no name, it's not yet initialized.
         /// We will ignore it.
-        if (car_view.raw_name(i)[0] == 0)
+        if (!car_view.is_metric_initialized(i))
         {
             continue;
         }
         /// Get the name from memory and the address of the value and
         /// dereference it.
-        std::cout << "\t" << car_view.raw_name(i) << ": "
-                  << *car_view.raw_value(i) << std::endl;
+        std::cout << "\t" << car_view.metric_name(i) << ": "
+                  << car_view.metric_value(i) << std::endl;
     }
 
     return 0;

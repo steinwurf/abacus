@@ -3,10 +3,13 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
+#include "detail/raw.hpp"
 #include "metrics.hpp"
 
 #include <algorithm>
 #include <cstring>
+
+#include <bourne/json.hpp>
 
 namespace abacus
 {
@@ -25,7 +28,6 @@ metrics::metrics(uint16_t max_metrics, uint16_t max_name_bytes,
     // Allocate the memory for the counters
     std::size_t memory_needed = storage_bytes();
     m_data = static_cast<uint8_t*>(::operator new(memory_needed));
-    view::set_data(m_data);
 
     // Zero out all memory
     std::memset(m_data, 0, memory_needed);
@@ -44,23 +46,33 @@ metrics::~metrics()
     ::operator delete(m_data);
 }
 
+auto metrics::max_metrics() const -> std::size_t
+{
+    return m_max_metrics;
+}
+
+auto metrics::max_name_bytes() const -> std::size_t
+{
+    return m_max_name_bytes;
+}
+
 void metrics::set_metrics_title(const std::string& title)
 {
     // Write the title
-    char* title_data = view::raw_title();
+    char* title_data = detail::raw_title(m_data);
     std::memcpy(title_data, title.data(), title.size());
 }
 
 auto metrics::metric_name(std::size_t index) const -> std::string
 {
     assert(is_metric_initialized(index));
-    return {view::raw_name(index)};
+    return detail::raw_name(m_data, index);
 }
 
 auto metrics::metric_value(std::size_t index) const -> uint64_t
 {
     assert(is_metric_initialized(index));
-    return *view::raw_value(index);
+    return *detail::raw_value(m_data, index);
 }
 
 auto metrics::initialize_metric(std::size_t index, const std::string& name)
@@ -72,8 +84,8 @@ auto metrics::initialize_metric(std::size_t index, const std::string& name)
     // zero terminating byte
     assert(name.size() < m_max_name_bytes);
 
-    char* name_data = view::raw_name(index);
-    uint64_t* value_data = view::raw_value(index);
+    char* name_data = detail::raw_name(m_data, index);
+    uint64_t* value_data = detail::raw_value(m_data, index);
 
     // Copy the name
     std::memcpy(name_data, name.data(), name.size());
@@ -94,17 +106,12 @@ auto metrics::storage_bytes() const -> std::size_t
     std::size_t names_bytes = m_max_name_bytes * m_max_metrics;
     std::size_t value_bytes = sizeof(uint64_t) * m_max_metrics;
 
-    return header_size + m_max_name_bytes + names_bytes + value_bytes;
+    return detail::header_size() + m_max_name_bytes + names_bytes + value_bytes;
 }
 
 auto metrics::is_metric_initialized(std::size_t index) const -> bool
 {
-    assert(index < m_max_metrics);
-    const char* name_data = view::raw_name(index);
-
-    // If the name is non-zero it is initialized and valid. We just check the
-    // first byte to see if it's zero.
-    return name_data[0] != 0;
+    return detail::is_metric_initialized(m_data, index);
 }
 
 void metrics::reset_metrics()
@@ -125,13 +132,28 @@ void metrics::reset_metric(std::size_t index)
 {
     assert(is_metric_initialized(index));
 
-    uint64_t* value = view::raw_value(index);
+    uint64_t* value = detail::raw_value(m_data, index);
     *value = 0;
 }
 
-auto metrics::metrics_count() const -> std::size_t
+auto metrics::to_json() const -> std::string
 {
-    return m_max_metrics;
+    bourne::json counters = bourne::json::object();
+
+    for (std::size_t i = 0; i < m_max_metrics; ++i)
+    {
+        if ((!metrics::is_metric_initialized(i)))
+        {
+            continue;
+        }
+
+        auto n = metrics::metric_name(i);
+        auto v = metrics::metric_value(i);
+
+        counters[n] = v;
+    }
+
+    return counters.dump();
 }
 
 }
