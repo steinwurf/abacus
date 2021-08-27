@@ -11,26 +11,58 @@
 
 int main()
 {
+    /// Choose the constructor values for the metrics class
     uint64_t max_metrics = 10;
     uint64_t max_name_bytes = 32;
 
-    abacus::metrics metrics(max_metrics, max_name_bytes, "Car");
+    abacus::metrics car(max_metrics, max_name_bytes, "Car");
 
-    auto acceleration = metrics.initialize_metric(0, "0 to 100 / s");
+    /// A car has headlights. Two of them usually
+    auto headlights = car.initialize_metric(0, "headlights");
 
-    acceleration += 3;
+    headlights += 2;
 
-    auto fuel_consumption =
-        metrics.initialize_metric(1, "fuel consumption km/L");
+    /// What about the gas mileage?
+    auto fuel_consumption = car.initialize_metric(1, "fuel consumption km/L");
 
     fuel_consumption += 20;
 
-    auto wheels = metrics.initialize_metric(2, "Wheels");
+    /// Most cars are 4-wheelers as well
+    auto wheels = car.initialize_metric(2, "Wheels");
 
-    // Remember the spare tire in the trunk ;-)
-    wheels += 5;
+    wheels += 4;
 
-    std::cout << metrics.to_json();
+    /// We can print out the counters neatly.
+    std::cout << car.to_json() << std::endl;
+
+    /// We want to export the metrics memory, so we need a new storage
+    std::vector<uint8_t> data(car.storage_bytes());
+
+    /// Copy the memory into the new storage
+    car.copy_storage(data.data());
+
+    /// We can use the view class to read the pointed-to values
+    abacus::view car_view;
+
+    /// The view should operate on the copied storage
+    car_view.set_data(data.data());
+
+    /// Lets see what it contains:
+    std::cout << "Car has the following metrics:" << std::endl;
+
+    for (std::size_t i = 0; i < car_view.max_metrics(); i++)
+    {
+        /// If a counter in memory has no name, it's not yet initialized.
+        /// We will ignore it.
+        if (car_view.raw_name(i)[0] == 0)
+        {
+            continue;
+        }
+        /// Get the name from memory and the address of the value and
+        /// dereference it.
+        std::cout << "\t" << car_view.raw_name(i) << ": "
+                  << *car_view.raw_value(i) << std::endl;
+    }
 
     return 0;
 }
