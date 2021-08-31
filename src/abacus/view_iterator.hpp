@@ -26,7 +26,7 @@ public:
 
 public:
     /// Default constructor
-    view_iterator(uint8_t* data, std::size_t size);
+    view_iterator(const uint8_t* data, std::size_t size);
 
     /// @return A view of the index metrics object in memory
     auto get_view(std::size_t index) const -> view;

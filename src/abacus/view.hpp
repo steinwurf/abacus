@@ -28,12 +28,10 @@ class view
 
     /// Note that this class has no constructor, so it can only be declared and
     /// then view.set_data() can be called to update the data
-public:
-    static constexpr std::size_t header_size = 5;
 
 public:
     /// Sets the data pointer of the view to read the memory of
-    void set_data(uint8_t* data);
+    void set_data(const uint8_t* data);
 
     /// Accesses the maximum name size from a metrics data pointer
     auto max_name_bytes() const -> uint16_t;
@@ -60,7 +58,7 @@ public:
     auto to_json() const -> std::string;
 
 private:
-    uint8_t* m_data = nullptr;
+    const uint8_t* m_data;
 };
 }
 }

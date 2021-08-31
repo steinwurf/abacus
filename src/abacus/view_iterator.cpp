@@ -13,7 +13,7 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-view_iterator::view_iterator(uint8_t* data, std::size_t size)
+view_iterator::view_iterator(const uint8_t* data, std::size_t size)
 {
     assert(data != nullptr);
     assert(size > 0);

@@ -3,8 +3,8 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include "detail/raw.hpp"
 #include "view.hpp"
+#include "detail/raw.hpp"
 
 #include <algorithm>
 #include <cstring>
@@ -17,7 +17,7 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-void view::set_data(uint8_t* data)
+void view::set_data(const uint8_t* data)
 {
     assert(data != nullptr);
 
@@ -60,7 +60,7 @@ auto view::is_metric_initialized(std::size_t index) const -> bool
 
 auto view::view_bytes() const -> std::size_t
 {
-    return detail::header_size() + view::max_name_bytes() +
+    return detail::header_bytes() + view::max_name_bytes() +
            view::max_metrics() * (view::max_name_bytes() + sizeof(uint64_t));
 }
 

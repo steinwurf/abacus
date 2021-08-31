@@ -3,8 +3,8 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include "detail/raw.hpp"
 #include "metrics.hpp"
+#include "detail/raw.hpp"
 
 #include <algorithm>
 #include <cstring>
@@ -106,7 +106,8 @@ auto metrics::storage_bytes() const -> std::size_t
     std::size_t names_bytes = m_max_name_bytes * m_max_metrics;
     std::size_t value_bytes = sizeof(uint64_t) * m_max_metrics;
 
-    return detail::header_size() + m_max_name_bytes + names_bytes + value_bytes;
+    return detail::header_bytes() + m_max_name_bytes + names_bytes +
+           value_bytes;
 }
 
 auto metrics::is_metric_initialized(std::size_t index) const -> bool
