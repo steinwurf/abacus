@@ -48,11 +48,11 @@ public:
     /// Destructor
     ~metrics();
 
-    /// Return the maximum number of metrics that was provided to the
+    /// @return the maximum number of metrics that was provided to the
     /// constructor
     auto max_metrics() const -> std::size_t;
 
-    /// Return the maximum number of bytes used for a metric name that was
+    /// @return the maximum number of bytes used for a metric name that was
     /// provided to the constructor
     auto max_name_bytes() const -> std::size_t;
 
