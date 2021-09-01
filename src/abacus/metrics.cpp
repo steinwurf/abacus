@@ -3,8 +3,8 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include "metrics.hpp"
 #include "detail/raw.hpp"
+#include "metrics.hpp"
 
 #include <algorithm>
 #include <cstring>
@@ -139,22 +139,7 @@ void metrics::reset_metric(std::size_t index)
 
 auto metrics::to_json() const -> std::string
 {
-    bourne::json counters = bourne::json::object();
-
-    for (std::size_t i = 0; i < m_max_metrics; ++i)
-    {
-        if ((!metrics::is_metric_initialized(i)))
-        {
-            continue;
-        }
-
-        auto n = metrics::metric_name(i);
-        auto v = metrics::metric_value(i);
-
-        counters[n] = v;
-    }
-
-    return counters.dump();
+    return detail::to_json(m_data);
 }
 
 }

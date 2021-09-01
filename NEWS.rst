@@ -12,5 +12,5 @@ Latest
 * Major: Separated the metric class from metrics
 * Major: Added class view to handle the raw memory of class metrics
 * Minor: Added class view_iterator
-* Minor: Moved to_json() member function from class metrics to class view
+* Minor: Moved to_json() member function to detail
 

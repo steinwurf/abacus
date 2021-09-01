@@ -11,6 +11,7 @@
 #include <cstring>
 
 #include "../version.hpp"
+#include <bourne/json.hpp>
 
 namespace abacus
 {
@@ -89,9 +90,8 @@ inline auto raw_name(uint8_t* data, std::size_t index) -> char*
     assert(data != nullptr);
     assert(index < max_metrics(data));
 
-    const uint16_t max_name_bytes_var = max_name_bytes(data);
     uint8_t* name_data =
-        data + names_offset(data) + (index * max_name_bytes_var);
+        data + names_offset(data) + (index * max_name_bytes(data));
 
     return (char*)name_data;
 }
@@ -101,9 +101,8 @@ inline auto raw_name(const uint8_t* data, std::size_t index) -> const char*
     assert(data != nullptr);
     assert(index < max_metrics(data));
 
-    const uint16_t max_name_bytes_var = max_name_bytes(data);
     const uint8_t* name_data =
-        data + names_offset(data) + (index * max_name_bytes_var);
+        data + names_offset(data) + (index * max_name_bytes(data));
 
     return (const char*)name_data;
 }
@@ -139,6 +138,27 @@ inline auto is_metric_initialized(const uint8_t* data, std::size_t index)
     // If the name is non-zero it is initialized and valid. We just check the
     // first byte to see if it's zero.
     return name_data[0] != 0;
+}
+
+inline auto to_json(const uint8_t* data) -> std::string
+{
+    assert(data != nullptr);
+    bourne::json counters = bourne::json::object();
+
+    for (std::size_t i = 0; i < max_metrics(data); ++i)
+    {
+        if ((!is_metric_initialized(data, i)))
+        {
+            continue;
+        }
+
+        auto n = raw_name(data, i);
+        auto v = *raw_value(data, i);
+
+        counters[n] = v;
+    }
+
+    return counters.dump();
 }
 
 }

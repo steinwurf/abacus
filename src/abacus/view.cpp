@@ -8,7 +8,6 @@
 
 #include "detail/raw.hpp"
 #include "view.hpp"
-#include <bourne/json.hpp>
 
 namespace abacus
 {
@@ -40,7 +39,7 @@ auto view::get_title() const -> std::string
 
 auto view::metric_name(std::size_t index) const -> std::string
 {
-    assert(view::is_metric_initialized(index));
+    assert(is_metric_initialized(index));
     std::string name = detail::raw_name(m_data, index);
     return name;
 }
@@ -61,25 +60,9 @@ auto view::view_bytes() const -> std::size_t
     return detail::header_bytes() + view::max_name_bytes() +
            view::max_metrics() * (view::max_name_bytes() + sizeof(uint64_t));
 }
-
 auto view::to_json() const -> std::string
 {
-    bourne::json counters = bourne::json::object();
-
-    for (std::size_t i = 0; i < view::max_metrics(); ++i)
-    {
-        if ((!view::is_metric_initialized(i)))
-        {
-            continue;
-        }
-
-        auto n = view::metric_name(i);
-        auto v = view::metric_value(i);
-
-        counters[n] = v;
-    }
-
-    return counters.dump();
+    return detail::to_json(m_data);
 }
 
 }
