@@ -3,12 +3,11 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include "detail/raw.hpp"
-#include "view.hpp"
-
 #include <algorithm>
 #include <cstring>
 
+#include "detail/raw.hpp"
+#include "view.hpp"
 #include <bourne/json.hpp>
 
 namespace abacus
