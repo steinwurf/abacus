@@ -3,14 +3,13 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include "view.hpp"
 #include "detail/raw.hpp"
+#include "view.hpp"
 
 #include <algorithm>
 #include <cstring>
 
 #include <bourne/json.hpp>
-#include <endian/is_big_endian.hpp>
 
 namespace abacus
 {
