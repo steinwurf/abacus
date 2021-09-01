@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
-project(cpuid)
+project(abacus)
 
 find_package(Python COMPONENTS Interpreter)
 # Use waf to resolve dependencies
@@ -21,7 +21,6 @@ if(NOT TARGET steinwurf::bourne)
   add_subdirectory("${STEINWURF_RESOLVE}/bourne" bourne EXCLUDE_FROM_ALL)
 endif()
 
-
 # Define library
 file(GLOB_RECURSE abacus_sources ./src/*.cpp)
 
@@ -29,6 +28,11 @@ file(GLOB_RECURSE abacus_sources ./src/*.cpp)
 if(${PROJECT_NAME} STREQUAL ${STEINWURF_TOP_NAME})
   # Create static library
   add_library(abacus STATIC ${abacus_sources})
+  # Get all steinwurf object libraries and link directly with them.
+  get_property(steinwurf_object_libraries GLOBAL
+               PROPERTY steinwurf::object_libraries)
+  target_link_libraries(abacus PRIVATE ${steinwurf_object_libraries})
+
   # Install library
   install(FILES $<TARGET_FILE:abacus> DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 else()
@@ -37,6 +41,7 @@ else()
   # Add this library to a global list of steinwurf object libraries
   set_property(GLOBAL APPEND PROPERTY steinwurf::object_libraries
                                       steinwurf::abacus)
+  # Link object dependencies
   target_link_libraries(abacus PRIVATE steinwurf::bourne)
 endif()
 
@@ -56,7 +61,8 @@ install(
 if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
   # Build executables
   add_executable(metrics_simple examples/metrics_simple.cpp)
-  add_executable(multiple_metrics examples/multiple_metrics.cpp)
   target_link_libraries(metrics_simple abacus)
+
+  add_executable(multiple_metrics examples/multiple_metrics.cpp)
   target_link_libraries(multiple_metrics abacus)
 endif()
