@@ -31,6 +31,9 @@ inline auto max_name_bytes(const uint8_t* data) -> uint16_t
 
     uint16_t max_name_bytes;
     std::memcpy(&max_name_bytes, data, sizeof(uint16_t));
+
+    assert(max_name_bytes > 0);
+
     return max_name_bytes;
 }
 
@@ -46,6 +49,9 @@ inline auto max_metrics(const uint8_t* data) -> uint16_t
     const uint8_t* max_metrics_data = data + max_metrics_offset();
     uint16_t max_metrics;
     std::memcpy(&max_metrics, max_metrics_data, sizeof(uint16_t));
+
+    assert(max_metrics > 0);
+
     return max_metrics;
 }
 
