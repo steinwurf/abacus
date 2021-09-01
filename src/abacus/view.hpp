@@ -31,23 +31,30 @@ class view
 
 public:
     /// Sets the data pointer of the view to read the memory of
+    /// @param data The data pointer to read the memory of
     void set_data(const uint8_t* data);
 
-    /// Accesses the maximum name size from a metrics data pointer
+    /// @return the maximum name size from a metrics data pointer
     auto max_name_bytes() const -> uint16_t;
 
-    /// Accesses the maximum number of metrics from a metrics data pointer
+    /// @return the maximum number of metrics from a metrics data pointer
     auto max_metrics() const -> uint16_t;
 
-    /// Accesses the title of the metrics object
+    /// @return the title of the metrics object
     auto get_title() const -> std::string;
 
+    /// @param index The index of the new counter. Must be less than
+    /// max_metrics().
     /// @return The name of a counter as a string
     auto metric_name(std::size_t index) const -> std::string;
 
+    /// @param index The index of the new counter. Must be less than
+    /// max_metrics().
     /// @return A specific count
     auto metric_value(std::size_t index) const -> uint64_t;
 
+    /// @param index The index of the new counter. Must be less than
+    /// max_metrics().
     /// @return True if the counter has been initialized
     auto is_metric_initialized(std::size_t index) const -> bool;
 
@@ -58,6 +65,7 @@ public:
     auto to_json() const -> std::string;
 
 private:
+    /// The raw memory from the metrics counters
     const uint8_t* m_data;
 };
 }

@@ -30,15 +30,19 @@ class metrics
     /// max_metrics = 64. You can update the max_metrics value as you go to
     /// ensure optimal memory usage.
 
-public:
-    // The header consists of 42 bits of 3 values:
-    // 1. 16 bit denoting the max size of name
-    // 2. 16 bit denoting the max number of counters
-    // 3. 8 bit denoting the max size of values
+    /// The header consists of 42 bits of 3 values:
+    /// 1. 16 bit denoting the max size of name
+    /// 2. 16 bit denoting the max number of counters
+    /// 3. 8 bit denoting the max size of values
 
 public:
     /// Default constructor
-    metrics(uint16_t max_metrics, uint16_t max_name_bytes,
+    /// @param max_metrics The maximum number of metrics this object will
+    /// contain. Must be a number that can fit in 2 bytes.
+    /// @param max_name_bytes The maximum length in bytes the title/names of the
+    /// counters will contain. Must be a number that can fit in 2 bytes.
+    /// @param title The title of the metrics object
+    metrics(std::size_t max_metrics, std::size_t max_name_bytes,
             const std::string& title);
 
     /// Destructor
@@ -53,22 +57,32 @@ public:
     auto max_name_bytes() const -> std::size_t;
 
     /// Set the name of all the metrics contained within
+    /// @param title The title of the metrics object
     void set_metrics_title(const std::string& title);
 
+    /// @param index The index of a counter. Must be less than max_metrics.
     /// @return The name of a counter as a string
     auto metric_name(std::size_t index) const -> std::string;
 
+    /// @param index The index of a counter. Must be less than max_metrics.
     /// @return A specific count
     auto metric_value(std::size_t index) const -> uint64_t;
 
+    /// @param index The index of the new counter. Must be less than
+    /// max_metrics.
+    /// @param name The name of the new counter. Must be less than
+    /// max_name_bytes bytes
     /// @return The value of the counter
     auto initialize_metric(std::size_t index, const std::string& name)
         -> metric;
 
+    /// @param index The index of the new counter. Must be less than
+    /// max_metrics.
     /// @return True if the counter has been initialized
     auto is_metric_initialized(std::size_t index) const -> bool;
 
     /// Copies the memory backing the counter storage to a data pointer
+    /// @param data The data pointer to copy the raw memory to
     void copy_storage(uint8_t* data) const;
 
     /// @return The size of the counter storage in bytes
@@ -78,6 +92,8 @@ public:
     void reset_metrics();
 
     /// Reset specific counter
+    /// @param index The index of the new counter. Must be less than
+    /// max_metrics.
     void reset_metric(std::size_t index);
 
     /// @return All counters in json format
@@ -97,13 +113,13 @@ private:
     metrics& operator=(metrics&&) = delete;
 
 private:
-    // The number of values
-    uint16_t m_max_metrics = 0;
+    /// The number of values
+    std::size_t m_max_metrics = 0;
 
-    // The number of values
-    uint16_t m_max_name_bytes = 0;
+    /// The number of values
+    std::size_t m_max_name_bytes = 0;
 
-    // The raw memory for the counters (both value and name)
+    /// The raw memory for the counters (both value and name)
     uint8_t* m_data = nullptr;
 };
 

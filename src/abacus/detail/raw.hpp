@@ -20,11 +20,14 @@ inline namespace STEINWURF_ABACUS_VERSION
 namespace detail
 {
 
+/// @return The size of the header in bytes
 inline auto header_bytes() -> std::size_t
 {
     return 5;
 }
 
+/// @param data The raw memory for the counters
+/// @return The maximum bytes a name/title can contain
 inline auto max_name_bytes(const uint8_t* data) -> uint16_t
 {
     assert(data != nullptr);
@@ -37,11 +40,14 @@ inline auto max_name_bytes(const uint8_t* data) -> uint16_t
     return max_name_bytes;
 }
 
+/// @return The max_metrics offset in the raw memory
 inline auto max_metrics_offset() -> std::size_t
 {
     return 2;
 }
 
+/// @param data The raw memory for the counters
+/// @return The maximum metrics the raw memory can contain
 inline auto max_metrics(const uint8_t* data) -> uint16_t
 {
     assert(data != nullptr);
@@ -55,17 +61,22 @@ inline auto max_metrics(const uint8_t* data) -> uint16_t
     return max_metrics;
 }
 
+/// @return The title offset in the raw memory
 inline auto title_offset() -> std::size_t
 {
     return header_bytes();
 }
 
+/// @param data The raw memory for the counters
+/// @return The maximum metrics the raw memory can contain
 inline auto names_offset(const uint8_t* data) -> std::size_t
 {
     // Skip header + title
     return header_bytes() + max_name_bytes(data);
 }
 
+/// @param data The raw memory for the counters
+/// @return The values offset in the raw memory
 inline auto values_offset(const uint8_t* data) -> std::size_t
 {
     // Skip header + title + names
@@ -73,6 +84,8 @@ inline auto values_offset(const uint8_t* data) -> std::size_t
            (max_metrics(data) * max_name_bytes(data));
 }
 
+/// @param data The raw memory for the counters
+/// @return The raw title in memory
 inline auto raw_title(uint8_t* data) -> char*
 {
     assert(data != nullptr);
@@ -82,6 +95,8 @@ inline auto raw_title(uint8_t* data) -> char*
     return (char*)title_data;
 }
 
+/// @param data The raw memory for the counters
+/// @return The raw title in memory
 inline auto raw_title(const uint8_t* data) -> const char*
 {
     assert(data != nullptr);
@@ -91,6 +106,9 @@ inline auto raw_title(const uint8_t* data) -> const char*
     return (const char*)title_data;
 }
 
+/// @param data The raw memory for the counters
+/// @param index The index of a counter. Must be less than max_metrics().
+/// @return The raw name of a counter in memory
 inline auto raw_name(uint8_t* data, std::size_t index) -> char*
 {
     assert(data != nullptr);
@@ -102,6 +120,9 @@ inline auto raw_name(uint8_t* data, std::size_t index) -> char*
     return (char*)name_data;
 }
 
+/// @param data The raw memory for the counters
+/// @param index The index of a counter. Must be less than max_metrics().
+/// @return The raw name of a counter in memory
 inline auto raw_name(const uint8_t* data, std::size_t index) -> const char*
 {
     assert(data != nullptr);
@@ -113,6 +134,9 @@ inline auto raw_name(const uint8_t* data, std::size_t index) -> const char*
     return (const char*)name_data;
 }
 
+/// @param data The raw memory for the counters
+/// @param index The index of a counter. Must be less than max_metrics().
+/// @return a pointer to the index'th counter value
 inline auto raw_value(uint8_t* data, std::size_t index) -> uint64_t*
 {
     assert(data != nullptr);
@@ -124,6 +148,9 @@ inline auto raw_value(uint8_t* data, std::size_t index) -> uint64_t*
     return reinterpret_cast<uint64_t*>(value_data);
 }
 
+/// @param data The raw memory for the counters
+/// @param index The index of a counter. Must be less than max_metrics().
+/// @return a pointer to the index'th counter value
 inline auto raw_value(const uint8_t* data, std::size_t index) -> const uint64_t*
 {
     assert(data != nullptr);
@@ -135,6 +162,9 @@ inline auto raw_value(const uint8_t* data, std::size_t index) -> const uint64_t*
     return reinterpret_cast<const uint64_t*>(value_data);
 }
 
+/// @param data The raw memory for the counters
+/// @param index The index of a counter. Must be less than max_metrics().
+/// @return True if the metric is found in memory. False otherwise
 inline auto is_metric_initialized(const uint8_t* data, std::size_t index)
     -> bool
 {
@@ -146,6 +176,8 @@ inline auto is_metric_initialized(const uint8_t* data, std::size_t index)
     return name_data[0] != 0;
 }
 
+/// @param data The raw memory for the counters
+/// @return The counters in json-format
 inline auto to_json(const uint8_t* data) -> std::string
 {
     assert(data != nullptr);

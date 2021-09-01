@@ -33,6 +33,12 @@ public:
     /// Increment the value of the counter
     auto operator++() -> metric&;
 
+    /// Decrement the counter
+    auto operator-=(uint64_t value) -> metric&;
+
+    /// Decrement the value of the counter
+    auto operator--() -> metric&;
+
     /// @return True of valid
     auto is_initialized() const -> bool;
 

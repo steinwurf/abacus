@@ -46,7 +46,7 @@ auto view::metric_name(std::size_t index) const -> std::string
 
 auto view::metric_value(std::size_t index) const -> uint64_t
 {
-    assert(view::is_metric_initialized(index));
+    assert(is_metric_initialized(index));
     return *detail::raw_value(m_data, index);
 }
 
@@ -57,8 +57,8 @@ auto view::is_metric_initialized(std::size_t index) const -> bool
 
 auto view::view_bytes() const -> std::size_t
 {
-    return detail::header_bytes() + view::max_name_bytes() +
-           view::max_metrics() * (view::max_name_bytes() + sizeof(uint64_t));
+    return detail::header_bytes() + max_name_bytes() +
+           max_metrics() * (max_name_bytes() + sizeof(uint64_t));
 }
 auto view::to_json() const -> std::string
 {

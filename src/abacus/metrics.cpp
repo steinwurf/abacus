@@ -5,6 +5,7 @@
 
 #include <algorithm>
 #include <cstring>
+#include <limits>
 
 #include "detail/raw.hpp"
 #include "metrics.hpp"
@@ -14,13 +15,15 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-metrics::metrics(uint16_t max_metrics, uint16_t max_name_bytes,
+metrics::metrics(std::size_t max_metrics, std::size_t max_name_bytes,
                  const std::string& title) :
     m_max_metrics(max_metrics),
     m_max_name_bytes(max_name_bytes)
 {
     assert(m_max_metrics > 0);
+    assert(m_max_metrics <= std::numeric_limits<uint16_t>::max());
     assert(m_max_name_bytes > 0);
+    assert(m_max_name_bytes <= std::numeric_limits<uint16_t>::max());
     assert(title.size() < m_max_name_bytes);
 
     // Allocate the memory for the counters
@@ -96,9 +99,11 @@ auto metrics::initialize_metric(std::size_t index, const std::string& name)
 
 void metrics::copy_storage(uint8_t* data) const
 {
+    assert(data != nullptr);
     std::size_t metrics_size = storage_bytes();
     std::memcpy(data, m_data, metrics_size);
 }
+
 auto metrics::storage_bytes() const -> std::size_t
 {
     std::size_t names_bytes = m_max_name_bytes * m_max_metrics;

@@ -17,17 +17,19 @@ inline namespace STEINWURF_ABACUS_VERSION
 {
 class view_iterator
 {
-    /// This class takes a data buffer containing information from one or more
+    /// This class takes a pointer containing information from one or more
     /// metrics objects and separates them into views.
 
     /// See view.hpp for more about views.
-public:
-    static constexpr std::size_t header_size = 5;
 
 public:
     /// Default constructor
+    /// @param data The pointer containing metrics info
+    /// @param size The size of the pointer
     view_iterator(const uint8_t* data, std::size_t size);
 
+    /// @param index The index of a view. Must be less than
+    /// view_count().
     /// @return A view of the index metrics object in memory
     auto get_view(std::size_t index) const -> view;
 
@@ -35,6 +37,7 @@ public:
     auto view_count() const -> std::size_t;
 
 private:
+    /// Vector containing the different views
     std::vector<view> m_views = {};
 };
 }
