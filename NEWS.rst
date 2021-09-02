@@ -6,6 +6,10 @@ every change, see the Git log.
 
 Latest
 ------
+* tbd
+
+1.0.0
+-----
 * Major: Initial release
 * Major: Added level member to metrics class
 * Minor: Added read_storage() to metrics class
