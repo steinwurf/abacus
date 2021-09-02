@@ -20,7 +20,6 @@ extensions = [
 # wurfapi options - relative to your docs dir
 wurfapi = {
     "source_paths": [
-        "doxygen_copydoc.hpp",
         # API
         "../src/abacus/metric.hpp",
         "../src/abacus/metrics.hpp",
