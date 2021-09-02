@@ -2,6 +2,26 @@
 Abacus
 ========
 
+|C++ make-specs| |CMake| |Clang Format| |Valgrind| |No Assertions| |Cppcheck|
+
+.. |C++ make-specs| image:: https://github.com/steinwurf/abacus/actions/workflows/cxx_mkspecs.yml/badge.svg
+   :target: https://github.com/steinwurf/abacus/actions/workflows/cxx_mkspecs.yml
+
+.. |CMake| image:: https://github.com/steinwurf/abacus/actions/workflows/cmake.yml/badge.svg
+   :target: https://github.com/steinwurf/abacus/actions/workflows/cmake.yml
+
+.. |Clang Format| image:: https://github.com/steinwurf/abacus/actions/workflows/clang-format.yml/badge.svg
+   :target: https://github.com/steinwurf/abacus/actions/workflows/clang-format.yml
+
+.. |No Assertions| image:: https://github.com/steinwurf/abacus/actions/workflows/nodebug.yml/badge.svg
+   :target: https://github.com/steinwurf/abacus/actions/workflows/nodebug.yml
+
+.. |Valgrind| image:: https://github.com/steinwurf/abacus/actions/workflows/valgrind.yml/badge.svg
+   :target: https://github.com/steinwurf/abacus/actions/workflows/valgrind.yml
+
+.. |Cppcheck| image:: https://github.com/steinwurf/abacus/actions/workflows/cppcheck.yml/badge.svg
+   :target: https://github.com/steinwurf/abacus/actions/workflows/cppcheck.yml
+
 .. image:: ./abacus.gif
 
 Abacus is a C++ metrics library. We wanted to create a library that allows us to
