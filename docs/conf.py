@@ -96,14 +96,24 @@ html_sidebars = {
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-#
-# html_theme_options = {}
+
+html_theme_options = {
+    "h1_background_color": "d7eef4ff",
+    "sidebar_hover_color": "2c89a0ff",
+    "logo_text_background_color": "37abc8ff",
+    "link_color": "37abc8",
+    "link_hover_color": "87cddeff",
+    "code_color": "37abc8ff",
+    "target_highlight_color": "37abc8ff",
+    "highlighted_color": "37abc8ff",
+    "search_form_focus_color": "37abc8ff",
+}
 
 # The name of an image file (relative to this directory) to use as a favicon of
 # the docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
 #
-# html_favicon = None
+html_logo = "images/abacus.svg"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
