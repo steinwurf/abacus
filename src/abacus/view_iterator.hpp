@@ -15,12 +15,12 @@ namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
+/// This class takes a pointer containing information from one or more
+/// metrics objects and separates them into views.
+///
+/// See view.hpp for more about views.
 class view_iterator
 {
-    /// This class takes a pointer containing information from one or more
-    /// metrics objects and separates them into views.
-
-    /// See view.hpp for more about views.
 
 public:
     /// Default constructor

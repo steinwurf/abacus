@@ -14,20 +14,20 @@ namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
+/// This class contains utility functions used to read a metrics data
+/// buffer.
+///
+/// It's main use-case is for when the data of a metrics object is
+/// copied to a data buffer. abacus::view can then be used to extract the
+/// information from the metrics-data.
+///
+/// The class cannot manipulate the memory, only access the
+/// pointed to values
+///
+/// Note that this class has no constructor, so it can only be declared and
+/// then view.set_data() can be called to update the data
 class view
 {
-    /// This class contains utility functions used to read a metrics data
-    /// buffer.
-
-    /// It's main use-case is for when the data of a metrics object is
-    /// copied to a data buffer. abacus::view can then be used to extract the
-    /// information from the metrics-data.
-
-    /// The class cannot manipulate the memory, only access the
-    /// pointed to values
-
-    /// Note that this class has no constructor, so it can only be declared and
-    /// then view.set_data() can be called to update the data
 
 public:
     /// Sets the data pointer of the view to read the memory of
