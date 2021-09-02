@@ -41,6 +41,24 @@ auto metric::operator++() -> metric&
     return *this;
 }
 
+auto metric::operator-=(uint64_t value) -> metric&
+{
+    assert(m_memory != nullptr);
+    assert(*m_memory - value >= 0);
+
+    *m_memory -= value;
+    return *this;
+}
+
+auto metric::operator--() -> metric&
+{
+    assert(m_memory != nullptr);
+    assert(*m_memory - 1U >= 0);
+
+    *m_memory -= 1U;
+    return *this;
+}
+
 auto metric::is_initialized() const -> bool
 {
     return m_memory != nullptr;

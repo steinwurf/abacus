@@ -20,12 +20,5 @@
         "method": "semver",
         "major": 9,
         "sources": ["github.com/steinwurf/bourne.git"]
-    },
-    {
-        "name": "endian",
-        "resolver": "git",
-        "method": "semver",
-        "major": 12,
-        "sources": ["github.com/steinwurf/endian.git"]
     }
 ]

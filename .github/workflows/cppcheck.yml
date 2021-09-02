@@ -1,7 +1,9 @@
 name: Cppcheck
 on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 1 * * *" # 3 AM CET
   push:
-
 jobs:
   build:
     name: cppcheck
@@ -12,3 +14,4 @@ jobs:
 
       - name: Cppcheck
         uses: deep5050/cppcheck-action@main
+

@@ -3,26 +3,27 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include "metrics.hpp"
-
 #include <algorithm>
 #include <cstring>
+#include <limits>
 
-#include <bourne/json.hpp>
-#include <endian/is_big_endian.hpp>
+#include "detail/raw.hpp"
+#include "metrics.hpp"
 
 namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-metrics::metrics(uint16_t max_metrics, uint16_t max_name_bytes,
-                 const std::string& title, uint8_t level) :
+metrics::metrics(std::size_t max_metrics, std::size_t max_name_bytes,
+                 const std::string& title) :
     m_max_metrics(max_metrics),
-    m_max_name_bytes(max_name_bytes), m_level(level)
+    m_max_name_bytes(max_name_bytes)
 {
     assert(m_max_metrics > 0);
+    assert(m_max_metrics <= std::numeric_limits<uint16_t>::max());
     assert(m_max_name_bytes > 0);
+    assert(m_max_name_bytes <= std::numeric_limits<uint16_t>::max());
     assert(title.size() < m_max_name_bytes);
 
     // Allocate the memory for the counters
@@ -33,11 +34,9 @@ metrics::metrics(uint16_t max_metrics, uint16_t max_name_bytes,
     std::memset(m_data, 0, memory_needed);
 
     // Write the header
-    new (m_data) uint8_t(endian::is_big_endian());
-    new (m_data + 1) uint8_t(8);
-    new (m_data + 2) uint8_t(m_level);
-    new (m_data + 3) uint16_t(m_max_name_bytes);
-    new (m_data + 5) uint16_t(m_max_metrics);
+    new (m_data) uint16_t(m_max_name_bytes);
+    new (m_data + 2) uint16_t(m_max_metrics);
+    new (m_data + 4) uint8_t(8);
 
     // Write the title
     set_metrics_title(title);
@@ -48,23 +47,33 @@ metrics::~metrics()
     ::operator delete(m_data);
 }
 
+auto metrics::max_metrics() const -> std::size_t
+{
+    return m_max_metrics;
+}
+
+auto metrics::max_name_bytes() const -> std::size_t
+{
+    return m_max_name_bytes;
+}
+
 void metrics::set_metrics_title(const std::string& title)
 {
     // Write the title
-    char* title_data = raw_title();
-    std::memcpy(title_data, title.data(), m_max_name_bytes);
+    char* title_data = detail::raw_title(m_data);
+    std::memcpy(title_data, title.data(), title.size());
 }
 
 auto metrics::metric_name(std::size_t index) const -> std::string
 {
     assert(is_metric_initialized(index));
-    return {raw_name(index)};
+    return detail::raw_name(m_data, index);
 }
 
 auto metrics::metric_value(std::size_t index) const -> uint64_t
 {
     assert(is_metric_initialized(index));
-    return *raw_value(index);
+    return *detail::raw_value(m_data, index);
 }
 
 auto metrics::initialize_metric(std::size_t index, const std::string& name)
@@ -76,8 +85,8 @@ auto metrics::initialize_metric(std::size_t index, const std::string& name)
     // zero terminating byte
     assert(name.size() < m_max_name_bytes);
 
-    char* name_data = raw_name(index);
-    uint64_t* value_data = raw_value(index);
+    char* name_data = detail::raw_name(m_data, index);
+    uint64_t* value_data = detail::raw_value(m_data, index);
 
     // Copy the name
     std::memcpy(name_data, name.data(), name.size());
@@ -88,53 +97,25 @@ auto metrics::initialize_metric(std::size_t index, const std::string& name)
     return metric{value_data};
 }
 
-void metrics::read_storage(uint8_t* data, std::size_t size) const
-{
-    std::size_t metrics_size = storage_bytes();
-    std::memcpy(m_data + metrics_size, data + header_size, size - header_size);
-}
-
 void metrics::copy_storage(uint8_t* data) const
 {
+    assert(data != nullptr);
     std::size_t metrics_size = storage_bytes();
     std::memcpy(data, m_data, metrics_size);
 }
+
 auto metrics::storage_bytes() const -> std::size_t
 {
     std::size_t names_bytes = m_max_name_bytes * m_max_metrics;
     std::size_t value_bytes = sizeof(uint64_t) * m_max_metrics;
 
-    return header_size + m_max_name_bytes + names_bytes + value_bytes;
+    return detail::header_bytes() + m_max_name_bytes + names_bytes +
+           value_bytes;
 }
 
 auto metrics::is_metric_initialized(std::size_t index) const -> bool
 {
-    assert(index < m_max_metrics);
-    const char* name_data = raw_name(index);
-
-    // If the name is non-zero it is initialized and valid. We just check the
-    // first byte to see if it's zero.
-    return name_data[0] != 0;
-}
-
-auto metrics::to_json() const -> std::string
-{
-    bourne::json counters = bourne::json::object();
-
-    for (std::size_t i = 0; i < m_max_metrics; ++i)
-    {
-        if (!is_metric_initialized(i))
-        {
-            continue;
-        }
-
-        auto n = raw_name(i);
-        auto v = *raw_value(i);
-
-        counters[n] = v;
-    }
-
-    return counters.dump();
+    return detail::is_metric_initialized(m_data, index);
 }
 
 void metrics::reset_metrics()
@@ -155,87 +136,13 @@ void metrics::reset_metric(std::size_t index)
 {
     assert(is_metric_initialized(index));
 
-    uint64_t* value = raw_value(index);
+    uint64_t* value = detail::raw_value(m_data, index);
     *value = 0;
 }
 
-auto metrics::metrics_count() const -> std::size_t
+auto metrics::to_json() const -> std::string
 {
-    return m_max_metrics;
-}
-
-auto metrics::metrics_level() const -> uint8_t
-{
-    return m_level;
-}
-
-auto metrics::raw_title() const -> const char*
-{
-    const uint8_t* title_data = m_data + title_offset();
-
-    return reinterpret_cast<const char*>(title_data);
-}
-
-auto metrics::raw_title() -> char*
-{
-    uint8_t* title_data = m_data + title_offset();
-
-    return reinterpret_cast<char*>(title_data);
-}
-
-auto metrics::raw_name(std::size_t index) const -> const char*
-{
-    assert(index < m_max_metrics);
-
-    const uint8_t* name_data =
-        m_data + names_offset() + (index * m_max_name_bytes);
-
-    return reinterpret_cast<const char*>(name_data);
-}
-
-auto metrics::raw_name(std::size_t index) -> char*
-{
-    assert(index < m_max_metrics);
-
-    uint8_t* name_data = m_data + names_offset() + (index * m_max_name_bytes);
-
-    return reinterpret_cast<char*>(name_data);
-}
-
-auto metrics::raw_value(std::size_t index) const -> const uint64_t*
-{
-    assert(index < m_max_metrics);
-
-    const uint8_t* value_data =
-        m_data + values_offset() + (index * sizeof(uint64_t));
-
-    return reinterpret_cast<const uint64_t*>(value_data);
-}
-
-auto metrics::raw_value(std::size_t index) -> uint64_t*
-{
-    assert(index < m_max_metrics);
-
-    uint8_t* value_data = m_data + values_offset() + (index * sizeof(uint64_t));
-
-    return reinterpret_cast<uint64_t*>(value_data);
-}
-
-auto metrics::title_offset() const -> std::size_t
-{
-    return header_size;
-}
-
-auto metrics::names_offset() const -> std::size_t
-{
-    // Skip header + title
-    return header_size + m_max_name_bytes;
-}
-
-auto metrics::values_offset() const -> std::size_t
-{
-    // Skip header + title + names
-    return header_size + m_max_name_bytes + (m_max_metrics * m_max_name_bytes);
+    return detail::to_json(m_data);
 }
 
 }

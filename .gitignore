@@ -11,6 +11,9 @@
 *.la
 *.a
 
+# CMake
+cmake_build
+
 # Python
 *.pyc
 
