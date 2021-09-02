@@ -16,24 +16,24 @@ namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
+/// This class preallocates memory at construction to hold a header, a title
+/// of size max_name_bytes, max_metrics metrics, each having a name of size
+/// max_name_bytes, with a metric value of 8 bytes (sizeof(uint64_t)).
+///
+/// The total preallocated memory is
+/// header_size + max_name_bytes + max_metrics * (max_name_bytes + 8).
+///
+/// To save memory, take caution in choosing the max_metrics. If your
+/// library only uses 10 counters, you should probably not choose
+/// max_metrics = 64. You can update the max_metrics value as you go to
+/// ensure optimal memory usage.
+///
+/// The header consists of 42 bits of 3 values:
+/// 1. 16 bit denoting the max size of name
+/// 2. 16 bit denoting the max number of counters
+/// 3. 8 bit denoting the max size of values
 class metrics
 {
-    /// This class preallocates memory at construction to hold a header, a title
-    /// of size max_name_bytes, max_metrics metrics, each having a name of size
-    /// max_name_bytes, with a metric value of 8 bytes (sizeof(uint64_t)).
-
-    /// The total preallocated memory is
-    /// header_size + max_name_bytes + max_metrics * (max_name_bytes + 8)
-
-    /// To save memory, take caution in choosing the max_metrics. If your
-    /// library only uses 10 counters, you should probably not choose
-    /// max_metrics = 64. You can update the max_metrics value as you go to
-    /// ensure optimal memory usage.
-
-    /// The header consists of 42 bits of 3 values:
-    /// 1. 16 bit denoting the max size of name
-    /// 2. 16 bit denoting the max number of counters
-    /// 3. 8 bit denoting the max size of values
 
 public:
     /// Default constructor
