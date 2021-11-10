@@ -3,7 +3,6 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include <algorithm>
 #include <cstring>
 
 #include "detail/raw.hpp"
@@ -17,8 +16,13 @@ inline namespace STEINWURF_ABACUS_VERSION
 void view::set_data(const uint8_t* data)
 {
     assert(data != nullptr);
-
     m_data = data;
+}
+
+auto view::data() -> const uint8_t*
+{
+    assert(m_data != nullptr);
+    return m_data;
 }
 
 auto view::max_name_bytes() const -> uint16_t
@@ -54,7 +58,6 @@ auto view::is_metric_initialized(std::size_t index) const -> bool
 {
     return detail::is_metric_initialized(m_data, index);
 }
-
 auto view::view_bytes() const -> std::size_t
 {
     return detail::header_bytes() + max_name_bytes() +

@@ -7,6 +7,8 @@ every change, see the Git log.
 Latest
 ------
 * Minor: Updated waf.
+* Minor: Optimized view_iterator
+* Minor: Added data() for the view class
 
 1.0.0
 -----
