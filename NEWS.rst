@@ -8,6 +8,9 @@ Latest
 ------
 * tbd
 
+1.1.1
+* Patch: Added missing const for data() method for the view class
+
 1.1.0
 -----
 * Minor: Updated waf.
