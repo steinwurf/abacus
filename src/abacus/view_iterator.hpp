@@ -31,7 +31,7 @@ public:
     /// @param index The index of a view. Must be less than
     /// view_count().
     /// @return A view of the index metrics object in memory
-    auto get_view(std::size_t index) const -> view;
+    auto get_view(std::size_t index) const -> const view&;
 
     /// @return The number of views/metrics in memory
     auto view_count() const -> std::size_t;

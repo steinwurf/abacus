@@ -22,18 +22,15 @@ view_iterator::view_iterator(const uint8_t* data, std::size_t size)
 
     while (offset < size)
     {
-        view v;
-        v.set_data(data + offset);
-
-        m_views.push_back(v);
-
-        offset += v.view_bytes();
+        m_views.emplace_back();
+        m_views.back().set_data(data + offset);
+        offset += m_views.back().view_bytes();
     }
 
     assert(size == offset);
 }
 
-auto view_iterator::get_view(std::size_t index) const -> view
+auto view_iterator::get_view(std::size_t index) const -> const view&
 {
     assert(index < m_views.size());
     return m_views[index];
