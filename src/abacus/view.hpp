@@ -35,7 +35,7 @@ public:
     auto set_data(const uint8_t* data) -> void;
 
     /// @return the data pointer for memory used by the view
-    auto data() -> const uint8_t*;
+    auto data() const -> const uint8_t*;
 
     /// @return the maximum name size from a metrics data pointer
     auto max_name_bytes() const -> uint16_t;

@@ -19,7 +19,7 @@ void view::set_data(const uint8_t* data)
     m_data = data;
 }
 
-auto view::data() -> const uint8_t*
+auto view::data() const -> const uint8_t*
 {
     assert(m_data != nullptr);
     return m_data;
