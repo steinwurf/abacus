@@ -67,6 +67,8 @@ public:
     /// @return All counters in json format
     auto to_json() const -> std::string;
 
+
+
 private:
     /// The raw memory from the metrics counters
     const uint8_t* m_data;
