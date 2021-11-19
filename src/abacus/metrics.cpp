@@ -4,6 +4,7 @@
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
 #include <algorithm>
+#include <cmath>
 #include <cstring>
 #include <limits>
 
@@ -33,7 +34,7 @@ metrics::metrics(std::size_t max_metrics, std::size_t max_name_bytes,
     // Zero out all memory
     std::memset(m_data, 0, memory_needed);
 
-    // Write the header
+    // // Write the header
     new (m_data) uint16_t(m_max_name_bytes);
     new (m_data + 2) uint16_t(m_max_metrics);
     new (m_data + 4) uint8_t(8);
@@ -91,8 +92,10 @@ auto metrics::initialize_metric(std::size_t index, const std::string& name)
     // Copy the name
     std::memcpy(name_data, name.data(), name.size());
 
-    // Placement new the counter value in the designated location
-    new (value_data) uint64_t{0U};
+    // Use memcpy here for now, since placement new causes Bus Error on
+    // Raspberry pi
+    uint64_t value = 0U;
+    std::memcpy(value_data, &value, sizeof(uint64_t));
 
     return metric{value_data};
 }
@@ -136,8 +139,9 @@ void metrics::reset_metric(std::size_t index)
 {
     assert(is_metric_initialized(index));
 
-    uint64_t* value = detail::raw_value(m_data, index);
-    *value = 0;
+    uint64_t* value_data = detail::raw_value(m_data, index);
+    uint64_t value = 0U;
+    std::memcpy(value_data, &value, sizeof(uint64_t));
 }
 
 auto metrics::to_json() const -> std::string
