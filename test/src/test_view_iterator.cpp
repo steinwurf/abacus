@@ -21,6 +21,10 @@ TEST(test_view_iterator, default_constructor)
 
     std::vector<uint8_t> combined_data(metrics1.storage_bytes() +
                                        metrics2.storage_bytes());
+
+    // Needs alignment for ARM
+    EXPECT_EQ(combined_data.size() % 8, 0U);
+
     metrics1.copy_storage(combined_data.data());
     metrics2.copy_storage(combined_data.data() + metrics1.storage_bytes());
 
