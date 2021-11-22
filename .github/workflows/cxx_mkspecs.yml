@@ -136,5 +136,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: armv7_abacus_tests
+      - name: ls
+        run: ls
       - name: Run all tests
         run: ./armv7_abacus_tests/abacus_tests
