@@ -115,7 +115,7 @@ jobs:
           echo "::add-matcher::.github/gcc-problem-matcher.json"
           python3 waf
       - name: Make folder and move tests
-        run: cd build_current && mkdir abacus_tests_folder && mv ./abacus_tests ./abacus_tests_folder/
+        run: cd build_current && mkdir abacus_tests_folder && mv abacus_tests /abacus_tests_folder
       - name: Upload abacus_tests Artifact
         uses: actions/upload-artifact@v2
         with:
