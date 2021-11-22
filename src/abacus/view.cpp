@@ -66,7 +66,8 @@ auto view::view_bytes() const -> std::size_t
                                       max_name_bytes() +
                                       max_name_bytes() * max_metrics();
 
-    return bytes_before_values + 8 - (bytes_before_values % 8) +
+    return bytes_before_values +
+           detail::values_alignment_padding(bytes_before_values) +
            max_metrics() * sizeof(uint64_t);
 }
 
