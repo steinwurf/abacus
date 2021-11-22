@@ -94,3 +94,44 @@ jobs:
           ${{ env.python }} waf
       - name: Test
         run: ${{ env.python }} waf --run_tests
+
+  cross-compile-raspberry-pi:
+    strategy:
+      fail-fast: false
+    runs-on: [self-hosted, docker]
+    name: Raspberry Pi 3 Build
+    container:
+      image: ghcr.io/steinwurf/gcc-8.3.0-raspberrypi-armv7
+      options: --user 0:0
+      volumes:
+        - /home/buildbot/.ssh:/root/.ssh
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+      - name: Waf Configure
+        run: CXX=arm-linux-gnueabihf-g++ LD=$CXX \
+             python3 waf configure --git_protocol=git@ ${{ matrix.config.cxx_mkspec }} $EXTRA_RESOLVE_OPTIONS
+      - name: Waf Build
+        run: |
+          echo "::add-matcher::.github/gcc-problem-matcher.json"
+          python3 waf
+
+      - name: Upload abacus_tests Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: armv7_abacus_tests
+          path: build_current/abacus_tests
+
+  raspberry_pi_tests:
+    needs: cross-compile-raspberry-pi
+    strategy:
+      fail-fast: false
+    runs-on: [self-hosted, raspberry_pi_3]
+    name: Raspberry Pi 3 Run Tests
+    steps:
+      - name: Download abacus_tests Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: armv7_abacus_tests
+      - name: Run all tests
+        run: ./armv7_abacus_tests

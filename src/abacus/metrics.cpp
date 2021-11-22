@@ -31,6 +31,8 @@ metrics::metrics(std::size_t max_metrics, std::size_t max_name_bytes,
     std::size_t memory_needed = storage_bytes();
     m_data = static_cast<uint8_t*>(::operator new(memory_needed));
 
+    assert(reinterpret_cast<uint64_t>(m_data) % 8U == 0U);
+
     // Zero out all memory
     std::memset(m_data, 0, memory_needed);
 
@@ -41,6 +43,9 @@ metrics::metrics(std::size_t max_metrics, std::size_t max_name_bytes,
 
     // Write the title
     set_metrics_title(title);
+
+    assert((reinterpret_cast<uint64_t>(detail::raw_value(m_data, 0)) % 8U) ==
+           0U);
 }
 
 metrics::~metrics()
@@ -109,11 +114,16 @@ void metrics::copy_storage(uint8_t* data) const
 
 auto metrics::storage_bytes() const -> std::size_t
 {
-    std::size_t names_bytes = m_max_name_bytes * m_max_metrics;
-    std::size_t value_bytes = sizeof(uint64_t) * m_max_metrics;
+    std::size_t values_offset = detail::header_bytes() + m_max_name_bytes +
+                                m_max_metrics * m_max_name_bytes;
 
-    return detail::header_bytes() + m_max_name_bytes + names_bytes +
-           value_bytes;
+    values_offset += detail::values_alignment_padding(values_offset);
+
+    assert(values_offset % 8 == 0);
+
+    std::size_t value_bytes = m_max_metrics * sizeof(uint64_t);
+
+    return values_offset + value_bytes;
 }
 
 auto metrics::is_metric_initialized(std::size_t index) const -> bool

@@ -75,13 +75,25 @@ inline auto names_offset(const uint8_t* data) -> std::size_t
     return header_bytes() + max_name_bytes(data);
 }
 
+/// @param offset The offset in the raw memory
+/// @return The extra padding to add to the offset for alignment
+inline auto values_alignment_padding(std::size_t offset) -> std::size_t
+{
+    return 8 - offset % 8;
+}
+
 /// @param data The raw memory for the counters
 /// @return The values offset in the raw memory
 inline auto values_offset(const uint8_t* data) -> std::size_t
 {
     // Skip header + title + names
-    return header_bytes() + max_name_bytes(data) +
-           (max_metrics(data) * max_name_bytes(data));
+    std::size_t offset = header_bytes() + max_name_bytes(data) +
+                         (max_metrics(data) * max_name_bytes(data));
+
+    // align to 8 bytes
+    offset += values_alignment_padding(offset);
+
+    return offset;
 }
 
 /// @param data The raw memory for the counters
