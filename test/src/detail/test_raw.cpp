@@ -18,7 +18,7 @@ TEST(detail_test_raw, api)
     // Write the header
     std::memcpy(data.data(), &max_name_bytes, sizeof(uint16_t));
     std::memcpy(data.data() + 2, &max_metrics, sizeof(uint16_t));
-    data.data()[4] = 8U;
+    data[4] = 8U;
 
     std::string title = "test";
 
