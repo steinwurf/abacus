@@ -139,4 +139,4 @@ jobs:
       - name: ls
         run: ls
       - name: Run all tests
-        run: ./armv7_abacus_tests/abacus_tests
+        run: ./abacus_tests
