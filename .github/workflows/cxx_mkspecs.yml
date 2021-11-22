@@ -109,8 +109,7 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v2
       - name: Waf Configure
-        run: CXX=arm-linux-gnueabihf-g++ LD=$CXX \
-             python3 waf configure --git_protocol=git@ ${{ matrix.config.cxx_mkspec }} $EXTRA_RESOLVE_OPTIONS
+        run: CXX=arm-linux-gnueabihf-g++ LD=$CXX python3 waf configure --git_protocol=git@ ${{ matrix.config.cxx_mkspec }} $EXTRA_RESOLVE_OPTIONS
       - name: Waf Build
         run: |
           echo "::add-matcher::.github/gcc-problem-matcher.json"

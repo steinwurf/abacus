@@ -11,7 +11,11 @@ TEST(detail_test_raw, api)
 {
     uint16_t max_name_bytes = 10;
     uint16_t max_metrics = 2;
+    std::size_t alignment_padding = 8 - (abacus::detail::header_bytes() +
+                                         max_name_bytes * (max_metrics + 1)) %
+                                            8;
     std::size_t size = abacus::detail::header_bytes() + max_name_bytes +
+                       alignment_padding +
                        max_metrics * (max_name_bytes + sizeof(uint64_t));
     std::vector<uint8_t> data(size);
 
