@@ -11,7 +11,7 @@ namespace abacus
 {
 /// Here we define the STEINWURF_ABACUS_VERSION this should be updated on each
 /// release
-#define STEINWURF_ABACUS_VERSION v1_1_1
+#define STEINWURF_ABACUS_VERSION v1_1_2
 
 inline namespace STEINWURF_ABACUS_VERSION
 {
