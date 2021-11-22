@@ -121,8 +121,8 @@ jobs:
         with:
           name: armv7_abacus_tests
           path: |
-            build_current
-            !build_current/**/**
+            build/linux
+            !build/linux/**/**.*
           retention-days: 1
 
   raspberry_pi_tests:
