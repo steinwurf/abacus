@@ -28,7 +28,6 @@ inline namespace STEINWURF_ABACUS_VERSION
 /// then view.set_data() can be called to update the data
 class view
 {
-
 public:
     /// Sets the data pointer of the view to read the memory of
     /// @param data The data pointer to read the memory of

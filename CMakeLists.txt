@@ -65,4 +65,16 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
 
   add_executable(multiple_metrics examples/multiple_metrics.cpp)
   target_link_libraries(multiple_metrics abacus)
+
+  option(BUILD_TESTING "Build tests" OFF)
+  if(${BUILD_TESTING})
+    # gtest
+    if (NOT TARGET steinwurf::gtest)
+      add_subdirectory("${STEINWURF_RESOLVE}/gtest" EXCLUDE_FROM_ALL)
+    endif ()
+
+    file(GLOB_RECURSE abacus_tests_sources test/**.cpp)
+    add_executable(abacus_tests ${abacus_tests_sources})
+    target_link_libraries(abacus_tests abacus gtest bourne)
+  endif()
 endif()
