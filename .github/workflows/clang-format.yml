@@ -6,8 +6,5 @@ on:
   push:
   pull_request:
 jobs:
-  clang-format:
-    name: ClangFormat
-    runs-on: [self-hosted, docker]
-    steps:
-      - uses: steinwurf/clang-format-action
+  Clang-Format:
+    uses: steinwurf/clang-format-action/.github/workflows/action.yml@1.0.0
