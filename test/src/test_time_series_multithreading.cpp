@@ -34,12 +34,14 @@ TEST(test_time_series_export_lock_free, general_usage)
     abacus::time_series::data_points_queue queue;
 
     // Export in another thread
-    std::thread export_thread([&]() {
-        while (exporter->data_points.size() < 50)
+    std::thread export_thread(
+        [&]()
         {
-            queue.flush_to_exporters(exporters);
-        }
-    });
+            while (exporter->data_points.size() < 50)
+            {
+                queue.flush_to_exporters(exporters);
+            }
+        });
 
     for (std::size_t i = 0; i < 50; i++)
     {
