@@ -58,11 +58,19 @@ auto view::is_metric_initialized(std::size_t index) const -> bool
 {
     return detail::is_metric_initialized(m_data, index);
 }
+
 auto view::view_bytes() const -> std::size_t
 {
-    return detail::header_bytes() + max_name_bytes() +
-           max_metrics() * (max_name_bytes() + sizeof(uint64_t));
+    assert(reinterpret_cast<uint64_t>(m_data) % 8U == 0U);
+    std::size_t bytes_before_values = detail::header_bytes() +
+                                      max_name_bytes() +
+                                      max_name_bytes() * max_metrics();
+
+    return bytes_before_values +
+           detail::values_alignment_padding(bytes_before_values) +
+           max_metrics() * sizeof(uint64_t);
 }
+
 auto view::to_json() const -> std::string
 {
     return detail::to_json(m_data);
