@@ -2,13 +2,25 @@
 Abacus
 ========
 
-|C++ make-specs| |CMake| |Clang Format| |Valgrind| |No Assertions| |Cppcheck|
+|Linux make-specs| |Windows make-specs| |MacOS make-specs| |Linux CMake| |Windows CMake| |MacOS CMake| |Valgrind| |No Assertions| |Clang Format| |Cppcheck|
 
-.. |C++ make-specs| image:: https://github.com/steinwurf/abacus/actions/workflows/cxx_mkspecs.yml/badge.svg
-   :target: https://github.com/steinwurf/abacus/actions/workflows/cxx_mkspecs.yml
+.. |Linux make-specs| image:: https://github.com/steinwurf/abacus/actions/workflows/linux_mkspecs.yml/badge.svg
+   :target: https://github.com/steinwurf/abacus/actions/workflows/linux_mkspecs.yml
+   
+.. |Windows make-specs| image:: https://github.com/steinwurf/abacus/actions/workflows/windows_mkspecs.yml/badge.svg
+   :target: https://github.com/steinwurf/abacus/actions/workflows/windows_mkspecs.yml
 
-.. |CMake| image:: https://github.com/steinwurf/abacus/actions/workflows/cmake.yml/badge.svg
-   :target: https://github.com/steinwurf/abacus/actions/workflows/cmake.yml
+.. |MacOS make-specs| image:: https://github.com/steinwurf/abacus/actions/workflows/macos_mkspecs.yml/badge.svg
+   :target: https://github.com/steinwurf/abacus/actions/workflows/macos_mkspecs.yml
+   
+.. |Linux CMake| image:: https://github.com/steinwurf/abacus/actions/workflows/linux_cmake.yml/badge.svg
+   :target: https://github.com/steinwurf/abacus/actions/workflows/linux_cmake.yml
+
+.. |Windows CMake| image:: https://github.com/steinwurf/abacus/actions/workflows/windows_cmake.yml/badge.svg
+   :target: https://github.com/steinwurf/abacus/actions/workflows/windows_cmake.yml
+   
+.. |MacOS CMake| image:: https://github.com/steinwurf/abacus/actions/workflows/macos_cmake.yml/badge.svg
+   :target: https://github.com/steinwurf/abacus/actions/workflows/macos_cmake.yml
 
 .. |Clang Format| image:: https://github.com/steinwurf/abacus/actions/workflows/clang-format.yml/badge.svg
    :target: https://github.com/steinwurf/abacus/actions/workflows/clang-format.yml
