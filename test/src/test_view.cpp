@@ -33,6 +33,6 @@ TEST(test_view, api)
     EXPECT_EQ(title, view.get_title());
     EXPECT_EQ(metrics.metric_name(0), view.metric_name(0));
     EXPECT_EQ(metrics.metric_value(0), view.metric_value(0));
-    EXPECT_EQ(metrics.metric_unit(0), view.metric_unit(0));
+    EXPECT_STREQ(metrics.metric_unit(0), view.metric_unit(0));
     EXPECT_EQ(view.data(), data.data());
 }
