@@ -24,23 +24,6 @@ enum class unit : uint8_t
     bytes,
     /// The unit used for symbols
     symbols,
-    /// The unit used for percentages
-    percent,
-    /// The units used for time
-    seconds,
-    milliseconds,
-    microseconds,
-    /// The units used for bandwidths
-    /// (Giga) (Mega) (Kilo) Bytes
-    bytes_per_second,
-    kilobytes_per_second,
-    megabytes_per_second,
-    gigabytes_per_second,
-    /// (Giga) (Mega) (Kilo) Bits
-    bits_per_second,
-    kilobits_per_second,
-    megabits_per_second,
-    gigabits_per_second,
     /// The none-unit
     none
 
@@ -48,15 +31,8 @@ enum class unit : uint8_t
 
 inline auto units_to_string(abacus::unit unit) -> const char*
 {
-    static const char* string_definitions[] = {
-        "packets",          "bytes",
-        "symbols",          "percent",
-        "seconds",          "milliseconds",
-        "microseconds",     "bytes/second",
-        "kilobytes/second", "megabytes/second",
-        "gigabytes/second", "bits/second",
-        "kilobits/second",  "megabits/second",
-        "gigabits/second",  "none"};
+    static const char* string_definitions[] = {"packets", "bytes", "symbols",
+                                               "none"};
 
     return string_definitions[static_cast<uint8_t>(unit)];
 }

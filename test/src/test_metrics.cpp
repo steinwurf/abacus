@@ -37,12 +37,11 @@ TEST(test_metrics, default_constructor)
 
     abacus::metrics metrics1(max_metrics, max_name_bytes, title1);
 
-    auto count2 = metrics1.initialize_metric(0, "count_2",
-                                             abacus::unit::gigabits_per_second);
+    auto count2 = metrics1.initialize_metric(0, "count_2", abacus::unit::bytes);
 
     EXPECT_TRUE(metrics1.is_metric_initialized(0));
     EXPECT_EQ(metrics1.metric_name(0), "count_2");
-    EXPECT_STREQ(metrics1.metric_unit(0), "gigabits/second");
+    EXPECT_STREQ(metrics1.metric_unit(0), "bytes");
     EXPECT_EQ(metrics1.metric_value(0), 0U);
 
     ++count2;
@@ -53,11 +52,11 @@ TEST(test_metrics, default_constructor)
     abacus::metrics metrics2(max_metrics, max_name_bytes, title2);
 
     auto count3 =
-        metrics2.initialize_metric(0, "count_3", abacus::unit::milliseconds);
+        metrics2.initialize_metric(0, "count_3", abacus::unit::packets);
 
     EXPECT_TRUE(metrics2.is_metric_initialized(0));
     EXPECT_EQ(metrics2.metric_name(0), "count_3");
-    EXPECT_STREQ(metrics2.metric_unit(0), "milliseconds");
+    EXPECT_STREQ(metrics2.metric_unit(0), "packets");
     EXPECT_EQ(metrics2.metric_value(0), 0U);
 
     count3 = 5U;
