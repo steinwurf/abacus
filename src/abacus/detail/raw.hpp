@@ -153,24 +153,25 @@ inline auto raw_name(const uint8_t* data, std::size_t index) -> const char*
     return (const char*)name_data;
 }
 
-inline auto raw_unit(uint8_t* data, std::size_t index) -> uint8_t*
+inline auto raw_unit(uint8_t* data, std::size_t index) -> abacus::unit*
 {
     assert(data != nullptr);
     assert(index < max_metrics(data));
 
     uint8_t* unit_data = data + units_offset(data) + index;
 
-    return unit_data;
+    return (abacus::unit*)unit_data;
 }
 
-inline auto raw_unit(const uint8_t* data, std::size_t index) -> const uint8_t*
+inline auto raw_unit(const uint8_t* data, std::size_t index)
+    -> const abacus::unit*
 {
     assert(data != nullptr);
     assert(index < max_metrics(data));
 
     const uint8_t* unit_data = data + units_offset(data) + index;
 
-    return unit_data;
+    return (const abacus::unit*)unit_data;
 }
 
 /// @param data The raw memory for the counters
@@ -254,7 +255,7 @@ inline auto to_json_with_units(const uint8_t* data) -> std::string
         bourne::json value = bourne::json::object();
         auto n = raw_name(data, i);
         auto v = *raw_value(data, i);
-        auto u = abacus::units_to_string[*raw_unit(data, i)];
+        auto u = abacus::units_to_string(*raw_unit(data, i));
 
         value["value"] = v;
         value["units"] = u;

@@ -51,8 +51,7 @@ auto view::metric_name(std::size_t index) const -> std::string
 auto view::metric_unit(std::size_t index) const -> const char*
 {
     assert(is_metric_initialized(index));
-    const char* unit = units_to_string[*detail::raw_unit(m_data, index)];
-    return unit;
+    return units_to_string(*detail::raw_unit(m_data, index));
 }
 
 auto view::metric_value(std::size_t index) const -> uint64_t

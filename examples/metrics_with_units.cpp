@@ -20,29 +20,33 @@ int main()
     /// The stream has some bytes processed. Could be Video data and Audio data
     /// e.g
     auto video_bytes = stream.initialize_metric(0, "Video Bytes Processed",
-                                                abacus::metric_unit::bytes);
+                                                abacus::unit::bytes);
+    video_bytes += 100;
 
     auto audio_bytes = stream.initialize_metric(1, "Audio Bytes Processed",
-                                                abacus::metric_unit::bytes);
+                                                abacus::unit::bytes);
+    audio_bytes += 200;
 
     /// What about the amount of packets?
-    auto video_packets = stream.initialize_metric(2, "Video packets",
-                                                  abacus::metric_unit::packets);
+    auto video_packets =
+        stream.initialize_metric(2, "Video packets", abacus::unit::packets);
 
-    auto audio_packets = stream.initialize_metric(3, "Audio packets",
-                                                  abacus::metric_unit::packets);
+    auto audio_packets =
+        stream.initialize_metric(3, "Audio packets", abacus::unit::packets);
 
     video_packets += 20;
     audio_packets += 40;
 
     /// Maybe there are some lost video packets?
-    auto lost_video_packets = stream.initialize_metric(
-        4, "Video Packets lost", abacus::metric_unit::packets);
+    auto lost_video_packets = stream.initialize_metric(4, "Video Packets lost",
+                                                       abacus::unit::packets);
 
     lost_video_packets += 4;
 
-    auto lost_audio_packets = stream.initialize_metric(
-        5, "Audio Packets lost", abacus::metric_unit::packets);
+    auto lost_audio_packets = stream.initialize_metric(5, "Audio Packets lost",
+                                                       abacus::unit::packets);
+
+    lost_audio_packets += 8;
 
     /// We can print out the counters neatly.
     std::cout << stream.to_json_with_units() << std::endl;

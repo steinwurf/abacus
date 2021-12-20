@@ -34,23 +34,23 @@ TEST(detail_test_raw, api)
     std::string metric_name_1 = "metric_1";
     char* name_data_1 = abacus::detail::raw_name(data.data(), 0);
     uint64_t* value_data_1 = abacus::detail::raw_value(data.data(), 0);
-    uint8_t* unit_data_1 = abacus::detail::raw_unit(data.data(), 0);
+    abacus::unit* unit_data_1 = abacus::detail::raw_unit(data.data(), 0);
 
     std::memcpy(name_data_1, metric_name_1.data(), metric_name_1.size());
     uint64_t value_1 = 1U;
     std::memcpy(value_data_1, &value_1, sizeof(uint64_t));
-    uint8_t unit_1 = static_cast<uint8_t>(abacus::metric_unit::none);
+    abacus::unit unit_1 = abacus::unit::none;
     std::memcpy(unit_data_1, &unit_1, sizeof(uint8_t));
 
     std::string metric_name_2 = "metric";
     char* name_data_2 = abacus::detail::raw_name(data.data(), 1);
     uint64_t* value_data_2 = abacus::detail::raw_value(data.data(), 1);
-    uint8_t* unit_data_2 = abacus::detail::raw_unit(data.data(), 1);
+    abacus::unit* unit_data_2 = abacus::detail::raw_unit(data.data(), 1);
 
     std::memcpy(name_data_2, metric_name_2.data(), metric_name_2.size());
     uint64_t value_2 = 2U;
     std::memcpy(value_data_2, &value_2, sizeof(uint64_t));
-    uint8_t unit_2 = static_cast<uint8_t>(abacus::metric_unit::bytes);
+    abacus::unit unit_2 = abacus::unit::bytes;
     std::memcpy(unit_data_2, &unit_2, sizeof(uint8_t));
 
     EXPECT_EQ(abacus::detail::max_name_bytes(data.data()), max_name_bytes);
@@ -59,13 +59,11 @@ TEST(detail_test_raw, api)
 
     EXPECT_EQ(abacus::detail::raw_name(data.data(), 0), metric_name_1);
     EXPECT_EQ(*abacus::detail::raw_value(data.data(), 0), 1U);
-    EXPECT_EQ(*abacus::detail::raw_unit(data.data(), 0),
-              static_cast<uint8_t>(abacus::metric_unit::none));
+    EXPECT_EQ(*abacus::detail::raw_unit(data.data(), 0), abacus::unit::none);
     EXPECT_EQ(abacus::detail::is_metric_initialized(data.data(), 0), true);
 
     EXPECT_EQ(abacus::detail::raw_name(data.data(), 1), metric_name_2);
     EXPECT_EQ(*abacus::detail::raw_value(data.data(), 1), 2U);
-    EXPECT_EQ(*abacus::detail::raw_unit(data.data(), 1),
-              static_cast<uint8_t>(abacus::metric_unit::bytes));
+    EXPECT_EQ(*abacus::detail::raw_unit(data.data(), 1), abacus::unit::bytes);
     EXPECT_EQ(abacus::detail::is_metric_initialized(data.data(), 1), true);
 }

@@ -37,8 +37,8 @@ TEST(test_metrics, default_constructor)
 
     abacus::metrics metrics1(max_metrics, max_name_bytes, title1);
 
-    auto count2 = metrics1.initialize_metric(
-        0, "count_2", abacus::metric_unit::gigabits_per_second);
+    auto count2 = metrics1.initialize_metric(0, "count_2",
+                                             abacus::unit::gigabits_per_second);
 
     EXPECT_TRUE(metrics1.is_metric_initialized(0));
     EXPECT_EQ(metrics1.metric_name(0), "count_2");
@@ -52,8 +52,8 @@ TEST(test_metrics, default_constructor)
     std::string title2 = "test_metrics2";
     abacus::metrics metrics2(max_metrics, max_name_bytes, title2);
 
-    auto count3 = metrics2.initialize_metric(0, "count_3",
-                                             abacus::metric_unit::milliseconds);
+    auto count3 =
+        metrics2.initialize_metric(0, "count_3", abacus::unit::milliseconds);
 
     EXPECT_TRUE(metrics2.is_metric_initialized(0));
     EXPECT_EQ(metrics2.metric_name(0), "count_3");

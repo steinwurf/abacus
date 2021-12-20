@@ -81,8 +81,7 @@ public:
     /// Defaults to metric_unit::none
     /// @return The value of the counter
     auto initialize_metric(std::size_t index, const std::string& name,
-                           abacus::metric_unit unit = metric_unit::none)
-        -> metric;
+                           abacus::unit unit = abacus::unit::none) -> metric;
 
     /// @param index The index of the new counter. Must be less than
     /// max_metrics.

@@ -84,13 +84,13 @@ auto metrics::metric_value(std::size_t index) const -> uint64_t
 
 auto metrics::metric_unit(std::size_t index) const -> const char*
 {
-    uint8_t* unit_data = detail::raw_unit(m_data, index);
+    abacus::unit* unit_data = detail::raw_unit(m_data, index);
 
-    return units_to_string[*unit_data];
+    return units_to_string(*unit_data);
 }
 
 auto metrics::initialize_metric(std::size_t index, const std::string& name,
-                                abacus::metric_unit unit) -> metric
+                                abacus::unit unit) -> metric
 {
     assert(!is_metric_initialized(index));
 
@@ -99,7 +99,7 @@ auto metrics::initialize_metric(std::size_t index, const std::string& name,
     assert(name.size() < m_max_name_bytes);
 
     char* name_data = detail::raw_name(m_data, index);
-    uint8_t* unit_data = detail::raw_unit(m_data, index);
+    abacus::unit* unit_data = detail::raw_unit(m_data, index);
     uint64_t* value_data = detail::raw_value(m_data, index);
 
     // Copy the name

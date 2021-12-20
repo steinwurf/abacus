@@ -12,11 +12,11 @@
 namespace abacus
 {
 
-inline namespace STEINWURF_ABACUS_VERSION
+namespace STEINWURF_ABACUS_VERSION
 {
 
 /// The units supported in the abacus library
-enum class metric_unit : uint8_t
+enum class unit : uint8_t
 {
     /// The unit used for packet numbers
     packets = 0U,
@@ -46,13 +46,7 @@ enum class metric_unit : uint8_t
 
 };
 
-static const char* units_to_string[] = {"packets",          "bytes",
-                                        "symbols",          "percent",
-                                        "seconds",          "milliseconds",
-                                        "microseconds",     "bytes/second",
-                                        "kilobytes/second", "megabytes/second",
-                                        "gigabytes/second", "bits/second",
-                                        "kilobits/second",  "megabits/second",
-                                        "gigabits/second",  "none"};
+auto units_to_string(unit unit) -> const char*;
+
 }
 }
