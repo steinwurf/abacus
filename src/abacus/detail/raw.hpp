@@ -10,6 +10,7 @@
 #include <cstdint>
 #include <cstring>
 
+#include "../metric_unit.hpp"
 #include "../version.hpp"
 #include <bourne/json.hpp>
 
@@ -82,13 +83,19 @@ inline auto values_alignment_padding(std::size_t offset) -> std::size_t
     return 8 - offset % 8;
 }
 
+inline auto units_offset(const uint8_t* data) -> std::size_t
+{
+    // Skip header + title + names
+    return header_bytes() + max_name_bytes(data) +
+           (max_metrics(data) * max_name_bytes(data));
+}
+
 /// @param data The raw memory for the counters
 /// @return The values offset in the raw memory
 inline auto values_offset(const uint8_t* data) -> std::size_t
 {
     // Skip header + title + names
-    std::size_t offset = header_bytes() + max_name_bytes(data) +
-                         (max_metrics(data) * max_name_bytes(data));
+    std::size_t offset = units_offset(data);
 
     // align to 8 bytes
     offset += values_alignment_padding(offset);
@@ -146,6 +153,26 @@ inline auto raw_name(const uint8_t* data, std::size_t index) -> const char*
     return (const char*)name_data;
 }
 
+inline auto raw_unit(uint8_t* data, std::size_t index) -> uint8_t*
+{
+    assert(data != nullptr);
+    assert(index < max_metrics(data));
+
+    uint8_t* unit_data = data + units_offset(data) + index;
+
+    return unit_data;
+}
+
+inline auto raw_unit(const uint8_t* data, std::size_t index) -> const uint8_t*
+{
+    assert(data != nullptr);
+    assert(index < max_metrics(data));
+
+    const uint8_t* unit_data = data + units_offset(data) + index;
+
+    return unit_data;
+}
+
 /// @param data The raw memory for the counters
 /// @param index The index of a counter. Must be less than max_metrics().
 /// @return a pointer to the index'th counter value
@@ -189,7 +216,7 @@ inline auto is_metric_initialized(const uint8_t* data, std::size_t index)
 }
 
 /// @param data The raw memory for the counters
-/// @return The counters in json-format
+/// @return The counters in json-format without units
 inline auto to_json(const uint8_t* data) -> std::string
 {
     assert(data != nullptr);
@@ -206,6 +233,33 @@ inline auto to_json(const uint8_t* data) -> std::string
         auto v = *raw_value(data, i);
 
         counters[n] = v;
+    }
+
+    return counters.dump();
+}
+
+/// @param data The raw memory for the counters
+/// @return The counters in json-format with units
+inline auto to_json_with_units(const uint8_t* data) -> std::string
+{
+    assert(data != nullptr);
+    bourne::json counters = bourne::json::object();
+
+    for (std::size_t i = 0; i < max_metrics(data); ++i)
+    {
+        if ((!is_metric_initialized(data, i)))
+        {
+            continue;
+        }
+        bourne::json value = bourne::json::object();
+        auto n = raw_name(data, i);
+        auto v = *raw_value(data, i);
+        auto u = abacus::units_to_string[*raw_unit(data, i)];
+
+        value["value"] = v;
+        value["units"] = u;
+
+        counters[n] = value;
     }
 
     return counters.dump();

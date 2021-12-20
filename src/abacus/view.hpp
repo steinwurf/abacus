@@ -8,6 +8,7 @@
 #include <cassert>
 #include <vector>
 
+#include "metric_unit.hpp"
 #include "version.hpp"
 
 namespace abacus
@@ -51,6 +52,8 @@ public:
     /// @return The name of a counter as a string
     auto metric_name(std::size_t index) const -> std::string;
 
+    auto metric_unit(std::size_t index) const -> const char*;
+
     /// @param index The index of the new counter. Must be less than
     /// max_metrics().
     /// @return A specific count
@@ -64,8 +67,11 @@ public:
     /// @return The number of bytes in the view memory
     auto view_bytes() const -> std::size_t;
 
-    /// @return All counters in json format
+    /// @return All counters in json format without units
     auto to_json() const -> std::string;
+
+    /// @return All counters in json format with units
+    auto to_json_with_units() const -> std::string;
 
 private:
     /// The raw memory from the metrics counters

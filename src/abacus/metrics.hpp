@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "metric.hpp"
+#include "metric_unit.hpp"
 #include "version.hpp"
 #include "view.hpp"
 
@@ -68,12 +69,19 @@ public:
     /// @return A specific count
     auto metric_value(std::size_t index) const -> uint64_t;
 
+    /// @param index The index of a counter. Must be less than max_metrics.
+    /// @return The unit of the counter as a string
+    auto metric_unit(std::size_t index) const -> const char*;
+
     /// @param index The index of the new counter. Must be less than
     /// max_metrics.
     /// @param name The name of the new counter. Must be less than
     /// max_name_bytes bytes
+    /// @param unit The unit of the new counter. Must be a valid metric_unit.
+    /// Defaults to metric_unit::none
     /// @return The value of the counter
-    auto initialize_metric(std::size_t index, const std::string& name)
+    auto initialize_metric(std::size_t index, const std::string& name,
+                           abacus::metric_unit unit = metric_unit::none)
         -> metric;
 
     /// @param index The index of the new counter. Must be less than
@@ -96,8 +104,11 @@ public:
     /// max_metrics.
     void reset_metric(std::size_t index);
 
-    /// @return All counters in json format
+    /// @return All counters in json format without units
     auto to_json() const -> std::string;
+
+    /// @return All counters in json format with units
+    auto to_json_with_units() const -> std::string;
 
 private:
     /// No copy

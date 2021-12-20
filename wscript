@@ -50,10 +50,19 @@ def build(bld):
             install_path=None,
             use=["abacus"],
         )
+
         bld.program(
             features="cxx",
             source="examples/multiple_metrics.cpp",
             target="multiple_metrics",
+            install_path=None,
+            use=["abacus"],
+        )
+
+        bld.program(
+            features="cxx",
+            source="examples/metrics_with_units.cpp",
+            target="metrics_with_units",
             install_path=None,
             use=["abacus"],
         )

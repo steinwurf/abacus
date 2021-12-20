@@ -23,7 +23,7 @@ int main()
     headlights += 2;
 
     /// What about the gas mileage?
-    auto fuel_consumption = car.initialize_metric(1, "fuel consumption km/L");
+    auto fuel_consumption = car.initialize_metric(1, "fuel consumption");
 
     fuel_consumption += 20;
 

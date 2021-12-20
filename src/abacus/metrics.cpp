@@ -82,8 +82,15 @@ auto metrics::metric_value(std::size_t index) const -> uint64_t
     return *detail::raw_value(m_data, index);
 }
 
-auto metrics::initialize_metric(std::size_t index, const std::string& name)
-    -> metric
+auto metrics::metric_unit(std::size_t index) const -> const char*
+{
+    uint8_t* unit_data = detail::raw_unit(m_data, index);
+
+    return units_to_string[*unit_data];
+}
+
+auto metrics::initialize_metric(std::size_t index, const std::string& name,
+                                abacus::metric_unit unit) -> metric
 {
     assert(!is_metric_initialized(index));
 
@@ -92,10 +99,15 @@ auto metrics::initialize_metric(std::size_t index, const std::string& name)
     assert(name.size() < m_max_name_bytes);
 
     char* name_data = detail::raw_name(m_data, index);
+    uint8_t* unit_data = detail::raw_unit(m_data, index);
     uint64_t* value_data = detail::raw_value(m_data, index);
 
     // Copy the name
     std::memcpy(name_data, name.data(), name.size());
+
+    // Copy the unit
+    uint8_t unit_index = static_cast<uint8_t>(unit);
+    std::memcpy(unit_data, &unit_index, sizeof(uint8_t));
 
     // Use memcpy here for now, since placement new causes Bus Error on
     // Raspberry pi
@@ -115,7 +127,8 @@ void metrics::copy_storage(uint8_t* data) const
 auto metrics::storage_bytes() const -> std::size_t
 {
     std::size_t values_offset = detail::header_bytes() + m_max_name_bytes +
-                                m_max_metrics * m_max_name_bytes;
+                                m_max_metrics * m_max_name_bytes +
+                                m_max_metrics * sizeof(uint8_t);
 
     values_offset += detail::values_alignment_padding(values_offset);
 
@@ -157,6 +170,11 @@ void metrics::reset_metric(std::size_t index)
 auto metrics::to_json() const -> std::string
 {
     return detail::to_json(m_data);
+}
+
+auto metrics::to_json_with_units() const -> std::string
+{
+    return detail::to_json_with_units(m_data);
 }
 
 }
