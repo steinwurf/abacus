@@ -12,7 +12,7 @@
 namespace abacus
 {
 
-namespace STEINWURF_ABACUS_VERSION
+inline namespace STEINWURF_ABACUS_VERSION
 {
 
 /// The units supported in the abacus library
@@ -46,7 +46,20 @@ enum class unit : uint8_t
 
 };
 
-auto units_to_string(unit unit) -> const char*;
+inline auto units_to_string(abacus::unit unit) -> const char*
+{
+    static const char* string_definitions[] = {
+        "packets",          "bytes",
+        "symbols",          "percent",
+        "seconds",          "milliseconds",
+        "microseconds",     "bytes/second",
+        "kilobytes/second", "megabytes/second",
+        "gigabytes/second", "bits/second",
+        "kilobits/second",  "megabits/second",
+        "gigabits/second",  "none"};
+
+    return string_definitions[static_cast<uint8_t>(unit)];
+}
 
 }
 }
