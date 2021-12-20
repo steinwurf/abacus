@@ -26,7 +26,7 @@ TEST(test_metrics, default_constructor)
     EXPECT_TRUE(metrics.is_metric_initialized(0));
     EXPECT_EQ(metrics.metric_name(0), "count_1");
     EXPECT_EQ(metrics.metric_value(0), 0U);
-    EXPECT_EQ(metrics.metric_unit(0), "none");
+    EXPECT_STREQ(metrics.metric_unit(0), "none");
     EXPECT_EQ(metrics.storage_bytes(), storage_size);
 
     ++count1;
@@ -42,7 +42,7 @@ TEST(test_metrics, default_constructor)
 
     EXPECT_TRUE(metrics1.is_metric_initialized(0));
     EXPECT_EQ(metrics1.metric_name(0), "count_2");
-    EXPECT_EQ(metrics1.metric_unit(0), "gigabits/second");
+    EXPECT_STREQ(metrics1.metric_unit(0), "gigabits/second");
     EXPECT_EQ(metrics1.metric_value(0), 0U);
 
     ++count2;
@@ -57,7 +57,7 @@ TEST(test_metrics, default_constructor)
 
     EXPECT_TRUE(metrics2.is_metric_initialized(0));
     EXPECT_EQ(metrics2.metric_name(0), "count_3");
-    EXPECT_EQ(metrics2.metric_unit(0), "milliseconds");
+    EXPECT_STREQ(metrics2.metric_unit(0), "milliseconds");
     EXPECT_EQ(metrics2.metric_value(0), 0U);
 
     count3 = 5U;

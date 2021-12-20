@@ -52,6 +52,9 @@ public:
     /// @return The name of a counter as a string
     auto metric_name(std::size_t index) const -> std::string;
 
+    /// @param index The index of the new counter. Must be less than
+    /// max_metrics().
+    /// @return The unit of a counter as a string
     auto metric_unit(std::size_t index) const -> const char*;
 
     /// @param index The index of the new counter. Must be less than
