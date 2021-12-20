@@ -7,7 +7,7 @@
 
 namespace abacus
 {
-inline namespace STEINWURF_ABACUS_VERSION
+namespace STEINWURF_ABACUS_VERSION
 {
 
 auto units_to_string(abacus::unit unit) -> const char*
