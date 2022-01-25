@@ -20,11 +20,14 @@ TEST(test_metrics, default_constructor)
     auto count1 = metrics.initialize_metric("count_1");
 
     auto storage_size =
-        5 + max_name_bytes +
-        (8 - (5 + max_name_bytes + max_metrics * max_name_bytes) % 8) +
+        7 + max_category_bytes +
+        (8 - (7 + max_category_bytes + max_metrics * max_name_bytes) % 8) +
         max_metrics * (max_name_bytes + sizeof(uint64_t));
 
     EXPECT_TRUE(metrics.is_metric_initialized(0));
+    EXPECT_EQ(metrics.metrics_count(), 1U);
+    EXPECT_EQ(metrics.metric_category(0), category);
+    EXPECT_EQ(metrics.metric_index("count_1"), 0U);
     EXPECT_EQ(metrics.metric_name(0), "count_1");
     EXPECT_EQ(metrics.metric_value(0), 0U);
     EXPECT_EQ(metrics.storage_bytes(), storage_size);
@@ -41,6 +44,9 @@ TEST(test_metrics, default_constructor)
     auto count2 = metrics1.initialize_metric("count_2");
 
     EXPECT_TRUE(metrics1.is_metric_initialized(0));
+    EXPECT_EQ(metrics1.metrics_count(), 1U);
+    EXPECT_EQ(metrics1.metric_category(0), category1);
+    EXPECT_EQ(metrics1.metric_index("count_2"), 0U);
     EXPECT_EQ(metrics1.metric_name(0), "count_2");
     EXPECT_EQ(metrics1.metric_value(0), 0U);
 
@@ -55,6 +61,9 @@ TEST(test_metrics, default_constructor)
     auto count3 = metrics2.initialize_metric("count_3");
 
     EXPECT_TRUE(metrics2.is_metric_initialized(0));
+    EXPECT_EQ(metrics2.metrics_count(), 1U);
+    EXPECT_EQ(metrics2.metric_category(0), category2);
+    EXPECT_EQ(metrics2.metric_index("count_3"), 0U);
     EXPECT_EQ(metrics2.metric_name(0), "count_3");
     EXPECT_EQ(metrics2.metric_value(0), 0U);
 

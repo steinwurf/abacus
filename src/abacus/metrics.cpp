@@ -151,7 +151,7 @@ void metrics::copy_storage(uint8_t* data) const
 
 auto metrics::storage_bytes() const -> std::size_t
 {
-    std::size_t values_offset = detail::header_bytes() + m_max_name_bytes +
+    std::size_t values_offset = detail::header_bytes() + m_max_category_bytes +
                                 m_max_metrics * m_max_name_bytes;
 
     values_offset += detail::values_alignment_padding(values_offset);
