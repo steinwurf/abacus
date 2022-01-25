@@ -3,8 +3,8 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include "detail/raw.hpp"
 #include "view_iterator.hpp"
+#include "detail/raw.hpp"
 
 #include <algorithm>
 #include <cstring>
