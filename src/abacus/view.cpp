@@ -30,9 +30,9 @@ auto view::max_name_bytes() const -> uint16_t
     return detail::max_name_bytes(m_data);
 }
 
-auto view::max_category_bytes() const -> uint16_t
+auto view::max_prefix_bytes() const -> uint16_t
 {
-    return detail::max_category_bytes(m_data);
+    return detail::max_prefix_bytes(m_data);
 }
 
 auto view::max_metrics() const -> uint16_t
@@ -40,10 +40,10 @@ auto view::max_metrics() const -> uint16_t
     return detail::max_metrics(m_data);
 }
 
-auto view::get_category() const -> std::string
+auto view::get_prefix() const -> std::string
 {
-    std::string category = detail::raw_category(m_data);
-    return category;
+    std::string prefix = detail::raw_prefix(m_data);
+    return prefix;
 }
 
 auto view::metric_name(std::size_t index) const -> std::string
@@ -78,11 +78,11 @@ auto view::metric_index(const std::string& name) const -> std::size_t
     assert(false && "Metric index was not found");
 }
 
-auto view::metric_category(std::size_t index) const -> std::string
+auto view::metric_prefix(std::size_t index) const -> std::string
 {
     assert(is_metric_initialized(index));
-    std::string category = detail::raw_category(m_data);
-    return category;
+    std::string prefix = detail::raw_prefix(m_data);
+    return prefix;
 }
 
 auto view::metrics_count() const -> std::size_t
@@ -121,9 +121,9 @@ auto view::to_json() const -> std::string
 
     bourne::json full_json = bourne::json::object();
 
-    std::string category = detail::raw_category(m_data);
+    std::string prefix = detail::raw_prefix(m_data);
 
-    full_json[category] = counters;
+    full_json[prefix] = counters;
 
     return full_json.dump();
 }

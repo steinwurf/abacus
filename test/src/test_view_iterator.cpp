@@ -13,14 +13,14 @@ TEST(test_view_iterator, default_constructor)
 {
     uint16_t max_metrics = 10;
     uint16_t max_name_bytes = 32;
-    uint16_t max_category_bytes = 32;
-    std::string category1 = "metrics1";
-    std::string category2 = "metrics2";
+    uint16_t max_prefix_bytes = 32;
+    std::string prefix1 = "metrics1";
+    std::string prefix2 = "metrics2";
 
-    abacus::metrics metrics1(max_metrics, max_name_bytes, max_category_bytes,
-                             category1);
-    abacus::metrics metrics2(max_metrics, max_name_bytes, max_category_bytes,
-                             category2);
+    abacus::metrics metrics1(max_metrics, max_name_bytes, max_prefix_bytes,
+                             prefix1);
+    abacus::metrics metrics2(max_metrics, max_name_bytes, max_prefix_bytes,
+                             prefix2);
 
     std::vector<uint8_t> combined_data(metrics1.storage_bytes() +
                                        metrics2.storage_bytes());
@@ -40,9 +40,9 @@ TEST(test_view_iterator, default_constructor)
 
     EXPECT_EQ(max_metrics, iterator_view1.max_metrics());
     EXPECT_EQ(max_name_bytes, iterator_view1.max_name_bytes());
-    EXPECT_EQ(category1, iterator_view1.get_category());
+    EXPECT_EQ(prefix1, iterator_view1.get_prefix());
 
     EXPECT_EQ(max_metrics, iterator_view2.max_metrics());
     EXPECT_EQ(max_name_bytes, iterator_view2.max_name_bytes());
-    EXPECT_EQ(category2, iterator_view2.get_category());
+    EXPECT_EQ(prefix2, iterator_view2.get_prefix());
 }

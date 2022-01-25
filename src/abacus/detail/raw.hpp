@@ -40,25 +40,25 @@ inline auto max_name_bytes(const uint8_t* data) -> uint16_t
     return max_name_bytes;
 }
 
-/// @return The offset of the max_category_bytes data in the header
-inline auto max_category_bytes_offset() -> std::size_t
+/// @return The offset of the max_prefix_bytes data in the header
+inline auto max_prefix_bytes_offset() -> std::size_t
 {
     return 2;
 }
 
 /// @param data The raw memory for the counters
-/// @return The maximum bytes a category can contain
-inline auto max_category_bytes(const uint8_t* data) -> uint16_t
+/// @return The maximum bytes a prefix can contain
+inline auto max_prefix_bytes(const uint8_t* data) -> uint16_t
 {
     assert(data != nullptr);
 
-    const uint8_t* max_category_bytes_data = data + max_category_bytes_offset();
-    uint16_t max_category_bytes;
-    std::memcpy(&max_category_bytes, max_category_bytes_data, sizeof(uint16_t));
+    const uint8_t* max_prefix_bytes_data = data + max_prefix_bytes_offset();
+    uint16_t max_prefix_bytes;
+    std::memcpy(&max_prefix_bytes, max_prefix_bytes_data, sizeof(uint16_t));
 
-    assert(max_category_bytes > 0);
+    assert(max_prefix_bytes > 0);
 
-    return max_category_bytes;
+    return max_prefix_bytes;
 }
 
 /// @return The max_metrics offset in the raw memory
@@ -82,8 +82,8 @@ inline auto max_metrics(const uint8_t* data) -> uint16_t
     return max_metrics;
 }
 
-/// @return The category offset in the raw memory
-inline auto category_offset() -> std::size_t
+/// @return The prefix offset in the raw memory
+inline auto prefix_offset() -> std::size_t
 {
     return header_bytes();
 }
@@ -92,8 +92,8 @@ inline auto category_offset() -> std::size_t
 /// @return The maximum metrics the raw memory can contain
 inline auto names_offset(const uint8_t* data) -> std::size_t
 {
-    // Skip header + category
-    return header_bytes() + max_category_bytes(data);
+    // Skip header + prefix
+    return header_bytes() + max_prefix_bytes(data);
 }
 
 /// @param offset The offset in the raw memory
@@ -107,8 +107,8 @@ inline auto values_alignment_padding(std::size_t offset) -> std::size_t
 /// @return The values offset in the raw memory
 inline auto values_offset(const uint8_t* data) -> std::size_t
 {
-    // Skip header + category + names
-    std::size_t offset = header_bytes() + max_category_bytes(data) +
+    // Skip header + prefix + names
+    std::size_t offset = header_bytes() + max_prefix_bytes(data) +
                          (max_metrics(data) * max_name_bytes(data));
 
     // align to 8 bytes
@@ -118,40 +118,40 @@ inline auto values_offset(const uint8_t* data) -> std::size_t
 }
 
 /// @param data The raw memory for the counters
-/// @return The raw category in memory
-inline auto raw_category(uint8_t* data) -> char*
+/// @return The raw prefix in memory
+inline auto raw_prefix(uint8_t* data) -> char*
 {
     assert(data != nullptr);
 
-    uint8_t* category_data = data + category_offset();
+    uint8_t* prefix_data = data + prefix_offset();
 
-    return (char*)category_data;
+    return (char*)prefix_data;
 }
 
 /// @param data The raw memory for the counters
-/// @return The raw category in memory
-inline auto raw_category(const uint8_t* data) -> const char*
+/// @return The raw prefix in memory
+inline auto raw_prefix(const uint8_t* data) -> const char*
 {
     assert(data != nullptr);
 
-    const uint8_t* category_data = data + category_offset();
+    const uint8_t* prefix_data = data + prefix_offset();
 
-    return (const char*)category_data;
+    return (const char*)prefix_data;
 }
 
-/// @param prefix The prefix to add to the category
+/// @param text The text to prepend to the prefix
 /// @param data The raw memory for the counters
-inline void add_prefix(const std::string& prefix, uint8_t* data)
+inline void prepend_prefix(const std::string& text, uint8_t* data)
 {
-    char* category_data = raw_category(data);
-    std::size_t prefix_size = prefix.size();
-    std::size_t category_size = std::strlen(category_data);
-    assert((category_size + prefix_size <= max_category_bytes(data)));
+    char* prefix_data = raw_prefix(data);
+    std::size_t text_size = text.size();
+    std::size_t prefix_size = std::strlen(prefix_data);
+    assert((text_size + prefix_size <= max_prefix_bytes(data)));
 
-    std::memcpy(category_data + prefix_size + 1, category_data, category_size);
-    std::memcpy(category_data, prefix.data(), prefix_size);
-    category_data[prefix_size] = '.';
-    category_data[prefix_size + category_size + 1] = '\0';
+    std::memcpy(text_size + 1 + prefix_data, prefix_data, prefix_size);
+    std::memcpy(prefix_data, text.data(), text_size);
+    prefix_data[text_size] = '.';
+    prefix_data[text_size + prefix_size + 1] = '\0';
 }
 
 /// @param data The raw memory for the counters
@@ -180,6 +180,20 @@ inline auto raw_name(const uint8_t* data, std::size_t index) -> const char*
         data + names_offset(data) + (index * max_name_bytes(data));
 
     return (const char*)name_data;
+}
+
+inline void prepend_name(const std::string& text, std::size_t index,
+                         uint8_t* data)
+{
+    char* name_data = raw_name(data, index);
+    std::size_t text_size = text.size();
+    std::size_t name_size = std::strlen(name_data);
+    assert((text_size + name_size <= max_name_bytes(data)));
+
+    std::memcpy(text_size + 1 + name_data, name_data, name_size);
+    std::memcpy(name_data, text.data(), text_size);
+    name_data[text_size] = '.';
+    name_data[text_size + name_size + 1] = '\0';
 }
 
 /// @param data The raw memory for the counters

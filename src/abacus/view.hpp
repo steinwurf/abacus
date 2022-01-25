@@ -40,14 +40,14 @@ public:
     /// @return the maximum name size from a metrics data pointer
     auto max_name_bytes() const -> uint16_t;
 
-    /// @return the maximum category size from a metrics data pointer
-    auto max_category_bytes() const -> uint16_t;
+    /// @return the maximum prefix size from a metrics data pointer
+    auto max_prefix_bytes() const -> uint16_t;
 
     /// @return the maximum number of metrics from a metrics data pointer
     auto max_metrics() const -> uint16_t;
 
-    /// @return the category of the metrics object
-    auto get_category() const -> std::string;
+    /// @return the prefix of the metrics object
+    auto get_prefix() const -> std::string;
 
     /// @param index The index of the new counter. Must be less than
     /// max_metrics().
@@ -65,8 +65,8 @@ public:
 
     /// @param index The index of the new counter. Must be less than
     /// max_metrics().
-    /// @return The category of the counter as a string.
-    auto metric_category(std::size_t index) const -> std::string;
+    /// @return The prefix of the counter as a string.
+    auto metric_prefix(std::size_t index) const -> std::string;
 
     /// @return The number of metrics currently initialized in the object
     auto metrics_count() const -> std::size_t;

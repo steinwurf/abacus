@@ -13,11 +13,11 @@ TEST(test_view, api)
 {
     uint16_t max_metrics = 10;
     uint16_t max_name_bytes = 32;
-    uint16_t max_category_bytes = 32;
-    std::string category = "metrics";
+    uint16_t max_prefix_bytes = 32;
+    std::string prefix = "metrics";
 
-    abacus::metrics metrics(max_metrics, max_name_bytes, max_category_bytes,
-                            category);
+    abacus::metrics metrics(max_metrics, max_name_bytes, max_prefix_bytes,
+                            prefix);
     auto metric = metrics.initialize_metric("metric");
 
     metric += 10;
@@ -33,8 +33,8 @@ TEST(test_view, api)
     EXPECT_EQ(max_metrics, view.max_metrics());
     EXPECT_EQ(1U, view.metrics_count());
     EXPECT_EQ(max_name_bytes, view.max_name_bytes());
-    EXPECT_EQ(category, view.get_category());
-    EXPECT_EQ(category, view.metric_category(0));
+    EXPECT_EQ(prefix, view.get_prefix());
+    EXPECT_EQ(prefix, view.metric_prefix(0));
     EXPECT_EQ(metrics.metric_name(0), view.metric_name(0));
     EXPECT_EQ(metrics.metric_value(0), view.metric_value(0));
     EXPECT_EQ(view.data(), data.data());

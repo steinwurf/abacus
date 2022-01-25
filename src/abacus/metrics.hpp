@@ -41,13 +41,13 @@ public:
     /// contain. Must be a number that can fit in 2 bytes.
     /// @param max_name_bytes The maximum length in bytes the title/names of the
     /// counters will contain. Must be a number that can fit in 2 bytes.
-    /// @param max_category_bytes The maximum length in bytes for the category
+    /// @param max_prefix_bytes The maximum length in bytes for the prefix
     /// of the metrics object. Must be a number that can fit in 2 bytes. When
-    /// adding prefixes, make sure that the new category size does not exceed
+    /// adding prefixes, make sure that the new prefix size does not exceed
     /// this size.
-    /// @param category The category of the metrics object
+    /// @param prefix The prefix of the metrics object
     metrics(std::size_t max_metrics, std::size_t max_name_bytes,
-            std::size_t max_category_bytes, const std::string& category);
+            std::size_t max_prefix_bytes, const std::string& prefix);
 
     /// Destructor
     ~metrics();
@@ -56,9 +56,9 @@ public:
     /// constructor
     auto max_metrics() const -> std::size_t;
 
-    /// @return the maximum number of bytes used for the category of the metrics
+    /// @return the maximum number of bytes used for the prefix of the metrics
     /// object
-    auto max_category_bytes() const -> std::size_t;
+    auto max_prefix_bytes() const -> std::size_t;
 
     /// @return the maximum number of bytes used for a metric name that was
     /// provided to the constructor
@@ -66,7 +66,7 @@ public:
 
     /// Set the name of all the metrics contained within
     /// @param title The title of the metrics object
-    void set_metrics_category(const std::string& category);
+    void set_metrics_prefix(const std::string& prefix);
 
     /// @param index The index of a counter. Must be less than max_metrics.
     /// @return The name of a counter as a string
@@ -81,8 +81,8 @@ public:
     auto metric_index(const std::string& name) const -> std::size_t;
 
     /// @param index The index of a counter. Must be less than max_metrics.
-    /// @return The category of the counter as a string.
-    auto metric_category(std::size_t index) const -> std::string;
+    /// @return The prefix of the counter as a string.
+    auto metric_prefix(std::size_t index) const -> std::string;
 
     /// @param name The name of the new counter. Must be less than
     /// max_name_bytes bytes
@@ -97,8 +97,8 @@ public:
     /// @return The number of metrics currently initialized in the object
     auto metrics_count() const -> std::size_t;
 
-    /// @param prefix The prefix to add to the category
-    void add_prefix(const std::string& prefix);
+    /// @param text The text to prepend to the prefix and metric names
+    void prepend_prefix(const std::string& text);
 
     /// Copies the memory backing the counter storage to a data pointer
     /// @param data The data pointer to copy the raw memory to
@@ -141,9 +141,9 @@ private:
     /// The maximum number of bytes that can be used for the name of each metric
     std::size_t m_max_name_bytes = 0;
 
-    /// The maximum number of bytes that can be used for the category of the
+    /// The maximum number of bytes that can be used for the prefix of the
     /// metrics object
-    std::size_t m_max_category_bytes = 0;
+    std::size_t m_max_prefix_bytes = 0;
 
     /// The raw memory for the counters (both value and name)
     uint8_t* m_data = nullptr;

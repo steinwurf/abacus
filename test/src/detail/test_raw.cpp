@@ -10,27 +10,27 @@
 TEST(detail_test_raw, api)
 {
     uint16_t max_name_bytes = 10;
-    uint16_t max_category_bytes = 32;
+    uint16_t max_prefix_bytes = 32;
     uint16_t max_metrics = 2;
     std::size_t alignment_padding =
-        8 - (abacus::detail::header_bytes() + max_category_bytes +
+        8 - (abacus::detail::header_bytes() + max_prefix_bytes +
              max_name_bytes * (max_metrics)) %
                 8;
-    std::size_t size = abacus::detail::header_bytes() + max_category_bytes +
+    std::size_t size = abacus::detail::header_bytes() + max_prefix_bytes +
                        alignment_padding +
                        max_metrics * (max_name_bytes + sizeof(uint64_t));
     std::vector<uint8_t> data(size);
 
     // Write the header
     std::memcpy(data.data(), &max_name_bytes, sizeof(uint16_t));
-    std::memcpy(data.data() + 2, &max_category_bytes, sizeof(uint16_t));
+    std::memcpy(data.data() + 2, &max_prefix_bytes, sizeof(uint16_t));
     std::memcpy(data.data() + 4, &max_metrics, sizeof(uint16_t));
     data[6] = 8U;
 
-    std::string category = "test";
+    std::string prefix = "test";
 
-    std::memcpy(abacus::detail::raw_category(data.data()), category.data(),
-                category.size());
+    std::memcpy(abacus::detail::raw_prefix(data.data()), prefix.data(),
+                prefix.size());
 
     std::string metric_name_1 = "metric_1";
     char* name_data_1 = abacus::detail::raw_name(data.data(), 0);
@@ -50,9 +50,8 @@ TEST(detail_test_raw, api)
 
     EXPECT_EQ(abacus::detail::max_name_bytes(data.data()), max_name_bytes);
     EXPECT_EQ(abacus::detail::max_metrics(data.data()), max_metrics);
-    EXPECT_EQ(abacus::detail::max_category_bytes(data.data()),
-              max_category_bytes);
-    EXPECT_EQ(abacus::detail::raw_category(data.data()), category);
+    EXPECT_EQ(abacus::detail::max_prefix_bytes(data.data()), max_prefix_bytes);
+    EXPECT_EQ(abacus::detail::raw_prefix(data.data()), prefix);
 
     EXPECT_EQ(abacus::detail::raw_name(data.data(), 0), metric_name_1);
     EXPECT_EQ(*abacus::detail::raw_value(data.data(), 0), 1U);

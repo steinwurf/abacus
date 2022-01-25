@@ -17,17 +17,17 @@ inline namespace STEINWURF_ABACUS_VERSION
 {
 
 metrics::metrics(std::size_t max_metrics, std::size_t max_name_bytes,
-                 std::size_t max_category_bytes, const std::string& category) :
+                 std::size_t max_prefix_bytes, const std::string& prefix) :
     m_max_metrics(max_metrics),
-    m_max_name_bytes(max_name_bytes), m_max_category_bytes(max_category_bytes)
+    m_max_name_bytes(max_name_bytes), m_max_prefix_bytes(max_prefix_bytes)
 {
     assert(m_max_metrics > 0);
     assert(m_max_metrics <= std::numeric_limits<uint16_t>::max());
     assert(m_max_name_bytes > 0);
     assert(m_max_name_bytes <= std::numeric_limits<uint16_t>::max());
-    assert(m_max_category_bytes > 0);
-    assert(m_max_category_bytes <= std::numeric_limits<uint16_t>::max());
-    assert(category.size() < m_max_category_bytes);
+    assert(m_max_prefix_bytes > 0);
+    assert(m_max_prefix_bytes <= std::numeric_limits<uint16_t>::max());
+    assert(prefix.size() < m_max_prefix_bytes);
 
     // Allocate the memory for the counters
     std::size_t memory_needed = storage_bytes();
@@ -40,12 +40,12 @@ metrics::metrics(std::size_t max_metrics, std::size_t max_name_bytes,
 
     // // Write the header
     new (m_data) uint16_t(m_max_name_bytes);
-    new (m_data + 2) uint16_t(m_max_category_bytes);
+    new (m_data + 2) uint16_t(m_max_prefix_bytes);
     new (m_data + 4) uint16_t(m_max_metrics);
     new (m_data + 6) uint8_t(8);
 
-    // Write the category
-    set_metrics_category(category);
+    // Write the prefix
+    set_metrics_prefix(prefix);
 
     assert((reinterpret_cast<uint64_t>(detail::raw_value(m_data, 0)) % 8U) ==
            0U);
@@ -66,16 +66,16 @@ auto metrics::max_name_bytes() const -> std::size_t
     return m_max_name_bytes;
 }
 
-auto metrics::max_category_bytes() const -> std::size_t
+auto metrics::max_prefix_bytes() const -> std::size_t
 {
-    return m_max_category_bytes;
+    return m_max_prefix_bytes;
 }
 
-void metrics::set_metrics_category(const std::string& category)
+void metrics::set_metrics_prefix(const std::string& prefix)
 {
-    // Write the category
-    char* category_data = detail::raw_category(m_data);
-    std::memcpy(category_data, category.data(), category.size());
+    // Write the prefix
+    char* prefix_data = detail::raw_prefix(m_data);
+    std::memcpy(prefix_data, prefix.data(), prefix.size());
 }
 
 auto metrics::metric_name(std::size_t index) const -> std::string
@@ -103,10 +103,10 @@ auto metrics::metric_index(const std::string& name) const -> std::size_t
     assert(false && "Metric index was not found");
 }
 
-auto metrics::metric_category(std::size_t index) const -> std::string
+auto metrics::metric_prefix(std::size_t index) const -> std::string
 {
     assert(is_metric_initialized(index));
-    return detail::raw_category(m_data);
+    return detail::raw_prefix(m_data);
 }
 
 auto metrics::initialize_metric(const std::string& name) -> metric
@@ -126,6 +126,11 @@ auto metrics::initialize_metric(const std::string& name) -> metric
     uint64_t value = 0U;
     std::memcpy(value_data, &value, sizeof(uint64_t));
 
+    for (auto text : m_prefixes)
+    {
+        detail::prepend_name(text, m_metrics_count, m_data);
+    }
+
     m_metrics_count++;
 
     return metric{value_data};
@@ -136,10 +141,19 @@ auto metrics::metrics_count() const -> std::size_t
     return m_metrics_count;
 }
 
-void metrics::add_prefix(const std::string& prefix)
+void metrics::prepend_prefix(const std::string& text)
 {
-    detail::add_prefix(prefix, m_data);
-    m_prefixes.push_back(prefix);
+    detail::prepend_prefix(text, m_data);
+
+    for (std::size_t i = 0; i < m_metrics_count; ++i)
+    {
+        if (is_metric_initialized(i))
+        {
+            detail::prepend_name(text, i, m_data);
+        }
+    }
+
+    m_prefixes.push_back(text);
 }
 
 void metrics::copy_storage(uint8_t* data) const
@@ -151,7 +165,7 @@ void metrics::copy_storage(uint8_t* data) const
 
 auto metrics::storage_bytes() const -> std::size_t
 {
-    std::size_t values_offset = detail::header_bytes() + m_max_category_bytes +
+    std::size_t values_offset = detail::header_bytes() + m_max_prefix_bytes +
                                 m_max_metrics * m_max_name_bytes;
 
     values_offset += detail::values_alignment_padding(values_offset);
@@ -197,9 +211,9 @@ auto metrics::to_json() const -> std::string
 
     bourne::json full_json = bourne::json::object();
 
-    std::string category = detail::raw_category(m_data);
+    std::string prefix = detail::raw_prefix(m_data);
 
-    full_json[category] = counters_json;
+    full_json[prefix] = counters_json;
 
     return full_json.dump();
 }

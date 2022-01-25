@@ -4,6 +4,7 @@
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
 #include "view_iterator.hpp"
+
 #include "detail/raw.hpp"
 
 #include <algorithm>
