@@ -31,7 +31,8 @@ inline namespace STEINWURF_ABACUS_VERSION
 /// The header consists of 42 bits of 3 values:
 /// 1. 16 bit denoting the max size of name
 /// 2. 16 bit denoting the max number of counters
-/// 3. 8 bit denoting the max size of values
+/// 3. 16 bit denoting the max size of prefix
+/// 4. 8 bit denoting the max size of values
 class metrics
 {
 

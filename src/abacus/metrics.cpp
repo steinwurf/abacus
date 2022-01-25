@@ -113,23 +113,25 @@ auto metrics::initialize_metric(const std::string& name) -> metric
 {
     // We check for less than since there also needs to be at least one
     // zero terminating byte
-    assert(name.size() < m_max_name_bytes);
+    std::string prefixed_name = name;
+
+    for (auto text : m_prefixes)
+    {
+        prefixed_name = text + "_" + prefixed_name;
+    }
+
+    assert(prefixed_name.size() < m_max_name_bytes);
 
     char* name_data = detail::raw_name(m_data, m_metrics_count);
     uint64_t* value_data = detail::raw_value(m_data, m_metrics_count);
 
     // Copy the name
-    std::memcpy(name_data, name.data(), name.size());
+    std::memcpy(name_data, prefixed_name.data(), prefixed_name.size());
 
     // Use memcpy here for now, since placement new causes Bus Error on
     // Raspberry pi
     uint64_t value = 0U;
     std::memcpy(value_data, &value, sizeof(uint64_t));
-
-    for (auto text : m_prefixes)
-    {
-        detail::prepend_name(text, m_metrics_count, m_data);
-    }
 
     m_metrics_count++;
 
