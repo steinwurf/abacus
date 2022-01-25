@@ -23,11 +23,11 @@ namespace detail
 /// @return The size of the header in bytes
 inline auto header_bytes() -> std::size_t
 {
-    return 5;
+    return 7;
 }
 
 /// @param data The raw memory for the counters
-/// @return The maximum bytes a name/title can contain
+/// @return The maximum bytes a metric name can contain
 inline auto max_name_bytes(const uint8_t* data) -> uint16_t
 {
     assert(data != nullptr);
@@ -40,10 +40,31 @@ inline auto max_name_bytes(const uint8_t* data) -> uint16_t
     return max_name_bytes;
 }
 
+/// @return The offset of the max_category_bytes data in the header
+inline auto max_category_bytes_offset() -> std::size_t
+{
+    return 2;
+}
+
+/// @param data The raw memory for the counters
+/// @return The maximum bytes a category can contain
+inline auto max_category_bytes(const uint8_t* data) -> uint16_t
+{
+    assert(data != nullptr);
+
+    const uint8_t* max_category_bytes_data = data + max_category_bytes_offset();
+    uint16_t max_category_bytes;
+    std::memcpy(&max_category_bytes, max_category_bytes_data, sizeof(uint16_t));
+
+    assert(max_category_bytes > 0);
+
+    return max_category_bytes;
+}
+
 /// @return The max_metrics offset in the raw memory
 inline auto max_metrics_offset() -> std::size_t
 {
-    return 2;
+    return 4;
 }
 
 /// @param data The raw memory for the counters
@@ -61,8 +82,8 @@ inline auto max_metrics(const uint8_t* data) -> uint16_t
     return max_metrics;
 }
 
-/// @return The title offset in the raw memory
-inline auto title_offset() -> std::size_t
+/// @return The category offset in the raw memory
+inline auto category_offset() -> std::size_t
 {
     return header_bytes();
 }
@@ -71,8 +92,8 @@ inline auto title_offset() -> std::size_t
 /// @return The maximum metrics the raw memory can contain
 inline auto names_offset(const uint8_t* data) -> std::size_t
 {
-    // Skip header + title
-    return header_bytes() + max_name_bytes(data);
+    // Skip header + category
+    return header_bytes() + max_category_bytes(data);
 }
 
 /// @param offset The offset in the raw memory
@@ -86,8 +107,8 @@ inline auto values_alignment_padding(std::size_t offset) -> std::size_t
 /// @return The values offset in the raw memory
 inline auto values_offset(const uint8_t* data) -> std::size_t
 {
-    // Skip header + title + names
-    std::size_t offset = header_bytes() + max_name_bytes(data) +
+    // Skip header + category + names
+    std::size_t offset = header_bytes() + max_category_bytes(data) +
                          (max_metrics(data) * max_name_bytes(data));
 
     // align to 8 bytes
@@ -97,25 +118,40 @@ inline auto values_offset(const uint8_t* data) -> std::size_t
 }
 
 /// @param data The raw memory for the counters
-/// @return The raw title in memory
-inline auto raw_title(uint8_t* data) -> char*
+/// @return The raw category in memory
+inline auto raw_category(uint8_t* data) -> char*
 {
     assert(data != nullptr);
 
-    uint8_t* title_data = data + title_offset();
+    uint8_t* category_data = data + category_offset();
 
-    return (char*)title_data;
+    return (char*)category_data;
 }
 
 /// @param data The raw memory for the counters
-/// @return The raw title in memory
-inline auto raw_title(const uint8_t* data) -> const char*
+/// @return The raw category in memory
+inline auto raw_category(const uint8_t* data) -> const char*
 {
     assert(data != nullptr);
 
-    const uint8_t* title_data = data + title_offset();
+    const uint8_t* category_data = data + category_offset();
 
-    return (const char*)title_data;
+    return (const char*)category_data;
+}
+
+/// @param prefix The prefix to add to the category
+/// @param data The raw memory for the counters
+inline void add_prefix(const std::string& prefix, uint8_t* data)
+{
+    char* category_data = raw_category(data);
+    std::size_t prefix_size = prefix.size();
+    std::size_t category_size = std::strlen(category_data);
+    assert((category_size + prefix_size <= max_category_bytes(data)));
+
+    std::memcpy(category_data + prefix_size + 1, category_data, category_size);
+    std::memcpy(category_data, prefix.data(), prefix_size);
+    category_data[prefix_size] = '.';
+    category_data[prefix_size + category_size + 1] = '\0';
 }
 
 /// @param data The raw memory for the counters

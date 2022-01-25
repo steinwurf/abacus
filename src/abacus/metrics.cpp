@@ -17,15 +17,17 @@ inline namespace STEINWURF_ABACUS_VERSION
 {
 
 metrics::metrics(std::size_t max_metrics, std::size_t max_name_bytes,
-                 const std::string& title) :
+                 std::size_t max_category_bytes, const std::string& category) :
     m_max_metrics(max_metrics),
-    m_max_name_bytes(max_name_bytes)
+    m_max_name_bytes(max_name_bytes), m_max_category_bytes(max_category_bytes)
 {
     assert(m_max_metrics > 0);
     assert(m_max_metrics <= std::numeric_limits<uint16_t>::max());
     assert(m_max_name_bytes > 0);
     assert(m_max_name_bytes <= std::numeric_limits<uint16_t>::max());
-    assert(title.size() < m_max_name_bytes);
+    assert(m_max_category_bytes > 0);
+    assert(m_max_category_bytes <= std::numeric_limits<uint16_t>::max());
+    assert(category.size() < m_max_category_bytes);
 
     // Allocate the memory for the counters
     std::size_t memory_needed = storage_bytes();
@@ -38,11 +40,12 @@ metrics::metrics(std::size_t max_metrics, std::size_t max_name_bytes,
 
     // // Write the header
     new (m_data) uint16_t(m_max_name_bytes);
-    new (m_data + 2) uint16_t(m_max_metrics);
-    new (m_data + 4) uint8_t(8);
+    new (m_data + 2) uint16_t(m_max_category_bytes);
+    new (m_data + 4) uint16_t(m_max_metrics);
+    new (m_data + 6) uint8_t(8);
 
-    // Write the title
-    set_metrics_title(title);
+    // Write the category
+    set_metrics_category(category);
 
     assert((reinterpret_cast<uint64_t>(detail::raw_value(m_data, 0)) % 8U) ==
            0U);
@@ -63,11 +66,16 @@ auto metrics::max_name_bytes() const -> std::size_t
     return m_max_name_bytes;
 }
 
-void metrics::set_metrics_title(const std::string& title)
+auto metrics::max_category_bytes() const -> std::size_t
 {
-    // Write the title
-    char* title_data = detail::raw_title(m_data);
-    std::memcpy(title_data, title.data(), title.size());
+    return m_max_category_bytes;
+}
+
+void metrics::set_metrics_category(const std::string& category)
+{
+    // Write the category
+    char* category_data = detail::raw_category(m_data);
+    std::memcpy(category_data, category.data(), category.size());
 }
 
 auto metrics::metric_name(std::size_t index) const -> std::string
@@ -82,17 +90,33 @@ auto metrics::metric_value(std::size_t index) const -> uint64_t
     return *detail::raw_value(m_data, index);
 }
 
-auto metrics::initialize_metric(std::size_t index, const std::string& name)
-    -> metric
+auto metrics::metric_index(const std::string& name) const -> std::size_t
 {
-    assert(!is_metric_initialized(index));
+    for (std::size_t i = 0; i < m_metrics_count; ++i)
+    {
+        if (is_metric_initialized(i) && metric_name(i) == name)
+        {
+            return i;
+        }
+    }
 
+    assert(false && "Metric index was not found");
+}
+
+auto metrics::metric_category(std::size_t index) const -> std::string
+{
+    assert(is_metric_initialized(index));
+    return detail::raw_category(m_data);
+}
+
+auto metrics::initialize_metric(const std::string& name) -> metric
+{
     // We check for less than since there also needs to be at least one
     // zero terminating byte
     assert(name.size() < m_max_name_bytes);
 
-    char* name_data = detail::raw_name(m_data, index);
-    uint64_t* value_data = detail::raw_value(m_data, index);
+    char* name_data = detail::raw_name(m_data, m_metrics_count);
+    uint64_t* value_data = detail::raw_value(m_data, m_metrics_count);
 
     // Copy the name
     std::memcpy(name_data, name.data(), name.size());
@@ -102,7 +126,20 @@ auto metrics::initialize_metric(std::size_t index, const std::string& name)
     uint64_t value = 0U;
     std::memcpy(value_data, &value, sizeof(uint64_t));
 
+    m_metrics_count++;
+
     return metric{value_data};
+}
+
+auto metrics::metrics_count() const -> std::size_t
+{
+    return m_metrics_count;
+}
+
+void metrics::add_prefix(const std::string& prefix)
+{
+    detail::add_prefix(prefix, m_data);
+    m_prefixes.push_back(prefix);
 }
 
 void metrics::copy_storage(uint8_t* data) const
