@@ -193,8 +193,15 @@ void metrics::reset_metric(std::size_t index)
 
 auto metrics::to_json() const -> std::string
 {
-    return detail::to_json(m_data);
-}
+    bourne::json counters_json = bourne::json::parse(detail::to_json(m_data));
 
+    bourne::json full_json = bourne::json::object();
+
+    std::string category = detail::raw_category(m_data);
+
+    full_json[category] = counters_json;
+
+    return full_json.dump();
+}
 }
 }

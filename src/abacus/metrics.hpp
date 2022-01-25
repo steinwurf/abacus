@@ -97,7 +97,7 @@ public:
     /// @return The number of metrics currently initialized in the object
     auto metrics_count() const -> std::size_t;
 
-    /// @param prefix The prefix to add to all the metrics and category
+    /// @param prefix The prefix to add to the category
     void add_prefix(const std::string& prefix);
 
     /// Copies the memory backing the counter storage to a data pointer

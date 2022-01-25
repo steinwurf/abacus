@@ -24,10 +24,10 @@ TEST(detail_test_raw, api)
     std::memcpy(data.data() + 2, &max_metrics, sizeof(uint16_t));
     data[4] = 8U;
 
-    std::string title = "test";
+    std::string category = "test";
 
-    std::memcpy(abacus::detail::raw_title(data.data()), title.data(),
-                title.size());
+    std::memcpy(abacus::detail::raw_category(data.data()), category.data(),
+                category.size());
 
     std::string metric_name_1 = "metric_1";
     char* name_data_1 = abacus::detail::raw_name(data.data(), 0);
@@ -47,7 +47,7 @@ TEST(detail_test_raw, api)
 
     EXPECT_EQ(abacus::detail::max_name_bytes(data.data()), max_name_bytes);
     EXPECT_EQ(abacus::detail::max_metrics(data.data()), max_metrics);
-    EXPECT_EQ(abacus::detail::raw_title(data.data()), title);
+    EXPECT_EQ(abacus::detail::raw_category(data.data()), category);
 
     EXPECT_EQ(abacus::detail::raw_name(data.data(), 0), metric_name_1);
     EXPECT_EQ(*abacus::detail::raw_value(data.data(), 0), 1U);

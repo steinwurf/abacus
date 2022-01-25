@@ -14,21 +14,22 @@ int main()
     /// Choose the constructor values for the metrics class
     uint64_t max_metrics = 10;
     uint64_t max_name_bytes = 32;
+    uint64_t max_category_bytes = 32;
 
-    abacus::metrics car(max_metrics, max_name_bytes, "Car");
+    abacus::metrics car(max_metrics, max_name_bytes, max_category_bytes, "Car");
 
     /// A car has headlights. Two of them usually
-    auto headlights = car.initialize_metric(0, "headlights");
+    auto headlights = car.initialize_metric("headlights");
 
     headlights += 2;
 
     /// What about the gas mileage?
-    auto fuel_consumption = car.initialize_metric(1, "fuel consumption km/L");
+    auto fuel_consumption = car.initialize_metric("fuel consumption km/L");
 
     fuel_consumption += 20;
 
     /// Most cars are 4-wheelers as well
-    auto wheels = car.initialize_metric(2, "Wheels");
+    auto wheels = car.initialize_metric("Wheels");
 
     wheels += 4;
 
@@ -50,7 +51,7 @@ int main()
     /// Lets see what it contains:
     std::cout << "Car has the following metrics:" << std::endl;
 
-    for (std::size_t i = 0; i < car_view.max_metrics(); i++)
+    for (std::size_t i = 0; i < car_view.metrics_count(); i++)
     {
         /// If a counter in memory has no name, it's not yet initialized.
         /// We will ignore it.

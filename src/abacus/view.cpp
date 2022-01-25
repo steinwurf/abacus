@@ -30,15 +30,20 @@ auto view::max_name_bytes() const -> uint16_t
     return detail::max_name_bytes(m_data);
 }
 
+auto view::max_category_bytes() const -> uint16_t
+{
+    return detail::max_category_bytes(m_data);
+}
+
 auto view::max_metrics() const -> uint16_t
 {
     return detail::max_metrics(m_data);
 }
 
-auto view::get_title() const -> std::string
+auto view::get_category() const -> std::string
 {
-    std::string title = detail::raw_title(m_data);
-    return title;
+    std::string category = detail::raw_category(m_data);
+    return category;
 }
 
 auto view::metric_name(std::size_t index) const -> std::string
@@ -52,6 +57,45 @@ auto view::metric_value(std::size_t index) const -> uint64_t
 {
     assert(is_metric_initialized(index));
     return *detail::raw_value(m_data, index);
+}
+
+auto view::metric_index(const std::string& name) const -> std::size_t
+{
+
+    for (std::size_t index = 0; index < max_metrics(); ++index)
+    {
+        if (!is_metric_initialized(index))
+        {
+            continue;
+        }
+
+        if (metric_name(index) == name)
+        {
+            return index;
+        }
+    }
+
+    assert(false && "Metric index was not found");
+}
+
+auto view::metric_category(std::size_t index) const -> std::string
+{
+    assert(is_metric_initialized(index));
+    std::string category = detail::raw_category(m_data);
+    return category;
+}
+
+auto view::metrics_count() const -> std::size_t
+{
+    std::size_t count = 0U;
+    for (std::size_t i = 0U; i < max_metrics(); ++i)
+    {
+        if (is_metric_initialized(i))
+        {
+            ++count;
+        }
+    }
+    return count;
 }
 
 auto view::is_metric_initialized(std::size_t index) const -> bool
@@ -73,7 +117,15 @@ auto view::view_bytes() const -> std::size_t
 
 auto view::to_json() const -> std::string
 {
-    return detail::to_json(m_data);
+    bourne::json counters = bourne::json::parse(detail::to_json(m_data));
+
+    bourne::json full_json = bourne::json::object();
+
+    std::string category = detail::raw_category(m_data);
+
+    full_json[category] = counters;
+
+    return full_json.dump();
 }
 
 }
