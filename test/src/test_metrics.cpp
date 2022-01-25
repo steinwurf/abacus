@@ -133,6 +133,7 @@ TEST(test_metrics, prepend_prefix)
                             "metrics");
 
     metrics.prepend_prefix("test");
+
     for (std::size_t i = 0; i < max_metrics; i++)
     {
         std::string name = "metric" + std::to_string(i);

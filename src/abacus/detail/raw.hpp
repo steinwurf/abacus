@@ -148,7 +148,7 @@ inline void prepend_prefix(const std::string& text, uint8_t* data)
     std::size_t prefix_size = std::strlen(prefix_data);
     assert((text_size + prefix_size <= max_prefix_bytes(data)));
 
-    std::memcpy(text_size + 1 + prefix_data, prefix_data, prefix_size);
+    std::memcpy(prefix_data + text_size + 1, prefix_data, prefix_size);
     std::memcpy(prefix_data, text.data(), text_size);
     prefix_data[text_size] = '.';
     prefix_data[text_size + prefix_size + 1] = '\0';
@@ -190,7 +190,7 @@ inline void prepend_name(const std::string& text, std::size_t index,
     std::size_t name_size = std::strlen(name_data);
     assert((text_size + name_size <= max_name_bytes(data)));
 
-    std::memcpy(text_size + 1 + name_data, name_data, name_size);
+    std::memcpy(name_data + text_size + 1, name_data, name_size);
     std::memcpy(name_data, text.data(), text_size);
     name_data[text_size] = '.';
     name_data[text_size + name_size + 1] = '\0';
