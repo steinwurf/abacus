@@ -122,3 +122,27 @@ TEST(test_metrics, reset_counters)
         EXPECT_EQ(metrics.metric_value(i), (uint64_t)0);
     }
 }
+
+TEST(test_metrics, prepend_prefix)
+{
+    uint16_t max_name_bytes = 32;
+    uint16_t max_metrics = 10;
+    uint16_t max_prefix_bytes = 32;
+
+    abacus::metrics metrics(max_metrics, max_name_bytes, max_prefix_bytes,
+                            "metrics");
+
+    metrics.prepend_prefix("test");
+    for (std::size_t i = 0; i < max_metrics; i++)
+    {
+        std::string name = "metric" + std::to_string(i);
+        auto metric = metrics.initialize_metric(name);
+        metric = i;
+    }
+
+    for (std::size_t i = 0; i < max_metrics; i++)
+    {
+        EXPECT_EQ(metrics.metric_prefix(i), "test.metrics");
+        EXPECT_EQ(metrics.metric_name(i), "test.metric" + std::to_string(i));
+    }
+}
