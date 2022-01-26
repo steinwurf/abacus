@@ -74,7 +74,7 @@ public:
     auto metric_value(std::size_t index) const -> uint64_t;
 
     /// @param name The name of a counter with full scope. The name must be
-    /// of the form <scope>.<metric_name>
+    /// of the form scope.metric_name
     /// @return The index of a counter.
     auto metric_index(const std::string& name) const -> std::size_t;
 
