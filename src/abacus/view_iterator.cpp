@@ -43,17 +43,34 @@ auto view_iterator::view_count() const -> std::size_t
     return m_views.size();
 }
 
-auto view_iterator::to_json() const -> std::string
+auto view_iterator::to_json(bool prettier) const -> std::string
 {
-    bourne::json full_json = bourne::json::array();
+    std::string space = prettier ? " " : "";
+    std::string newline = prettier ? "\n" : "";
+    std::string tab = prettier ? "\t" : "";
+
+    std::string counters_json = "{" + newline;
 
     for (std::size_t i = 0; i < m_views.size(); ++i)
     {
-        const auto& view = m_views[i];
-        full_json.append(bourne::json::parse(view.to_json()));
-    }
+        view view = m_views[i];
+        for (std::size_t i = 0; i < view.metrics_count(); ++i)
+        {
+            auto n = view.metric_name(i);
+            auto v = view.metric_value(i);
 
-    return full_json.dump();
+            counters_json +=
+                tab + "\"" + std::string(n) + "\":" + space + std::to_string(v);
+            if (i != (view.metrics_count() - 1U))
+            {
+                counters_json += "," + newline;
+            }
+        }
+        counters_json += ",";
+    }
+    counters_json += newline + "}";
+
+    return counters_json;
 }
 
 }

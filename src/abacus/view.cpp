@@ -30,20 +30,9 @@ auto view::max_name_bytes() const -> uint16_t
     return detail::max_name_bytes(m_data);
 }
 
-auto view::max_scope_bytes() const -> uint16_t
-{
-    return detail::max_scope_bytes(m_data);
-}
-
 auto view::max_metrics() const -> uint16_t
 {
     return detail::max_metrics(m_data);
-}
-
-auto view::scope() const -> std::string
-{
-    std::string scope = detail::raw_scope(m_data);
-    return scope;
 }
 
 auto view::metric_name(std::size_t index) const -> std::string
@@ -96,26 +85,17 @@ auto view::is_metric_initialized(std::size_t index) const -> bool
 auto view::view_bytes() const -> std::size_t
 {
     assert(reinterpret_cast<uint64_t>(m_data) % 8U == 0U);
-    std::size_t bytes_before_values = detail::header_bytes() +
-                                      max_scope_bytes() +
-                                      max_name_bytes() * max_metrics();
+    std::size_t bytes_before_values =
+        detail::header_bytes() + max_name_bytes() * max_metrics();
 
     return bytes_before_values +
            detail::values_alignment_padding(bytes_before_values) +
            max_metrics() * sizeof(uint64_t);
 }
 
-auto view::to_json() const -> std::string
+auto view::to_json(bool prettier) const -> std::string
 {
-    bourne::json counters = detail::to_json(m_data);
-
-    bourne::json full_json = bourne::json::object();
-
-    std::string scope = detail::raw_scope(m_data);
-
-    full_json[scope] = counters;
-
-    return full_json.dump();
+    return detail::to_json(m_data, prettier);
 }
 
 }

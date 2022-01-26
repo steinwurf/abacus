@@ -14,9 +14,8 @@ int main()
     /// Choose the constructor values for the metrics class
     uint64_t max_metrics = 10;
     uint64_t max_name_bytes = 32;
-    uint64_t max_prefix_bytes = 32;
 
-    abacus::metrics car(max_metrics, max_name_bytes, max_prefix_bytes, "Car");
+    abacus::metrics car(max_metrics, max_name_bytes, "Car");
 
     /// A car has headlights. Two of them usually
     auto headlights = car.initialize_metric("headlights");

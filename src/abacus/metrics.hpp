@@ -42,13 +42,9 @@ public:
     /// contain. Must be a number that can fit in 2 bytes.
     /// @param max_name_bytes The maximum length in bytes the title/names of the
     /// counters will contain. Must be a number that can fit in 2 bytes.
-    /// @param max_scope_bytes The maximum length in bytes for the scope
-    /// of the metrics object. Must be a number that can fit in 2 bytes. When
-    /// adding scopees, make sure that the new scope size does not exceed
-    /// this size.
     /// @param scope The scope of the metrics object
     metrics(std::size_t max_metrics, std::size_t max_name_bytes,
-            std::size_t max_scope_bytes, const std::string& scope);
+            const std::string& scope);
 
     /// Destructor
     ~metrics();
@@ -119,8 +115,10 @@ public:
     /// max_metrics.
     void reset_metric(std::size_t index);
 
+    /// @param prettier If true, the output will be more human-readable format.
+    /// Otherwise, it will be compact JSON.
     /// @return All counters in json format
-    auto to_json() const -> std::string;
+    auto to_json(bool prettier = false) const -> std::string;
 
 private:
     /// No copy
@@ -145,9 +143,7 @@ private:
     /// The maximum number of bytes that can be used for the name of each metric
     std::size_t m_max_name_bytes = 0;
 
-    /// The maximum number of bytes that can be used for the scope of the
-    /// metrics object
-    std::size_t m_max_scope_bytes = 0;
+    std::string m_scope = "";
 
     /// The raw memory for the counters (both value and name)
     uint8_t* m_data = nullptr;

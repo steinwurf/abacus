@@ -14,11 +14,9 @@ int main()
 {
     /// Choose the constructor values for the metrics class
     uint64_t max_metrics = 10;
-    uint64_t max_name_bytes = 32;
-    uint64_t max_scope_bytes = 32;
-    abacus::metrics vw(max_metrics, max_name_bytes, max_scope_bytes,
-                       "volkswagen");
-    abacus::metrics bmw(max_metrics, max_name_bytes, max_scope_bytes, "bmw");
+    uint64_t max_name_bytes = 50;
+    abacus::metrics vw(max_metrics, max_name_bytes, "volkswagen");
+    abacus::metrics bmw(max_metrics, max_name_bytes, "bmw");
 
     vw.add_scope("car1");
     bmw.add_scope("car2");
@@ -44,8 +42,8 @@ int main()
     wheels2 += 4;
 
     /// We can print out the counters neatly.
-    std::cout << vw.to_json() << std::endl;
-    std::cout << bmw.to_json() << std::endl;
+    std::cout << vw.to_json(true) << std::endl;
+    std::cout << bmw.to_json(true) << std::endl;
 
     /// We want to export the metrics memory, so we need a new storage.
     /// We copy both metrics into one data storage.
@@ -65,7 +63,7 @@ int main()
     for (std::size_t i = 0; i < car_iterator.view_count(); i++)
     {
         auto view = car_iterator.get_view(i);
-        std::cout << view.scope() << " has the following metrics:" << std::endl;
+        std::cout << "View has the following metrics:" << std::endl;
 
         for (std::size_t i = 0; i < view.metrics_count(); i++)
         {
@@ -83,18 +81,18 @@ int main()
         std::cout << std::endl;
     }
 
-    /// Or you can use view::to_json() for the metrics in json-format:
+    /// Or you can use view::to_json(true) for the metrics in json-format:
     for (std::size_t i = 0; i < car_iterator.view_count(); i++)
     {
         auto view = car_iterator.get_view(i);
-        std::cout << view.scope() << " has the following metrics:" << std::endl;
-        std::cout << view.to_json() << std::endl;
+        std::cout << "View has the following metrics:" << std::endl;
+        std::cout << view.to_json(true) << std::endl;
     }
 
-    /// Or you can even call the view_iterator::to_json() function to get the
-    /// json-format of all the metrics in the data storage:
-    std::cout << "view_iterator::to_json():" << std::endl
-              << car_iterator.to_json() << std::endl;
+    /// Or you can even call the view_iterator::to_json(true) function to get
+    /// the json-format of all the metrics in the data storage:
+    std::cout << "view_iterator::to_json(true):" << std::endl
+              << car_iterator.to_json(true) << std::endl;
 
     return 0;
 }

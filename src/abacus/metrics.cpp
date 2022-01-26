@@ -17,17 +17,14 @@ inline namespace STEINWURF_ABACUS_VERSION
 {
 
 metrics::metrics(std::size_t max_metrics, std::size_t max_name_bytes,
-                 std::size_t max_scope_bytes, const std::string& scope) :
+                 const std::string& scope) :
     m_max_metrics(max_metrics),
-    m_max_name_bytes(max_name_bytes), m_max_scope_bytes(max_scope_bytes)
+    m_max_name_bytes(max_name_bytes), m_scope(scope)
 {
     assert(m_max_metrics > 0);
     assert(m_max_metrics <= std::numeric_limits<uint16_t>::max());
     assert(m_max_name_bytes > 0);
     assert(m_max_name_bytes <= std::numeric_limits<uint16_t>::max());
-    assert(m_max_scope_bytes > 0);
-    assert(m_max_scope_bytes <= std::numeric_limits<uint16_t>::max());
-    assert(scope.size() < m_max_scope_bytes);
 
     // Allocate the memory for the counters
     std::size_t memory_needed = storage_bytes();
@@ -40,13 +37,8 @@ metrics::metrics(std::size_t max_metrics, std::size_t max_name_bytes,
 
     // // Write the header
     new (m_data) uint16_t(m_max_name_bytes);
-    new (m_data + 2) uint16_t(m_max_scope_bytes);
-    new (m_data + 4) uint16_t(m_max_metrics);
-    new (m_data + 6) uint8_t(8);
-
-    // Write the scope
-    char* scope_data = detail::raw_scope(m_data);
-    std::memcpy(scope_data, scope.data(), scope.size());
+    new (m_data + 2) uint16_t(m_max_metrics);
+    new (m_data + 4) uint8_t(8);
 
     assert((reinterpret_cast<uint64_t>(detail::raw_value(m_data, 0)) % 8U) ==
            0U);
@@ -65,11 +57,6 @@ auto metrics::max_metrics() const -> std::size_t
 auto metrics::max_name_bytes() const -> std::size_t
 {
     return m_max_name_bytes;
-}
-
-auto metrics::max_scope_bytes() const -> std::size_t
-{
-    return m_max_scope_bytes;
 }
 
 auto metrics::metric_name(std::size_t index) const -> std::string
@@ -101,14 +88,12 @@ auto metrics::metric_index(const std::string& name) const -> std::size_t
 
 auto metrics::scope() const -> std::string
 {
-    std::string scope(detail::raw_scope(m_data));
-    return scope;
+    return m_scope;
 }
 
 auto metrics::initialize_metric(const std::string& name) -> metric
 {
-    std::string scoped_name =
-        (std::string)detail::raw_scope(m_data) + "." + name;
+    std::string scoped_name = m_scope + "." + name;
 
     assert(scoped_name.size() < m_max_name_bytes);
 
@@ -135,13 +120,9 @@ auto metrics::metrics_count() const -> std::size_t
 
 void metrics::add_scope(const std::string& text)
 {
-    char* scope_data = detail::raw_scope(m_data);
-    std::size_t scope_size = std::strlen(scope_data);
+    m_scope = text + "." + m_scope;
+
     std::size_t text_size = text.size();
-    std::memmove(scope_data + text_size + 1, scope_data, scope_size);
-    std::memcpy(scope_data, text.data(), text_size);
-    scope_data[text_size] = '.';
-    scope_data[scope_size + text_size + 1] = '\0';
 
     for (std::size_t i = 0; i < m_metrics_count; ++i)
     {
@@ -163,8 +144,8 @@ void metrics::copy_storage(uint8_t* data) const
 
 auto metrics::storage_bytes() const -> std::size_t
 {
-    std::size_t values_offset = detail::header_bytes() + m_max_scope_bytes +
-                                m_max_metrics * m_max_name_bytes;
+    std::size_t values_offset =
+        detail::header_bytes() + m_max_metrics * m_max_name_bytes;
 
     values_offset += detail::values_alignment_padding(values_offset);
 
@@ -203,17 +184,9 @@ void metrics::reset_metric(std::size_t index)
     std::memcpy(value_data, &value, sizeof(uint64_t));
 }
 
-auto metrics::to_json() const -> std::string
+auto metrics::to_json(bool prettier) const -> std::string
 {
-    bourne::json counters_json = detail::to_json(m_data);
-
-    bourne::json full_json = bourne::json::object();
-
-    std::string scope = detail::raw_scope(m_data);
-
-    full_json[scope] = counters_json;
-
-    return full_json.dump();
+    return detail::to_json(m_data, prettier);
 }
 }
 }

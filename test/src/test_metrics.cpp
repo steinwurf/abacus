@@ -11,18 +11,14 @@ TEST(test_metrics, default_constructor)
 {
     uint16_t max_metrics = 10;
     uint16_t max_name_bytes = 32;
-    uint16_t max_scope_bytes = 32;
     std::string scope = "test_metrics";
 
-    abacus::metrics metrics(max_metrics, max_name_bytes, max_scope_bytes,
-                            scope);
+    abacus::metrics metrics(max_metrics, max_name_bytes, scope);
 
     auto count1 = metrics.initialize_metric("count_1");
 
-    auto storage_size =
-        7 + max_scope_bytes +
-        (8 - (7 + max_scope_bytes + max_metrics * max_name_bytes) % 8) +
-        max_metrics * (max_name_bytes + sizeof(uint64_t));
+    auto storage_size = 5 + (8 - (5 + max_metrics * max_name_bytes) % 8) +
+                        max_metrics * (max_name_bytes + sizeof(uint64_t));
 
     EXPECT_TRUE(metrics.is_metric_initialized(0));
     EXPECT_EQ(metrics.metrics_count(), 1U);
@@ -38,8 +34,7 @@ TEST(test_metrics, default_constructor)
 
     std::string scope1 = "test_metrics1";
 
-    abacus::metrics metrics1(max_metrics, max_name_bytes, max_scope_bytes,
-                             scope1);
+    abacus::metrics metrics1(max_metrics, max_name_bytes, scope1);
 
     auto count2 = metrics1.initialize_metric("count_2");
 
@@ -55,8 +50,7 @@ TEST(test_metrics, default_constructor)
     EXPECT_EQ(metrics1.metric_value(0), 1U);
 
     std::string scope2 = "test_metrics2";
-    abacus::metrics metrics2(max_metrics, max_name_bytes, max_scope_bytes,
-                             scope2);
+    abacus::metrics metrics2(max_metrics, max_name_bytes, scope2);
 
     auto count3 = metrics2.initialize_metric("count_3");
 
@@ -76,10 +70,8 @@ TEST(test_metrics, copy_storage)
 {
     uint16_t max_metrics = 10;
     uint16_t max_name_bytes = 32;
-    uint16_t max_scope_bytes = 32;
 
-    abacus::metrics metrics(max_metrics, max_name_bytes, max_scope_bytes,
-                            "test_metrics");
+    abacus::metrics metrics(max_metrics, max_name_bytes, "test_metrics");
 
     metrics.initialize_metric("count_1");
 
@@ -100,10 +92,8 @@ TEST(test_metrics, reset_counters)
     uint64_t count = 1;
     uint16_t max_name_bytes = 32;
     uint16_t max_metrics = 10;
-    uint16_t max_scope_bytes = 32;
 
-    abacus::metrics metrics(max_metrics, max_name_bytes, max_scope_bytes,
-                            "metrics");
+    abacus::metrics metrics(max_metrics, max_name_bytes, "metrics");
 
     for (std::size_t i = 0; i < max_metrics; i++)
     {
@@ -127,10 +117,8 @@ TEST(test_metrics, add_scope)
 {
     uint16_t max_name_bytes = 32;
     uint16_t max_metrics = 10;
-    uint16_t max_scope_bytes = 32;
 
-    abacus::metrics metrics(max_metrics, max_name_bytes, max_scope_bytes,
-                            "metrics");
+    abacus::metrics metrics(max_metrics, max_name_bytes, "metrics");
 
     for (std::size_t i = 0; i < max_metrics; i++)
     {

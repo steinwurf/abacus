@@ -40,14 +40,8 @@ public:
     /// @return the maximum name size from a metrics data pointer
     auto max_name_bytes() const -> uint16_t;
 
-    /// @return the maximum scope size from a metrics data pointer
-    auto max_scope_bytes() const -> uint16_t;
-
     /// @return the maximum number of metrics from a metrics data pointer
     auto max_metrics() const -> uint16_t;
-
-    /// @return the scope of the metrics object
-    auto scope() const -> std::string;
 
     /// @param index The index of the new counter. Must be less than
     /// max_metrics().
@@ -74,8 +68,10 @@ public:
     /// @return The number of bytes in the view memory
     auto view_bytes() const -> std::size_t;
 
+    /// @param prettier If true, the output will be more human-readable format.
+    /// Otherwise, it will be compact JSON.
     /// @return All counters in json format
-    auto to_json() const -> std::string;
+    auto to_json(bool prettier = false) const -> std::string;
 
 private:
     /// The raw memory from the metrics counters
