@@ -15,13 +15,13 @@ int main()
     /// Choose the constructor values for the metrics class
     uint64_t max_metrics = 10;
     uint64_t max_name_bytes = 32;
-    uint64_t max_prefix_bytes = 32;
-    abacus::metrics vw(max_metrics, max_name_bytes, max_prefix_bytes,
+    uint64_t max_scope_bytes = 32;
+    abacus::metrics vw(max_metrics, max_name_bytes, max_scope_bytes,
                        "volkswagen");
-    abacus::metrics bmw(max_metrics, max_name_bytes, max_prefix_bytes, "bmw");
+    abacus::metrics bmw(max_metrics, max_name_bytes, max_scope_bytes, "bmw");
 
-    vw.prepend_prefix("car1");
-    bmw.prepend_prefix("car2");
+    vw.add_scope("car1");
+    bmw.add_scope("car2");
     /// A car has headlights. Two of them usually
     auto headlights1 = vw.initialize_metric("headlights");
     auto headlights2 = bmw.initialize_metric("headlights");
@@ -65,8 +65,7 @@ int main()
     for (std::size_t i = 0; i < car_iterator.view_count(); i++)
     {
         auto view = car_iterator.get_view(i);
-        std::cout << view.get_prefix()
-                  << " has the following metrics:" << std::endl;
+        std::cout << view.scope() << " has the following metrics:" << std::endl;
 
         for (std::size_t i = 0; i < view.metrics_count(); i++)
         {
@@ -88,8 +87,7 @@ int main()
     for (std::size_t i = 0; i < car_iterator.view_count(); i++)
     {
         auto view = car_iterator.get_view(i);
-        std::cout << view.get_prefix()
-                  << " has the following metrics:" << std::endl;
+        std::cout << view.scope() << " has the following metrics:" << std::endl;
         std::cout << view.to_json() << std::endl;
     }
 

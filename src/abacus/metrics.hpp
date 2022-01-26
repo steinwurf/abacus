@@ -31,7 +31,7 @@ inline namespace STEINWURF_ABACUS_VERSION
 /// The header consists of 42 bits of 3 values:
 /// 1. 16 bit denoting the max size of name
 /// 2. 16 bit denoting the max number of counters
-/// 3. 16 bit denoting the max size of prefix
+/// 3. 16 bit denoting the max size of scope
 /// 4. 8 bit denoting the max size of values
 class metrics
 {
@@ -42,13 +42,13 @@ public:
     /// contain. Must be a number that can fit in 2 bytes.
     /// @param max_name_bytes The maximum length in bytes the title/names of the
     /// counters will contain. Must be a number that can fit in 2 bytes.
-    /// @param max_prefix_bytes The maximum length in bytes for the prefix
+    /// @param max_scope_bytes The maximum length in bytes for the scope
     /// of the metrics object. Must be a number that can fit in 2 bytes. When
-    /// adding prefixes, make sure that the new prefix size does not exceed
+    /// adding scopees, make sure that the new scope size does not exceed
     /// this size.
-    /// @param prefix The prefix of the metrics object
+    /// @param scope The scope of the metrics object
     metrics(std::size_t max_metrics, std::size_t max_name_bytes,
-            std::size_t max_prefix_bytes, const std::string& prefix);
+            std::size_t max_scope_bytes, const std::string& scope);
 
     /// Destructor
     ~metrics();
@@ -57,17 +57,13 @@ public:
     /// constructor
     auto max_metrics() const -> std::size_t;
 
-    /// @return the maximum number of bytes used for the prefix of the metrics
+    /// @return the maximum number of bytes used for the scope of the metrics
     /// object
-    auto max_prefix_bytes() const -> std::size_t;
+    auto max_scope_bytes() const -> std::size_t;
 
     /// @return the maximum number of bytes used for a metric name that was
     /// provided to the constructor
     auto max_name_bytes() const -> std::size_t;
-
-    /// Set the name of all the metrics contained within
-    /// @param title The title of the metrics object
-    void set_metrics_prefix(const std::string& prefix);
 
     /// @param index The index of a counter. Must be less than max_metrics.
     /// @return The name of a counter as a string
@@ -77,13 +73,13 @@ public:
     /// @return A specific count
     auto metric_value(std::size_t index) const -> uint64_t;
 
-    /// @param name The name of a counter.
+    /// @param name The name of a counter with full scope. The name must be
+    /// of the form <scope>.<metric_name>
     /// @return The index of a counter.
     auto metric_index(const std::string& name) const -> std::size_t;
 
-    /// @param index The index of a counter. Must be less than max_metrics.
-    /// @return The prefix of the counter as a string.
-    auto metric_prefix(std::size_t index) const -> std::string;
+    /// @return The scope of the counters as a string.
+    auto scope() const -> std::string;
 
     /// @param name The name of the new counter. Must be less than
     /// max_name_bytes bytes
@@ -98,8 +94,12 @@ public:
     /// @return The number of metrics currently initialized in the object
     auto metrics_count() const -> std::size_t;
 
-    /// @param text The text to prepend to the prefix and metric names
-    void prepend_prefix(const std::string& text);
+    /// @param text The text to add to the scope of the metrics object.
+    ///             The extra scopes can be used to access different metrics
+    ///             objects. For example if you have a metrics object with
+    ///             scope "bar", calling add_scope("foo") will make
+    ///             the scope of the metrics object "baz", "foo.bar.baz".
+    void add_scope(const std::string& text);
 
     /// Copies the memory backing the counter storage to a data pointer
     /// @param data The data pointer to copy the raw memory to
@@ -142,15 +142,15 @@ private:
     /// The maximum number of bytes that can be used for the name of each metric
     std::size_t m_max_name_bytes = 0;
 
-    /// The maximum number of bytes that can be used for the prefix of the
+    /// The maximum number of bytes that can be used for the scope of the
     /// metrics object
-    std::size_t m_max_prefix_bytes = 0;
+    std::size_t m_max_scope_bytes = 0;
 
     /// The raw memory for the counters (both value and name)
     uint8_t* m_data = nullptr;
 
-    /// The prefixes added to the metrics object
-    std::vector<std::string> m_prefixes;
+    /// The scopees prepended to the metrics object
+    std::vector<std::string> m_scopes;
 };
 
 }

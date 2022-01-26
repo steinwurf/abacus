@@ -10,27 +10,27 @@
 TEST(detail_test_raw, api)
 {
     uint16_t max_name_bytes = 10;
-    uint16_t max_prefix_bytes = 32;
+    uint16_t max_scope_bytes = 32;
     uint16_t max_metrics = 2;
     std::size_t alignment_padding =
-        8 - (abacus::detail::header_bytes() + max_prefix_bytes +
+        8 - (abacus::detail::header_bytes() + max_scope_bytes +
              max_name_bytes * (max_metrics)) %
                 8;
-    std::size_t size = abacus::detail::header_bytes() + max_prefix_bytes +
+    std::size_t size = abacus::detail::header_bytes() + max_scope_bytes +
                        alignment_padding +
                        max_metrics * (max_name_bytes + sizeof(uint64_t));
     std::vector<uint8_t> data(size);
 
     // Write the header
     std::memcpy(data.data(), &max_name_bytes, sizeof(uint16_t));
-    std::memcpy(data.data() + 2, &max_prefix_bytes, sizeof(uint16_t));
+    std::memcpy(data.data() + 2, &max_scope_bytes, sizeof(uint16_t));
     std::memcpy(data.data() + 4, &max_metrics, sizeof(uint16_t));
     data[6] = 8U;
 
-    std::string prefix = "test";
+    std::string scope = "test";
 
-    std::memcpy(abacus::detail::raw_prefix(data.data()), prefix.data(),
-                prefix.size());
+    std::memcpy(abacus::detail::raw_scope(data.data()), scope.data(),
+                scope.size());
 
     std::string metric_name_1 = "metric_1";
     char* name_data_1 = abacus::detail::raw_name(data.data(), 0);
@@ -50,8 +50,8 @@ TEST(detail_test_raw, api)
 
     EXPECT_EQ(abacus::detail::max_name_bytes(data.data()), max_name_bytes);
     EXPECT_EQ(abacus::detail::max_metrics(data.data()), max_metrics);
-    EXPECT_EQ(abacus::detail::max_prefix_bytes(data.data()), max_prefix_bytes);
-    EXPECT_EQ(abacus::detail::raw_prefix(data.data()), prefix);
+    EXPECT_EQ(abacus::detail::max_scope_bytes(data.data()), max_scope_bytes);
+    EXPECT_EQ(abacus::detail::raw_scope(data.data()), scope);
 
     EXPECT_EQ(abacus::detail::raw_name(data.data(), 0), metric_name_1);
     EXPECT_EQ(*abacus::detail::raw_value(data.data(), 0), 1U);

@@ -40,25 +40,25 @@ inline auto max_name_bytes(const uint8_t* data) -> uint16_t
     return max_name_bytes;
 }
 
-/// @return The offset of the max_prefix_bytes data in the header
-inline auto max_prefix_bytes_offset() -> std::size_t
+/// @return The offset of the max_scope_bytes data in the header
+inline auto max_scope_bytes_offset() -> std::size_t
 {
     return 2;
 }
 
 /// @param data The raw memory for the counters
-/// @return The maximum bytes a prefix can contain
-inline auto max_prefix_bytes(const uint8_t* data) -> uint16_t
+/// @return The maximum bytes a scope can contain
+inline auto max_scope_bytes(const uint8_t* data) -> uint16_t
 {
     assert(data != nullptr);
 
-    const uint8_t* max_prefix_bytes_data = data + max_prefix_bytes_offset();
-    uint16_t max_prefix_bytes;
-    std::memcpy(&max_prefix_bytes, max_prefix_bytes_data, sizeof(uint16_t));
+    const uint8_t* max_scope_bytes_data = data + max_scope_bytes_offset();
+    uint16_t max_scope_bytes;
+    std::memcpy(&max_scope_bytes, max_scope_bytes_data, sizeof(uint16_t));
 
-    assert(max_prefix_bytes > 0);
+    assert(max_scope_bytes > 0);
 
-    return max_prefix_bytes;
+    return max_scope_bytes;
 }
 
 /// @return The max_metrics offset in the raw memory
@@ -82,8 +82,8 @@ inline auto max_metrics(const uint8_t* data) -> uint16_t
     return max_metrics;
 }
 
-/// @return The prefix offset in the raw memory
-inline auto prefix_offset() -> std::size_t
+/// @return The scope offset in the raw memory
+inline auto scope_offset() -> std::size_t
 {
     return header_bytes();
 }
@@ -92,8 +92,8 @@ inline auto prefix_offset() -> std::size_t
 /// @return The maximum metrics the raw memory can contain
 inline auto names_offset(const uint8_t* data) -> std::size_t
 {
-    // Skip header + prefix
-    return header_bytes() + max_prefix_bytes(data);
+    // Skip header + scope
+    return header_bytes() + max_scope_bytes(data);
 }
 
 /// @param offset The offset in the raw memory
@@ -107,8 +107,8 @@ inline auto values_alignment_padding(std::size_t offset) -> std::size_t
 /// @return The values offset in the raw memory
 inline auto values_offset(const uint8_t* data) -> std::size_t
 {
-    // Skip header + prefix + names
-    std::size_t offset = header_bytes() + max_prefix_bytes(data) +
+    // Skip header + scope + names
+    std::size_t offset = header_bytes() + max_scope_bytes(data) +
                          (max_metrics(data) * max_name_bytes(data));
 
     // align to 8 bytes
@@ -118,40 +118,25 @@ inline auto values_offset(const uint8_t* data) -> std::size_t
 }
 
 /// @param data The raw memory for the counters
-/// @return The raw prefix in memory
-inline auto raw_prefix(uint8_t* data) -> char*
+/// @return The raw scope in memory
+inline auto raw_scope(uint8_t* data) -> char*
 {
     assert(data != nullptr);
 
-    uint8_t* prefix_data = data + prefix_offset();
+    uint8_t* scope_data = data + scope_offset();
 
-    return (char*)prefix_data;
+    return (char*)scope_data;
 }
 
 /// @param data The raw memory for the counters
-/// @return The raw prefix in memory
-inline auto raw_prefix(const uint8_t* data) -> const char*
+/// @return The raw scope in memory
+inline auto raw_scope(const uint8_t* data) -> const char*
 {
     assert(data != nullptr);
 
-    const uint8_t* prefix_data = data + prefix_offset();
+    const uint8_t* scope_data = data + scope_offset();
 
-    return (const char*)prefix_data;
-}
-
-/// @param text The text to prepend to the prefix
-/// @param data The raw memory for the counters
-inline void prepend_prefix(const std::string& text, uint8_t* data)
-{
-    char* prefix_data = raw_prefix(data);
-    std::size_t text_size = text.size();
-    std::size_t prefix_size = std::strlen(prefix_data);
-    assert((text_size + prefix_size <= max_prefix_bytes(data)));
-
-    std::memcpy(prefix_data + text_size + 1, prefix_data, prefix_size);
-    std::memcpy(prefix_data, text.data(), text_size);
-    prefix_data[text_size] = '_';
-    // prefix_data[text_size + prefix_size + 1] = '\0';
+    return (const char*)scope_data;
 }
 
 /// @param data The raw memory for the counters
@@ -240,7 +225,7 @@ inline auto is_metric_initialized(const uint8_t* data, std::size_t index)
 
 /// @param data The raw memory for the counters
 /// @return The counters in json-format
-inline auto to_json(const uint8_t* data) -> std::string
+inline auto to_json(const uint8_t* data) -> bourne::json
 {
     assert(data != nullptr);
     bourne::json counters = bourne::json::object();
@@ -258,7 +243,7 @@ inline auto to_json(const uint8_t* data) -> std::string
         counters[n] = v;
     }
 
-    return counters.dump();
+    return counters;
 }
 
 }

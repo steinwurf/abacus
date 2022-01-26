@@ -10,10 +10,10 @@
 TEST(test_memory, default_test)
 {
     uint64_t count = 0xFFFFFFFFFFFFFFFFU;
-    uint16_t max_name_bytes = 10;
-    uint16_t max_prefix_bytes = 32;
+    uint16_t max_name_bytes = 32;
+    uint16_t max_scope_bytes = 32;
     uint16_t max_metrics = 32;
-    abacus::metrics metrics(max_metrics, max_name_bytes, max_prefix_bytes,
+    abacus::metrics metrics(max_metrics, max_name_bytes, max_scope_bytes,
                             "metrics");
 
     for (std::size_t i = 0; i < max_metrics; i++)

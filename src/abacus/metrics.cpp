@@ -17,17 +17,17 @@ inline namespace STEINWURF_ABACUS_VERSION
 {
 
 metrics::metrics(std::size_t max_metrics, std::size_t max_name_bytes,
-                 std::size_t max_prefix_bytes, const std::string& prefix) :
+                 std::size_t max_scope_bytes, const std::string& scope) :
     m_max_metrics(max_metrics),
-    m_max_name_bytes(max_name_bytes), m_max_prefix_bytes(max_prefix_bytes)
+    m_max_name_bytes(max_name_bytes), m_max_scope_bytes(max_scope_bytes)
 {
     assert(m_max_metrics > 0);
     assert(m_max_metrics <= std::numeric_limits<uint16_t>::max());
     assert(m_max_name_bytes > 0);
     assert(m_max_name_bytes <= std::numeric_limits<uint16_t>::max());
-    assert(m_max_prefix_bytes > 0);
-    assert(m_max_prefix_bytes <= std::numeric_limits<uint16_t>::max());
-    assert(prefix.size() < m_max_prefix_bytes);
+    assert(m_max_scope_bytes > 0);
+    assert(m_max_scope_bytes <= std::numeric_limits<uint16_t>::max());
+    assert(scope.size() < m_max_scope_bytes);
 
     // Allocate the memory for the counters
     std::size_t memory_needed = storage_bytes();
@@ -40,12 +40,13 @@ metrics::metrics(std::size_t max_metrics, std::size_t max_name_bytes,
 
     // // Write the header
     new (m_data) uint16_t(m_max_name_bytes);
-    new (m_data + 2) uint16_t(m_max_prefix_bytes);
+    new (m_data + 2) uint16_t(m_max_scope_bytes);
     new (m_data + 4) uint16_t(m_max_metrics);
     new (m_data + 6) uint8_t(8);
 
-    // Write the prefix
-    set_metrics_prefix(prefix);
+    // Write the scope
+    char* scope_data = detail::raw_scope(m_data);
+    std::memcpy(scope_data, scope.data(), scope.size());
 
     assert((reinterpret_cast<uint64_t>(detail::raw_value(m_data, 0)) % 8U) ==
            0U);
@@ -66,16 +67,9 @@ auto metrics::max_name_bytes() const -> std::size_t
     return m_max_name_bytes;
 }
 
-auto metrics::max_prefix_bytes() const -> std::size_t
+auto metrics::max_scope_bytes() const -> std::size_t
 {
-    return m_max_prefix_bytes;
-}
-
-void metrics::set_metrics_prefix(const std::string& prefix)
-{
-    // Write the prefix
-    char* prefix_data = detail::raw_prefix(m_data);
-    std::memcpy(prefix_data, prefix.data(), prefix.size());
+    return m_max_scope_bytes;
 }
 
 auto metrics::metric_name(std::size_t index) const -> std::string
@@ -92,6 +86,8 @@ auto metrics::metric_value(std::size_t index) const -> uint64_t
 
 auto metrics::metric_index(const std::string& name) const -> std::size_t
 {
+    assert(name.size() < m_max_name_bytes);
+
     for (std::size_t i = 0; i < m_metrics_count; ++i)
     {
         if (is_metric_initialized(i) && metric_name(i) == name)
@@ -103,30 +99,24 @@ auto metrics::metric_index(const std::string& name) const -> std::size_t
     assert(false && "Metric index was not found");
 }
 
-auto metrics::metric_prefix(std::size_t index) const -> std::string
+auto metrics::scope() const -> std::string
 {
-    assert(is_metric_initialized(index));
-    return detail::raw_prefix(m_data);
+    std::string scope(detail::raw_scope(m_data));
+    return scope;
 }
 
 auto metrics::initialize_metric(const std::string& name) -> metric
 {
-    // We check for less than since there also needs to be at least one
-    // zero terminating byte
-    std::string prefixed_name = name;
+    std::string scoped_name =
+        (std::string)detail::raw_scope(m_data) + "." + name;
 
-    for (auto text : m_prefixes)
-    {
-        prefixed_name = text + "_" + prefixed_name;
-    }
-
-    assert(prefixed_name.size() < m_max_name_bytes);
+    assert(scoped_name.size() < m_max_name_bytes);
 
     char* name_data = detail::raw_name(m_data, m_metrics_count);
     uint64_t* value_data = detail::raw_value(m_data, m_metrics_count);
 
     // Copy the name
-    std::memcpy(name_data, prefixed_name.data(), prefixed_name.size());
+    std::memcpy(name_data, scoped_name.data(), scoped_name.size());
 
     // Use memcpy here for now, since placement new causes Bus Error on
     // Raspberry pi
@@ -143,19 +133,15 @@ auto metrics::metrics_count() const -> std::size_t
     return m_metrics_count;
 }
 
-void metrics::prepend_prefix(const std::string& text)
+void metrics::add_scope(const std::string& text)
 {
-    detail::prepend_prefix(text, m_data);
-
-    for (std::size_t i = 0; i < m_metrics_count; ++i)
-    {
-        if (is_metric_initialized(i))
-        {
-            detail::prepend_name(text, i, m_data);
-        }
-    }
-
-    m_prefixes.push_back(text);
+    char* scope_data = detail::raw_scope(m_data);
+    std::size_t scope_size = std::strlen(scope_data);
+    std::size_t text_size = text.size();
+    std::memmove(scope_data + text_size + 1, scope_data, scope_size);
+    std::memcpy(scope_data, text.data(), text_size);
+    scope_data[text_size] = '.';
+    scope_data[scope_size + text_size + 1] = '\0';
 }
 
 void metrics::copy_storage(uint8_t* data) const
@@ -167,7 +153,7 @@ void metrics::copy_storage(uint8_t* data) const
 
 auto metrics::storage_bytes() const -> std::size_t
 {
-    std::size_t values_offset = detail::header_bytes() + m_max_prefix_bytes +
+    std::size_t values_offset = detail::header_bytes() + m_max_scope_bytes +
                                 m_max_metrics * m_max_name_bytes;
 
     values_offset += detail::values_alignment_padding(values_offset);
@@ -209,13 +195,13 @@ void metrics::reset_metric(std::size_t index)
 
 auto metrics::to_json() const -> std::string
 {
-    bourne::json counters_json = bourne::json::parse(detail::to_json(m_data));
+    bourne::json counters_json = detail::to_json(m_data);
 
     bourne::json full_json = bourne::json::object();
 
-    std::string prefix = detail::raw_prefix(m_data);
+    std::string scope = detail::raw_scope(m_data);
 
-    full_json[prefix] = counters_json;
+    full_json[scope] = counters_json;
 
     return full_json.dump();
 }
