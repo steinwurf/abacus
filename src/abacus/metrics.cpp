@@ -142,6 +142,16 @@ void metrics::add_scope(const std::string& text)
     std::memcpy(scope_data, text.data(), text_size);
     scope_data[text_size] = '.';
     scope_data[scope_size + text_size + 1] = '\0';
+
+    for (std::size_t i = 0; i < m_metrics_count; ++i)
+    {
+        char* name_data = detail::raw_name(m_data, i);
+        std::size_t name_size = std::strlen(name_data);
+        std::memmove(name_data + text_size + 1, name_data, name_size);
+        std::memcpy(name_data, text.data(), text_size);
+        name_data[text_size] = '.';
+        name_data[name_size + text_size + 1] = '\0';
+    }
 }
 
 void metrics::copy_storage(uint8_t* data) const

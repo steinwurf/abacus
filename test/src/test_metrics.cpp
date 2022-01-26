@@ -132,14 +132,14 @@ TEST(test_metrics, add_scope)
     abacus::metrics metrics(max_metrics, max_name_bytes, max_scope_bytes,
                             "metrics");
 
-    metrics.add_scope("test");
-
     for (std::size_t i = 0; i < max_metrics; i++)
     {
         std::string name = "metric" + std::to_string(i);
         auto metric = metrics.initialize_metric(name);
         metric = i;
     }
+
+    metrics.add_scope("test");
 
     EXPECT_EQ(metrics.metrics_count(), max_metrics);
 

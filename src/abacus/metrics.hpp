@@ -95,10 +95,13 @@ public:
     auto metrics_count() const -> std::size_t;
 
     /// @param text The text to add to the scope of the metrics object.
-    ///             The extra scopes can be used to access different metrics
-    ///             objects. For example if you have a metrics object with
-    ///             scope "bar", calling add_scope("foo") will make
-    ///             the scope of the metrics object "baz", "foo.bar.baz".
+    ///
+    /// The extra scopes can be used to access different metrics
+    /// objects. For example if you have a metrics object with
+    /// scope "bar", calling add_scope("foo") will make
+    /// the scope of the metrics object "baz", "foo.bar.baz" and
+    /// change the name of any currently initialized metric to
+    /// "foo.bar.metric_name".
     void add_scope(const std::string& text);
 
     /// Copies the memory backing the counter storage to a data pointer
