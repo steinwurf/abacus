@@ -43,16 +43,16 @@ auto view_iterator::view_count() const -> std::size_t
     return m_views.size();
 }
 
-auto view_iterator::to_json(bool prettier) const -> std::string
+auto view_iterator::to_json() const -> std::string
 {
-    std::string newline = prettier ? "\n" : "";
+    std::string newline = "\n";
     std::stringstream json_stream;
     json_stream << "{" << newline;
 
     for (std::size_t i = 0; i < m_views.size(); ++i)
     {
         view view = m_views[i];
-        json_stream << view.to_json(prettier, false);
+        json_stream << view.to_json(false);
         if (i < m_views.size() - 1)
         {
             json_stream << "," << newline;

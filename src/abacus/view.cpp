@@ -4,6 +4,7 @@
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
 #include <cstring>
+#include <iostream>
 #include <limits>
 
 #include "detail/raw.hpp"
@@ -18,6 +19,7 @@ void view::set_data(const uint8_t* data)
 {
     assert(data != nullptr);
     m_data = data;
+    m_scope = detail::raw_scope(m_data);
 }
 
 auto view::data() const -> const uint8_t*
@@ -36,16 +38,21 @@ auto view::max_metrics() const -> uint16_t
     return detail::max_metrics(m_data);
 }
 
+auto view::scope_size() const -> uint8_t
+{
+    return detail::scope_size(m_data);
+}
+
 auto view::metric_name(std::size_t index) const -> std::string
 {
-    assert(is_metric_initialized(index));
+    assert(has_metric(index));
     std::string name = detail::raw_name(m_data, index);
     return name;
 }
 
 auto view::metric_value(std::size_t index) const -> uint64_t
 {
-    assert(is_metric_initialized(index));
+    assert(has_metric(index));
     return *detail::raw_value(m_data, index);
 }
 
@@ -54,7 +61,7 @@ auto view::metric_index(const std::string& name) const -> std::size_t
 
     for (std::size_t index = 0; index < max_metrics(); ++index)
     {
-        if (is_metric_initialized(index) && metric_name(index) == name)
+        if (has_metric(index) && metric_name(index) == name)
         {
             return index;
         }
@@ -65,13 +72,13 @@ auto view::metric_index(const std::string& name) const -> std::size_t
     return std::numeric_limits<std::size_t>::max();
 }
 
-auto view::metrics_count() const -> std::size_t
+auto view::count() const -> std::size_t
 {
     std::size_t count = 0U;
 
     for (std::size_t i = 0U; i < max_metrics(); ++i)
     {
-        if (is_metric_initialized(i))
+        if (has_metric(i))
         {
             ++count;
         }
@@ -80,25 +87,30 @@ auto view::metrics_count() const -> std::size_t
     return count;
 }
 
-auto view::is_metric_initialized(std::size_t index) const -> bool
+auto view::scope() const -> std::string
 {
-    return detail::is_metric_initialized(m_data, index);
+    return m_scope;
+}
+
+auto view::has_metric(std::size_t index) const -> bool
+{
+    return detail::has_metric(m_data, index);
 }
 
 auto view::view_bytes() const -> std::size_t
 {
-    assert(reinterpret_cast<uint64_t>(m_data) % 8U == 0U);
     std::size_t bytes_before_values =
         detail::header_bytes() + max_name_bytes() * max_metrics();
-
+    std::size_t scope_size_with_null =
+        scope_size() == 0U ? scope_size() : scope_size() + 1U;
     return bytes_before_values +
            detail::values_alignment_padding(bytes_before_values) +
-           max_metrics() * sizeof(uint64_t);
+           max_metrics() * sizeof(uint64_t) + scope_size_with_null;
 }
 
-auto view::to_json(bool top_level, bool prettier) const -> std::string
+auto view::to_json(bool top_level) const -> std::string
 {
-    return detail::to_json(m_data, top_level, prettier);
+    return detail::to_json(m_data, scope(), top_level);
 }
 
 }

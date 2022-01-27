@@ -36,10 +36,8 @@ public:
     /// @return The number of views/metrics in memory
     auto view_count() const -> std::size_t;
 
-    /// @param prettier If true, the output will be more human-readable format.
-    /// Otherwise, it will be compact JSON.
     /// @return Json formatted string of the views
-    auto to_json(bool prettier = true) const -> std::string;
+    auto to_json() const -> std::string;
 
 private:
     /// Vector containing the different views

@@ -15,28 +15,28 @@ int main()
     /// Choose the constructor values for the metrics class
     uint64_t max_metrics = 10;
     uint64_t max_name_bytes = 50;
-    abacus::metrics vw(max_metrics, max_name_bytes, "volkswagen");
-    abacus::metrics bmw(max_metrics, max_name_bytes, "bmw");
+    abacus::metrics vw(max_metrics, max_name_bytes);
+    abacus::metrics bmw(max_metrics, max_name_bytes);
 
-    vw.add_scope("car1");
-    bmw.add_scope("car2");
+    vw.push_scope("volkswagen");
+    bmw.push_scope("bmw");
     /// A car has headlights. Two of them usually
-    auto headlights1 = vw.initialize_metric("headlights");
-    auto headlights2 = bmw.initialize_metric("headlights");
+    auto headlights1 = vw.add_metric("headlights");
+    auto headlights2 = bmw.add_metric("headlights");
 
     headlights1 += 2;
     headlights2 += 2;
 
     /// What about the gas mileage?
-    auto fuel_consumption1 = vw.initialize_metric("fuel_consumption");
-    auto fuel_consumption2 = bmw.initialize_metric("fuel_consumption");
+    auto fuel_consumption1 = vw.add_metric("fuel_consumption");
+    auto fuel_consumption2 = bmw.add_metric("fuel_consumption");
 
     fuel_consumption1 += 20;
     fuel_consumption2 += 15;
 
     /// Most cars are 4-wheelers as well
-    auto wheels1 = vw.initialize_metric("wheels");
-    auto wheels2 = bmw.initialize_metric("wheels");
+    auto wheels1 = vw.add_metric("wheels");
+    auto wheels2 = bmw.add_metric("wheels");
 
     wheels1 += 4;
     wheels2 += 4;
@@ -65,11 +65,11 @@ int main()
         auto view = car_iterator.get_view(i);
         std::cout << "View has the following metrics:" << std::endl;
 
-        for (std::size_t i = 0; i < view.metrics_count(); i++)
+        for (std::size_t i = 0; i < view.count(); i++)
         {
-            /// If a counter in memory has no name, it's not yet initialized.
+            /// If a counter in memory has no name, it's not yet addd.
             /// We will ignore it.
-            if (!view.is_metric_initialized(i))
+            if (!view.has_metric(i))
             {
                 continue;
             }

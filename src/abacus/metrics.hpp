@@ -31,7 +31,7 @@ inline namespace STEINWURF_ABACUS_VERSION
 /// The header consists of 42 bits of 3 values:
 /// 1. 16 bit denoting the max size of name
 /// 2. 16 bit denoting the max number of counters
-/// 3. 16 bit denoting the max size of scope
+/// 3. 8 bit denoting the size of the scope
 /// 4. 8 bit denoting the max size of values
 class metrics
 {
@@ -42,9 +42,7 @@ public:
     /// contain. Must be a number that can fit in 2 bytes.
     /// @param max_name_bytes The maximum length in bytes the title/names of the
     /// counters will contain. Must be a number that can fit in 2 bytes.
-    /// @param scope The scope of the metrics object
-    metrics(std::size_t max_metrics, std::size_t max_name_bytes,
-            const std::string& scope);
+    metrics(std::size_t max_metrics, std::size_t max_name_bytes);
 
     /// Destructor
     ~metrics();
@@ -77,28 +75,30 @@ public:
     /// @return The scope of the counters as a string.
     auto scope() const -> std::string;
 
+    /// @return The size of the scope in bytes.
+    auto scope_size() const -> std::size_t;
+
     /// @param name The name of the new counter. Must be less than
     /// max_name_bytes bytes
     /// @return The value of the counter
-    auto initialize_metric(const std::string& name) -> metric;
+    auto add_metric(const std::string& name) -> metric;
 
     /// @param index The index of the new counter. Must be less than
     /// max_metrics.
     /// @return True if the counter has been initialized
-    auto is_metric_initialized(std::size_t index) const -> bool;
+    auto has_metric(std::size_t index) const -> bool;
 
     /// @return The number of metrics currently initialized in the object
-    auto metrics_count() const -> std::size_t;
+    auto count() const -> std::size_t;
 
     /// @param text The text to add to the scope of the metrics object.
     ///
-    /// The extra scopes can be used to access different metrics
-    /// objects. For example if you have a metrics object with
-    /// scope "bar", calling add_scope("foo") will make
-    /// the scope of the metrics object "baz", "foo.bar.baz" and
-    /// change the name of any currently initialized metric to
-    /// "foo.bar.metric_name".
-    void add_scope(const std::string& text);
+    /// The extra scopes can be used to access different metric
+    /// objects from a view. The scopes
+    void push_scope(const std::string& text);
+
+    /// Removes the last pushed scope from the scope.
+    void pop_scope();
 
     /// Copies the memory backing the counter storage to a data pointer
     /// @param data The data pointer to copy the raw memory to
@@ -115,10 +115,8 @@ public:
     /// max_metrics.
     void reset_metric(std::size_t index);
 
-    /// @param prettier If true, the output will be more human-readable format.
-    /// Otherwise, it will be compact JSON.
     /// @return All counters in json format
-    auto to_json(bool prettier = true) const -> std::string;
+    auto to_json() const -> std::string;
 
 private:
     /// No copy
@@ -138,7 +136,7 @@ private:
     std::size_t m_max_metrics = 0;
 
     /// The current number of metrics that have been initialized
-    std::size_t m_metrics_count = 0;
+    std::size_t m_count = 0;
 
     /// The maximum number of bytes that can be used for the name of each metric
     std::size_t m_max_name_bytes = 0;

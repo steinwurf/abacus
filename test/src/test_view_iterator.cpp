@@ -13,17 +13,15 @@ TEST(test_view_iterator, default_constructor)
 {
     uint16_t max_metrics = 10;
     uint16_t max_name_bytes = 32;
-    std::string scope1 = "metrics1";
-    std::string scope2 = "metrics2";
 
-    abacus::metrics metrics1(max_metrics, max_name_bytes, scope1);
-    abacus::metrics metrics2(max_metrics, max_name_bytes, scope2);
+    abacus::metrics metrics1(max_metrics, max_name_bytes);
+    abacus::metrics metrics2(max_metrics, max_name_bytes);
+
+    metrics1.push_scope("test1");
+    metrics2.push_scope("test2");
 
     std::vector<uint8_t> combined_data(metrics1.storage_bytes() +
                                        metrics2.storage_bytes());
-
-    // Needs alignment for ARM
-    EXPECT_EQ(combined_data.size() % 8, 0U);
 
     metrics1.copy_storage(combined_data.data());
     metrics2.copy_storage(combined_data.data() + metrics1.storage_bytes());
@@ -37,7 +35,9 @@ TEST(test_view_iterator, default_constructor)
 
     EXPECT_EQ(max_metrics, iterator_view1.max_metrics());
     EXPECT_EQ(max_name_bytes, iterator_view1.max_name_bytes());
+    EXPECT_STREQ(metrics1.scope().c_str(), iterator_view1.scope().c_str());
 
     EXPECT_EQ(max_metrics, iterator_view2.max_metrics());
     EXPECT_EQ(max_name_bytes, iterator_view2.max_name_bytes());
+    EXPECT_STREQ(metrics2.scope().c_str(), iterator_view2.scope().c_str());
 }

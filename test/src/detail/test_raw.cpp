@@ -46,9 +46,9 @@ TEST(detail_test_raw, api)
 
     EXPECT_EQ(abacus::detail::raw_name(data.data(), 0), metric_name_1);
     EXPECT_EQ(*abacus::detail::raw_value(data.data(), 0), 1U);
-    EXPECT_EQ(abacus::detail::is_metric_initialized(data.data(), 0), true);
+    EXPECT_EQ(abacus::detail::has_metric(data.data(), 0), true);
 
     EXPECT_EQ(abacus::detail::raw_name(data.data(), 1), metric_name_2);
     EXPECT_EQ(*abacus::detail::raw_value(data.data(), 1), 2U);
-    EXPECT_EQ(abacus::detail::is_metric_initialized(data.data(), 1), true);
+    EXPECT_EQ(abacus::detail::has_metric(data.data(), 1), true);
 }
