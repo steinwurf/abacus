@@ -4,6 +4,7 @@
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
 #include <cstring>
+#include <limits>
 
 #include "detail/raw.hpp"
 #include "view.hpp"
