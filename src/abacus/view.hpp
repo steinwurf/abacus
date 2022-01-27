@@ -70,6 +70,9 @@ public:
 
     /// @param prettier If true, the output will be more human-readable format.
     /// Otherwise, it will be compact JSON.
+    /// @param top_level If true, the json produced will be closed by brackets.
+    /// Intented to be used with the view_iterator class to gather all metrics
+    /// in a JSON object.
     /// @return All counters in json format
     auto to_json(bool prettier = true, bool top_level = true) const
         -> std::string;

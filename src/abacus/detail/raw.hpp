@@ -181,6 +181,9 @@ inline auto metrics_count(const uint8_t* data) -> std::size_t
 /// @param data The raw memory for the counters
 /// @param prettier If true, the output will be more human-readable format.
 /// Otherwise, it will be compact JSON.
+/// @param top_level If true, the json produced will be closed by brackets.
+/// Intented to be used with the view_iterator class to gather all metrics
+/// in a JSON object.
 /// @return The counters in json-format
 inline auto to_json(const uint8_t* data, bool prettier = true,
                     bool top_level = true) -> std::string
