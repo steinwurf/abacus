@@ -182,8 +182,8 @@ inline auto metrics_count(const uint8_t* data) -> std::size_t
 /// @param prettier If true, the output will be more human-readable format.
 /// Otherwise, it will be compact JSON.
 /// @return The counters in json-format
-inline auto to_json(const uint8_t* data, bool top_level = true,
-                    bool prettier = true) -> std::string
+inline auto to_json(const uint8_t* data, bool prettier = true,
+                    bool top_level = true) -> std::string
 {
     std::string space = prettier ? " " : "";
     std::string newline = prettier ? "\n" : "";

@@ -52,7 +52,7 @@ auto view_iterator::to_json(bool prettier) const -> std::string
     for (std::size_t i = 0; i < m_views.size(); ++i)
     {
         view view = m_views[i];
-        json_stream << view.to_json(false, prettier);
+        json_stream << view.to_json(prettier, false);
         if (i < m_views.size() - 1)
         {
             json_stream << "," << newline;
