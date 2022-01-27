@@ -60,6 +60,8 @@ auto view::metric_index(const std::string& name) const -> std::size_t
     }
 
     assert(false && "Metric index was not found");
+
+    return std::numeric_limits<std::size_t>::max();
 }
 
 auto view::metrics_count() const -> std::size_t
@@ -93,9 +95,9 @@ auto view::view_bytes() const -> std::size_t
            max_metrics() * sizeof(uint64_t);
 }
 
-auto view::to_json(bool prettier) const -> std::string
+auto view::to_json(bool top_level, bool prettier) const -> std::string
 {
-    return detail::to_json(m_data, prettier);
+    return detail::to_json(m_data, top_level, prettier);
 }
 
 }

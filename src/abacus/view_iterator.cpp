@@ -45,32 +45,22 @@ auto view_iterator::view_count() const -> std::size_t
 
 auto view_iterator::to_json(bool prettier) const -> std::string
 {
-    std::string space = prettier ? " " : "";
     std::string newline = prettier ? "\n" : "";
-    std::string tab = prettier ? "\t" : "";
-
-    std::string counters_json = "{" + newline;
+    std::stringstream json_stream;
+    json_stream << "{" << newline;
 
     for (std::size_t i = 0; i < m_views.size(); ++i)
     {
         view view = m_views[i];
-        for (std::size_t i = 0; i < view.metrics_count(); ++i)
+        json_stream << view.to_json(false, prettier);
+        if (i < m_views.size() - 1)
         {
-            auto n = view.metric_name(i);
-            auto v = view.metric_value(i);
-
-            counters_json +=
-                tab + "\"" + std::string(n) + "\":" + space + std::to_string(v);
-            if (i != (view.metrics_count() - 1U))
-            {
-                counters_json += "," + newline;
-            }
+            json_stream << "," << newline;
         }
-        counters_json += ",";
     }
-    counters_json += newline + "}";
+    json_stream << newline << "}";
 
-    return counters_json;
+    return json_stream.str();
 }
 
 }

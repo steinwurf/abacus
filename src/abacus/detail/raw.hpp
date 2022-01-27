@@ -9,6 +9,7 @@
 #include <cassert>
 #include <cstdint>
 #include <cstring>
+#include <sstream>
 
 #include "../version.hpp"
 
@@ -181,13 +182,18 @@ inline auto metrics_count(const uint8_t* data) -> std::size_t
 /// @param prettier If true, the output will be more human-readable format.
 /// Otherwise, it will be compact JSON.
 /// @return The counters in json-format
-inline auto to_json(const uint8_t* data, bool prettier = false) -> std::string
+inline auto to_json(const uint8_t* data, bool top_level = true,
+                    bool prettier = true) -> std::string
 {
     std::string space = prettier ? " " : "";
     std::string newline = prettier ? "\n" : "";
     std::string tab = prettier ? "\t" : "";
     assert(data != nullptr);
-    std::string counters_json = "{" + newline;
+    std::stringstream json_stream;
+    if (top_level)
+    {
+        json_stream << "{" << newline;
+    }
 
     for (std::size_t i = 0; i < metrics_count(data); ++i)
     {
@@ -199,16 +205,19 @@ inline auto to_json(const uint8_t* data, bool prettier = false) -> std::string
         auto n = raw_name(data, i);
         auto v = *raw_value(data, i);
 
-        counters_json +=
-            tab + "\"" + std::string(n) + "\":" + space + std::to_string(v);
+        json_stream << tab << "\"" << std::string(n) << "\":" << space
+                    << std::to_string(v);
         if (i != (metrics_count(data) - 1U))
         {
-            counters_json += "," + newline;
+            json_stream << "," << newline;
         }
     }
-    counters_json += newline + "}";
+    if (top_level)
+    {
+        json_stream << newline << "}";
+    }
 
-    return counters_json;
+    return json_stream.str();
 }
 
 }

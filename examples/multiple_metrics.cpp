@@ -28,8 +28,8 @@ int main()
     headlights2 += 2;
 
     /// What about the gas mileage?
-    auto fuel_consumption1 = vw.initialize_metric("fuel consumption km/L");
-    auto fuel_consumption2 = bmw.initialize_metric("fuel consumption km/L");
+    auto fuel_consumption1 = vw.initialize_metric("fuel_consumption");
+    auto fuel_consumption2 = bmw.initialize_metric("fuel_consumption");
 
     fuel_consumption1 += 20;
     fuel_consumption2 += 15;
@@ -42,8 +42,8 @@ int main()
     wheels2 += 4;
 
     /// We can print out the counters neatly.
-    std::cout << vw.to_json(true) << std::endl;
-    std::cout << bmw.to_json(true) << std::endl;
+    std::cout << vw.to_json() << std::endl;
+    std::cout << bmw.to_json() << std::endl;
 
     /// We want to export the metrics memory, so we need a new storage.
     /// We copy both metrics into one data storage.
@@ -86,13 +86,13 @@ int main()
     {
         auto view = car_iterator.get_view(i);
         std::cout << "View has the following metrics:" << std::endl;
-        std::cout << view.to_json(true) << std::endl;
+        std::cout << view.to_json() << std::endl;
     }
 
-    /// Or you can even call the view_iterator::to_json(true) function to get
+    /// Or you can even call the view_iterator::to_json() function to get
     /// the json-format of all the metrics in the data storage:
-    std::cout << "view_iterator::to_json(true):" << std::endl
-              << car_iterator.to_json(true) << std::endl;
+    std::cout << "view_iterator::to_json():" << std::endl
+              << car_iterator.to_json() << std::endl;
 
     return 0;
 }

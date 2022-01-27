@@ -118,7 +118,7 @@ public:
     /// @param prettier If true, the output will be more human-readable format.
     /// Otherwise, it will be compact JSON.
     /// @return All counters in json format
-    auto to_json(bool prettier = false) const -> std::string;
+    auto to_json(bool prettier = true) const -> std::string;
 
 private:
     /// No copy

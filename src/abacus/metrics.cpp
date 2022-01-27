@@ -84,6 +84,8 @@ auto metrics::metric_index(const std::string& name) const -> std::size_t
     }
 
     assert(false && "Metric index was not found");
+
+    return std::numeric_limits<std::size_t>::max();
 }
 
 auto metrics::scope() const -> std::string
