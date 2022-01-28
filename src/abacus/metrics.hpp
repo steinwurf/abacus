@@ -50,10 +50,6 @@ public:
     /// constructor
     auto max_metrics() const -> std::size_t;
 
-    /// @return the maximum number of bytes used for the scope of the metrics
-    /// object
-    auto max_scope_bytes() const -> std::size_t;
-
     /// @return the maximum number of bytes used for a metric name that was
     /// provided to the constructor
     auto max_name_bytes() const -> std::size_t;
