@@ -20,8 +20,8 @@ TEST(test_view, api)
     metrics.push_scope(scope);
 
     std::size_t storage_size =
-        6 + (8 - (6 + max_metrics * max_name_bytes) % 8) +
-        max_metrics * (max_name_bytes + sizeof(uint64_t)) + 6;
+        7 + (8 - (7 + max_metrics * max_name_bytes) % 8) +
+        max_metrics * (max_name_bytes + sizeof(uint64_t)) + 8;
 
     EXPECT_EQ(metrics.storage_bytes(), storage_size);
 

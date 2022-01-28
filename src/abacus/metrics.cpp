@@ -38,7 +38,7 @@ metrics::metrics(std::size_t max_metrics, std::size_t max_name_bytes) :
     new (m_data) uint16_t(m_max_name_bytes);
     new (m_data + 2) uint16_t(m_max_metrics);
     new (m_data + 4) uint8_t(8);
-    new (m_data + 5) uint8_t(0);
+    new (m_data + 5) uint16_t(0);
 
     assert((reinterpret_cast<uint64_t>(detail::raw_value(m_data, 0)) % 8U) ==
            0U);
@@ -137,7 +137,7 @@ void metrics::push_scope(const std::string& text)
     // Update the scope size
     uint8_t scope_size = (uint8_t)m_scope.size();
 
-    uint8_t* scope_size_data = detail::raw_scope_size(m_data);
+    uint16_t* scope_size_data = detail::raw_scope_size(m_data);
     std::memcpy(scope_size_data, &scope_size, sizeof(uint8_t));
 }
 
@@ -150,8 +150,8 @@ void metrics::pop_scope()
     m_scopes.pop_back();
 
     // Update the scope size
-    updated_scope_size = (uint8_t)updated_scope_size;
-    uint8_t* scope_size_data = detail::raw_scope_size(m_data);
+    updated_scope_size = (uint16_t)updated_scope_size;
+    uint16_t* scope_size_data = detail::raw_scope_size(m_data);
     std::memcpy(scope_size_data, &updated_scope_size, sizeof(uint8_t));
 }
 
@@ -164,8 +164,6 @@ void metrics::copy_storage(uint8_t* data) const
         std::memcpy(data + detail::scope_offset(m_data), m_scope.c_str(),
                     scope_size());
     }
-    // Add null terminator
-    data[detail::scope_offset(m_data) + scope_size()] = '\0';
 }
 
 auto metrics::storage_bytes() const -> std::size_t
@@ -181,13 +179,14 @@ auto metrics::storage_bytes() const -> std::size_t
 
     std::size_t scope_bytes = scope_size();
 
-    // if we have a scope, add the null terminator.
+    std::size_t scope_padding = 0U;
+
     if (scope_bytes > 0U)
     {
-        scope_bytes += 1U;
+        scope_padding = 8 - (scope_bytes % 8);
     }
 
-    return values_offset + value_bytes + scope_bytes;
+    return values_offset + value_bytes + scope_bytes + scope_padding;
 }
 
 auto metrics::has_metric(std::size_t index) const -> bool

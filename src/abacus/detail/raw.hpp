@@ -23,7 +23,7 @@ namespace detail
 /// @return The size of the header in bytes
 inline auto header_bytes() -> std::size_t
 {
-    return 6;
+    return 7;
 }
 
 /// @param data The raw memory for the counters
@@ -68,31 +68,29 @@ inline auto scope_size_offset() -> std::size_t
 
 /// @param data The raw memory for the counters
 /// @return The raw memory of the scope_size.
-inline auto raw_scope_size(uint8_t* data) -> uint8_t*
+inline auto raw_scope_size(uint8_t* data) -> uint16_t*
 {
     assert(data != nullptr);
     uint8_t* scope_size_data = data + scope_size_offset();
-    return scope_size_data;
+    return (uint16_t*)scope_size_data;
 }
 
 /// @param data The raw memory for the counters
 /// @return The raw memory of the scope_size.
-inline auto raw_scope_size(const uint8_t* data) -> const uint8_t*
+inline auto raw_scope_size(const uint8_t* data) -> const uint16_t*
 {
     assert(data != nullptr);
     const uint8_t* scope_size_data = data + scope_size_offset();
-    return scope_size_data;
+    return (const uint16_t*)scope_size_data;
 }
 
 /// @param data The raw memory for the counters
 /// @return The current size of the scope the raw memory contains
-inline auto scope_size(const uint8_t* data) -> uint8_t
+inline auto scope_size(const uint8_t* data) -> uint16_t
 {
     assert(data != nullptr);
 
-    const uint8_t* scope_size_data = raw_scope_size(data);
-
-    return *scope_size_data;
+    return *raw_scope_size(data);
 }
 
 /// @param data The raw memory for the counters
@@ -238,6 +236,19 @@ inline auto raw_scope(const uint8_t* data) -> const char*
     const uint8_t* scope_data = data + scope_offset(data);
 
     return (const char*)scope_data;
+}
+
+inline auto scope_alignment_padding(uint8_t* data) -> std::size_t
+{
+    std::size_t remainder = ((scope_offset(data) + scope_size(data)) % 8);
+    if (remainder == 0)
+    {
+        return 0;
+    }
+    else
+    {
+        return 8 - remainder;
+    }
 }
 
 /// @param data The raw memory for the counters

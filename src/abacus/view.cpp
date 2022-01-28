@@ -19,7 +19,8 @@ void view::set_data(const uint8_t* data)
 {
     assert(data != nullptr);
     m_data = data;
-    m_scope = detail::raw_scope(m_data);
+    m_scope =
+        std::string(detail::raw_scope(m_data), detail::scope_size(m_data));
 }
 
 auto view::data() const -> const uint8_t*
@@ -101,11 +102,12 @@ auto view::view_bytes() const -> std::size_t
 {
     std::size_t bytes_before_values =
         detail::header_bytes() + max_name_bytes() * max_metrics();
-    std::size_t scope_size_with_null =
-        scope_size() == 0U ? scope_size() : scope_size() + 1U;
+    std::size_t scope_size_with_padding =
+        scope_size() == 0U ? scope_size()
+                           : scope_size() + (8U - scope_size() % 8U);
     return bytes_before_values +
            detail::values_alignment_padding(bytes_before_values) +
-           max_metrics() * sizeof(uint64_t) + scope_size_with_null;
+           max_metrics() * sizeof(uint64_t) + scope_size_with_padding;
 }
 
 auto view::to_json(bool top_level) const -> std::string

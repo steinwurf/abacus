@@ -31,8 +31,8 @@ inline namespace STEINWURF_ABACUS_VERSION
 /// The header consists of 42 bits of 3 values:
 /// 1. 16 bit denoting the max size of name
 /// 2. 16 bit denoting the max number of counters
-/// 3. 8 bit denoting the size of the scope
-/// 4. 8 bit denoting the max size of values
+/// 3. 8 bit denoting the max size of values
+/// 4. 16 bit denoting the size of the scope
 class metrics
 {
 
@@ -97,10 +97,12 @@ public:
     /// objects from a view. The scopes
     void push_scope(const std::string& text);
 
-    /// Removes the last pushed scope from the scope.
+    /// Removes the last pushed scope from the full scope.
     void pop_scope();
 
-    /// Copies the memory backing the counter storage to a data pointer
+    /// Copies the memory backing the counter storage to a data pointer.
+    /// Use the storage_bytes() function to determine the size of the
+    /// data pointer to copy.
     /// @param data The data pointer to copy the raw memory to
     void copy_storage(uint8_t* data) const;
 
