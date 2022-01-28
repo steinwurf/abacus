@@ -107,10 +107,8 @@ public:
     /// max_metrics.
     void reset_metric(std::size_t index);
 
-    /// @param closed If true, the json produced will be closed by brackets.
-    /// Intented to be used to gather several metrics objects in a JSON object.
     /// @return All counters in json format
-    auto to_json(bool closed = true) const -> std::string;
+    auto to_json() const -> std::string;
 
 private:
     /// No copy
