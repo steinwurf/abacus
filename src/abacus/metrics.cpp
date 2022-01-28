@@ -207,9 +207,9 @@ void metrics::reset_metric(std::size_t index)
     std::memcpy(value_data, &value, sizeof(uint64_t));
 }
 
-auto metrics::to_json() const -> std::string
+auto metrics::to_json(bool closed) const -> std::string
 {
-    return detail::to_json(m_data, m_scope);
+    return detail::to_json(m_data, m_scope, closed);
 }
 }
 }

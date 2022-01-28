@@ -78,7 +78,7 @@ public:
     /// Intented to be used with the view_iterator class to gather all metrics
     /// in a JSON object.
     /// @return All counters in json format
-    auto to_json(bool top_level = true) const -> std::string;
+    auto to_json(bool closed = true) const -> std::string;
 
 private:
     /// The raw memory from the metrics counters

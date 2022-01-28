@@ -253,19 +253,19 @@ inline auto scope_alignment_padding(uint8_t* data) -> std::size_t
 
 /// @param data The raw memory for the counters
 /// @param scope string to append to the front of the metric names in the json.
-/// @param top_level If true, the json produced will be closed by brackets.
+/// @param closed If true, the json produced will be closed by brackets.
 /// Intented to be used with the view_iterator class to gather all metrics
 /// in a JSON object.
 /// @return The counters in json-format
 inline auto to_json(const uint8_t* data, std::string scope = "",
-                    bool top_level = true) -> std::string
+                    bool closed = true) -> std::string
 {
     std::string space = " ";
     std::string newline = "\n";
     std::string tab = "\t";
     assert(data != nullptr);
     std::stringstream json_stream;
-    if (top_level)
+    if (closed)
     {
         json_stream << "{" << newline;
     }
@@ -287,7 +287,7 @@ inline auto to_json(const uint8_t* data, std::string scope = "",
             json_stream << "," << newline;
         }
     }
-    if (top_level)
+    if (closed)
     {
         json_stream << newline << "}";
     }
