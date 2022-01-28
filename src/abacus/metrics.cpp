@@ -61,13 +61,13 @@ auto metrics::max_name_bytes() const -> std::size_t
 
 auto metrics::metric_name(std::size_t index) const -> std::string
 {
-    assert(has_metric(index));
+    assert(index < m_count);
     return detail::raw_name(m_data, index);
 }
 
 auto metrics::metric_value(std::size_t index) const -> uint64_t
 {
-    assert(has_metric(index));
+    assert(index < m_count);
     return *detail::raw_value(m_data, index);
 }
 
@@ -77,7 +77,7 @@ auto metrics::metric_index(const std::string& name) const -> std::size_t
 
     for (std::size_t i = 0; i < m_count; ++i)
     {
-        if (has_metric(i) && metric_name(i) == name)
+        if (metric_name(i) == name)
         {
             return i;
         }
@@ -189,28 +189,18 @@ auto metrics::storage_bytes() const -> std::size_t
     return values_offset + value_bytes + scope_bytes + scope_padding;
 }
 
-auto metrics::has_metric(std::size_t index) const -> bool
-{
-    return detail::has_metric(m_data, index);
-}
-
 void metrics::reset_metrics()
 {
-    for (std::size_t index = 0; index < m_max_metrics; ++index)
+    for (std::size_t index = 0; index < m_count; ++index)
 
     {
-        if (!has_metric(index))
-        {
-            continue;
-        }
-
         reset_metric(index);
     }
 }
 
 void metrics::reset_metric(std::size_t index)
 {
-    assert(has_metric(index));
+    assert(index < m_count);
 
     uint64_t* value_data = detail::raw_value(m_data, index);
     uint64_t value = 0U;

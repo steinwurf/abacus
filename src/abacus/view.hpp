@@ -66,7 +66,7 @@ public:
     /// @return The scope of the metrics data as a string
     auto scope() const -> std::string;
 
-    /// @param index The index of the new counter. Must be less than
+    /// @param index The index of the counter to check. Must be less than
     /// max_metrics().
     /// @return True if the counter has been initialized
     auto has_metric(std::size_t index) const -> bool;

@@ -78,11 +78,6 @@ public:
     /// @return The value of the counter
     auto add_metric(const std::string& name) -> metric;
 
-    /// @param index The index of the new counter. Must be less than
-    /// max_metrics.
-    /// @return True if the counter has been initialized
-    auto has_metric(std::size_t index) const -> bool;
-
     /// @return The number of metrics currently initialized in the object
     auto count() const -> std::size_t;
 
