@@ -94,5 +94,9 @@ int main()
     std::cout << "view_iterator::to_json():" << std::endl
               << car_iterator.to_json() << std::endl;
 
+    /// You can reset your metrics if needed with the reset_metrics() function.
+    vw.reset_metrics();
+    std::cout << vw.to_json() << std::endl;
+
     return 0;
 }

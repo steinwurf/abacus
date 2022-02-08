@@ -74,7 +74,7 @@ public:
     /// @return The number of bytes in the view memory
     auto view_bytes() const -> std::size_t;
 
-    /// @param top_level If true, the json produced will be closed by brackets.
+    /// @param closed If true, the json produced will be closed by brackets.
     /// Intented to be used with the view_iterator class to gather all metrics
     /// in a JSON object.
     /// @return All counters in json format
