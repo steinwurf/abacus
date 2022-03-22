@@ -65,10 +65,11 @@ auto metrics::metric_name(std::size_t index) const -> std::string
     return detail::raw_name(m_data, index);
 }
 
-auto metrics::metric_value(std::size_t index) const -> uint64_t
+template <class T>
+auto metrics::metric_value(std::size_t index) const -> T
 {
     assert(index < m_count);
-    return *detail::raw_value(m_data, index);
+    return *detail::raw_value<T>(m_data, index);
 }
 
 auto metrics::metric_index(const std::string& name) const -> std::size_t
@@ -98,22 +99,23 @@ auto metrics::scope_size() const -> std::size_t
     return m_scope.size();
 }
 
-auto metrics::add_metric(const std::string& name) -> metric
+template <class T>
+auto metrics::add_metric(const std::string& name) -> metric<T>
 {
-    char* name_data = detail::raw_name(m_data, m_count);
-    uint64_t* value_data = detail::raw_value(m_data, m_count);
+    assert(typeid(T) == typeid(bool) || typeid(T) == typeid(uint64_t) ||
+           typeid(T) == typeid(int64_t) || typeid(T) == typeid(double));
 
+    char* name_data = detail::raw_name(m_data, m_count);
     // Copy the name
     std::memcpy(name_data, name.data(), name.size());
 
-    // Use memcpy here for now, since placement new causes Bus Error on
-    // Raspberry pi
-    uint64_t value = 0U;
-    std::memcpy(value_data, &value, sizeof(uint64_t));
+    T* value_data = detail::raw_value(m_data, m_count);
+    T value = T{};
+    std::memcpy(value_data, &value, sizeof(T));
 
     m_count++;
 
-    return metric{value_data};
+    return metric<T>{value_data};
 }
 
 auto metrics::count() const -> std::size_t

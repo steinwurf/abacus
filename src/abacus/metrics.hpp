@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "metric.hpp"
+#include "metric_types.hpp"
 #include "version.hpp"
 #include "view.hpp"
 
@@ -60,7 +61,8 @@ public:
 
     /// @param index The index of a counter. Must be less than max_metrics.
     /// @return A specific count
-    auto metric_value(std::size_t index) const -> uint64_t;
+    template <class T>
+    auto metric_value(std::size_t index) const -> T;
 
     /// @param name The name of a counter with full scope. The name must be
     /// of the form scope.metric_name
@@ -76,7 +78,8 @@ public:
     /// @param name The name of the new counter. Must be less than
     /// max_name_bytes bytes
     /// @return The value of the counter
-    auto add_metric(const std::string& name) -> metric;
+    template <class T>
+    auto add_metric(const std::string& name) -> metric<T>;
 
     /// @return The number of metrics currently initialized in the object
     auto count() const -> std::size_t;
