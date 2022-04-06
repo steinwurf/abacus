@@ -11,7 +11,7 @@ namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-enum class metric_type
+enum class value_type : uint8_t
 {
     unsigned_integral,
     signed_integral,

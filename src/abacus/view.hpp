@@ -8,6 +8,7 @@
 #include <cassert>
 #include <vector>
 
+#include "metric_types.hpp"
 #include "version.hpp"
 
 namespace abacus
@@ -51,10 +52,28 @@ public:
     /// @return The name of a counter as a string
     auto metric_name(std::size_t index) const -> std::string;
 
-    /// @param index The index of the new counter. Must be less than
-    /// max_metrics().
-    /// @return A specific count
-    auto metric_value(std::size_t index) const -> uint64_t;
+    /// @param index The index of a counter. Must be less than max_metrics.
+    /// @return The type of a counter as an enum class
+    auto metric_type(std::size_t index) const -> value_type;
+
+    /// @param value The variable to assign the value of a bool counter to
+    /// @param index The index of a counter. Must be less than max_metrics.
+    void metric_value(bool& value, std::size_t index) const;
+
+    /// @param value The variable to assign the value of a unsigned integral
+    /// counter to.
+    /// @param index The index of a counter. Must be less than max_metrics.
+    void metric_value(uint64_t& value, std::size_t index) const;
+
+    /// @param value The variable to assign the value of a signed integral
+    /// counter to
+    /// @param index The index of a counter. Must be less than max_metrics.
+    void metric_value(int64_t& value, std::size_t index) const;
+
+    /// @param value The variable to assign the value of a floating point
+    /// counter to
+    /// @param index The index of a counter. Must be less than max_metrics.
+    void metric_value(double& value, std::size_t index) const;
 
     /// @param name The name of the counter to get the index of
     /// @return The index of the counter with the given name

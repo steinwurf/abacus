@@ -62,7 +62,10 @@ public:
     auto operator-=(T value) -> metric<T>&
     {
         assert(m_memory != nullptr);
-
+        if (std::is_unsigned<T>::value)
+        {
+            assert(value <= *m_memory);
+        }
         *m_memory -= value;
         return *this;
     }
@@ -99,5 +102,12 @@ private:
     /// The metric memory
     T* m_memory;
 };
+
+template <>
+inline auto metric<bool>::operator++() -> metric<bool>&
+{
+    assert(false && "metric::operator++: Not allowed for bool.");
+    return *this;
+}
 }
 }

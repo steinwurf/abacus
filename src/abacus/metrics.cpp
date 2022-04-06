@@ -40,8 +40,8 @@ metrics::metrics(std::size_t max_metrics, std::size_t max_name_bytes) :
     new (m_data + 4) uint8_t(8);
     new (m_data + 5) uint16_t(0);
 
-    assert((reinterpret_cast<uint64_t>(detail::raw_value(m_data, 0)) % 8U) ==
-           0U);
+    assert((reinterpret_cast<uint64_t>(m_data + detail::values_offset(m_data)) %
+            8U) == 0U);
 }
 
 metrics::~metrics()
@@ -65,11 +65,42 @@ auto metrics::metric_name(std::size_t index) const -> std::string
     return detail::raw_name(m_data, index);
 }
 
-template <class T>
-auto metrics::metric_value(std::size_t index) const -> T
+auto metrics::metric_type(std::size_t index) const -> value_type
 {
     assert(index < m_count);
-    return *detail::raw_value<T>(m_data, index);
+    return static_cast<value_type>(*detail::raw_type(m_data, index));
+}
+
+void metrics::metric_value(bool& value, std::size_t index) const
+{
+    assert(index < m_count);
+    assert(static_cast<value_type>(*detail::raw_type(m_data, index)) ==
+           value_type::boolean);
+    value = *detail::raw_value<bool>(m_data, index);
+}
+
+void metrics::metric_value(uint64_t& value, std::size_t index) const
+{
+    assert(index < m_count);
+    assert(static_cast<value_type>(*detail::raw_type(m_data, index)) ==
+           value_type::unsigned_integral);
+    value = *detail::raw_value<uint64_t>(m_data, index);
+}
+
+void metrics::metric_value(int64_t& value, std::size_t index) const
+{
+    assert(index < m_count);
+    assert(static_cast<value_type>(*detail::raw_type(m_data, index)) ==
+           value_type::signed_integral);
+    value = *detail::raw_value<int64_t>(m_data, index);
+}
+
+void metrics::metric_value(double& value, std::size_t index) const
+{
+    assert(index < m_count);
+    assert(static_cast<value_type>(*detail::raw_type(m_data, index)) ==
+           value_type::floating_point);
+    value = *detail::raw_value<double>(m_data, index);
 }
 
 auto metrics::metric_index(const std::string& name) const -> std::size_t
@@ -96,26 +127,91 @@ auto metrics::scope() const -> std::string
 
 auto metrics::scope_size() const -> std::size_t
 {
-    return m_scope.size();
+    return m_scope.size() + 1;
 }
 
-template <class T>
-auto metrics::add_metric(const std::string& name) -> metric<T>
+template <typename Type>
+auto metrics::add_metric(const std::string& name) -> metric<Type>
 {
-    assert(typeid(T) == typeid(bool) || typeid(T) == typeid(uint64_t) ||
-           typeid(T) == typeid(int64_t) || typeid(T) == typeid(double));
+    assert(0 && "Unsupported metric type");
 
+    return metric<Type>{};
+}
+
+template <>
+auto metrics::add_metric<bool>(const std::string& name) -> metric<bool>
+{
     char* name_data = detail::raw_name(m_data, m_count);
     // Copy the name
     std::memcpy(name_data, name.data(), name.size());
 
-    T* value_data = detail::raw_value(m_data, m_count);
-    T value = T{};
-    std::memcpy(value_data, &value, sizeof(T));
+    uint8_t* type_data = detail::raw_type(m_data, m_count);
+    *type_data = static_cast<uint8_t>(value_type::boolean);
+
+    bool* value_data = detail::raw_value<bool>(m_data, m_count);
+    bool value = false;
+    std::memcpy(value_data, &value, sizeof(bool));
 
     m_count++;
 
-    return metric<T>{value_data};
+    return metric<bool>{value_data};
+}
+
+template <>
+auto metrics::add_metric<uint64_t>(const std::string& name) -> metric<uint64_t>
+{
+    char* name_data = detail::raw_name(m_data, m_count);
+    // Copy the name
+    std::memcpy(name_data, name.data(), name.size());
+
+    uint8_t* type_data = detail::raw_type(m_data, m_count);
+    *type_data = static_cast<uint8_t>(value_type::unsigned_integral);
+
+    uint64_t* value_data = detail::raw_value<uint64_t>(m_data, m_count);
+    uint64_t value = 0U;
+    std::memcpy(value_data, &value, sizeof(uint64_t));
+
+    m_count++;
+
+    return metric<uint64_t>{value_data};
+}
+
+template <>
+auto metrics::add_metric<int64_t>(const std::string& name) -> metric<int64_t>
+{
+    char* name_data = detail::raw_name(m_data, m_count);
+    // Copy the name
+    std::memcpy(name_data, name.data(), name.size());
+
+    uint8_t* type_data = detail::raw_type(m_data, m_count);
+    *type_data = static_cast<uint8_t>(value_type::signed_integral);
+
+    int64_t* value_data = detail::raw_value<int64_t>(m_data, m_count);
+    int64_t value = 0;
+    std::memcpy(value_data, &value, sizeof(int64_t));
+
+    m_count++;
+
+    return metric<int64_t>{value_data};
+}
+
+template <>
+auto metrics::add_metric<double>(const std::string& name) -> metric<double>
+{
+    char* name_data = detail::raw_name(m_data, m_count);
+    // Copy the name
+    std::memcpy(name_data, name.data(), name.size());
+
+    uint8_t* type_data = detail::raw_type(m_data, m_count);
+    *type_data = static_cast<uint8_t>(value_type::floating_point);
+
+    double* value_data = detail::raw_value<double>(m_data, m_count);
+    double value = 0.0;
+    std::memcpy(value_data, &value, sizeof(double));
+
+    m_count++;
+
+    return metric<double>{value_data};
 }
 
 auto metrics::count() const -> std::size_t
@@ -170,10 +266,11 @@ void metrics::copy_storage(uint8_t* data) const
 
 auto metrics::storage_bytes() const -> std::size_t
 {
-    std::size_t values_offset =
-        detail::header_bytes() + m_max_metrics * m_max_name_bytes;
+    std::size_t values_offset = detail::header_bytes() +
+                                m_max_metrics * m_max_name_bytes +
+                                m_max_metrics;
 
-    values_offset += detail::values_alignment_padding(values_offset);
+    values_offset += detail::alignment_padding(values_offset);
 
     assert(values_offset % 8 == 0);
 
@@ -204,9 +301,39 @@ void metrics::reset_metric(std::size_t index)
 {
     assert(index < m_count);
 
-    uint64_t* value_data = detail::raw_value(m_data, index);
-    uint64_t value = 0U;
-    std::memcpy(value_data, &value, sizeof(uint64_t));
+    value_type type = static_cast<value_type>(*detail::raw_type(m_data, index));
+
+    switch (type)
+    {
+    case value_type::boolean:
+    {
+        bool* value_data = detail::raw_value<bool>(m_data, index);
+        bool value = false;
+        std::memcpy(value_data, &value, sizeof(bool));
+        break;
+    }
+    case value_type::unsigned_integral:
+    {
+        uint64_t* value_data = detail::raw_value<uint64_t>(m_data, index);
+        uint64_t value = 0U;
+        std::memcpy(value_data, &value, sizeof(uint64_t));
+        break;
+    }
+    case value_type::signed_integral:
+    {
+        int64_t* value_data = detail::raw_value<int64_t>(m_data, index);
+        int64_t value = 0;
+        std::memcpy(value_data, &value, sizeof(int64_t));
+        break;
+    }
+    case value_type::floating_point:
+    {
+        double* value_data = detail::raw_value<double>(m_data, index);
+        double value = 0.0;
+        std::memcpy(value_data, &value, sizeof(double));
+        break;
+    }
+    }
 }
 
 auto metrics::to_json() const -> std::string

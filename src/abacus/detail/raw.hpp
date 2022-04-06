@@ -11,6 +11,7 @@
 #include <cstring>
 #include <sstream>
 
+#include "../metric_types.hpp"
 #include "../version.hpp"
 
 namespace abacus
@@ -23,7 +24,7 @@ namespace detail
 /// @return The size of the header in bytes
 inline auto header_bytes() -> std::size_t
 {
-    return 7;
+    return 8;
 }
 
 /// @param data The raw memory for the counters
@@ -101,9 +102,15 @@ inline auto names_offset() -> std::size_t
     return header_bytes();
 }
 
+inline auto types_offset(const uint8_t* data) -> std::size_t
+{
+    // Skip header and names
+    return names_offset() + max_metrics(data) * max_name_bytes(data);
+}
+
 /// @param offset The offset in the raw memory
 /// @return The extra padding to add to the offset for alignment
-inline auto values_alignment_padding(std::size_t offset) -> std::size_t
+inline auto alignment_padding(std::size_t offset) -> std::size_t
 {
     return 8 - offset % 8;
 }
@@ -113,11 +120,10 @@ inline auto values_alignment_padding(std::size_t offset) -> std::size_t
 inline auto values_offset(const uint8_t* data) -> std::size_t
 {
     // Skip header + scope + names
-    std::size_t offset =
-        header_bytes() + (max_metrics(data) * max_name_bytes(data));
+    std::size_t offset = types_offset(data) + max_metrics(data);
 
     // align to 8 bytes
-    offset += values_alignment_padding(offset);
+    offset += alignment_padding(offset);
 
     return offset;
 }
@@ -151,8 +157,35 @@ inline auto raw_name(const uint8_t* data, std::size_t index) -> const char*
 
 /// @param data The raw memory for the counters
 /// @param index The index of a counter. Must be less than max_metrics().
+/// @return The raw type of a counter in memory
+inline auto raw_type(uint8_t* data, std::size_t index) -> uint8_t*
+{
+    assert(data != nullptr);
+    assert(index < max_metrics(data));
+
+    uint8_t* type_data = data + types_offset(data) + index;
+
+    return type_data;
+}
+
+/// @param data The raw memory for the counters
+/// @param index The index of a counter. Must be less than max_metrics().
+/// @return The raw type of a counter in memory
+inline auto raw_type(const uint8_t* data, std::size_t index) -> const uint8_t*
+{
+    assert(data != nullptr);
+    assert(index < max_metrics(data));
+
+    const uint8_t* type_data = data + types_offset(data) + index;
+
+    return type_data;
+}
+
+/// @param data The raw memory for the counters
+/// @param index The index of a counter. Must be less than max_metrics().
 /// @return a pointer to the index'th counter value
-inline auto raw_value(uint8_t* data, std::size_t index) -> uint64_t*
+template <typename T>
+inline auto raw_value(uint8_t* data, std::size_t index) -> T*
 {
     assert(data != nullptr);
     assert(index < max_metrics(data));
@@ -160,13 +193,14 @@ inline auto raw_value(uint8_t* data, std::size_t index) -> uint64_t*
     uint8_t* value_data =
         data + values_offset(data) + (index * sizeof(uint64_t));
 
-    return reinterpret_cast<uint64_t*>(value_data);
+    return reinterpret_cast<T*>(value_data);
 }
 
 /// @param data The raw memory for the counters
 /// @param index The index of a counter. Must be less than max_metrics().
 /// @return a pointer to the index'th counter value
-inline auto raw_value(const uint8_t* data, std::size_t index) -> const uint64_t*
+template <typename T>
+inline auto raw_value(const uint8_t* data, std::size_t index) -> const T*
 {
     assert(data != nullptr);
     assert(index < max_metrics(data));
@@ -174,7 +208,7 @@ inline auto raw_value(const uint8_t* data, std::size_t index) -> const uint64_t*
     const uint8_t* value_data =
         data + values_offset(data) + (index * sizeof(uint64_t));
 
-    return reinterpret_cast<const uint64_t*>(value_data);
+    return reinterpret_cast<const T*>(value_data);
 }
 
 /// @param data The raw memory for the counters
@@ -278,10 +312,26 @@ inline auto to_json(const uint8_t* data, std::string scope = "",
         }
 
         auto n = raw_name(data, i);
-        auto v = *raw_value(data, i);
+        auto t = static_cast<value_type>(*raw_type(data, i));
+        std::string value_string;
+        switch (t)
+        {
+        case value_type::unsigned_integral:
+            value_string = std::to_string(*raw_value<uint64_t>(data, i));
+            break;
+        case value_type::signed_integral:
+            value_string = std::to_string(*raw_value<int64_t>(data, i));
+            break;
+        case value_type::boolean:
+            value_string = std::to_string(*raw_value<bool>(data, i));
+            break;
+        case value_type::floating_point:
+            value_string = std::to_string(*raw_value<double>(data, i));
+            break;
+        }
 
         json_stream << tab << "\"" << scope + "." + std::string(n)
-                    << "\":" << space << std::to_string(v);
+                    << "\":" << space << value_string;
         if (i != (count(data) - 1U))
         {
             json_stream << "," << newline;
