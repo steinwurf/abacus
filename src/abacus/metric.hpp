@@ -88,6 +88,9 @@ public:
         return *this;
     }
 
+    /// Logical OR between the counter and a value
+    /// @param value The value to AND with
+    /// @return The result of the arithmetic
     auto operator||(T value) -> metric<T>&
     {
         assert(m_memory != nullptr);
@@ -95,6 +98,9 @@ public:
         return *this;
     }
 
+    /// Logical AND between the counter and a value
+    /// @param value The value to OR with
+    /// @return The result of the arithmetic
     auto operator&&(T value) -> metric<T>&
     {
         assert(m_memory != nullptr);
@@ -102,6 +108,8 @@ public:
         return *this;
     }
 
+    /// Logical NOT of the counter
+    /// @return The result of the arithmetic
     auto operator!() -> metric<T>&
     {
         assert(m_memory != nullptr);
@@ -126,6 +134,8 @@ private:
 
 // Bool special cases. Increment and Decrement makes no sense with bools (is it
 // the NOT operator?). Assign and add/subtract has no real purpose either.
+
+/// The postfix increment operator is not allowed for bool.
 template <>
 inline auto metric<bool>::operator++() -> metric<bool>&
 {
@@ -133,6 +143,7 @@ inline auto metric<bool>::operator++() -> metric<bool>&
     return *this;
 }
 
+/// The postfix decrement operator is not allowed for bool.
 template <>
 inline auto metric<bool>::operator--() -> metric<bool>&
 {
@@ -140,6 +151,7 @@ inline auto metric<bool>::operator--() -> metric<bool>&
     return *this;
 }
 
+/// The assign and add operator is not allowed for bool.
 template <>
 inline auto metric<bool>::operator+=(bool value) -> metric<bool>&
 {
@@ -148,6 +160,7 @@ inline auto metric<bool>::operator+=(bool value) -> metric<bool>&
     return *this;
 }
 
+/// The assign and subtract operator is not allowed for bool.
 template <>
 inline auto metric<bool>::operator-=(bool value) -> metric<bool>&
 {
