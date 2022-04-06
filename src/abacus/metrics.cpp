@@ -135,6 +135,8 @@ auto metrics::add_metric(const std::string& name) -> metric<Type>
 {
     assert(0 && "Unsupported metric type");
 
+    void(name);
+
     return metric<Type>{};
 }
 
