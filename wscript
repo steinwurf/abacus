@@ -43,20 +43,20 @@ def build(bld):
             use=["abacus", "gtest"],
         )
 
-        # bld.program(
-        #     features="cxx",
-        #     source="examples/metrics_simple.cpp",
-        #     target="metrics_simple",
-        #     install_path=None,
-        #     use=["abacus"],
-        # )
-        # bld.program(
-        #     features="cxx",
-        #     source="examples/multiple_metrics.cpp",
-        #     target="multiple_metrics",
-        #     install_path=None,
-        #     use=["abacus"],
-        # )
+        bld.program(
+            features="cxx",
+            source="examples/metrics_simple.cpp",
+            target="metrics_simple",
+            install_path=None,
+            use=["abacus"],
+        )
+        bld.program(
+            features="cxx",
+            source="examples/multiple_metrics.cpp",
+            target="multiple_metrics",
+            install_path=None,
+            use=["abacus"],
+        )
 
         sourcepath = bld.path.find_node("src")
 

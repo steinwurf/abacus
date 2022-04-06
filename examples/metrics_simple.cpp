@@ -20,17 +20,17 @@ int main()
     car.push_scope("car");
 
     /// A car has headlights. Two of them usually
-    auto headlights = car.add_metric("headlights");
+    auto headlights = car.add_metric<bool>("has_headlights");
 
-    headlights += 2;
+    headlights = true;
 
     /// What about the gas mileage?
-    auto fuel_consumption = car.add_metric("fuel consumption km/L");
+    auto fuel_consumption = car.add_metric<double>("fuel consumption km/L");
 
-    fuel_consumption += 20;
+    fuel_consumption += 21.8;
 
     /// Most cars are 4-wheelers as well
-    auto wheels = car.add_metric("Wheels");
+    auto wheels = car.add_metric<uint64_t>("Wheels");
 
     wheels += 4;
 
@@ -60,10 +60,45 @@ int main()
         {
             continue;
         }
+        abacus::value_type type = car_view.metric_type(i);
+
+        std::string value_string;
+
+        switch (type)
+        {
+        case abacus::value_type::unsigned_integral:
+        {
+            uint64_t value;
+            car_view.metric_value(value, i);
+            value_string = std::to_string(value);
+            break;
+        }
+        case abacus::value_type::signed_integral:
+        {
+            int64_t value;
+            car_view.metric_value(value, i);
+            value_string = std::to_string(value);
+            break;
+        }
+        case abacus::value_type::boolean:
+        {
+            bool value;
+            car_view.metric_value(value, i);
+            value_string = std::to_string(value);
+            break;
+        }
+        case abacus::value_type::floating_point:
+        {
+            double value;
+            car_view.metric_value(value, i);
+            value_string = std::to_string(value);
+            break;
+        }
+        }
         /// Get the name from memory and the address of the value and
         /// dereference it.
-        std::cout << "\t" << car_view.metric_name(i) << ": "
-                  << car_view.metric_value(i) << std::endl;
+        std::cout << "\t" << car_view.metric_name(i) << ": " << value_string
+                  << std::endl;
     }
 
     return 0;

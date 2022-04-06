@@ -21,25 +21,25 @@ int main()
     vw.push_scope("volkswagen");
     bmw.push_scope("bmw");
     /// A car has headlights. Two of them usually
-    auto headlights1 = vw.add_metric("headlights");
-    auto headlights2 = bmw.add_metric("headlights");
+    auto headlights1 = vw.add_metric<bool>("headlights");
+    auto headlights2 = bmw.add_metric<bool>("headlights");
 
-    headlights1 += 2;
-    headlights2 += 2;
+    headlights1 = true;
+    headlights2 = false;
 
     /// What about the gas mileage?
-    auto fuel_consumption1 = vw.add_metric("fuel_consumption");
-    auto fuel_consumption2 = bmw.add_metric("fuel_consumption");
+    auto fuel_consumption1 = vw.add_metric<double>("fuel_consumption");
+    auto fuel_consumption2 = bmw.add_metric<double>("fuel_consumption");
 
-    fuel_consumption1 += 20;
-    fuel_consumption2 += 15;
+    fuel_consumption1 = 20.8;
+    fuel_consumption2 = 15.9;
 
     /// Most cars are 4-wheelers as well
-    auto wheels1 = vw.add_metric("wheels");
-    auto wheels2 = bmw.add_metric("wheels");
+    auto wheels1 = vw.add_metric<uint64_t>("wheels");
+    auto wheels2 = bmw.add_metric<uint64_t>("wheels");
 
-    wheels1 += 4;
-    wheels2 += 4;
+    wheels1 = 4;
+    wheels2 = 4;
 
     /// We can print out the counters neatly.
     std::cout << vw.to_json() << std::endl;
@@ -73,12 +73,47 @@ int main()
             {
                 continue;
             }
-            /// Get the name from memory and the address of the value and
-            /// dereference it.
-            std::cout << "\t" << view.metric_name(i) << ": "
-                      << view.metric_value(i) << std::endl;
+            abacus::value_type type = view.metric_type(i);
+
+            std::string value_string;
+
+            switch (type)
+            {
+            case abacus::value_type::unsigned_integral:
+            {
+                uint64_t value;
+                view.metric_value(value, i);
+                value_string = std::to_string(value);
+                break;
+            }
+            case abacus::value_type::signed_integral:
+            {
+                int64_t value;
+                view.metric_value(value, i);
+                value_string = std::to_string(value);
+                break;
+            }
+            case abacus::value_type::boolean:
+            {
+                bool value;
+                view.metric_value(value, i);
+                value_string = std::to_string(value);
+                break;
+            }
+            case abacus::value_type::floating_point:
+            {
+                double value;
+                view.metric_value(value, i);
+                value_string = std::to_string(value);
+                break;
+            }
+                /// Get the name from memory and the address of the value and
+                /// dereference it.
+                std::cout << "\t" << view.metric_name(i) << ": " << value_string
+                          << std::endl;
+            }
+            std::cout << std::endl;
         }
-        std::cout << std::endl;
     }
 
     /// Or you can use view::to_json(true) for the metrics in json-format:
@@ -94,7 +129,8 @@ int main()
     std::cout << "view_iterator::to_json():" << std::endl
               << car_iterator.to_json() << std::endl;
 
-    /// You can reset your metrics if needed with the reset_metrics() function.
+    /// You can reset your metrics if needed with the reset_metrics()
+    /// function.
     vw.reset_metrics();
     std::cout << vw.to_json() << std::endl;
 

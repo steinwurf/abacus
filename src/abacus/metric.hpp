@@ -88,6 +88,27 @@ public:
         return *this;
     }
 
+    auto operator||(T value) -> metric<T>&
+    {
+        assert(m_memory != nullptr);
+        *m_memory = *m_memory || value;
+        return *this;
+    }
+
+    auto operator&&(T value) -> metric<T>&
+    {
+        assert(m_memory != nullptr);
+        *m_memory = *m_memory && value;
+        return *this;
+    }
+
+    auto operator!() -> metric<T>&
+    {
+        assert(m_memory != nullptr);
+        *m_memory = !*m_memory;
+        return *this;
+    }
+
     /// @return True if the metric has been assigned memory. False otherwise
     auto is_initialized() const -> bool
     {
@@ -103,11 +124,37 @@ private:
     T* m_memory;
 };
 
+// Bool special cases. Increment and Decrement makes no sense with bools (is it
+// the NOT operator?). Assign and add/subtract has no real purpose either.
 template <>
 inline auto metric<bool>::operator++() -> metric<bool>&
 {
     assert(false && "metric::operator++: Not allowed for bool.");
     return *this;
 }
+
+template <>
+inline auto metric<bool>::operator--() -> metric<bool>&
+{
+    assert(false && "metric::operator--: Not allowed for bool.");
+    return *this;
+}
+
+template <>
+inline auto metric<bool>::operator+=(bool value) -> metric<bool>&
+{
+    assert(false && "metric::operator+=: Not allowed for bool.");
+    (void)value;
+    return *this;
+}
+
+template <>
+inline auto metric<bool>::operator-=(bool value) -> metric<bool>&
+{
+    assert(false && "metric::operator-=: Not allowed for bool.");
+    (void)value;
+    return *this;
+}
+
 }
 }
