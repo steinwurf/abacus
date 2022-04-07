@@ -8,7 +8,7 @@
 #include <cassert>
 #include <vector>
 
-#include "metric_types.hpp"
+#include "value_types.hpp"
 #include "version.hpp"
 
 namespace abacus

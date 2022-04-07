@@ -88,35 +88,6 @@ public:
         return *this;
     }
 
-    /// Logical OR between the counter and a value
-    /// @param value The value to AND with
-    /// @return The result of the arithmetic
-    auto operator||(T value) -> metric<T>&
-    {
-        assert(m_memory != nullptr);
-        *m_memory = *m_memory || value;
-        return *this;
-    }
-
-    /// Logical AND between the counter and a value
-    /// @param value The value to OR with
-    /// @return The result of the arithmetic
-    auto operator&&(T value) -> metric<T>&
-    {
-        assert(m_memory != nullptr);
-        *m_memory = *m_memory && value;
-        return *this;
-    }
-
-    /// Logical NOT of the counter
-    /// @return The result of the arithmetic
-    auto operator!() -> metric<T>&
-    {
-        assert(m_memory != nullptr);
-        *m_memory = !*m_memory;
-        return *this;
-    }
-
     /// @return True if the metric has been assigned memory. False otherwise
     auto is_initialized() const -> bool
     {

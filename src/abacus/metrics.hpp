@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "metric.hpp"
-#include "metric_types.hpp"
+#include "value_types.hpp"
 #include "version.hpp"
 #include "view.hpp"
 
