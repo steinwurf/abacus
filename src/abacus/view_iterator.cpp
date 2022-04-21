@@ -5,6 +5,8 @@
 
 #include "view_iterator.hpp"
 
+#include "detail/raw.hpp"
+
 #include <algorithm>
 #include <cstring>
 
@@ -39,6 +41,26 @@ auto view_iterator::get_view(std::size_t index) const -> const view&
 auto view_iterator::view_count() const -> std::size_t
 {
     return m_views.size();
+}
+
+auto view_iterator::to_json() const -> std::string
+{
+    std::string newline = "\n";
+    std::stringstream json_stream;
+    json_stream << "{" << newline;
+
+    for (std::size_t i = 0; i < m_views.size(); ++i)
+    {
+        view view = m_views[i];
+        json_stream << view.to_json(false);
+        if (i < m_views.size() - 1)
+        {
+            json_stream << "," << newline;
+        }
+    }
+    json_stream << newline << "}";
+
+    return json_stream.str();
 }
 
 }

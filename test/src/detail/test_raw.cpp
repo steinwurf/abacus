@@ -11,11 +11,10 @@ TEST(detail_test_raw, api)
 {
     uint16_t max_name_bytes = 10;
     uint16_t max_metrics = 2;
-    std::size_t alignment_padding = 8 - (abacus::detail::header_bytes() +
-                                         max_name_bytes * (max_metrics + 1)) %
-                                            8;
-    std::size_t size = abacus::detail::header_bytes() + max_name_bytes +
-                       alignment_padding +
+    std::size_t alignment_padding =
+        8 -
+        (abacus::detail::header_bytes() + max_name_bytes * (max_metrics)) % 8;
+    std::size_t size = abacus::detail::header_bytes() + alignment_padding +
                        max_metrics * (max_name_bytes + sizeof(uint64_t));
     std::vector<uint8_t> data(size);
 
@@ -24,10 +23,7 @@ TEST(detail_test_raw, api)
     std::memcpy(data.data() + 2, &max_metrics, sizeof(uint16_t));
     data[4] = 8U;
 
-    std::string title = "test";
-
-    std::memcpy(abacus::detail::raw_title(data.data()), title.data(),
-                title.size());
+    std::string scope = "test";
 
     std::string metric_name_1 = "metric_1";
     char* name_data_1 = abacus::detail::raw_name(data.data(), 0);
@@ -47,13 +43,12 @@ TEST(detail_test_raw, api)
 
     EXPECT_EQ(abacus::detail::max_name_bytes(data.data()), max_name_bytes);
     EXPECT_EQ(abacus::detail::max_metrics(data.data()), max_metrics);
-    EXPECT_EQ(abacus::detail::raw_title(data.data()), title);
 
     EXPECT_EQ(abacus::detail::raw_name(data.data(), 0), metric_name_1);
     EXPECT_EQ(*abacus::detail::raw_value(data.data(), 0), 1U);
-    EXPECT_EQ(abacus::detail::is_metric_initialized(data.data(), 0), true);
+    EXPECT_EQ(abacus::detail::has_metric(data.data(), 0), true);
 
     EXPECT_EQ(abacus::detail::raw_name(data.data(), 1), metric_name_2);
     EXPECT_EQ(*abacus::detail::raw_value(data.data(), 1), 2U);
-    EXPECT_EQ(abacus::detail::is_metric_initialized(data.data(), 1), true);
+    EXPECT_EQ(abacus::detail::has_metric(data.data(), 1), true);
 }

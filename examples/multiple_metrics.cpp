@@ -14,28 +14,29 @@ int main()
 {
     /// Choose the constructor values for the metrics class
     uint64_t max_metrics = 10;
-    uint64_t max_name_bytes = 32;
+    uint64_t max_name_bytes = 50;
+    abacus::metrics vw(max_metrics, max_name_bytes);
+    abacus::metrics bmw(max_metrics, max_name_bytes);
 
-    abacus::metrics vw(max_metrics, max_name_bytes, "Volkswagen");
-    abacus::metrics bmw(max_metrics, max_name_bytes, "BMW");
-
+    vw.push_scope("volkswagen");
+    bmw.push_scope("bmw");
     /// A car has headlights. Two of them usually
-    auto headlights1 = vw.initialize_metric(0, "headlights");
-    auto headlights2 = bmw.initialize_metric(0, "headlights");
+    auto headlights1 = vw.add_metric("headlights");
+    auto headlights2 = bmw.add_metric("headlights");
 
     headlights1 += 2;
     headlights2 += 2;
 
     /// What about the gas mileage?
-    auto fuel_consumption1 = vw.initialize_metric(1, "fuel consumption km/L");
-    auto fuel_consumption2 = bmw.initialize_metric(1, "fuel consumption km/L");
+    auto fuel_consumption1 = vw.add_metric("fuel_consumption");
+    auto fuel_consumption2 = bmw.add_metric("fuel_consumption");
 
     fuel_consumption1 += 20;
     fuel_consumption2 += 15;
 
     /// Most cars are 4-wheelers as well
-    auto wheels1 = vw.initialize_metric(2, "Wheels");
-    auto wheels2 = bmw.initialize_metric(2, "Wheels");
+    auto wheels1 = vw.add_metric("wheels");
+    auto wheels2 = bmw.add_metric("wheels");
 
     wheels1 += 4;
     wheels2 += 4;
@@ -62,14 +63,13 @@ int main()
     for (std::size_t i = 0; i < car_iterator.view_count(); i++)
     {
         auto view = car_iterator.get_view(i);
-        std::cout << view.get_title()
-                  << " has the following metrics:" << std::endl;
+        std::cout << "View has the following metrics:" << std::endl;
 
-        for (std::size_t i = 0; i < view.max_metrics(); i++)
+        for (std::size_t i = 0; i < view.count(); i++)
         {
-            /// If a counter in memory has no name, it's not yet initialized.
+            /// If a counter in memory has no name, it's not yet addd.
             /// We will ignore it.
-            if (!view.is_metric_initialized(i))
+            if (!view.has_metric(i))
             {
                 continue;
             }
@@ -81,13 +81,22 @@ int main()
         std::cout << std::endl;
     }
 
-    /// Or you can use view::to_json() for the metrics in json-format:
+    /// Or you can use view::to_json(true) for the metrics in json-format:
     for (std::size_t i = 0; i < car_iterator.view_count(); i++)
     {
         auto view = car_iterator.get_view(i);
-        std::cout << view.get_title()
-                  << " has the following metrics:" << std::endl;
+        std::cout << "View has the following metrics:" << std::endl;
         std::cout << view.to_json() << std::endl;
     }
+
+    /// Or you can even call the view_iterator::to_json() function to get
+    /// the json-format of all the metrics in the data storage:
+    std::cout << "view_iterator::to_json():" << std::endl
+              << car_iterator.to_json() << std::endl;
+
+    /// You can reset your metrics if needed with the reset_metrics() function.
+    vw.reset_metrics();
+    std::cout << vw.to_json() << std::endl;
+
     return 0;
 }

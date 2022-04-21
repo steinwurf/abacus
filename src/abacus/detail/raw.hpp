@@ -9,9 +9,9 @@
 #include <cassert>
 #include <cstdint>
 #include <cstring>
+#include <sstream>
 
 #include "../version.hpp"
-#include <bourne/json.hpp>
 
 namespace abacus
 {
@@ -23,11 +23,11 @@ namespace detail
 /// @return The size of the header in bytes
 inline auto header_bytes() -> std::size_t
 {
-    return 5;
+    return 7;
 }
 
 /// @param data The raw memory for the counters
-/// @return The maximum bytes a name/title can contain
+/// @return The maximum bytes a metric name can contain
 inline auto max_name_bytes(const uint8_t* data) -> uint16_t
 {
     assert(data != nullptr);
@@ -61,18 +61,44 @@ inline auto max_metrics(const uint8_t* data) -> uint16_t
     return max_metrics;
 }
 
-/// @return The title offset in the raw memory
-inline auto title_offset() -> std::size_t
+inline auto scope_size_offset() -> std::size_t
 {
-    return header_bytes();
+    return 5;
+}
+
+/// @param data The raw memory for the counters
+/// @return The raw memory of the scope_size.
+inline auto raw_scope_size(uint8_t* data) -> uint16_t*
+{
+    assert(data != nullptr);
+    uint8_t* scope_size_data = data + scope_size_offset();
+    return (uint16_t*)scope_size_data;
+}
+
+/// @param data The raw memory for the counters
+/// @return The raw memory of the scope_size.
+inline auto raw_scope_size(const uint8_t* data) -> const uint16_t*
+{
+    assert(data != nullptr);
+    const uint8_t* scope_size_data = data + scope_size_offset();
+    return (const uint16_t*)scope_size_data;
+}
+
+/// @param data The raw memory for the counters
+/// @return The current size of the scope the raw memory contains
+inline auto scope_size(const uint8_t* data) -> uint16_t
+{
+    assert(data != nullptr);
+
+    return *raw_scope_size(data);
 }
 
 /// @param data The raw memory for the counters
 /// @return The maximum metrics the raw memory can contain
-inline auto names_offset(const uint8_t* data) -> std::size_t
+inline auto names_offset() -> std::size_t
 {
-    // Skip header + title
-    return header_bytes() + max_name_bytes(data);
+    // Skip header
+    return header_bytes();
 }
 
 /// @param offset The offset in the raw memory
@@ -86,36 +112,14 @@ inline auto values_alignment_padding(std::size_t offset) -> std::size_t
 /// @return The values offset in the raw memory
 inline auto values_offset(const uint8_t* data) -> std::size_t
 {
-    // Skip header + title + names
-    std::size_t offset = header_bytes() + max_name_bytes(data) +
-                         (max_metrics(data) * max_name_bytes(data));
+    // Skip header + scope + names
+    std::size_t offset =
+        header_bytes() + (max_metrics(data) * max_name_bytes(data));
 
     // align to 8 bytes
     offset += values_alignment_padding(offset);
 
     return offset;
-}
-
-/// @param data The raw memory for the counters
-/// @return The raw title in memory
-inline auto raw_title(uint8_t* data) -> char*
-{
-    assert(data != nullptr);
-
-    uint8_t* title_data = data + title_offset();
-
-    return (char*)title_data;
-}
-
-/// @param data The raw memory for the counters
-/// @return The raw title in memory
-inline auto raw_title(const uint8_t* data) -> const char*
-{
-    assert(data != nullptr);
-
-    const uint8_t* title_data = data + title_offset();
-
-    return (const char*)title_data;
 }
 
 /// @param data The raw memory for the counters
@@ -126,8 +130,7 @@ inline auto raw_name(uint8_t* data, std::size_t index) -> char*
     assert(data != nullptr);
     assert(index < max_metrics(data));
 
-    uint8_t* name_data =
-        data + names_offset(data) + (index * max_name_bytes(data));
+    uint8_t* name_data = data + names_offset() + (index * max_name_bytes(data));
 
     return (char*)name_data;
 }
@@ -141,7 +144,7 @@ inline auto raw_name(const uint8_t* data, std::size_t index) -> const char*
     assert(index < max_metrics(data));
 
     const uint8_t* name_data =
-        data + names_offset(data) + (index * max_name_bytes(data));
+        data + names_offset() + (index * max_name_bytes(data));
 
     return (const char*)name_data;
 }
@@ -177,8 +180,7 @@ inline auto raw_value(const uint8_t* data, std::size_t index) -> const uint64_t*
 /// @param data The raw memory for the counters
 /// @param index The index of a counter. Must be less than max_metrics().
 /// @return True if the metric is found in memory. False otherwise
-inline auto is_metric_initialized(const uint8_t* data, std::size_t index)
-    -> bool
+inline auto has_metric(const uint8_t* data, std::size_t index) -> bool
 {
     assert(index < max_metrics(data));
     const char* name_data = raw_name(data, index);
@@ -189,15 +191,88 @@ inline auto is_metric_initialized(const uint8_t* data, std::size_t index)
 }
 
 /// @param data The raw memory for the counters
-/// @return The counters in json-format
-inline auto to_json(const uint8_t* data) -> std::string
+/// @return The number of initialized metrics in memory
+inline auto count(const uint8_t* data) -> std::size_t
 {
     assert(data != nullptr);
-    bourne::json counters = bourne::json::object();
+
+    std::size_t count = 0U;
 
     for (std::size_t i = 0; i < max_metrics(data); ++i)
     {
-        if ((!is_metric_initialized(data, i)))
+        if (has_metric(data, i))
+        {
+            ++count;
+        }
+    }
+
+    return count;
+}
+
+/// @param data The raw memory for the counters
+/// @return The scope offset in copied memory.
+inline auto scope_offset(const uint8_t* data) -> std::size_t
+{
+    return values_offset(data) + (max_metrics(data) * sizeof(uint64_t));
+}
+
+/// @param data The raw memory for the counters
+/// @return The raw scope in memory
+inline auto raw_scope(uint8_t* data) -> char*
+{
+    assert(data != nullptr);
+
+    uint8_t* scope_data = data + scope_offset(data);
+
+    return (char*)scope_data;
+}
+
+/// @param data The raw memory for the counters
+/// @return The raw scope in memory
+inline auto raw_scope(const uint8_t* data) -> const char*
+{
+    assert(data != nullptr);
+
+    const uint8_t* scope_data = data + scope_offset(data);
+
+    return (const char*)scope_data;
+}
+
+inline auto scope_alignment_padding(uint8_t* data) -> std::size_t
+{
+    std::size_t remainder = ((scope_offset(data) + scope_size(data)) % 8);
+    if (remainder == 0)
+    {
+        return 0;
+    }
+    else
+    {
+        return 8 - remainder;
+    }
+}
+
+/// @param data The raw memory for the counters
+/// @param scope string to append to the front of the metric names in the json.
+/// @param closed If true, the json produced will be closed by brackets.
+/// Intented to be used with the view_iterator class to gather all metrics
+/// in a JSON object.
+/// @return The counters in json-format
+inline auto to_json(const uint8_t* data, std::string scope = "",
+                    bool closed = true) -> std::string
+{
+    std::string space = " ";
+    std::string newline = "\n";
+    std::string tab = "\t";
+    assert(data != nullptr);
+    std::stringstream json_stream;
+    if (closed)
+    {
+        json_stream << "{" << newline;
+    }
+
+    for (std::size_t i = 0; i < count(data); ++i)
+    {
+        if ((!has_metric(data, i)))
         {
             continue;
         }
@@ -205,10 +280,19 @@ inline auto to_json(const uint8_t* data) -> std::string
         auto n = raw_name(data, i);
         auto v = *raw_value(data, i);
 
-        counters[n] = v;
+        json_stream << tab << "\"" << scope + "." + std::string(n)
+                    << "\":" << space << std::to_string(v);
+        if (i != (count(data) - 1U))
+        {
+            json_stream << "," << newline;
+        }
+    }
+    if (closed)
+    {
+        json_stream << newline << "}";
     }
 
-    return counters.dump();
+    return json_stream.str();
 }
 
 }

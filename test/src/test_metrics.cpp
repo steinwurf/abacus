@@ -11,18 +11,15 @@ TEST(test_metrics, default_constructor)
 {
     uint16_t max_metrics = 10;
     uint16_t max_name_bytes = 32;
-    std::string title = "test_metrics";
 
-    abacus::metrics metrics(max_metrics, max_name_bytes, title);
+    abacus::metrics metrics(max_metrics, max_name_bytes);
 
-    auto count1 = metrics.initialize_metric(0, "count_1");
+    auto count1 = metrics.add_metric("count_1");
 
-    auto storage_size =
-        5 + max_name_bytes +
-        (8 - (5 + max_name_bytes + max_metrics * max_name_bytes) % 8) +
-        max_metrics * (max_name_bytes + sizeof(uint64_t));
-
-    EXPECT_TRUE(metrics.is_metric_initialized(0));
+    auto storage_size = 6 + (8 - (6 + max_metrics * max_name_bytes) % 8) +
+                        max_metrics * (max_name_bytes + sizeof(uint64_t));
+    EXPECT_EQ(metrics.count(), 1U);
+    EXPECT_EQ(metrics.metric_index("count_1"), 0U);
     EXPECT_EQ(metrics.metric_name(0), "count_1");
     EXPECT_EQ(metrics.metric_value(0), 0U);
     EXPECT_EQ(metrics.storage_bytes(), storage_size);
@@ -31,13 +28,12 @@ TEST(test_metrics, default_constructor)
 
     EXPECT_EQ(metrics.metric_value(0), 1U);
 
-    std::string title1 = "test_metrics1";
+    abacus::metrics metrics1(max_metrics, max_name_bytes);
 
-    abacus::metrics metrics1(max_metrics, max_name_bytes, title1);
+    auto count2 = metrics1.add_metric("count_2");
 
-    auto count2 = metrics1.initialize_metric(0, "count_2");
-
-    EXPECT_TRUE(metrics1.is_metric_initialized(0));
+    EXPECT_EQ(metrics1.count(), 1U);
+    EXPECT_EQ(metrics1.metric_index("count_2"), 0U);
     EXPECT_EQ(metrics1.metric_name(0), "count_2");
     EXPECT_EQ(metrics1.metric_value(0), 0U);
 
@@ -45,12 +41,12 @@ TEST(test_metrics, default_constructor)
 
     EXPECT_EQ(metrics1.metric_value(0), 1U);
 
-    std::string title2 = "test_metrics2";
-    abacus::metrics metrics2(max_metrics, max_name_bytes, title2);
+    abacus::metrics metrics2(max_metrics, max_name_bytes);
 
-    auto count3 = metrics2.initialize_metric(0, "count_3");
+    auto count3 = metrics2.add_metric("count_3");
 
-    EXPECT_TRUE(metrics2.is_metric_initialized(0));
+    EXPECT_EQ(metrics2.count(), 1U);
+    EXPECT_EQ(metrics2.metric_index("count_3"), 0U);
     EXPECT_EQ(metrics2.metric_name(0), "count_3");
     EXPECT_EQ(metrics2.metric_value(0), 0U);
 
@@ -64,9 +60,10 @@ TEST(test_metrics, copy_storage)
     uint16_t max_metrics = 10;
     uint16_t max_name_bytes = 32;
 
-    abacus::metrics metrics(max_metrics, max_name_bytes, "test_metrics");
+    abacus::metrics metrics(max_metrics, max_name_bytes);
 
-    metrics.initialize_metric(0, "count_1");
+    metrics.add_metric("count_1");
+    metrics.push_scope("scope");
 
     std::size_t size = metrics.storage_bytes();
     std::vector<uint8_t> data1(size);
@@ -86,12 +83,12 @@ TEST(test_metrics, reset_counters)
     uint16_t max_name_bytes = 32;
     uint16_t max_metrics = 10;
 
-    abacus::metrics metrics(max_metrics, max_name_bytes, "metrics");
+    abacus::metrics metrics(max_metrics, max_name_bytes);
 
     for (std::size_t i = 0; i < max_metrics; i++)
     {
         std::string name = "metric" + std::to_string(i);
-        auto metric = metrics.initialize_metric(i, name);
+        auto metric = metrics.add_metric(name);
         metric = count;
     }
 
@@ -103,5 +100,34 @@ TEST(test_metrics, reset_counters)
     for (std::size_t i = 0; i < max_metrics; i++)
     {
         EXPECT_EQ(metrics.metric_value(i), (uint64_t)0);
+    }
+}
+
+TEST(test_metrics, add_scope)
+{
+    uint16_t max_name_bytes = 32;
+    uint16_t max_metrics = 10;
+
+    std::string scope = "metrics";
+
+    abacus::metrics metrics(max_metrics, max_name_bytes);
+
+    for (std::size_t i = 0; i < max_metrics; i++)
+    {
+        std::string name = "metric" + std::to_string(i);
+        auto metric = metrics.add_metric(name);
+        metric = i;
+    }
+
+    metrics.push_scope(scope);
+    metrics.push_scope("test");
+
+    EXPECT_EQ(metrics.count(), max_metrics);
+
+    for (std::size_t i = 0; i < metrics.count(); i++)
+    {
+        EXPECT_EQ(metrics.scope(), "test.metrics");
+        EXPECT_EQ(metrics.scope_size(), std::string("test.metrics").size());
+        EXPECT_EQ(metrics.metric_name(i), "metric" + std::to_string(i));
     }
 }
