@@ -269,40 +269,6 @@ public:
         return *this;
     }
 
-    /// Increment the counter
-    /// @param value The value to add
-    /// @return The result of the arithmetic
-    auto operator+=(bool value) -> metric<value_type::boolean>&
-    {
-        *m_memory += value;
-        return *this;
-    }
-
-    /// Decrement the counter
-    /// @param value The value to subtract
-    /// @return The result of the arithmetic
-    auto operator-=(bool value) -> metric<value_type::boolean>&
-    {
-        *m_memory -= value;
-        return *this;
-    }
-
-    /// Increment the value of the counter
-    /// @return The result of the arithmetic
-    auto operator++() -> metric<value_type::boolean>&
-    {
-        *m_memory += 1;
-        return *this;
-    }
-
-    /// Decrement the value of the counter
-    /// @return The result of the arithmetic
-    auto operator--() -> metric<value_type::boolean>&
-    {
-        *m_memory -= 1;
-        return *this;
-    }
-
     /// @return True if the metric has been assigned memory. False otherwise
     auto is_initialized() const -> bool
     {

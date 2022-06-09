@@ -1,57 +1,58 @@
-// Copyright (c) Steinwurf ApS 2020.
-// All Rights Reserved
-//
-// Distributed under the "BSD License". See the accompanying LICENSE.rst
-// file.
+// // Copyright (c) Steinwurf ApS 2020.
+// // All Rights Reserved
+// //
+// // Distributed under the "BSD License". See the accompanying LICENSE.rst
+// // file.
 
-#include <cstring>
-#include <gtest/gtest.h>
+// #include <cstring>
+// #include <gtest/gtest.h>
 
-#include <abacus/detail/raw.hpp>
-TEST(detail_test_raw, api)
-{
-    uint16_t max_name_bytes = 10;
-    uint16_t max_metrics = 2;
-    std::size_t alignment_padding =
-        8 - ((abacus::detail::header_bytes() + max_name_bytes * (max_metrics) +
-              max_metrics) %
-             8);
-    std::size_t size = abacus::detail::header_bytes() + alignment_padding +
-                       max_metrics * (max_name_bytes + sizeof(uint64_t) + 1);
-    std::vector<uint8_t> data(size);
+// #include <abacus/detail/raw.hpp>
+// TEST(detail_test_raw, api)
+// {
+//     uint16_t max_name_bytes = 10;
+//     uint16_t max_metrics = 2;
+//     std::size_t alignment_padding =
+//         8 - ((abacus::detail::header_bytes() + max_name_bytes * (max_metrics)
+//         +
+//               max_metrics) %
+//              8);
+//     std::size_t size = abacus::detail::header_bytes() + alignment_padding +
+//                        max_metrics * (max_name_bytes + sizeof(uint64_t) + 1);
+//     std::vector<uint8_t> data(size);
 
-    // Write the header
-    std::memcpy(data.data(), &max_name_bytes, sizeof(uint16_t));
-    std::memcpy(data.data() + 2, &max_metrics, sizeof(uint16_t));
-    data[4] = 8U;
+//     // Write the header
+//     std::memcpy(data.data(), &max_name_bytes, sizeof(uint16_t));
+//     std::memcpy(data.data() + 2, &max_metrics, sizeof(uint16_t));
+//     data[4] = 8U;
 
-    std::string scope = "test";
+//     std::string scope = "test";
 
-    std::string metric_name_1 = "metric_1";
-    char* name_data_1 = abacus::detail::raw_name(data.data(), 0);
-    uint64_t* value_data_1 =
-        abacus::detail::raw_value<uint64_t>(data.data(), 0);
+//     std::string metric_name_1 = "metric_1";
+//     char* name_data_1 = abacus::detail::raw_name(data.data(), 0);
+//     uint64_t* value_data_1 =
+//         abacus::detail::raw_value<uint64_t>(data.data(), 0);
 
-    std::memcpy(name_data_1, metric_name_1.data(), metric_name_1.size());
-    uint64_t value_1 = 1U;
-    std::memcpy(value_data_1, &value_1, sizeof(uint64_t));
+//     std::memcpy(name_data_1, metric_name_1.data(), metric_name_1.size());
+//     uint64_t value_1 = 1U;
+//     std::memcpy(value_data_1, &value_1, sizeof(uint64_t));
 
-    std::string metric_name_2 = "metric";
-    char* name_data_2 = abacus::detail::raw_name(data.data(), 1);
-    double* value_data_2 = abacus::detail::raw_value<double>(data.data(), 1);
+//     std::string metric_name_2 = "metric";
+//     char* name_data_2 = abacus::detail::raw_name(data.data(), 1);
+//     double* value_data_2 = abacus::detail::raw_value<double>(data.data(), 1);
 
-    std::memcpy(name_data_2, metric_name_2.data(), metric_name_2.size());
-    double value_2 = 2.0;
-    std::memcpy(value_data_2, &value_2, sizeof(double));
+//     std::memcpy(name_data_2, metric_name_2.data(), metric_name_2.size());
+//     double value_2 = 2.0;
+//     std::memcpy(value_data_2, &value_2, sizeof(double));
 
-    EXPECT_EQ(abacus::detail::max_name_bytes(data.data()), max_name_bytes);
-    EXPECT_EQ(abacus::detail::max_metrics(data.data()), max_metrics);
+//     EXPECT_EQ(abacus::detail::max_name_bytes(data.data()), max_name_bytes);
+//     EXPECT_EQ(abacus::detail::max_metrics(data.data()), max_metrics);
 
-    EXPECT_EQ(abacus::detail::raw_name(data.data(), 0), metric_name_1);
-    EXPECT_EQ(*abacus::detail::raw_value<uint64_t>(data.data(), 0), 1U);
-    EXPECT_EQ(abacus::detail::has_metric(data.data(), 0), true);
+//     EXPECT_EQ(abacus::detail::raw_name(data.data(), 0), metric_name_1);
+//     EXPECT_EQ(*abacus::detail::raw_value<uint64_t>(data.data(), 0), 1U);
+//     EXPECT_EQ(abacus::detail::has_metric(data.data(), 0), true);
 
-    EXPECT_EQ(abacus::detail::raw_name(data.data(), 1), metric_name_2);
-    EXPECT_EQ(*abacus::detail::raw_value<double>(data.data(), 1), 2.0);
-    EXPECT_EQ(abacus::detail::has_metric(data.data(), 1), true);
-}
+//     EXPECT_EQ(abacus::detail::raw_name(data.data(), 1), metric_name_2);
+//     EXPECT_EQ(*abacus::detail::raw_value<double>(data.data(), 1), 2.0);
+//     EXPECT_EQ(abacus::detail::has_metric(data.data(), 1), true);
+// }

@@ -8,8 +8,9 @@
 #include <cassert>
 #include <vector>
 
+#include "detail/raw.hpp"
+#include "detail/value_size_info.hpp"
 #include "metric.hpp"
-#include "metric_info.hpp"
 #include "value_types.hpp"
 #include "version.hpp"
 #include "view.hpp"
@@ -47,75 +48,22 @@ public:
     /// @returns the number of metrics in the collection
     auto metric_count() const -> std::size_t;
 
-    /// @param index The index of a counter. Must be less than max_metrics.
-    /// @return The name of a counter as a string
+    auto is_metric_initialized(std::size_t index) const -> bool;
+
     auto metric_name(std::size_t index) const -> std::string;
 
-    /// @param index The index of a counter. Must be less than max_metrics.
-    /// @return The type of a counter as an enum class
+    auto metric_description(std::size_t index) const -> std::string;
+
     auto metric_type(std::size_t index) const -> value_type;
 
-    /// @param value The variable to assign the value of a bool counter to
-    /// @param index The index of a counter. Must be less than max_metrics.
-    void metric_value(bool& value, std::size_t index) const;
+    auto metric_is_constant(std::size_t index) const -> bool;
 
-    /// @param value The variable to assign the value of a unsigned integral
-    /// counter to.
-    /// @param index The index of a counter. Must be less than max_metrics.
-    void metric_value(uint64_t& value, std::size_t index) const;
-
-    /// @param value The variable to assign the value of a signed integral
-    /// counter to
-    /// @param index The index of a counter. Must be less than max_metrics.
-    void metric_value(int64_t& value, std::size_t index) const;
-
-    /// @param value The variable to assign the value of a floating point
-    /// counter to
-    /// @param index The index of a counter. Must be less than max_metrics.
-    void metric_value(double& value, std::size_t index) const;
-
-    /// @param name The name of a counter with full scope. The name must be
-    /// of the form scope.metric_name
-    /// @return The index of a counter.
-    auto metric_index(const std::string& name) const -> std::size_t;
-
-    /// @return The scope of the counters as a string.
-    auto scope() const -> std::string;
-
-    /// @return The size of the scope in bytes.
-    auto scope_size() const -> std::size_t;
-
-    /// @return The number of metrics currently initialized in the object
-    auto count() const -> std::size_t;
-
-    /// @param text The text to add to the scope of the metrics object.
-    ///
-    /// The extra scopes can be used to access different metric
-    /// objects from a view. The scopes
-    void push_scope(const std::string& text);
-
-    /// Removes the last pushed scope from the full scope.
-    void pop_scope();
-
-    /// Copies the memory backing the counter storage to a data pointer.
-    /// Use the storage_bytes() function to determine the size of the
-    /// data pointer to copy.
-    /// @param data The data pointer to copy the raw memory to
-    void copy_storage(uint8_t* data) const;
-
-    /// @return The size of the counter storage in bytes
-    auto storage_bytes() const -> std::size_t;
-
-    /// Reset all the counters
-    void reset_metrics();
-
-    /// Reset specific counter
-    /// @param index The index of the new counter. Must be less than
-    /// max_metrics.
-    void reset_metric(std::size_t index);
-
-    /// @return All counters in json format
-    auto to_json() const -> std::string;
+    template <value_type T>
+    auto initialize_metric(std::size_t index) const -> metric<T>
+    {
+        (void)index;
+        throw std::runtime_error("Unknown metric type");
+    }
 
 private:
     /// No copy
@@ -131,8 +79,14 @@ private:
     metrics& operator=(metrics&&) = delete;
 
 private:
-    /// The info of the metrics
-    std::vector<metric_info> m_info;
+    /// The info of the metrics seperated by byte-sizes
+    detail::value_size_info m_info;
+
+    /// The sizes of the names of the metrics
+    std::vector<uint16_t> m_name_sizes;
+
+    /// The sizes of the descriptions of the metrics
+    std::vector<uint16_t> m_description_sizes;
 
     /// storage_size
     std::size_t m_storage_bytes = 0;
@@ -145,9 +99,96 @@ private:
     /// The raw memory for the counters (both value and name)
     uint8_t* m_data = nullptr;
 
-    /// The scopees prepended to the metrics object
+    /// The scopes prepended to the metrics object
     std::vector<std::string> m_scopes;
 };
+
+template <>
+inline auto metrics::initialize_metric<value_type::unsigned_integral>(
+    std::size_t index) const -> metric<value_type::unsigned_integral>
+{
+    assert(index < m_count);
+    assert(!is_metric_initialized(index));
+
+    const char* name_ptr = detail::raw_name(m_data, index);
+    std::memcpy(&name_ptr, m_info[index].name.c_str(), m_name_sizes[index]);
+
+    auto description_ptr = detail::raw_description(m_data, index);
+    std::memcpy(&description_ptr, m_info[index].description.c_str(),
+                m_description_sizes[index]);
+
+    uint64_t* value_ptr = detail::raw_value<uint64_t>(m_data, index);
+
+    *value_ptr = 0U;
+
+    return metric<value_type::unsigned_integral>{value_ptr};
+}
+
+template <>
+inline auto
+metrics::initialize_metric<value_type::signed_integral>(std::size_t index) const
+    -> metric<value_type::signed_integral>
+{
+    assert(index < m_count);
+    assert(!is_metric_initialized(index));
+
+    auto name_ptr = detail::raw_name(m_data, index);
+    std::memcpy(name_ptr, m_info[index].name.c_str(), m_name_sizes[index]);
+
+    auto description_ptr = detail::raw_description(m_data, index);
+    std::memcpy(description_ptr, m_info[index].description.c_str(),
+                m_description_sizes[index]);
+
+    int64_t* value_ptr = detail::raw_value<int64_t>(m_data, index);
+
+    *value_ptr = 0;
+
+    return metric<value_type::signed_integral>{value_ptr};
+}
+
+template <>
+inline auto
+metrics::initialize_metric<value_type::floating_point>(std::size_t index) const
+    -> metric<value_type::floating_point>
+{
+    assert(index < m_count);
+    assert(!is_metric_initialized(index));
+
+    auto name_ptr = detail::raw_name(m_data, index);
+    std::memcpy(name_ptr, m_info[index].name.c_str(), m_name_sizes[index]);
+
+    auto description_ptr = detail::raw_description(m_data, index);
+    std::memcpy(description_ptr, m_info[index].description.c_str(),
+                m_description_sizes[index]);
+
+    double* value_ptr = detail::raw_value<double>(m_data, index);
+
+    *value_ptr = 0.0;
+
+    return metric<value_type::floating_point>{value_ptr};
+}
+
+template <>
+inline auto
+metrics::initialize_metric<value_type::boolean>(std::size_t index) const
+    -> metric<value_type::boolean>
+{
+    assert(index < m_count);
+    assert(!is_metric_initialized(index));
+
+    auto name_ptr = detail::raw_name(m_data, index);
+    std::memcpy(name_ptr, m_info[index].name.c_str(), m_name_sizes[index]);
+
+    auto description_ptr = detail::raw_description(m_data, index);
+    std::memcpy(description_ptr, m_info[index].description.c_str(),
+                m_description_sizes[index]);
+
+    bool* value_ptr = detail::raw_value<bool>(m_data, index);
+
+    *value_ptr = false;
+
+    return metric<value_type::boolean>{value_ptr};
+}
 
 }
 }
