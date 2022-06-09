@@ -9,7 +9,6 @@
 #include <type_traits>
 #include <vector>
 
-#include "value_types.hpp"
 #include "version.hpp"
 
 namespace abacus
@@ -17,26 +16,11 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 /// Wrapper for the value of a counter.
-template <value_type v>
-class metric;
-
 template <class T>
-class metric_integer
+class metric
 {
-    static_assert(std::is_integral<T>::value,
-                  "metric_integer can only be used with integral types");
-};
-
-template <class T>
-class metric_float
-{
-    static_assert(std::is_floating_point<T>::value,
-                  "metric_float can only be used with floating point types");
-};
-
-template <>
-class metric<value_type::unsigned_integral> : public metric_integer<uint64_t>
-{
+private:
+    // using check_is_bool = std::enable_if<std::is_same<T, bool>::value, R>;
 
 public:
     /// Default constructor
@@ -45,7 +29,7 @@ public:
     /// Create a new counter value from the pointer
     /// @param memory A pointer to a value
 
-    metric(uint64_t* memory) : m_memory(memory)
+    metric(T* memory) : m_memory(memory)
     {
         assert(m_memory != nullptr);
     }
@@ -53,8 +37,10 @@ public:
     /// Assign the counter a new value
     /// @param value The value to assign
     /// @return a counter with the new value
-    auto operator=(uint64_t value) -> metric<value_type::unsigned_integral>&
+    auto operator=(T value) -> metric<T>&
     {
+        assert(m_memory != nullptr);
+
         *m_memory = value;
         return *this;
     }
@@ -62,8 +48,10 @@ public:
     /// Increment the counter
     /// @param value The value to add
     /// @return The result of the arithmetic
-    auto operator+=(uint64_t value) -> metric<value_type::unsigned_integral>&
+    auto operator+=(T value) -> metric<T>&
     {
+        assert(m_memory != nullptr);
+
         *m_memory += value;
         return *this;
     }
@@ -71,24 +59,31 @@ public:
     /// Decrement the counter
     /// @param value The value to subtract
     /// @return The result of the arithmetic
-    auto operator-=(uint64_t value) -> metric<value_type::unsigned_integral>&
+    auto operator-=(T value) -> metric<T>&
     {
+        assert(m_memory != nullptr);
+        if (std::is_unsigned<T>::value)
+        {
+            assert(value <= *m_memory);
+        }
         *m_memory -= value;
         return *this;
     }
 
     /// Increment the value of the counter
     /// @return The result of the arithmetic
-    auto operator++() -> metric<value_type::unsigned_integral>&
+    auto operator++() -> metric<T>&
     {
+        assert(m_memory != nullptr);
         *m_memory += 1;
         return *this;
     }
 
     /// Decrement the value of the counter
     /// @return The result of the arithmetic
-    auto operator--() -> metric<value_type::unsigned_integral>&
+    auto operator--() -> metric<T>&
     {
+        assert(m_memory != nullptr);
         *m_memory -= 1;
         return *this;
     }
@@ -100,219 +95,50 @@ public:
     }
 
 private:
-    /// The metric memory
-    uint64_t* m_memory;
-};
-
-template <>
-class metric<value_type::signed_integral> : public metric_integer<int64_t>
-{
-
-public:
-    /// Default constructor
-    metric() = default;
-
-    /// Create a new counter value from the pointer
-    /// @param memory A pointer to a value
-
-    metric(int64_t* memory) : m_memory(memory)
-    {
-        assert(m_memory != nullptr);
-    }
-
-    /// Assign the counter a new value
-    /// @param value The value to assign
-    /// @return a counter with the new value
-    auto operator=(int64_t value) -> metric<value_type::signed_integral>&
-    {
-        *m_memory = value;
-        return *this;
-    }
-
-    /// Increment the counter
-    /// @param value The value to add
-    /// @return The result of the arithmetic
-    auto operator+=(int64_t value) -> metric<value_type::signed_integral>&
-    {
-        *m_memory += value;
-        return *this;
-    }
-
-    /// Decrement the counter
-    /// @param value The value to subtract
-    /// @return The result of the arithmetic
-    auto operator-=(int64_t value) -> metric<value_type::signed_integral>&
-    {
-        *m_memory -= value;
-        return *this;
-    }
-
-    /// Increment the value of the counter
-    /// @return The result of the arithmetic
-    auto operator++() -> metric<value_type::signed_integral>&
-    {
-        *m_memory += 1;
-        return *this;
-    }
-
-    /// Decrement the value of the counter
-    /// @return The result of the arithmetic
-    auto operator--() -> metric<value_type::signed_integral>&
-    {
-        *m_memory -= 1;
-        return *this;
-    }
-
-    /// @return True if the metric has been assigned memory. False otherwise
-    auto is_initialized() const -> bool
-    {
-        return m_memory != nullptr;
-    }
+    /// Enable creation from the storage class
+    // friend class metrics;
 
 private:
     /// The metric memory
-    int64_t* m_memory;
+    T* m_memory;
 };
 
+// Bool special cases. Increment and Decrement makes no sense with bools (is it
+// the NOT operator?). Assign and add/subtract has no real purpose either.
+
+/// The postfix increment operator is not allowed for bool.
 template <>
-class metric<value_type::floating_point> : public metric_float<double>
+inline auto metric<bool>::operator++() -> metric<bool>&
 {
+    assert(false && "metric::operator++: Not allowed for bool.");
+    return *this;
+}
 
-public:
-    /// Default constructor
-    metric() = default;
-
-    /// Create a new counter value from the pointer
-    /// @param memory A pointer to a value
-
-    metric(double* memory) : m_memory(memory)
-    {
-        assert(m_memory != nullptr);
-    }
-
-    /// Assign the counter a new value
-    /// @param value The value to assign
-    /// @return a counter with the new value
-    auto operator=(double value) -> metric<value_type::floating_point>&
-    {
-        *m_memory = value;
-        return *this;
-    }
-
-    /// Increment the counter
-    /// @param value The value to add
-    /// @return The result of the arithmetic
-    auto operator+=(double value) -> metric<value_type::floating_point>&
-    {
-        *m_memory += value;
-        return *this;
-    }
-
-    /// Decrement the counter
-    /// @param value The value to subtract
-    /// @return The result of the arithmetic
-    auto operator-=(double value) -> metric<value_type::floating_point>&
-    {
-        *m_memory -= value;
-        return *this;
-    }
-
-    /// Increment the value of the counter
-    /// @return The result of the arithmetic
-    auto operator++() -> metric<value_type::floating_point>&
-    {
-        *m_memory += 1;
-        return *this;
-    }
-
-    /// Decrement the value of the counter
-    /// @return The result of the arithmetic
-    auto operator--() -> metric<value_type::floating_point>&
-    {
-        *m_memory -= 1;
-        return *this;
-    }
-
-    /// @return True if the metric has been assigned memory. False otherwise
-    auto is_initialized() const -> bool
-    {
-        return m_memory != nullptr;
-    }
-
-private:
-    /// The metric memory
-    double* m_memory;
-};
-
+/// The postfix decrement operator is not allowed for bool.
 template <>
-class metric<value_type::boolean> : public metric_integer<bool>
+inline auto metric<bool>::operator--() -> metric<bool>&
 {
+    assert(false && "metric::operator--: Not allowed for bool.");
+    return *this;
+}
 
-public:
-    /// Default constructor
-    metric() = default;
+/// The assign and add operator is not allowed for bool.
+template <>
+inline auto metric<bool>::operator+=(bool value) -> metric<bool>&
+{
+    assert(false && "metric::operator+=: Not allowed for bool.");
+    (void)value;
+    return *this;
+}
 
-    /// Create a new counter value from the pointer
-    /// @param memory A pointer to a value
-
-    metric(bool* memory) : m_memory(memory)
-    {
-        assert(m_memory != nullptr);
-    }
-
-    /// Assign the counter a new value
-    /// @param value The value to assign
-    /// @return a counter with the new value
-    auto operator=(bool value) -> metric<value_type::boolean>&
-    {
-        *m_memory = value;
-        return *this;
-    }
-
-    /// Increment the counter
-    /// @param value The value to add
-    /// @return The result of the arithmetic
-    auto operator+=(bool value) -> metric<value_type::boolean>&
-    {
-        *m_memory += value;
-        return *this;
-    }
-
-    /// Decrement the counter
-    /// @param value The value to subtract
-    /// @return The result of the arithmetic
-    auto operator-=(bool value) -> metric<value_type::boolean>&
-    {
-        *m_memory -= value;
-        return *this;
-    }
-
-    /// Increment the value of the counter
-    /// @return The result of the arithmetic
-    auto operator++() -> metric<value_type::boolean>&
-    {
-        *m_memory += 1;
-        return *this;
-    }
-
-    /// Decrement the value of the counter
-    /// @return The result of the arithmetic
-    auto operator--() -> metric<value_type::boolean>&
-    {
-        *m_memory -= 1;
-        return *this;
-    }
-
-    /// @return True if the metric has been assigned memory. False otherwise
-    auto is_initialized() const -> bool
-    {
-        return m_memory != nullptr;
-    }
-
-private:
-    /// The metric memory
-    bool* m_memory;
-};
+/// The assign and subtract operator is not allowed for bool.
+template <>
+inline auto metric<bool>::operator-=(bool value) -> metric<bool>&
+{
+    assert(false && "metric::operator-=: Not allowed for bool.");
+    (void)value;
+    return *this;
+}
 
 }
 }

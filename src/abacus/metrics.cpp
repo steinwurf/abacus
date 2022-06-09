@@ -9,7 +9,6 @@
 #include <iostream>
 #include <limits>
 
-#include "detail/info_bytes.hpp"
 #include "detail/raw.hpp"
 #include "metrics.hpp"
 
@@ -18,46 +17,31 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-metrics::metrics(std::vector<metric_info> info) : m_info(info)
+metrics::metrics(std::size_t max_metrics, std::size_t max_name_bytes) :
+    m_max_metrics(max_metrics), m_max_name_bytes(max_name_bytes)
 {
-    assert(m_info.size() > 0);
-    assert(m_info.size() <= std::numeric_limits<uint16_t>::max());
+    assert(m_max_metrics > 0);
+    assert(m_max_metrics <= std::numeric_limits<uint16_t>::max());
+    assert(m_max_name_bytes > 0);
+    assert(m_max_name_bytes <= std::numeric_limits<uint16_t>::max());
 
-    m_count = m_info.size();
-
-    // Calculate the needed memory for the metrics.
-    detail::info_bytes bytes = detail::info_bytes_from_info(m_info);
-
-    m_storage_bytes = detail::header_bytes() + bytes.name_bytes +
-                      bytes.description_bytes + bytes.type_bytes;
-
-    if (m_storage_bytes % 8 != 0)
-    {
-        m_storage_bytes += 8 - (m_storage_bytes % 8);
-    }
-
-    m_storage_bytes += bytes.value_bytes;
-
-    m_data = static_cast<uint8_t*>(::operator new(m_storage_bytes));
+    // Allocate the memory for the counters
+    std::size_t memory_needed = storage_bytes();
+    m_data = static_cast<uint8_t*>(::operator new(memory_needed));
 
     assert(reinterpret_cast<uint64_t>(m_data) % 8U == 0U);
 
     // Zero out all memory
-    std::memset(m_data, 0, m_storage_bytes);
+    std::memset(m_data, 0, memory_needed);
 
     // // Write the header
-    new (m_data) uint16_t(m_count);
-    new (m_data + 2) uint16_t(0);
-    new (m_data + 4) uint16_t(bytes.name_bytes);
-    new (m_data + 6) uint16_t(bytes.description_bytes);
-    new (m_data + 8) uint16_t(m_count - bytes.bools_count);
-    new (m_data + 10) uint16_t(bytes.bools_count);
+    new (m_data) uint16_t(m_max_name_bytes);
+    new (m_data + 2) uint16_t(m_max_metrics);
+    new (m_data + 4) uint8_t(8);
+    new (m_data + 5) uint16_t(0);
 
     assert((reinterpret_cast<uint64_t>(m_data + detail::values_offset(m_data)) %
             8U) == 0U);
-
-    // Write the names
-    uint8_t* name_ptr = m_data + detail::names_offset();
 }
 
 metrics::~metrics()
@@ -65,9 +49,9 @@ metrics::~metrics()
     ::operator delete(m_data);
 }
 
-auto metrics::metric_count() const -> std::size_t
+auto metrics::max_metrics() const -> std::size_t
 {
-    return m_count;
+    return m_max_metrics;
 }
 
 auto metrics::max_name_bytes() const -> std::size_t

@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "metric.hpp"
-#include "metric_info.hpp"
 #include "value_types.hpp"
 #include "version.hpp"
 #include "view.hpp"
@@ -30,22 +29,31 @@ inline namespace STEINWURF_ABACUS_VERSION
 /// max_metrics = 64.
 ///
 /// The header consists of 42 bits of 3 values:
-/// 1. 16 bit denoting the number of counters
-
+/// 1. 16 bit denoting the max size of name
+/// 2. 16 bit denoting the max number of counters
+/// 3. 8 bit denoting the max size of values
+/// 4. 16 bit denoting the size of the scope
 class metrics
 {
 
 public:
-    /// Constructor
-    /// @param info The info needed to initialize all the metrics with types,
-    /// names and descriptions
-    metrics(std::vector<metric_info> info);
+    /// Default constructor
+    /// @param max_metrics The maximum number of metrics this object will
+    /// contain. Must be a number that can fit in 2 bytes.
+    /// @param max_name_bytes The maximum length in bytes the title/names of the
+    /// counters will contain. Must be a number that can fit in 2 bytes.
+    metrics(std::size_t max_metrics, std::size_t max_name_bytes);
 
     /// Destructor
     ~metrics();
 
-    /// @returns the number of metrics in the collection
-    auto metric_count() const -> std::size_t;
+    /// @return the maximum number of metrics that was provided to the
+    /// constructor
+    auto max_metrics() const -> std::size_t;
+
+    /// @return the maximum number of bytes used for a metric name that was
+    /// provided to the constructor
+    auto max_name_bytes() const -> std::size_t;
 
     /// @param index The index of a counter. Must be less than max_metrics.
     /// @return The name of a counter as a string
@@ -84,6 +92,12 @@ public:
 
     /// @return The size of the scope in bytes.
     auto scope_size() const -> std::size_t;
+
+    /// @param name The name of the new counter. Must be less than
+    /// max_name_bytes bytes
+    /// @return The value of the counter
+    template <typename Type>
+    auto add_metric(const std::string& name) -> metric<Type>;
 
     /// @return The number of metrics currently initialized in the object
     auto count() const -> std::size_t;
@@ -131,14 +145,14 @@ private:
     metrics& operator=(metrics&&) = delete;
 
 private:
-    /// The info of the metrics
-    std::vector<metric_info> m_info;
-
-    /// storage_size
-    std::size_t m_storage_bytes = 0;
+    /// The maximum number of metrics that can be stored in the object
+    std::size_t m_max_metrics = 0;
 
     /// The current number of metrics that have been initialized
     std::size_t m_count = 0;
+
+    /// The maximum number of bytes that can be used for the name of each metric
+    std::size_t m_max_name_bytes = 0;
 
     std::string m_scope = "";
 
