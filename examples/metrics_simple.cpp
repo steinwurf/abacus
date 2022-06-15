@@ -15,20 +15,22 @@ int main()
     uint64_t max_metrics = 10;
     uint64_t max_name_bytes = 32;
 
-    abacus::metrics car(max_metrics, max_name_bytes, "Car");
+    abacus::metrics car(max_metrics, max_name_bytes);
+
+    car.push_scope("car");
 
     /// A car has headlights. Two of them usually
-    auto headlights = car.initialize_metric(0, "headlights");
+    auto headlights = car.add_metric<bool>("has_headlights");
 
-    headlights += 2;
+    headlights = true;
 
     /// What about the gas mileage?
-    auto fuel_consumption = car.initialize_metric(1, "fuel consumption km/L");
+    auto fuel_consumption = car.add_metric<double>("fuel consumption km/L");
 
-    fuel_consumption += 20;
+    fuel_consumption += 21.8;
 
     /// Most cars are 4-wheelers as well
-    auto wheels = car.initialize_metric(2, "Wheels");
+    auto wheels = car.add_metric<uint64_t>("Wheels");
 
     wheels += 4;
 
@@ -50,18 +52,53 @@ int main()
     /// Lets see what it contains:
     std::cout << "Car has the following metrics:" << std::endl;
 
-    for (std::size_t i = 0; i < car_view.max_metrics(); i++)
+    for (std::size_t i = 0; i < car_view.count(); i++)
     {
-        /// If a counter in memory has no name, it's not yet initialized.
+        /// If a counter in memory has no name, it's not yet addd.
         /// We will ignore it.
-        if (!car_view.is_metric_initialized(i))
+        if (!car_view.has_metric(i))
         {
             continue;
         }
+        abacus::value_type type = car_view.metric_type(i);
+
+        std::string value_string;
+
+        switch (type)
+        {
+        case abacus::value_type::unsigned_integral:
+        {
+            uint64_t value;
+            car_view.metric_value(value, i);
+            value_string = std::to_string(value);
+            break;
+        }
+        case abacus::value_type::signed_integral:
+        {
+            int64_t value;
+            car_view.metric_value(value, i);
+            value_string = std::to_string(value);
+            break;
+        }
+        case abacus::value_type::boolean:
+        {
+            bool value;
+            car_view.metric_value(value, i);
+            value_string = std::to_string(value);
+            break;
+        }
+        case abacus::value_type::floating_point:
+        {
+            double value;
+            car_view.metric_value(value, i);
+            value_string = std::to_string(value);
+            break;
+        }
+        }
         /// Get the name from memory and the address of the value and
         /// dereference it.
-        std::cout << "\t" << car_view.metric_name(i) << ": "
-                  << car_view.metric_value(i) << std::endl;
+        std::cout << "\t" << car_view.metric_name(i) << ": " << value_string
+                  << std::endl;
     }
 
     return 0;

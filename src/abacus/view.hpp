@@ -8,6 +8,7 @@
 #include <cassert>
 #include <vector>
 
+#include "value_types.hpp"
 #include "version.hpp"
 
 namespace abacus
@@ -43,33 +44,66 @@ public:
     /// @return the maximum number of metrics from a metrics data pointer
     auto max_metrics() const -> uint16_t;
 
-    /// @return the title of the metrics object
-    auto get_title() const -> std::string;
+    /// @return the size of the scope name from a metrics data pointer
+    auto scope_size() const -> uint8_t;
 
     /// @param index The index of the new counter. Must be less than
     /// max_metrics().
     /// @return The name of a counter as a string
     auto metric_name(std::size_t index) const -> std::string;
 
-    /// @param index The index of the new counter. Must be less than
-    /// max_metrics().
-    /// @return A specific count
-    auto metric_value(std::size_t index) const -> uint64_t;
+    /// @param index The index of a counter. Must be less than max_metrics.
+    /// @return The type of a counter as an enum class
+    auto metric_type(std::size_t index) const -> value_type;
 
-    /// @param index The index of the new counter. Must be less than
+    /// @param value The variable to assign the value of a bool counter to
+    /// @param index The index of a counter. Must be less than max_metrics.
+    void metric_value(bool& value, std::size_t index) const;
+
+    /// @param value The variable to assign the value of a unsigned integral
+    /// counter to.
+    /// @param index The index of a counter. Must be less than max_metrics.
+    void metric_value(uint64_t& value, std::size_t index) const;
+
+    /// @param value The variable to assign the value of a signed integral
+    /// counter to
+    /// @param index The index of a counter. Must be less than max_metrics.
+    void metric_value(int64_t& value, std::size_t index) const;
+
+    /// @param value The variable to assign the value of a floating point
+    /// counter to
+    /// @param index The index of a counter. Must be less than max_metrics.
+    void metric_value(double& value, std::size_t index) const;
+
+    /// @param name The name of the counter to get the index of
+    /// @return The index of the counter with the given name
+    auto metric_index(const std::string& name) const -> std::size_t;
+
+    /// @return The number of metrics currently initialized in the object
+    auto count() const -> std::size_t;
+
+    /// @return The scope of the metrics data as a string
+    auto scope() const -> std::string;
+
+    /// @param index The index of the counter to check. Must be less than
     /// max_metrics().
     /// @return True if the counter has been initialized
-    auto is_metric_initialized(std::size_t index) const -> bool;
+    auto has_metric(std::size_t index) const -> bool;
 
     /// @return The number of bytes in the view memory
     auto view_bytes() const -> std::size_t;
 
+    /// @param closed If true, the json produced will be closed by brackets.
+    /// Intented to be used with the view_iterator class to gather all metrics
+    /// in a JSON object.
     /// @return All counters in json format
-    auto to_json() const -> std::string;
+    auto to_json(bool closed = true) const -> std::string;
 
 private:
     /// The raw memory from the metrics counters
     const uint8_t* m_data;
+
+    std::string m_scope;
 };
 }
 }
