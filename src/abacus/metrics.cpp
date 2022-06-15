@@ -132,20 +132,20 @@ auto metrics::metric_count() const -> std::size_t
 
 auto metrics::is_metric_initialized(std::size_t index) const -> bool
 {
-    assert(index < m_count);
-
-    const char* name_data = detail::raw_name(m_data, index);
-
-    // If the name is non-zero it is initialized and valid. We just check the
-    // first byte to see if it's zero.
-    return name_data[0] != 0;
+    return detail::is_metric_initialized(m_data, index);
 }
 
 auto metrics::metric_name(std::size_t index) const -> std::string
 {
     assert(index < m_count);
-    assert(is_metric_initialized(index));
-    return detail::raw_name(m_data, index);
+    if (is_metric_initialized(index))
+    {
+        return detail::raw_name(m_data, index);
+    }
+    else
+    {
+        return m_info[index].name;
+    }
 }
 
 auto metrics::metric_description(std::size_t index) const -> std::string
@@ -299,5 +299,140 @@ auto metrics::metric_index(std::string name) const -> std::size_t
 {
     return detail::metric_index(m_data, name.c_str());
 }
+
+auto metrics::scope() const -> std::string
+{
+    return m_scope;
+}
+
+auto metrics::scope_size() const -> std::size_t
+{
+    return detail::scope_size(m_data);
+}
+
+void metrics::push_scope(const std::string& text)
+{
+    if (m_scope.size() == 0)
+    {
+        m_scope = text;
+    }
+    else
+    {
+        m_scope = text + "." + m_scope;
+    }
+
+    m_scopes.push_back(text);
+
+    // Update the scope size
+    uint8_t scope_size = (uint8_t)m_scope.size() + 1;
+
+    uint16_t* scope_size_data = detail::raw_scope_size(m_data);
+    *scope_size_data = scope_size;
+}
+
+void metrics::pop_scope()
+{
+    assert(!m_scopes.empty());
+    if (m_scopes.size() == 1)
+    {
+        m_scope = "";
+        m_scopes.pop_back();
+        uint16_t* scope_size_data = detail::raw_scope_size(m_data);
+        *scope_size_data = 0U;
+        return;
+    }
+    std::size_t last_scope_size = m_scopes.back().size();
+    uint16_t updated_scope_size = scope_size() - last_scope_size;
+    m_scope = m_scope.substr(last_scope_size, updated_scope_size);
+    m_scopes.pop_back();
+
+    // Update the scope size
+    uint16_t* scope_size_data = detail::raw_scope_size(m_data);
+    *scope_size_data = updated_scope_size;
+}
+
+void metrics::copy_storage(uint8_t* data) const
+{
+    assert(data != nullptr);
+    std::memcpy(data, m_data, detail::scope_offset(m_data));
+    if (scope_size() > 0U)
+    {
+        std::memcpy(data + detail::scope_offset(m_data), m_scope.c_str(),
+                    scope_size());
+    }
+}
+
+auto metrics::storage_bytes() const -> std::size_t
+{
+
+    std::size_t offset = detail::values_offset(m_data);
+
+    assert(offset % 8 == 0);
+
+    offset += detail::eight_byte_count(m_data) * sizeof(uint64_t) +
+              detail::one_byte_count(m_data) * sizeof(bool);
+
+    offset += scope_size() + detail::scope_alignment_padding(m_data);
+
+    return offset;
+}
+
+void metrics::reset_metric(std::size_t index)
+{
+    assert(index < m_count);
+    assert(is_metric_initialized(index));
+    assert(!metric_is_constant(index));
+
+    value_type type = static_cast<value_type>(*detail::raw_type(m_data, index));
+
+    switch (type)
+    {
+    case value_type::boolean:
+    {
+        bool* value_data = detail::raw_value<bool>(m_data, index);
+        bool value = false;
+        *value_data = value;
+        break;
+    }
+    case value_type::unsigned_integral:
+    {
+        uint64_t* value_data = detail::raw_value<uint64_t>(m_data, index);
+        uint64_t value = 0U;
+        *value_data = value;
+        break;
+    }
+    case value_type::signed_integral:
+    {
+        int64_t* value_data = detail::raw_value<int64_t>(m_data, index);
+        int64_t value = 0;
+        *value_data = value;
+        break;
+    }
+    case value_type::floating_point:
+    {
+        double* value_data = detail::raw_value<double>(m_data, index);
+        double value = 0.0;
+        *value_data = value;
+        break;
+    }
+    }
+}
+
+void metrics::reset_metrics()
+{
+    for (std::size_t index = 0; index < m_count; ++index)
+    {
+        if (!metric_is_constant(index))
+        {
+            reset_metric(index);
+        }
+    }
+}
+
+auto metrics::to_json() const -> std::string
+{
+    return detail::to_json(m_data, m_scope);
+}
+
 }
 }

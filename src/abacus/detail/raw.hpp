@@ -9,6 +9,7 @@
 #include <cassert>
 #include <cstdint>
 #include <cstring>
+#include <limits>
 #include <sstream>
 
 #include "../value_types.hpp"
@@ -464,145 +465,135 @@ inline auto metric_index(const uint8_t* data, const char* name) -> std::size_t
         }
     }
     assert(false && "No metric with that name was found");
+    return std::numeric_limits<std::size_t>::max();
 }
 
-// /// @param data The raw memory for the counters
-// /// @param index The index of a counter. Must be less than
-// metric_count().
-// /// @return True if the metric is found in memory. False otherwise
-// inline auto has_metric(const uint8_t* data, std::size_t index) -> bool
-// {
-//     assert(index < metric_count(data));
-//     const char* name_data = raw_name(data, index);
+inline auto is_metric_initialized(const uint8_t* data, std::size_t index)
+    -> bool
+{
+    assert(index < metric_count(data));
 
-//     // If the name is non-zero it is initialized and valid. We just check
-//     the
-//     // first byte to see if it's zero.
-//     return name_data[0] != 0;
-// }
+    const char* name_data = raw_name(data, index);
 
-// /// @param data The raw memory for the counters
-// /// @return The number of initialized metrics in memory
-// inline auto count(const uint8_t* data) -> std::size_t
-// {
-//     assert(data != nullptr);
+    // If the name is non-zero it is initialized and valid. We just check the
+    // first byte to see if it's zero.
+    return name_data[0] != 0;
+}
 
-//     std::size_t count = 0U;
+/// @param data The raw memory for the counters
+/// @return The scope offset in copied memory.
+inline auto scope_offset(const uint8_t* data) -> std::size_t
+{
+    return values_offset(data) + (eight_byte_count(data) * sizeof(uint64_t) +
+                                  one_byte_count(data) * sizeof(bool));
+}
 
-//     for (std::size_t i = 0; i < metric_count(data); ++i)
-//     {
-//         if (has_metric(data, i))
-//         {
-//             ++count;
-//         }
-//     }
+/// @param data The raw memory for the counters
+/// @return The raw scope in memory
+inline auto raw_scope(uint8_t* data) -> char*
+{
+    assert(data != nullptr);
 
-//     return count;
-// }
+    uint8_t* scope_data = data + scope_offset(data);
 
-// /// @param data The raw memory for the counters
-// /// @return The scope offset in copied memory.
-// inline auto scope_offset(const uint8_t* data) -> std::size_t
-// {
-//     return values_offset(data) + (metric_count(data) * sizeof(uint64_t));
-// }
+    return (char*)scope_data;
+}
 
-// /// @param data The raw memory for the counters
-// /// @return The raw scope in memory
-// inline auto raw_scope(uint8_t* data) -> char*
-// {
-//     assert(data != nullptr);
+/// @param data The raw memory for the counters
+/// @return The raw scope in memory
+inline auto raw_scope(const uint8_t* data) -> const char*
+{
+    assert(data != nullptr);
 
-//     uint8_t* scope_data = data + scope_offset(data);
+    const uint8_t* scope_data = data + scope_offset(data);
 
-//     return (char*)scope_data;
-// }
+    return (const char*)scope_data;
+}
 
-// /// @param data The raw memory for the counters
-// /// @return The raw scope in memory
-// inline auto raw_scope(const uint8_t* data) -> const char*
-// {
-//     assert(data != nullptr);
+inline auto scope_alignment_padding(uint8_t* data) -> std::size_t
+{
+    std::size_t remainder = ((scope_offset(data) + scope_size(data)) % 8);
+    return remainder == 0 ? 0 : 8 - remainder;
+}
 
-//     const uint8_t* scope_data = data + scope_offset(data);
+/// @param data The raw memory for the counters
+/// @param scope string to append to the front of the metric names in the json.
+/// @param closed If true, the json produced will be closed by brackets.
+/// Intented to be used with the view_iterator class to gather all metrics
+/// in a JSON object.
+/// @return The counters in json-format
+inline auto to_json(const uint8_t* data, std::string scope = "",
+                    bool closed = true) -> std::string
+{
+    std::string space = " ";
+    std::string newline = "\n";
+    std::string tab = "\t";
+    assert(data != nullptr);
+    std::stringstream json_stream;
+    if (closed)
+    {
+        json_stream << "{" << newline;
+    }
 
-//     return (const char*)scope_data;
-// }
+    for (std::size_t i = 0; i < metric_count(data); ++i)
+    {
+        if ((!is_metric_initialized(data, i)))
+        {
+            continue;
+        }
 
-// inline auto scope_alignment_padding(uint8_t* data) -> std::size_t
-// {
-//     std::size_t remainder = ((scope_offset(data) + scope_size(data)) %
-//     8); if (remainder == 0)
-//     {
-//         return 0;
-//     }
-//     else
-//     {
-//         return 8 - remainder;
-//     }
-// }
+        auto n = raw_name(data, i);
+        auto d = raw_description(data, i);
+        auto t = static_cast<value_type>(*raw_type(data, i));
+        auto c = is_constant(data, i);
+        std::string type_string;
+        std::string value_string;
+        switch (t)
+        {
+        case value_type::unsigned_integral:
+            type_string = "unsigned integer";
+            value_string = std::to_string(*raw_value<uint64_t>(data, i));
+            break;
+        case value_type::signed_integral:
+            type_string = "signed integer";
+            value_string = std::to_string(*raw_value<int64_t>(data, i));
+            break;
+        case value_type::boolean:
+            type_string = "boolean";
+            value_string = *raw_value<bool>(data, i) ? "true" : "false";
+            break;
+        case value_type::floating_point:
+            type_string = "floating point";
+            value_string = std::to_string(*raw_value<double>(data, i));
+            break;
+        }
 
-// /// @param data The raw memory for the counters
-// /// @param scope string to append to the front of the metric names in the
-// json.
-// /// @param closed If true, the json produced will be closed by brackets.
-// /// Intented to be used with the view_iterator class to gather all
-// metrics
-// /// in a JSON object.
-// /// @return The counters in json-format
-// inline auto to_json(const uint8_t* data, std::string scope = "",
-//                     bool closed = true) -> std::string
-// {
-//     std::string space = " ";
-//     std::string newline = "\n";
-//     std::string tab = "\t";
-//     assert(data != nullptr);
-//     std::stringstream json_stream;
-//     if (closed)
-//     {
-//         json_stream << "{" << newline;
-//     }
+        // The key is the scope + the name
+        json_stream << tab << "\"" << scope + "." + std::string(n) << "\": {";
 
-//     for (std::size_t i = 0; i < count(data); ++i)
-//     {
-//         if ((!has_metric(data, i)))
-//         {
-//             continue;
-//         }
+        // Add a JSON object with description, value and is_constant bool.
+        json_stream << newline << tab << tab << "\"description\": \"" << d
+                    << "\",";
+        json_stream << newline << tab << tab << "\"value\": " << value_string
+                    << ",";
+        json_stream << newline << tab << tab
+                    << "\"is_constant\": " << (c ? "true" : "false") << ",";
 
-//         auto n = raw_name(data, i);
-//         auto t = static_cast<value_type>(*raw_type(data, i));
-//         std::string value_string;
-//         switch (t)
-//         {
-//         case value_type::unsigned_integral:
-//             value_string = std::to_string(*raw_value<uint64_t>(data, i));
-//             break;
-//         case value_type::signed_integral:
-//             value_string = std::to_string(*raw_value<int64_t>(data, i));
-//             break;
-//         case value_type::boolean:
-//             value_string = std::to_string(*raw_value<bool>(data, i));
-//             break;
-//         case value_type::floating_point:
-//             value_string = std::to_string(*raw_value<double>(data, i));
-//             break;
-//         }
+        // Close the brackets.
+        json_stream << newline << tab << "}";
 
-//         json_stream << tab << "\"" << scope + "." + std::string(n)
-//                     << "\":" << space << value_string;
-//         if (i != (count(data) - 1U))
-//         {
-//             json_stream << "," << newline;
-//         }
-//     }
-//     if (closed)
-//     {
-//         json_stream << newline << "}";
-//     }
+        if (i != (metric_count(data) - 1U))
+        {
+            json_stream << "," << newline;
+        }
+    }
+    if (closed)
+    {
+        json_stream << newline << "}";
+    }
 
-//     return json_stream.str();
-// }
+    return json_stream.str();
+}
 }
 }
 }

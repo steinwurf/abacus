@@ -125,99 +125,175 @@ TEST(test_metrics, default_constructor)
     EXPECT_EQ(metrics.metric_index(name4), 4U);
 }
 
-// TEST(test_metrics, copy_storage)
-// {
-//     uint16_t max_metrics = 10;
-//     uint16_t max_name_bytes = 32;
+TEST(test_metrics, copy_storage)
+{
+    uint16_t metric_count = 2;
 
-//     abacus::metrics metrics(max_metrics, max_name_bytes);
+    std::string name0 = "metric0";
+    std::string name1 = "metric1";
 
-//     metrics.add_metric<double>("count_1");
-//     metrics.push_scope("scope");
+    std::vector<abacus::metric_info> infos;
 
-//     std::size_t size = 0;
-//     // header size
-//     size += 6;
-//     // names
-//     size += max_metrics * max_name_bytes;
-//     // types
-//     size += max_metrics;
-//     // alignment padding
-//     size += 8 - (size % 8);
-//     // values
-//     size += max_metrics * 8;
-//     // scope
-//     size += metrics.scope_size();
-//     // scope padding
-//     size += 8 - (size % 8);
+    infos.reserve(metric_count);
 
-//     EXPECT_EQ(size, metrics.storage_bytes());
-//     std::vector<uint8_t> data1(size);
-//     std::vector<uint8_t> data2(size);
+    infos.push_back(abacus::metric_info{name0, "An unsigned integer metric",
+                                        abacus::value_type::unsigned_integral,
+                                        abacus::NON_CONSTANT});
+    infos.push_back(abacus::metric_info{name1, "A signed integer metric",
+                                        abacus::value_type::signed_integral,
+                                        abacus::NON_CONSTANT});
 
-//     metrics.copy_storage(data1.data());
-//     metrics.copy_storage(data2.data());
+    abacus::metrics metrics(infos);
 
-//     EXPECT_EQ(metrics.storage_bytes(), data1.size());
-//     EXPECT_EQ(metrics.storage_bytes(), data2.size());
-//     EXPECT_EQ(data2, data1);
-// }
+    metrics.initialize_metric<abacus::value_type::unsigned_integral>(0, name0);
+    metrics.initialize_metric<abacus::value_type::signed_integral>(1, name1);
 
-// TEST(test_metrics, reset_counters)
-// {
-//     uint64_t count = 1;
-//     uint16_t max_name_bytes = 32;
-//     uint16_t max_metrics = 10;
+    metrics.push_scope("scope");
 
-//     abacus::metrics metrics(max_metrics, max_name_bytes);
+    std::size_t size = 0;
+    // header size
+    size += 12;
+    // name and description sizes
+    size += metric_count * 2 * 2;
+    // names and descriptions
+    for (std::size_t i = 0; i < metric_count; ++i)
+    {
+        size += infos[i].name.size() + 1;
+        size += infos[i].description.size() + 1;
+    }
+    // types
+    size += metric_count;
+    // is_contant bools
+    size += metric_count;
+    // alignment padding
+    size += size % 8 == 0 ? 0 : 8 - (size % 8);
+    // values
+    size += metric_count * 8;
+    // scope
+    size += metrics.scope_size();
+    // scope padding
+    size += size % 8 == 0 ? 0 : 8 - (size % 8);
 
-//     for (std::size_t i = 0; i < max_metrics; i++)
-//     {
-//         std::string name = "metric" + std::to_string(i);
-//         auto metric = metrics.add_metric<uint64_t>(name);
-//         metric = count;
-//     }
+    EXPECT_EQ(size, metrics.storage_bytes());
+    std::vector<uint8_t> data1(size);
+    std::vector<uint8_t> data2(size);
 
-//     uint64_t value = count;
-//     metrics.reset_metric(9);
-//     metrics.metric_value(value, 9);
-//     EXPECT_EQ(value, 0U);
+    metrics.copy_storage(data1.data());
+    metrics.copy_storage(data2.data());
 
-//     metrics.reset_metrics();
+    EXPECT_EQ(metrics.storage_bytes(), data1.size());
+    EXPECT_EQ(metrics.storage_bytes(), data2.size());
+    EXPECT_EQ(data2, data1);
+}
 
-//     for (std::size_t i = 0; i < max_metrics; i++)
-//     {
-//         value = count;
-//         metrics.metric_value(value, i);
-//         EXPECT_EQ(value, (uint64_t)0);
-//     }
-// }
+TEST(test_metrics, reset_counters)
+{
+    uint16_t metric_count = 2;
 
-// TEST(test_metrics, add_scope)
-// {
-//     uint16_t max_name_bytes = 32;
-//     uint16_t max_metrics = 10;
+    std::string name0 = "metric0";
+    std::string name1 = "metric1";
 
-//     std::string scope = "metrics";
+    std::vector<abacus::metric_info> infos;
 
-//     abacus::metrics metrics(max_metrics, max_name_bytes);
+    infos.reserve(metric_count);
 
-//     for (std::size_t i = 0; i < max_metrics; i++)
-//     {
-//         std::string name = "metric" + std::to_string(i);
-//         auto metric = metrics.add_metric<int64_t>(name);
-//         metric = i;
-//     }
+    infos.push_back(abacus::metric_info{name0, "An unsigned integer metric",
+                                        abacus::value_type::unsigned_integral,
+                                        abacus::NON_CONSTANT});
+    infos.push_back(abacus::metric_info{name1, "A signed integer metric",
+                                        abacus::value_type::signed_integral,
+                                        abacus::NON_CONSTANT});
 
-//     metrics.push_scope(scope);
-//     metrics.push_scope("test");
+    abacus::metrics metrics(infos);
 
-//     EXPECT_EQ(metrics.count(), max_metrics);
+    auto uint_metric =
+        metrics.initialize_metric<abacus::value_type::unsigned_integral>(0,
+                                                                         name0);
+    auto int_metric =
+        metrics.initialize_metric<abacus::value_type::signed_integral>(1,
+                                                                       name1);
 
-//     for (std::size_t i = 0; i < metrics.count(); i++)
-//     {
-//         EXPECT_EQ(metrics.scope(), "test.metrics");
-//         EXPECT_EQ(metrics.scope_size(), std::string("test.metrics").size() +
-//         1); EXPECT_EQ(metrics.metric_name(i), "metric" + std::to_string(i));
-//     }
-// }
+    uint64_t uint_value = 0U;
+    int64_t int_value = 0;
+
+    uint_metric = 4U;
+    int_metric = -4;
+
+    metrics.metric_value(0, uint_value);
+    metrics.metric_value(1, int_value);
+
+    EXPECT_EQ(uint_value, 4U);
+    EXPECT_EQ(int_value, -4);
+
+    metrics.reset_metric(0);
+    metrics.reset_metric(1);
+
+    metrics.metric_value(0, uint_value);
+    metrics.metric_value(1, int_value);
+
+    EXPECT_EQ(uint_value, 0U);
+    EXPECT_EQ(int_value, 0);
+
+    uint_metric = 4U;
+    int_metric = -4;
+
+    metrics.metric_value(0, uint_value);
+    metrics.metric_value(1, int_value);
+
+    EXPECT_EQ(uint_value, 4U);
+    EXPECT_EQ(int_value, -4);
+
+    metrics.reset_metrics();
+
+    metrics.metric_value(0, uint_value);
+    metrics.metric_value(1, int_value);
+
+    EXPECT_EQ(uint_value, 0U);
+    EXPECT_EQ(int_value, 0);
+}
+
+TEST(test_metrics, add_scope)
+{
+    uint16_t metric_count = 5;
+
+    std::string name0 = "metric0";
+    std::string name1 = "metric1";
+    std::string name2 = "metric2";
+    std::string name3 = "metric3";
+    std::string name4 = "metric4";
+
+    std::vector<abacus::metric_info> infos;
+
+    infos.reserve(metric_count);
+
+    infos.push_back(abacus::metric_info{name0, "A boolean metric",
+                                        abacus::value_type::boolean,
+                                        abacus::NON_CONSTANT});
+    infos.push_back(abacus::metric_info{name1, "An unsigned integer metric",
+                                        abacus::value_type::unsigned_integral,
+                                        abacus::NON_CONSTANT});
+    infos.push_back(abacus::metric_info{name2, "A signed integer metric",
+                                        abacus::value_type::signed_integral,
+                                        abacus::NON_CONSTANT});
+    infos.push_back(abacus::metric_info{name3, "A floating point metric",
+                                        abacus::value_type::floating_point,
+                                        abacus::NON_CONSTANT});
+    infos.push_back(abacus::metric_info{name4, "A constant boolean metric",
+                                        abacus::value_type::boolean,
+                                        abacus::CONSTANT});
+
+    abacus::metrics metrics(infos);
+
+    std::string scope = "metrics";
+
+    metrics.push_scope(scope);
+    metrics.push_scope("test");
+
+    EXPECT_EQ(metrics.metric_count(), metric_count);
+
+    for (std::size_t i = 0; i < metrics.metric_count(); i++)
+    {
+        EXPECT_EQ(metrics.scope(), "test.metrics");
+        EXPECT_EQ(metrics.scope_size(), std::string("test.metrics").size() + 1);
+    }
+}
