@@ -8,14 +8,16 @@
 #include <gtest/gtest.h>
 
 #include <abacus/metrics.hpp>
+
 TEST(test_metrics, default_constructor)
 {
-    uint16_t metric_count = 4;
+    uint16_t metric_count = 5;
 
     std::string name0 = "metric0";
     std::string name1 = "metric1";
     std::string name2 = "metric2";
     std::string name3 = "metric3";
+    std::string name4 = "metric4";
 
     std::vector<abacus::metric_info> infos;
 
@@ -33,6 +35,10 @@ TEST(test_metrics, default_constructor)
     infos.push_back(abacus::metric_info{name3, "A floating point metric",
                                         abacus::value_type::floating_point,
                                         abacus::NON_CONSTANT});
+    infos.push_back(abacus::metric_info{name4, "A constant boolean metric",
+                                        abacus::value_type::boolean,
+                                        abacus::CONSTANT});
+
     abacus::metrics metrics(infos);
 
     EXPECT_EQ(metrics.metric_count(), metric_count);
@@ -41,84 +47,82 @@ TEST(test_metrics, default_constructor)
     EXPECT_FALSE(metrics.metric_is_constant(1));
     EXPECT_FALSE(metrics.metric_is_constant(2));
     EXPECT_FALSE(metrics.metric_is_constant(3));
+    EXPECT_TRUE(metrics.metric_is_constant(4));
 
-    abacus::value_type type0 = metrics.metric_type(0);
-    abacus::value_type type1 = metrics.metric_type(1);
-    abacus::value_type type2 = metrics.metric_type(2);
-    abacus::value_type type3 = metrics.metric_type(3);
-
-    EXPECT_EQ(type0, abacus::value_type::unsigned_integral);
-    EXPECT_EQ(type1, abacus::value_type::signed_integral);
-    EXPECT_EQ(type2, abacus::value_type::floating_point);
-    EXPECT_EQ(type3, abacus::value_type::boolean);
+    EXPECT_EQ(metrics.metric_type(0), abacus::value_type::unsigned_integral);
+    EXPECT_EQ(metrics.metric_type(1), abacus::value_type::signed_integral);
+    EXPECT_EQ(metrics.metric_type(2), abacus::value_type::floating_point);
+    EXPECT_EQ(metrics.metric_type(3), abacus::value_type::boolean);
+    EXPECT_EQ(metrics.metric_type(4), abacus::value_type::boolean);
 
     EXPECT_FALSE(metrics.is_metric_initialized(0));
     auto metric0 =
-        metrics.initialize_metric<abacus::value_type::unsigned_integral>(0);
+        metrics.initialize_metric<abacus::value_type::unsigned_integral>(0,
+                                                                         name1);
     EXPECT_TRUE(metrics.is_metric_initialized(0));
 
     EXPECT_FALSE(metrics.is_metric_initialized(1));
     auto metric1 =
-        metrics.initialize_metric<abacus::value_type::signed_integral>(1);
+        metrics.initialize_metric<abacus::value_type::signed_integral>(1,
+                                                                       name2);
     EXPECT_TRUE(metrics.is_metric_initialized(1));
 
     EXPECT_FALSE(metrics.is_metric_initialized(2));
     auto metric2 =
-        metrics.initialize_metric<abacus::value_type::floating_point>(2);
+        metrics.initialize_metric<abacus::value_type::floating_point>(2, name3);
     EXPECT_TRUE(metrics.is_metric_initialized(2));
 
     EXPECT_FALSE(metrics.is_metric_initialized(3));
-    auto metric3 = metrics.initialize_metric<abacus::value_type::boolean>(3);
+    auto metric3 =
+        metrics.initialize_metric<abacus::value_type::boolean>(3, name0);
     EXPECT_TRUE(metrics.is_metric_initialized(3));
 
-    // auto count1 = metrics.add_metric<uint64_t>("uint_1");
-    // EXPECT_EQ(metrics.count(), 1U);
-    // EXPECT_EQ(metrics.metric_index("uint_1"), 0U);
-    // EXPECT_EQ(metrics.metric_name(0), "uint_1");
-    // EXPECT_EQ(metrics.metric_type(0), abacus::value_type::unsigned_integral);
+    EXPECT_FALSE(metrics.is_metric_initialized(4));
+    metrics.initialize_constant(4, true, name4);
+    EXPECT_TRUE(metrics.is_metric_initialized(4));
 
-    // uint64_t value_0 = 3;
-    // metrics.metric_value(value_0, 0);
-    // EXPECT_EQ(value_0, 0U);
+    EXPECT_EQ(metrics.metric_name(0), name1);
+    EXPECT_EQ(metrics.metric_name(1), name2);
+    EXPECT_EQ(metrics.metric_name(2), name3);
+    EXPECT_EQ(metrics.metric_name(3), name0);
+    EXPECT_EQ(metrics.metric_name(4), name4);
 
-    // ++count1;
+    EXPECT_EQ(metrics.metric_description(0), "An unsigned integer metric");
+    EXPECT_EQ(metrics.metric_description(1), "A signed integer metric");
+    EXPECT_EQ(metrics.metric_description(2), "A floating point metric");
+    EXPECT_EQ(metrics.metric_description(3), "A boolean metric");
+    EXPECT_EQ(metrics.metric_description(4), "A constant boolean metric");
 
-    // metrics.metric_value(value_0, 0);
-    // EXPECT_EQ(value_0, 1U);
+    metric0 = 4U;
+    metric1 = -4;
+    metric2 = 3.14;
+    metric3 = true;
 
-    // abacus::metrics metrics1(max_metrics, max_name_bytes);
+    uint64_t uint_value = 0U;
+    int64_t int_value = 0;
+    double float_value = 0.0;
+    bool bool_value = false;
 
-    // auto double2 = metrics1.add_metric<double>("count_2");
+    metrics.metric_value(0, uint_value);
+    EXPECT_EQ(uint_value, 4U);
 
-    // EXPECT_EQ(metrics1.count(), 1U);
-    // EXPECT_EQ(metrics1.metric_index("count_2"), 0U);
-    // EXPECT_EQ(metrics1.metric_name(0), "count_2");
-    // EXPECT_EQ(metrics1.metric_type(0), abacus::value_type::floating_point);
+    metrics.metric_value(1, int_value);
+    EXPECT_EQ(int_value, -4);
 
-    // double value_1 = 4.0;
-    // metrics1.metric_value(value_1, 0);
-    // EXPECT_EQ(value_1, 0.0);
+    metrics.metric_value(2, float_value);
+    EXPECT_EQ(float_value, 3.14);
 
-    // ++double2;
+    metrics.metric_value(3, bool_value);
+    EXPECT_EQ(bool_value, true);
 
-    // metrics1.metric_value(value_1, 0);
-    // EXPECT_EQ(value_1, 1.0);
+    metrics.metric_value(4, bool_value);
+    EXPECT_EQ(bool_value, true);
 
-    // abacus::metrics metrics2(max_metrics, max_name_bytes);
-
-    // auto count3 = metrics2.add_metric<bool>("count_3");
-
-    // EXPECT_EQ(metrics2.count(), 1U);
-    // EXPECT_EQ(metrics2.metric_index("count_3"), 0U);
-    // EXPECT_EQ(metrics2.metric_name(0), "count_3");
-    // EXPECT_EQ(metrics2.metric_type(0), abacus::value_type::boolean);
-    // bool value_2 = true;
-    // metrics2.metric_value(value_2, 0);
-    // EXPECT_FALSE(value_2);
-
-    // count3 = true;
-    // metrics2.metric_value(value_2, 0);
-    // EXPECT_TRUE(value_2);
+    EXPECT_EQ(metrics.metric_index(name0), 3U);
+    EXPECT_EQ(metrics.metric_index(name1), 0U);
+    EXPECT_EQ(metrics.metric_index(name2), 1U);
+    EXPECT_EQ(metrics.metric_index(name3), 2U);
+    EXPECT_EQ(metrics.metric_index(name4), 4U);
 }
 
 // TEST(test_metrics, copy_storage)

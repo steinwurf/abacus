@@ -59,11 +59,35 @@ public:
     auto metric_is_constant(std::size_t index) const -> bool;
 
     template <value_type T>
-    auto initialize_metric(std::size_t index) const -> metric<T>
+    auto initialize_metric(std::size_t index, std::string name) const
+        -> metric<T>
     {
         (void)index;
+        (void)name;
         throw std::runtime_error("Unknown metric type");
     }
+
+    void initialize_constant(std::size_t index, uint64_t value,
+                             std::string name) const;
+
+    void initialize_constant(std::size_t index, int64_t value,
+                             std::string name) const;
+
+    void initialize_constant(std::size_t index, double value,
+                             std::string name) const;
+
+    void initialize_constant(std::size_t index, bool value,
+                             std::string name) const;
+
+    void metric_value(std::size_t index, uint64_t& value) const;
+
+    void metric_value(std::size_t index, int64_t& value) const;
+
+    void metric_value(std::size_t index, double& value) const;
+
+    void metric_value(std::size_t index, bool& value) const;
+
+    auto metric_index(std::string name) const -> std::size_t;
 
 private:
     /// No copy
@@ -92,7 +116,7 @@ private:
     std::size_t m_storage_bytes = 0;
 
     /// The current number of metrics that have been initialized
-    std::size_t m_count = 0;
+    uint16_t m_count = 0;
 
     std::string m_scope = "";
 
@@ -105,16 +129,19 @@ private:
 
 template <>
 inline auto metrics::initialize_metric<value_type::unsigned_integral>(
-    std::size_t index) const -> metric<value_type::unsigned_integral>
+    std::size_t index, std::string name) const
+    -> metric<value_type::unsigned_integral>
 {
     assert(index < m_count);
     assert(!is_metric_initialized(index));
+    assert(!metric_is_constant(index));
+    assert(name == m_info[index].name);
 
-    const char* name_ptr = detail::raw_name(m_data, index);
-    std::memcpy(&name_ptr, m_info[index].name.c_str(), m_name_sizes[index]);
+    char* name_ptr = detail::raw_name(m_data, index);
+    std::memcpy(name_ptr, m_info[index].name.c_str(), m_name_sizes[index]);
 
     auto description_ptr = detail::raw_description(m_data, index);
-    std::memcpy(&description_ptr, m_info[index].description.c_str(),
+    std::memcpy(description_ptr, m_info[index].description.c_str(),
                 m_description_sizes[index]);
 
     uint64_t* value_ptr = detail::raw_value<uint64_t>(m_data, index);
@@ -126,11 +153,14 @@ inline auto metrics::initialize_metric<value_type::unsigned_integral>(
 
 template <>
 inline auto
-metrics::initialize_metric<value_type::signed_integral>(std::size_t index) const
+metrics::initialize_metric<value_type::signed_integral>(std::size_t index,
+                                                        std::string name) const
     -> metric<value_type::signed_integral>
 {
     assert(index < m_count);
     assert(!is_metric_initialized(index));
+    assert(!metric_is_constant(index));
+    assert(name == m_info[index].name);
 
     auto name_ptr = detail::raw_name(m_data, index);
     std::memcpy(name_ptr, m_info[index].name.c_str(), m_name_sizes[index]);
@@ -148,11 +178,14 @@ metrics::initialize_metric<value_type::signed_integral>(std::size_t index) const
 
 template <>
 inline auto
-metrics::initialize_metric<value_type::floating_point>(std::size_t index) const
+metrics::initialize_metric<value_type::floating_point>(std::size_t index,
+                                                       std::string name) const
     -> metric<value_type::floating_point>
 {
     assert(index < m_count);
     assert(!is_metric_initialized(index));
+    assert(!metric_is_constant(index));
+    assert(name == m_info[index].name);
 
     auto name_ptr = detail::raw_name(m_data, index);
     std::memcpy(name_ptr, m_info[index].name.c_str(), m_name_sizes[index]);
@@ -169,12 +202,13 @@ metrics::initialize_metric<value_type::floating_point>(std::size_t index) const
 }
 
 template <>
-inline auto
-metrics::initialize_metric<value_type::boolean>(std::size_t index) const
-    -> metric<value_type::boolean>
+inline auto metrics::initialize_metric<value_type::boolean>(
+    std::size_t index, std::string name) const -> metric<value_type::boolean>
 {
     assert(index < m_count);
     assert(!is_metric_initialized(index));
+    assert(!metric_is_constant(index));
+    assert(name == m_info[index].name);
 
     auto name_ptr = detail::raw_name(m_data, index);
     std::memcpy(name_ptr, m_info[index].name.c_str(), m_name_sizes[index]);

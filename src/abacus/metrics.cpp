@@ -28,30 +28,22 @@ metrics::metrics(std::vector<metric_info> info) : m_info(info)
     m_description_sizes.reserve(m_count);
 
     // Get the sizes of all the metric names
-    std::transform(m_info.eight_byte_metrics.begin(),
-                   m_info.eight_byte_metrics.end(), m_name_sizes.begin(),
-                   [](const metric_info& i) { return i.name.size() + 1; });
+    for (auto info : m_info.eight_byte_metrics)
+    {
+        m_name_sizes.push_back((uint16_t)(info.name.size() + 1));
+        m_description_sizes.push_back((uint16_t)(info.description.size() + 1));
+    }
 
-    std::transform(m_info.one_byte_metrics.begin(),
-                   m_info.one_byte_metrics.end(),
-                   m_name_sizes.begin() + m_info.eight_byte_metrics.size(),
-                   [](const metric_info& i) { return i.name.size() + 1; });
-
-    // Get the sizes of all the metric descriptions
-    std::transform(m_info.eight_byte_metrics.begin(),
-                   m_info.eight_byte_metrics.end(), m_description_sizes.begin(),
-                   [](const metric_info& i)
-                   { return i.description.size() + 1; });
-
-    std::transform(
-        m_info.one_byte_metrics.begin(), m_info.one_byte_metrics.end(),
-        m_description_sizes.begin() + m_info.eight_byte_metrics.size(),
-        [](const metric_info& i) { return i.description.size() + 1; });
+    for (auto info : m_info.one_byte_metrics)
+    {
+        m_name_sizes.push_back((uint16_t)(info.name.size() + 1));
+        m_description_sizes.push_back((uint16_t)(info.description.size() + 1));
+    }
 
     // Calculate the total number of bytes needed for the names
-    std::size_t name_bytes = 0;
-    std::size_t description_bytes = 0;
-    for (std::size_t i = 0; i < m_count; ++i)
+    uint16_t name_bytes = 0;
+    uint16_t description_bytes = 0;
+    for (uint16_t i = 0; i < m_count; ++i)
     {
         name_bytes += m_name_sizes[i];
         description_bytes += m_description_sizes[i];
@@ -109,12 +101,22 @@ metrics::metrics(std::vector<metric_info> info) : m_info(info)
         description_sizes_ptr += sizeof(uint16_t);
     }
 
+    // Write the types
     uint8_t* types_ptr = m_data + detail::types_offset(m_data);
     for (std::size_t i = 0; i < m_count; ++i)
     {
         uint8_t type_byte = static_cast<uint8_t>(m_info[i].type);
         std::memcpy(types_ptr, &type_byte, sizeof(uint8_t));
         types_ptr += sizeof(uint8_t);
+    }
+
+    // Write the is_constant bool
+    uint8_t* is_constant_ptr = m_data + detail::is_constant_offset(m_data);
+    for (std::size_t i = 0; i < m_count; ++i)
+    {
+        bool is_constant = m_info[i].is_constant;
+        std::memcpy(is_constant_ptr, &is_constant, sizeof(bool));
+        is_constant_ptr += sizeof(bool);
     }
 }
 
@@ -162,8 +164,140 @@ auto metrics::metric_type(std::size_t index) const -> value_type
 auto metrics::metric_is_constant(std::size_t index) const -> bool
 {
     assert(index < m_count);
-    return m_info[index].is_constant;
+    return detail::is_constant(m_data, index);
 }
 
+void metrics::initialize_constant(std::size_t index, uint64_t value,
+                                  std::string name) const
+{
+    assert(index < m_count);
+    assert(!is_metric_initialized(index));
+    assert(metric_type(index) == value_type::unsigned_integral);
+    assert(metric_is_constant(index));
+    assert(name == m_info[index].name);
+
+    char* name_ptr = detail::raw_name(m_data, index);
+    std::memcpy(name_ptr, m_info[index].name.c_str(), m_name_sizes[index]);
+
+    auto description_ptr = detail::raw_description(m_data, index);
+    std::memcpy(description_ptr, m_info[index].description.c_str(),
+                m_description_sizes[index]);
+
+    uint64_t* value_ptr = detail::raw_value<uint64_t>(m_data, index);
+
+    *value_ptr = value;
+}
+
+void metrics::initialize_constant(std::size_t index, int64_t value,
+                                  std::string name) const
+{
+    assert(index < m_count);
+    assert(!is_metric_initialized(index));
+    assert(metric_type(index) == value_type::signed_integral);
+    assert(metric_is_constant(index));
+    assert(name == m_info[index].name);
+
+    char* name_ptr = detail::raw_name(m_data, index);
+    std::memcpy(name_ptr, m_info[index].name.c_str(), m_name_sizes[index]);
+
+    auto description_ptr = detail::raw_description(m_data, index);
+    std::memcpy(description_ptr, m_info[index].description.c_str(),
+                m_description_sizes[index]);
+
+    int64_t* value_ptr = detail::raw_value<int64_t>(m_data, index);
+
+    *value_ptr = value;
+}
+
+void metrics::initialize_constant(std::size_t index, double value,
+                                  std::string name) const
+{
+    assert(index < m_count);
+    assert(!is_metric_initialized(index));
+    assert(metric_type(index) == value_type::floating_point);
+    assert(metric_is_constant(index));
+    assert(name == m_info[index].name);
+
+    char* name_ptr = detail::raw_name(m_data, index);
+    std::memcpy(name_ptr, m_info[index].name.c_str(), m_name_sizes[index]);
+
+    auto description_ptr = detail::raw_description(m_data, index);
+    std::memcpy(description_ptr, m_info[index].description.c_str(),
+                m_description_sizes[index]);
+
+    double* value_ptr = detail::raw_value<double>(m_data, index);
+
+    *value_ptr = value;
+}
+
+void metrics::initialize_constant(std::size_t index, bool value,
+                                  std::string name) const
+{
+    assert(index < m_count);
+    assert(!is_metric_initialized(index));
+    assert(metric_type(index) == value_type::boolean);
+    assert(metric_is_constant(index));
+    assert(name == m_info[index].name);
+
+    char* name_ptr = detail::raw_name(m_data, index);
+    std::memcpy(name_ptr, m_info[index].name.c_str(), m_name_sizes[index]);
+
+    auto description_ptr = detail::raw_description(m_data, index);
+    std::memcpy(description_ptr, m_info[index].description.c_str(),
+                m_description_sizes[index]);
+
+    bool* value_ptr = detail::raw_value<bool>(m_data, index);
+
+    *value_ptr = value;
+}
+
+void metrics::metric_value(std::size_t index, uint64_t& value) const
+{
+    assert(index < m_count);
+    assert(is_metric_initialized(index));
+    assert(metric_type(index) == value_type::unsigned_integral);
+
+    uint64_t* value_ptr = detail::raw_value<uint64_t>(m_data, index);
+
+    value = *value_ptr;
+}
+
+void metrics::metric_value(std::size_t index, int64_t& value) const
+{
+    assert(index < m_count);
+    assert(is_metric_initialized(index));
+    assert(metric_type(index) == value_type::signed_integral);
+
+    int64_t* value_ptr = detail::raw_value<int64_t>(m_data, index);
+
+    value = *value_ptr;
+}
+
+void metrics::metric_value(std::size_t index, double& value) const
+{
+    assert(index < m_count);
+    assert(is_metric_initialized(index));
+    assert(metric_type(index) == value_type::floating_point);
+
+    double* value_ptr = detail::raw_value<double>(m_data, index);
+
+    value = *value_ptr;
+}
+
+void metrics::metric_value(std::size_t index, bool& value) const
+{
+    assert(index < m_count);
+    assert(is_metric_initialized(index));
+    assert(metric_type(index) == value_type::boolean);
+
+    bool* value_ptr = detail::raw_value<bool>(m_data, index);
+
+    value = *value_ptr;
+}
+
+auto metrics::metric_index(std::string name) const -> std::size_t
+{
+    return detail::metric_index(m_data, name.c_str());
+}
 }
 }

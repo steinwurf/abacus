@@ -359,11 +359,45 @@ inline auto raw_type(const uint8_t* data, std::size_t index) -> const uint8_t*
     return type_data;
 }
 
+inline auto is_constant_offset(const uint8_t* data) -> std::size_t
+{
+    return types_offset(data) + metric_count(data);
+}
+
+inline auto raw_is_constant(uint8_t* data, std::size_t index) -> bool*
+{
+    assert(data != nullptr);
+    assert(index < metric_count(data));
+
+    uint8_t* is_constant_data = data + is_constant_offset(data) + index;
+
+    return (bool*)is_constant_data;
+}
+
+inline auto raw_is_constant(const uint8_t* data, std::size_t index) -> const
+    bool*
+{
+    assert(data != nullptr);
+    assert(index < metric_count(data));
+
+    const uint8_t* is_constant_data = data + is_constant_offset(data) + index;
+
+    return (const bool*)is_constant_data;
+}
+
+inline auto is_constant(const uint8_t* data, std::size_t index) -> bool
+{
+    assert(data != nullptr);
+    assert(index < metric_count(data));
+
+    return *raw_is_constant(data, index);
+}
+
 /// @param offset The offset in the raw memory
 /// @return The extra padding to add to the offset for alignment
 inline auto alignment_padding(std::size_t offset) -> std::size_t
 {
-    return 8 - offset % 8;
+    return offset % 8 == 0 ? 0 : 8 - offset % 8;
 }
 
 /// @param data The raw memory for the counters
@@ -371,7 +405,7 @@ inline auto alignment_padding(std::size_t offset) -> std::size_t
 inline auto values_offset(const uint8_t* data) -> std::size_t
 {
     std::size_t offset =
-        types_offset(data) + sizeof(uint8_t) * metric_count(data);
+        is_constant_offset(data) + sizeof(bool) * metric_count(data);
 
     return offset + alignment_padding(offset);
 }
@@ -417,15 +451,32 @@ inline auto raw_value(const uint8_t* data, std::size_t index) -> const T*
                       (index - eight_byte_metrics) * sizeof(T));
 }
 
+inline auto metric_index(const uint8_t* data, const char* name) -> std::size_t
+{
+    assert(data != nullptr);
+    assert(name != nullptr);
+
+    for (std::size_t i = 0; i < metric_count(data); ++i)
+    {
+        if (strcmp(name, raw_name(data, i)) == 0)
+        {
+            return i;
+        }
+    }
+    assert(false && "No metric with that name was found");
+}
+
 // /// @param data The raw memory for the counters
-// /// @param index The index of a counter. Must be less than metric_count().
+// /// @param index The index of a counter. Must be less than
+// metric_count().
 // /// @return True if the metric is found in memory. False otherwise
 // inline auto has_metric(const uint8_t* data, std::size_t index) -> bool
 // {
 //     assert(index < metric_count(data));
 //     const char* name_data = raw_name(data, index);
 
-//     // If the name is non-zero it is initialized and valid. We just check the
+//     // If the name is non-zero it is initialized and valid. We just check
+//     the
 //     // first byte to see if it's zero.
 //     return name_data[0] != 0;
 // }
@@ -480,8 +531,8 @@ inline auto raw_value(const uint8_t* data, std::size_t index) -> const T*
 
 // inline auto scope_alignment_padding(uint8_t* data) -> std::size_t
 // {
-//     std::size_t remainder = ((scope_offset(data) + scope_size(data)) % 8);
-//     if (remainder == 0)
+//     std::size_t remainder = ((scope_offset(data) + scope_size(data)) %
+//     8); if (remainder == 0)
 //     {
 //         return 0;
 //     }
@@ -495,7 +546,8 @@ inline auto raw_value(const uint8_t* data, std::size_t index) -> const T*
 // /// @param scope string to append to the front of the metric names in the
 // json.
 // /// @param closed If true, the json produced will be closed by brackets.
-// /// Intented to be used with the view_iterator class to gather all metrics
+// /// Intented to be used with the view_iterator class to gather all
+// metrics
 // /// in a JSON object.
 // /// @return The counters in json-format
 // inline auto to_json(const uint8_t* data, std::string scope = "",
@@ -551,7 +603,6 @@ inline auto raw_value(const uint8_t* data, std::size_t index) -> const T*
 
 //     return json_stream.str();
 // }
-
 }
 }
 }
