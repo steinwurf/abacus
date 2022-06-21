@@ -510,7 +510,7 @@ inline auto raw_scope(const uint8_t* data) -> const char*
     return (const char*)scope_data;
 }
 
-inline auto scope_alignment_padding(uint8_t* data) -> std::size_t
+inline auto scope_alignment_padding(const uint8_t* data) -> std::size_t
 {
     std::size_t remainder = ((scope_offset(data) + scope_size(data)) % 8);
     return remainder == 0 ? 0 : 8 - remainder;

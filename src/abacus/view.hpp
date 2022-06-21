@@ -6,6 +6,7 @@
 #pragma once
 
 #include <cassert>
+#include <map>
 #include <vector>
 
 #include "value_type.hpp"
@@ -59,61 +60,124 @@ public:
     /// data pointer
     auto one_byte_count() const -> uint16_t;
 
-    /// @param index The index of the new counter. Must be less than
+    /// @returns true if the metric is initialized, that is if
+    /// initialize_metric() has been called for the given index.
+    /// @param index The index of the metric to check. Must be less than
     /// metric_count().
-    /// @return The name of a counter as a string
+    auto is_metric_initialized(std::size_t index) const -> bool;
+
+    /// @returns the name of the metric at the given index.
+    /// The name is not written into memory until the metric is initialized with
+    /// either initialize_metric<>() or initialize_constant().
+    /// @param index The index of the metric to check. Must be less than
+    /// metric_count().
     auto metric_name(std::size_t index) const -> std::string;
 
-    /// @param index The index of a counter. Must be less than max_metrics.
-    /// @return The type of a counter as an enum class
+    /// @returns the description of the metric at the given index.
+    /// @param index The index of the metric to check. Must be less than
+    /// metric_count() and initialized with initialize_metric<>() or
+    /// initialize_constant().
+    auto metric_description(std::size_t index) const -> std::string;
+
+    /// @returns the type of the metric at the given index.
+    /// @param index The index of the metric to check. Must be less than
+    /// metric_count().
     auto metric_type(std::size_t index) const -> value_type;
 
-    /// @param value The variable to assign the value of a bool counter to
-    /// @param index The index of a counter. Must be less than max_metrics.
-    void metric_value(bool& value, std::size_t index) const;
+    /// @returns true if the metric at the given index is a constant, otherwise
+    /// false.
+    /// @param index The index of the metric to check. Must be less than
+    /// metric_count().
+    auto metric_is_constant(std::size_t index) const -> bool;
 
-    /// @param value The variable to assign the value of a unsigned integral
-    /// counter to.
-    /// @param index The index of a counter. Must be less than max_metrics.
-    void metric_value(uint64_t& value, std::size_t index) const;
+    /// Copy the value of the uint64_t metric into a passed reference. This is
+    /// used to extract the values during runtime.
+    ///
+    /// Make sure that the type and index are correct using metric_type()
+    /// and metric_index() to get the correct index and
+    /// type. Please do not hard-code these values, as this may break with
+    /// changes to your code.
+    ///
+    /// @param index The index of the metric to copy. Must be less than
+    /// metric_count().
+    /// @param value The variable to copy the value into. A uint64_t reference.
+    void metric_value(std::size_t index, uint64_t& value) const;
 
-    /// @param value The variable to assign the value of a signed integral
-    /// counter to
-    /// @param index The index of a counter. Must be less than max_metrics.
-    void metric_value(int64_t& value, std::size_t index) const;
+    /// Copy the value of the int64_t metric into a passed reference. This is
+    /// used to extract the values during runtime.
+    ///
+    /// Make sure that the type and index are correct using metric_type()
+    /// and metric_index() to get the correct index and
+    /// type. Please do not hard-code these values, as this may break with
+    /// changes to your code.
+    ///
+    /// @param index The index of the metric to copy. Must be less than
+    /// metric_count().
+    /// @param value The variable to copy the value into. A int64_t reference.
+    void metric_value(std::size_t index, int64_t& value) const;
 
-    /// @param value The variable to assign the value of a floating point
-    /// counter to
-    /// @param index The index of a counter. Must be less than max_metrics.
-    void metric_value(double& value, std::size_t index) const;
+    /// Copy the value of the double metric into a passed reference. This is
+    /// used to extract the values during runtime.
+    ///
+    /// Make sure that the type and index are correct using metric_type()
+    /// and metric_index() to get the correct index and
+    /// type. Please do not hard-code these values, as this may break with
+    /// changes to your code.
+    ///
+    /// @param index The index of the metric to copy. Must be less than
+    /// metric_count().
+    /// @param value The variable to copy the value into. A double reference.
+    void metric_value(std::size_t index, double& value) const;
+
+    /// Copy the value of the bool metric into a passed reference. This is used
+    /// to extract the values during runtime.
+    ///
+    /// Make sure that the type and index are correct using metric_type()
+    /// and metric_index() to get the correct index and
+    /// type. Please do not hard-code these values, as this may break with
+    /// changes to your code.
+    ///
+    /// @param index The index of the metric to copy. Must be less than
+    /// metric_count().
+    /// @param value The variable to copy the value into. A bool reference.
+    void metric_value(std::size_t index, bool& value) const;
 
     /// @param name The name of the counter to get the index of
     /// @return The index of the counter with the given name
     auto metric_index(const std::string& name) const -> std::size_t;
 
-    /// @return The number of metrics currently initialized in the object
-    auto count() const -> std::size_t;
-
     /// @return The scope of the metrics data as a string
     auto scope() const -> std::string;
-
-    /// @param index The index of the counter to check. Must be less than
-    /// max_metrics().
-    /// @return True if the counter has been initialized
-    auto has_metric(std::size_t index) const -> bool;
 
     /// @return The number of bytes in the view memory
     auto view_bytes() const -> std::size_t;
 
-    /// @param closed If true, the json produced will be closed by brackets.
-    /// Intented to be used with the view_iterator class to gather all metrics
-    /// in a JSON object.
-    /// @return All counters in json format
-    auto to_json(bool closed = true) const -> std::string;
+    /// @return a JSON-formatted string of the counters.
+    ///
+    /// The keys in the JSON string will be "scope + metric_name", and
+    /// the values will be a JSON-object with keys "description", "value" and
+    /// "is_constant". Example output with scope "car" could be:
+    ///
+    ///     {
+    ///         "car.fuel_consumption": {
+    /// 	        "description": "Fuel consumption in kilometers per liter",
+    /// 	        "value": 22.300000,
+    /// 	        "constant": true,
+    ///         },
+    ///         "car.wheels": {
+    /// 	        "description": "Wheels on the car",
+    /// 	        "value": 4,
+    /// 	        "constant": true,
+    ///         }
+    ///     }
+    auto to_json() const -> std::string;
 
 private:
     /// The raw memory from the metrics counters
     const uint8_t* m_data;
+
+    /// Map to get index from names
+    std::map<std::string, std::size_t> m_name_to_index;
 
     std::string m_scope;
 };

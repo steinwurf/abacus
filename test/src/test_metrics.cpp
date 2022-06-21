@@ -178,8 +178,8 @@ TEST(test_metrics, copy_storage)
     std::vector<uint8_t> data1(size);
     std::vector<uint8_t> data2(size);
 
-    metrics.copy_storage(data1.data());
-    metrics.copy_storage(data2.data());
+    metrics.copy_storage(data1.data(), data1.size());
+    metrics.copy_storage(data2.data(), data2.size());
 
     EXPECT_EQ(metrics.storage_bytes(), data1.size());
     EXPECT_EQ(metrics.storage_bytes(), data2.size());

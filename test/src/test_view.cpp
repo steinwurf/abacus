@@ -1,53 +1,71 @@
-// // Copyright (c) Steinwurf ApS 2020.
-// // All Rights Reserved
-// //
-// // Distributed under the "BSD License". See the accompanying LICENSE.rst
-// // file.
+// Copyright (c) Steinwurf ApS 2020.
+// All Rights Reserved
+//
+// Distributed under the "BSD License". See the accompanying LICENSE.rst
+// file.
 
-// #include <cstring>
-// #include <gtest/gtest.h>
+#include <cstring>
+#include <gtest/gtest.h>
 
-// #include <abacus/metrics.hpp>
-// #include <abacus/view.hpp>
+#include <abacus/metrics.hpp>
+#include <abacus/view.hpp>
 
-// TEST(test_view, api)
-// {
-//     uint16_t max_metrics = 10;
-//     uint16_t max_name_bytes = 32;
-//     std::string scope = "scope";
+TEST(test_view, api)
+{
+    std::string scope = "scope";
 
-//     abacus::metrics metrics(max_metrics, max_name_bytes);
-//     auto metric = metrics.add_metric<uint64_t>("metric");
-//     metrics.push_scope(scope);
+    uint16_t metric_count = 2;
 
-//     std::size_t storage_size =
-//         8 + (8 - (max_metrics * max_name_bytes + max_metrics) % 8) +
-//         max_metrics * (max_name_bytes + sizeof(uint64_t) + 1) + 8;
+    std::string name0 = "metric0";
+    std::string name1 = "metric1";
 
-//     EXPECT_EQ(metrics.storage_bytes(), storage_size);
+    std::vector<abacus::metric_info> infos;
 
-//     metric += 10;
+    infos.reserve(metric_count);
 
-//     std::vector<uint8_t> data(metrics.storage_bytes());
+    infos.push_back(abacus::metric_info{name0, "An unsigned integer metric",
+                                        abacus::value_type::unsigned_integral,
+                                        abacus::NON_CONSTANT});
+    infos.push_back(abacus::metric_info{name1, "A signed integer metric",
+                                        abacus::value_type::signed_integral,
+                                        abacus::NON_CONSTANT});
 
-//     metrics.copy_storage(data.data());
+    abacus::metrics metrics(infos);
 
-//     abacus::view view;
+    metrics.initialize_metric<abacus::value_type::unsigned_integral>(0, name0);
 
-//     view.set_data(data.data());
+    metrics.initialize_metric<abacus::value_type::signed_integral>(1, name1);
 
-//     EXPECT_EQ(max_metrics, view.max_metrics());
-//     EXPECT_EQ(scope.size(), view.scope_size());
-//     EXPECT_EQ(scope, view.scope());
-//     EXPECT_EQ(1U, view.count());
-//     EXPECT_EQ(max_name_bytes, view.max_name_bytes());
-//     EXPECT_EQ(metrics.metric_name(0), view.metric_name(0));
-//     EXPECT_EQ(metrics.metric_type(0), abacus::value_type::unsigned_integral);
-//     EXPECT_EQ(view.metric_type(0), abacus::value_type::unsigned_integral);
-//     uint64_t metric_value = 12;
-//     uint64_t view_value = 11;
-//     metrics.metric_value(metric_value, 0);
-//     view.metric_value(view_value, 0);
-//     EXPECT_EQ(metric_value, view_value);
-//     EXPECT_EQ(view.data(), data.data());
-// }
+    metrics.push_scope(scope);
+
+    std::vector<uint8_t> data(metrics.storage_bytes());
+
+    metrics.copy_storage(data.data(), metrics.storage_bytes());
+
+    abacus::view view;
+
+    view.set_data(data.data());
+
+    EXPECT_EQ(metrics.metric_count(), view.metric_count());
+    EXPECT_EQ(metrics.scope_size(), view.scope_size());
+    EXPECT_EQ(metrics.scope(), view.scope());
+    EXPECT_EQ(metrics.name_bytes(), view.name_bytes());
+    EXPECT_EQ(metrics.description_bytes(), view.description_bytes());
+
+    EXPECT_EQ(metrics.metric_name(0), view.metric_name(0));
+    EXPECT_EQ(metrics.metric_name(1), view.metric_name(1));
+
+    EXPECT_EQ(metrics.metric_type(0), abacus::value_type::unsigned_integral);
+    EXPECT_EQ(metrics.metric_type(1), abacus::value_type::signed_integral);
+    EXPECT_EQ(view.metric_type(0), abacus::value_type::unsigned_integral);
+    EXPECT_EQ(view.metric_type(1), abacus::value_type::signed_integral);
+
+    uint64_t metric_value = 12;
+    uint64_t view_value = 11;
+    metrics.metric_value(0, metric_value);
+    view.metric_value(0, view_value);
+
+    EXPECT_EQ(metric_value, view_value);
+
+    EXPECT_EQ(view.data(), data.data());
+}

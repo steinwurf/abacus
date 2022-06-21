@@ -14,5 +14,7 @@ Overview of the public API.
    metric_specializations/metric_specializations
    metric_info
    metrics
+   view
+   view_iterator
    value_type
 

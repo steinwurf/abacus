@@ -21,7 +21,7 @@ inline namespace STEINWURF_ABACUS_VERSION
 /// See metric<value_type::unsigned_integral>,
 /// metric<value_type::signed_integral>, metric<value_type::floating_point> and
 /// metric<value_type::boolean> for template specializations.
-template <value_type v>
+template <value_type ValueType>
 class metric;
 
 template <class T>

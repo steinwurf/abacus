@@ -6,6 +6,7 @@
 #pragma once
 
 #include <cassert>
+#include <map>
 #include <vector>
 
 #include "detail/raw.hpp"
@@ -19,19 +20,29 @@ namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-/// This class preallocates memory at construction to hold a header, a title
-/// of size max_name_bytes, max_metrics metrics, each having a name of size
-/// max_name_bytes, with a metric value of 8 bytes (sizeof(uint64_t)).
+/// This class is used for creating descriptive counters that are contiguous in
+/// memory, to allow for fast access fast and fast arithmetic operations.
 ///
-/// The total preallocated memory is
-/// header_size + max_metrics * (max_name_bytes + 8).
+/// The class preallocates memory at construction with the following
+/// layout
 ///
-/// To save memory, take caution in choosing the max_metrics. If your
-/// library only uses 10 counters, you should probably not choose
-/// max_metrics = 64.
+/// 1. Header of 12 bytes
+///     * Number of metrics (2 bytes)
+///     * Current size of the scope (2 bytes)
+///     * Total name bytes (2 bytes)
+///     * Total description bytes (2 bytes)
+///     * Number of 8-byte-value metrics (2 bytes)
+///     * Number of 1-byte-value metrics (2 bytes)
 ///
-/// The header consists of 42 bits of 3 values:
-/// 1. 16 bit denoting the number of counters
+/// 2. The name sizes in bytes (2 * count bytes)
+/// 3. The description sizes in bytes (2 * count bytes)
+/// 4. The names of the metrics (? bytes)
+/// 5. The descriptions of the metrics (? bytes)
+/// 6. The types of the metrics (count bytes)
+/// 7. The state of the metrics, constant or not (count bytes)
+/// 8. Alignment padding (if needed, max 7 bytes)
+/// 9. The 8-byte-values (8 * 8-byte-count bytes)
+/// 10. The 1-byte-values (1-byte-count bytes)
 
 class metrics
 {
@@ -51,6 +62,21 @@ public:
     /// @returns the current size of the metric scope. This value changes for
     /// each push_scope() and pop_scope() call.
     auto scope_size() const -> uint16_t;
+
+    /// @return the bytes used for metric names from a metrics data pointer
+    auto name_bytes() const -> uint16_t;
+
+    /// @return the bytes used for metric descriptions from a metrics data
+    /// pointer
+    auto description_bytes() const -> uint16_t;
+
+    /// @return the number of metrics with 8-byte values (double, uint64_t or
+    /// int64_t) from a metrics data pointer
+    auto eight_byte_count() const -> uint16_t;
+
+    /// @return the number of metrics with 1-byte values (bool) from a metrics
+    /// data pointer
+    auto one_byte_count() const -> uint16_t;
 
     /// @returns true if the metric is initialized, that is if
     /// initialize_metric() has been called for the given index.
@@ -99,9 +125,9 @@ public:
     /// metric_count().
     /// @param name The name of the metric. This is used for a check to ensure
     /// that the name matches the one at the given index.
-    template <value_type T>
+    template <value_type ValueType>
     auto initialize_metric(std::size_t index, std::string name) const
-        -> metric<T>
+        -> metric<ValueType>
     {
         (void)index;
         (void)name;
@@ -328,6 +354,9 @@ private:
 private:
     /// The info of the metrics seperated by byte-sizes
     detail::value_size_info m_info;
+
+    /// Map to get index from names
+    std::map<std::string, std::size_t> m_name_to_index;
 
     /// The sizes of the names of the metrics
     std::vector<uint16_t> m_name_sizes;

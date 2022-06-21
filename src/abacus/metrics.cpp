@@ -24,6 +24,11 @@ metrics::metrics(std::vector<metric_info> info) : m_info(info)
 
     m_count = static_cast<uint16_t>(m_info.size());
 
+    for (std::size_t i = 0; i < m_count; i++)
+    {
+        m_name_to_index.insert({m_info[i].name, i});
+    }
+
     m_name_sizes.reserve(m_count);
     m_description_sizes.reserve(m_count);
 
@@ -125,6 +130,26 @@ metrics::~metrics()
 auto metrics::metric_count() const -> std::size_t
 {
     return m_count;
+}
+
+auto metrics::name_bytes() const -> uint16_t
+{
+    return detail::name_bytes(m_data);
+}
+
+auto metrics::description_bytes() const -> uint16_t
+{
+    return detail::descriptions_bytes(m_data);
+}
+
+auto metrics::eight_byte_count() const -> uint16_t
+{
+    return detail::eight_byte_count(m_data);
+}
+
+auto metrics::one_byte_count() const -> uint16_t
+{
+    return detail::one_byte_count(m_data);
 }
 
 auto metrics::is_metric_initialized(std::size_t index) const -> bool
@@ -335,7 +360,8 @@ void metrics::metric_value(std::size_t index, bool& value) const
 
 auto metrics::metric_index(std::string name) const -> std::size_t
 {
-    return detail::metric_index(m_data, name.c_str());
+    std::size_t index = m_name_to_index.at(name);
+    return index;
 }
 
 auto metrics::scope() const -> std::string

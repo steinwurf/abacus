@@ -36,9 +36,6 @@ public:
     /// @return The number of views/metrics in memory
     auto view_count() const -> std::size_t;
 
-    /// @return Json formatted string of the views
-    auto to_json() const -> std::string;
-
 private:
     /// Vector containing the different views
     std::vector<view> m_views = {};
