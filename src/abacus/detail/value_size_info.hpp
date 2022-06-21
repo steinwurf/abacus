@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "../metric_info.hpp"
-#include "../value_types.hpp"
+#include "../value_type.hpp"
 #include "../version.hpp"
 
 namespace abacus

@@ -9,7 +9,7 @@
 #include <type_traits>
 #include <vector>
 
-#include "value_types.hpp"
+#include "value_type.hpp"
 #include "version.hpp"
 
 namespace abacus
@@ -17,6 +17,10 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 /// Wrapper for the value of a counter.
+///
+/// See metric<value_type::unsigned_integral>,
+/// metric<value_type::signed_integral>, metric<value_type::floating_point> and
+/// metric<value_type::boolean> for template specializations.
 template <value_type v>
 class metric;
 
@@ -34,6 +38,7 @@ class metric_float
                   "metric_float can only be used with floating point types");
 };
 
+/// Metric wrapping uint64_t value.
 template <>
 class metric<value_type::unsigned_integral> : public metric_integer<uint64_t>
 {
@@ -104,6 +109,7 @@ private:
     uint64_t* m_memory;
 };
 
+/// Metric wrapping int64_t value.
 template <>
 class metric<value_type::signed_integral> : public metric_integer<int64_t>
 {
@@ -174,6 +180,7 @@ private:
     int64_t* m_memory;
 };
 
+/// Metric wrapping double value.
 template <>
 class metric<value_type::floating_point> : public metric_float<double>
 {
@@ -244,6 +251,7 @@ private:
     double* m_memory;
 };
 
+/// Metric wrapping bool value.
 template <>
 class metric<value_type::boolean> : public metric_integer<bool>
 {

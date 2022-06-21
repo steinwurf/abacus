@@ -11,7 +11,7 @@
 #include "detail/raw.hpp"
 #include "detail/value_size_info.hpp"
 #include "metric.hpp"
-#include "value_types.hpp"
+#include "value_type.hpp"
 #include "version.hpp"
 #include "view.hpp"
 
@@ -38,8 +38,8 @@ class metrics
 
 public:
     /// Constructor
-    /// @param info The info needed to initialize all the metrics with types,
-    /// names and descriptions
+    /// @param info The info of the metrics that will be contained within this
+    /// object with types, names and descriptions
     metrics(std::vector<metric_info> info);
 
     /// Destructor
@@ -47,6 +47,10 @@ public:
 
     /// @returns the number of metrics in the collection
     auto metric_count() const -> std::size_t;
+
+    /// @returns the current size of the metric scope. This value changes for
+    /// each push_scope() and pop_scope() call.
+    auto scope_size() const -> uint16_t;
 
     /// @returns true if the metric is initialized, that is if
     /// initialize_metric() has been called for the given index.
@@ -78,14 +82,19 @@ public:
     /// metric_count().
     auto metric_is_constant(std::size_t index) const -> bool;
 
-    /// @returns A wrapper for a counter at the given index.
-
-    /// The templated type must match the one given through the metric_info used
-    /// for the constructor. The indices of the metrics do not match the ones in
-    /// the info, so use metric_type(), metric_name() and metric_index() to get
-    /// the correct index, name and type. Please do not hard-code this, as this
-    /// may break with changes to your code.
-
+    /// @returns A wrapper for a counter at the given index with type
+    /// appropriate with given enum.
+    ///
+    /// This function writes the name, description, value, etc. for this index
+    /// into memory, such that only data for initialized metrics will be
+    /// available when extracting the memory through copy_storage().
+    ///
+    /// The templated type must match the one given through the
+    /// metric_info used for the constructor. The indices of the metrics do not
+    /// match the ones in the info, so use metric_type(), metric_name() and
+    /// metric_index() to get the correct index, name and type. Please do not
+    /// hard-code this, as this may break with changes to your code.
+    ///
     /// @param index The index of the metric to initialize. Must be less than
     /// metric_count().
     /// @param name The name of the metric. This is used for a check to ensure
@@ -246,23 +255,61 @@ public:
     ///
     /// The scope of the metrics is copied onto memory when using the
     /// copy_storage() function. It can be used to distinguish different metrics
-    /// objects and to identify the metrics in the memory.
+    /// objects and to identify the metrics in the memory. It is also used for
     auto scope() const -> std::string;
 
-    auto scope_size() const -> std::size_t;
-
+    /// Prepends a string to the scope and seperates it from the previous outer
+    /// scope with a '.'.
+    ///
+    /// @param text the string to become the new outer scope.
     void push_scope(const std::string& text);
 
+    /// Removes the outer scope.
     void pop_scope();
 
-    void copy_storage(uint8_t* data) const;
+    /// Copies the memory of the metrics + the scope into the given data buffer.
+    /// The storage_bytes() function is used to allocate the exact amount of
+    /// memory needed. Example code to illustrade intented use:
+    ///
+    ///     std::vector<uint8_t> copied_data(metrics.storage_bytes());
+    ///     metrics.copy_storage(copied_data.data(), copied_data.size());
+    ///
+    /// @param data the buffer to copy data into.
+    /// @param size the size of the buffer. Must be equal to storage_bytes() to
+    /// ensure memory alignment.
+    void copy_storage(uint8_t* data, std::size_t size) const;
 
+    /// @return The size in bytes of the metrics data + the scope.
     auto storage_bytes() const -> std::size_t;
 
+    /// Resets the values of all initialized and non-constant metrics.
     void reset_metrics();
 
+    /// Resets the value of the metric at the given index. The metric must not
+    /// be constant and must be initialized.
+    ///
+    /// @param index the index of the metric to reset. Must be less than
+    /// metric_count()
     void reset_metric(std::size_t index);
 
+    /// @return a JSON-formatted string of the counters.
+    ///
+    /// The keys in the JSON string will be "scope + metric_name", and
+    /// the values will be a JSON-object with keys "description", "value" and
+    /// "is_constant". Example output with scope "car" could be:
+    ///
+    ///     {
+    ///         "car.fuel_consumption": {
+    /// 	        "description": "Fuel consumption in kilometers per liter",
+    /// 	        "value": 22.300000,
+    /// 	        "constant": true,
+    ///         },
+    ///         "car.wheels": {
+    /// 	        "description": "Wheels on the car",
+    /// 	        "value": 4,
+    /// 	        "constant": true,
+    ///         }
+    ///     }
     auto to_json() const -> std::string;
 
 private:
@@ -303,6 +350,7 @@ private:
     std::vector<std::string> m_scopes;
 };
 
+/// Initialize a unsigned int metric. See metrics::initialize_metric()
 template <>
 inline auto metrics::initialize_metric<value_type::unsigned_integral>(
     std::size_t index, std::string name) const
@@ -310,15 +358,28 @@ inline auto metrics::initialize_metric<value_type::unsigned_integral>(
 {
     assert(index < m_count);
     assert(!is_metric_initialized(index));
+    assert(metric_type(index) == value_type::unsigned_integral);
     assert(!metric_is_constant(index));
-    assert(name == m_info[index].name);
+    assert(name == metric_name(index));
 
+    // Write the metric name given to the constructor into memory
     char* name_ptr = detail::raw_name(m_data, index);
-    std::memcpy(name_ptr, m_info[index].name.c_str(), m_name_sizes[index]);
+    std::memcpy(name_ptr, metric_name(index).c_str(), m_name_sizes[index]);
 
-    auto description_ptr = detail::raw_description(m_data, index);
-    std::memcpy(description_ptr, m_info[index].description.c_str(),
+    // Write the metric description given to the constructor into memory
+    char* description_ptr = detail::raw_description(m_data, index);
+    std::memcpy(description_ptr, metric_description(index).c_str(),
                 m_description_sizes[index]);
+
+    // Write the metric type given to the constructor into memory
+    uint8_t* types_ptr = m_data + detail::types_offset(m_data) + index;
+    uint8_t type_byte = static_cast<uint8_t>(metric_type(index));
+    *types_ptr = type_byte;
+
+    // Write the is_constant bool given to the constructor into memory
+    uint8_t* is_constant_ptr =
+        m_data + detail::is_constant_offset(m_data) + index;
+    *(bool*)is_constant_ptr = metric_is_constant(index);
 
     uint64_t* value_ptr = detail::raw_value<uint64_t>(m_data, index);
 
@@ -327,6 +388,7 @@ inline auto metrics::initialize_metric<value_type::unsigned_integral>(
     return metric<value_type::unsigned_integral>{value_ptr};
 }
 
+/// Initialize a unsigned int metric. See metrics::initialize_metric()
 template <>
 inline auto
 metrics::initialize_metric<value_type::signed_integral>(std::size_t index,
@@ -335,15 +397,28 @@ metrics::initialize_metric<value_type::signed_integral>(std::size_t index,
 {
     assert(index < m_count);
     assert(!is_metric_initialized(index));
+    assert(metric_type(index) == value_type::signed_integral);
     assert(!metric_is_constant(index));
-    assert(name == m_info[index].name);
+    assert(name == metric_name(index));
 
-    auto name_ptr = detail::raw_name(m_data, index);
-    std::memcpy(name_ptr, m_info[index].name.c_str(), m_name_sizes[index]);
+    // Write the metric name given to the constructor into memory
+    char* name_ptr = detail::raw_name(m_data, index);
+    std::memcpy(name_ptr, metric_name(index).c_str(), m_name_sizes[index]);
 
-    auto description_ptr = detail::raw_description(m_data, index);
-    std::memcpy(description_ptr, m_info[index].description.c_str(),
+    // Write the metric description given to the constructor into memory
+    char* description_ptr = detail::raw_description(m_data, index);
+    std::memcpy(description_ptr, metric_description(index).c_str(),
                 m_description_sizes[index]);
+
+    // Write the metric type given to the constructor into memory
+    uint8_t* types_ptr = m_data + detail::types_offset(m_data) + index;
+    uint8_t type_byte = static_cast<uint8_t>(metric_type(index));
+    *types_ptr = type_byte;
+
+    // Write the is_constant bool given to the constructor into memory
+    uint8_t* is_constant_ptr =
+        m_data + detail::is_constant_offset(m_data) + index;
+    *(bool*)is_constant_ptr = metric_is_constant(index);
 
     int64_t* value_ptr = detail::raw_value<int64_t>(m_data, index);
 
@@ -352,6 +427,7 @@ metrics::initialize_metric<value_type::signed_integral>(std::size_t index,
     return metric<value_type::signed_integral>{value_ptr};
 }
 
+/// Initialize a unsigned int metric. See metrics::initialize_metric()
 template <>
 inline auto
 metrics::initialize_metric<value_type::floating_point>(std::size_t index,
@@ -360,15 +436,28 @@ metrics::initialize_metric<value_type::floating_point>(std::size_t index,
 {
     assert(index < m_count);
     assert(!is_metric_initialized(index));
+    assert(metric_type(index) == value_type::floating_point);
     assert(!metric_is_constant(index));
-    assert(name == m_info[index].name);
+    assert(name == metric_name(index));
 
-    auto name_ptr = detail::raw_name(m_data, index);
-    std::memcpy(name_ptr, m_info[index].name.c_str(), m_name_sizes[index]);
+    // Write the metric name given to the constructor into memory
+    char* name_ptr = detail::raw_name(m_data, index);
+    std::memcpy(name_ptr, metric_name(index).c_str(), m_name_sizes[index]);
 
-    auto description_ptr = detail::raw_description(m_data, index);
-    std::memcpy(description_ptr, m_info[index].description.c_str(),
+    // Write the metric description given to the constructor into memory
+    char* description_ptr = detail::raw_description(m_data, index);
+    std::memcpy(description_ptr, metric_description(index).c_str(),
                 m_description_sizes[index]);
+
+    // Write the metric type given to the constructor into memory
+    uint8_t* types_ptr = m_data + detail::types_offset(m_data) + index;
+    uint8_t type_byte = static_cast<uint8_t>(metric_type(index));
+    *types_ptr = type_byte;
+
+    // Write the is_constant bool given to the constructor into memory
+    uint8_t* is_constant_ptr =
+        m_data + detail::is_constant_offset(m_data) + index;
+    *(bool*)is_constant_ptr = metric_is_constant(index);
 
     double* value_ptr = detail::raw_value<double>(m_data, index);
 
@@ -377,21 +466,35 @@ metrics::initialize_metric<value_type::floating_point>(std::size_t index,
     return metric<value_type::floating_point>{value_ptr};
 }
 
+/// Initialize a unsigned int metric. See metrics::initialize_metric()
 template <>
 inline auto metrics::initialize_metric<value_type::boolean>(
     std::size_t index, std::string name) const -> metric<value_type::boolean>
 {
     assert(index < m_count);
     assert(!is_metric_initialized(index));
+    assert(metric_type(index) == value_type::boolean);
     assert(!metric_is_constant(index));
-    assert(name == m_info[index].name);
+    assert(name == metric_name(index));
 
-    auto name_ptr = detail::raw_name(m_data, index);
-    std::memcpy(name_ptr, m_info[index].name.c_str(), m_name_sizes[index]);
+    // Write the metric name given to the constructor into memory
+    char* name_ptr = detail::raw_name(m_data, index);
+    std::memcpy(name_ptr, metric_name(index).c_str(), m_name_sizes[index]);
 
-    auto description_ptr = detail::raw_description(m_data, index);
-    std::memcpy(description_ptr, m_info[index].description.c_str(),
+    // Write the metric description given to the constructor into memory
+    char* description_ptr = detail::raw_description(m_data, index);
+    std::memcpy(description_ptr, metric_description(index).c_str(),
                 m_description_sizes[index]);
+
+    // Write the metric type given to the constructor into memory
+    uint8_t* types_ptr = m_data + detail::types_offset(m_data) + index;
+    uint8_t type_byte = static_cast<uint8_t>(metric_type(index));
+    *types_ptr = type_byte;
+
+    // Write the is_constant bool given to the constructor into memory
+    uint8_t* is_constant_ptr =
+        m_data + detail::is_constant_offset(m_data) + index;
+    *(bool*)is_constant_ptr = metric_is_constant(index);
 
     bool* value_ptr = detail::raw_value<bool>(m_data, index);
 

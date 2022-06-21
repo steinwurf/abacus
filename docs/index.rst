@@ -27,7 +27,6 @@ Table of Contents
   :maxdepth: 2
 
   user_api/user_api
-  expert_api/expert_api
   examples/examples
   license
 

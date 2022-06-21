@@ -8,7 +8,7 @@
 #include <cassert>
 #include <vector>
 
-#include "value_types.hpp"
+#include "value_type.hpp"
 #include "version.hpp"
 
 namespace abacus
@@ -38,17 +38,29 @@ public:
     /// @return the data pointer for memory used by the view
     auto data() const -> const uint8_t*;
 
-    /// @return the maximum name size from a metrics data pointer
-    auto max_name_bytes() const -> uint16_t;
-
-    /// @return the maximum number of metrics from a metrics data pointer
-    auto max_metrics() const -> uint16_t;
+    /// @return the number of metrics from in a metrics data pointer
+    auto metric_count() const -> uint16_t;
 
     /// @return the size of the scope name from a metrics data pointer
-    auto scope_size() const -> uint8_t;
+    auto scope_size() const -> uint16_t;
+
+    /// @return the bytes used for metric names from a metrics data pointer
+    auto name_bytes() const -> uint16_t;
+
+    /// @return the bytes used for metric descriptions from a metrics data
+    /// pointer
+    auto description_bytes() const -> uint16_t;
+
+    /// @return the number of metrics with 8-byte values (double, uint64_t or
+    /// int64_t) from a metrics data pointer
+    auto eight_byte_count() const -> uint16_t;
+
+    /// @return the number of metrics with 1-byte values (bool) from a metrics
+    /// data pointer
+    auto one_byte_count() const -> uint16_t;
 
     /// @param index The index of the new counter. Must be less than
-    /// max_metrics().
+    /// metric_count().
     /// @return The name of a counter as a string
     auto metric_name(std::size_t index) const -> std::string;
 

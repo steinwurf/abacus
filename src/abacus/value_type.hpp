@@ -11,11 +11,20 @@ namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
+
+/// Enum used to declare and identify the types of the metric objects.
 enum class value_type : uint8_t
 {
-    unsigned_integral,
+    /// uint64_t type
+    unsigned_integral = 0U,
+
+    /// int64_t type
     signed_integral,
+
+    /// double type
     floating_point,
+
+    /// bool type
     boolean
 };
 }
