@@ -18,8 +18,8 @@ inline namespace STEINWURF_ABACUS_VERSION
 {
 /// Wrapper for the value of a counter.
 ///
-/// See metric<value_type::unsigned_integral>,
-/// metric<value_type::signed_integral>, metric<value_type::floating_point> and
+/// See metric<value_type::uint64>,
+/// metric<value_type::int64>, metric<value_type::float64> and
 /// metric<value_type::boolean> for template specializations.
 template <value_type ValueType>
 class metric;
@@ -34,13 +34,13 @@ class metric_integer
 template <class T>
 class metric_float
 {
-    static_assert(std::is_floating_point<T>::value,
+    static_assert(std::is_float64<T>::value,
                   "metric_float can only be used with floating point types");
 };
 
 /// Metric wrapping uint64_t value.
 template <>
-class metric<value_type::unsigned_integral> : public metric_integer<uint64_t>
+class metric<value_type::uint64> : public metric_integer<uint64_t>
 {
 
 public:
@@ -58,7 +58,7 @@ public:
     /// Assign the counter a new value
     /// @param value The value to assign
     /// @return a counter with the new value
-    auto operator=(uint64_t value) -> metric<value_type::unsigned_integral>&
+    auto operator=(uint64_t value) -> metric<value_type::uint64>&
     {
         *m_memory = value;
         return *this;
@@ -67,7 +67,7 @@ public:
     /// Increment the counter
     /// @param value The value to add
     /// @return The result of the arithmetic
-    auto operator+=(uint64_t value) -> metric<value_type::unsigned_integral>&
+    auto operator+=(uint64_t value) -> metric<value_type::uint64>&
     {
         *m_memory += value;
         return *this;
@@ -76,7 +76,7 @@ public:
     /// Decrement the counter
     /// @param value The value to subtract
     /// @return The result of the arithmetic
-    auto operator-=(uint64_t value) -> metric<value_type::unsigned_integral>&
+    auto operator-=(uint64_t value) -> metric<value_type::uint64>&
     {
         *m_memory -= value;
         return *this;
@@ -84,7 +84,7 @@ public:
 
     /// Increment the value of the counter
     /// @return The result of the arithmetic
-    auto operator++() -> metric<value_type::unsigned_integral>&
+    auto operator++() -> metric<value_type::uint64>&
     {
         *m_memory += 1;
         return *this;
@@ -92,7 +92,7 @@ public:
 
     /// Decrement the value of the counter
     /// @return The result of the arithmetic
-    auto operator--() -> metric<value_type::unsigned_integral>&
+    auto operator--() -> metric<value_type::uint64>&
     {
         *m_memory -= 1;
         return *this;
@@ -111,7 +111,7 @@ private:
 
 /// Metric wrapping int64_t value.
 template <>
-class metric<value_type::signed_integral> : public metric_integer<int64_t>
+class metric<value_type::int64> : public metric_integer<int64_t>
 {
 
 public:
@@ -129,7 +129,7 @@ public:
     /// Assign the counter a new value
     /// @param value The value to assign
     /// @return a counter with the new value
-    auto operator=(int64_t value) -> metric<value_type::signed_integral>&
+    auto operator=(int64_t value) -> metric<value_type::int64>&
     {
         *m_memory = value;
         return *this;
@@ -138,7 +138,7 @@ public:
     /// Increment the counter
     /// @param value The value to add
     /// @return The result of the arithmetic
-    auto operator+=(int64_t value) -> metric<value_type::signed_integral>&
+    auto operator+=(int64_t value) -> metric<value_type::int64>&
     {
         *m_memory += value;
         return *this;
@@ -147,7 +147,7 @@ public:
     /// Decrement the counter
     /// @param value The value to subtract
     /// @return The result of the arithmetic
-    auto operator-=(int64_t value) -> metric<value_type::signed_integral>&
+    auto operator-=(int64_t value) -> metric<value_type::int64>&
     {
         *m_memory -= value;
         return *this;
@@ -155,7 +155,7 @@ public:
 
     /// Increment the value of the counter
     /// @return The result of the arithmetic
-    auto operator++() -> metric<value_type::signed_integral>&
+    auto operator++() -> metric<value_type::int64>&
     {
         *m_memory += 1;
         return *this;
@@ -163,7 +163,7 @@ public:
 
     /// Decrement the value of the counter
     /// @return The result of the arithmetic
-    auto operator--() -> metric<value_type::signed_integral>&
+    auto operator--() -> metric<value_type::int64>&
     {
         *m_memory -= 1;
         return *this;
@@ -182,7 +182,7 @@ private:
 
 /// Metric wrapping double value.
 template <>
-class metric<value_type::floating_point> : public metric_float<double>
+class metric<value_type::float64> : public metric_float<double>
 {
 
 public:
@@ -200,7 +200,7 @@ public:
     /// Assign the counter a new value
     /// @param value The value to assign
     /// @return a counter with the new value
-    auto operator=(double value) -> metric<value_type::floating_point>&
+    auto operator=(double value) -> metric<value_type::float64>&
     {
         *m_memory = value;
         return *this;
@@ -209,7 +209,7 @@ public:
     /// Increment the counter
     /// @param value The value to add
     /// @return The result of the arithmetic
-    auto operator+=(double value) -> metric<value_type::floating_point>&
+    auto operator+=(double value) -> metric<value_type::float64>&
     {
         *m_memory += value;
         return *this;
@@ -218,7 +218,7 @@ public:
     /// Decrement the counter
     /// @param value The value to subtract
     /// @return The result of the arithmetic
-    auto operator-=(double value) -> metric<value_type::floating_point>&
+    auto operator-=(double value) -> metric<value_type::float64>&
     {
         *m_memory -= value;
         return *this;
@@ -226,7 +226,7 @@ public:
 
     /// Increment the value of the counter
     /// @return The result of the arithmetic
-    auto operator++() -> metric<value_type::floating_point>&
+    auto operator++() -> metric<value_type::float64>&
     {
         *m_memory += 1;
         return *this;
@@ -234,7 +234,7 @@ public:
 
     /// Decrement the value of the counter
     /// @return The result of the arithmetic
-    auto operator--() -> metric<value_type::floating_point>&
+    auto operator--() -> metric<value_type::float64>&
     {
         *m_memory -= 1;
         return *this;

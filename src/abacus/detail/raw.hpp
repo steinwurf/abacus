@@ -414,8 +414,7 @@ inline auto values_offset(const uint8_t* data) -> std::size_t
 /// @param data The raw memory for the counters
 /// @param index The index of a counter. Must be less than metric_count().
 /// @return a pointer to the index'th counter value
-template <typename T>
-inline auto raw_value(uint8_t* data, std::size_t index) -> T*
+inline auto raw_value(uint8_t* data, std::size_t index) -> void*
 {
     assert(data != nullptr);
     assert(index < metric_count(data));
@@ -424,18 +423,16 @@ inline auto raw_value(uint8_t* data, std::size_t index) -> T*
     uint16_t eight_byte_metrics = eight_byte_count(data);
     if (index < eight_byte_metrics)
     {
-        assert(sizeof(T) == 8);
-        return (T*)(data + offset + index * sizeof(T));
+        return (void*)(data + offset + index * 8U);
     }
-    return (T*)(data + offset + eight_byte_metrics * 8 +
-                (index - eight_byte_metrics) * sizeof(T));
+    return (void*)(data + offset + eight_byte_metrics * 8 +
+                   (index - eight_byte_metrics));
 }
 
 /// @param data The raw memory for the counters
 /// @param index The index of a counter. Must be less than metric_count().
 /// @return a pointer to the index'th counter value
-template <typename T>
-inline auto raw_value(const uint8_t* data, std::size_t index) -> const T*
+inline auto raw_value(const uint8_t* data, std::size_t index) -> const void*
 {
     assert(data != nullptr);
     assert(index < metric_count(data));
@@ -444,12 +441,10 @@ inline auto raw_value(const uint8_t* data, std::size_t index) -> const T*
     uint16_t eight_byte_metrics = eight_byte_count(data);
     if (index < eight_byte_metrics)
     {
-        assert(sizeof(T) == 8);
-        return (const T*)(data + offset + index * sizeof(T));
+        return (const void*)(data + offset + index * 8U);
     }
-    assert(sizeof(T) == 1);
-    return (const T*)(data + offset + eight_byte_metrics * 8 +
-                      (index - eight_byte_metrics) * sizeof(T));
+    return (const void*)(data + offset + eight_byte_metrics * 8 +
+                         (index - eight_byte_metrics));
 }
 
 inline auto metric_index(const uint8_t* data, const char* name) -> std::size_t
@@ -546,25 +541,20 @@ inline auto to_json(const uint8_t* data, std::string scope = "",
         auto d = raw_description(data, i);
         auto t = static_cast<value_type>(*raw_type(data, i));
         auto c = is_constant(data, i);
-        std::string type_string;
         std::string value_string;
         switch (t)
         {
-        case value_type::unsigned_integral:
-            type_string = "unsigned integer";
-            value_string = std::to_string(*raw_value<uint64_t>(data, i));
+        case value_type::uint64:
+            value_string = std::to_string(*(uint64_t*)raw_value(data, i));
             break;
-        case value_type::signed_integral:
-            type_string = "signed integer";
-            value_string = std::to_string(*raw_value<int64_t>(data, i));
+        case value_type::int64:
+            value_string = std::to_string(*(int64_t*)raw_value(data, i));
             break;
         case value_type::boolean:
-            type_string = "boolean";
-            value_string = *raw_value<bool>(data, i) ? "true" : "false";
+            value_string = *(bool*)raw_value(data, i) ? "true" : "false";
             break;
-        case value_type::floating_point:
-            type_string = "floating point";
-            value_string = std::to_string(*raw_value<double>(data, i));
+        case value_type::float64:
+            value_string = std::to_string(*(double*)raw_value(data, i));
             break;
         }
 

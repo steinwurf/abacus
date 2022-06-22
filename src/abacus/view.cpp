@@ -108,21 +108,21 @@ void view::metric_value(std::size_t index, bool& value) const
 void view::metric_value(std::size_t index, uint64_t& value) const
 {
     assert(is_metric_initialized(index));
-    assert(metric_type(index) == value_type::unsigned_integral);
+    assert(metric_type(index) == value_type::uint64);
     value = *detail::raw_value<uint64_t>(m_data, index);
 }
 
 void view::metric_value(std::size_t index, int64_t& value) const
 {
     assert(is_metric_initialized(index));
-    assert(metric_type(index) == value_type::signed_integral);
+    assert(metric_type(index) == value_type::int64);
     value = *detail::raw_value<int64_t>(m_data, index);
 }
 
 void view::metric_value(std::size_t index, double& value) const
 {
     assert(is_metric_initialized(index));
-    assert(metric_type(index) == value_type::floating_point);
+    assert(metric_type(index) == value_type::float64);
     value = *detail::raw_value<double>(m_data, index);
 }
 

@@ -6,15 +6,21 @@ every change, see the Git log.
 
 Latest
 ------
-* Major: metrics::initialize_metric() only take 1 argument "name".
+* Major: Added support for wrapping uint64_t, double, int64_t and bool with
+         class metric<>() through the value_type enum.
+* Major: Added metric_description, type and is_constant. Changed the memory
+         memory layout thereafter.
+* Minor: Added enum value_type to parameterize metric<>() and
+         initialize_metric() with.
+* Major: Added a struct metric_info, used in a vector to construct metrics.
+* Major: metrics::initialize_metric() is now templated.
          Metrics are initialized with incrementally increasing index.
-* Major: Changed "title" argument to "scope".
+* Major: Switched from using a title to using a scope, that is not part of the
+         memory layout.
 * Major: Added a scope member to metrics object which prefixes the names of
          the metrics.
 * Minor: Added add_scope() member function to class metrics.
-* Minor: Added default argument for pretty-print for the to_json() member
-         functions. Default is false.
-* Minor: Removed title from the class metrics data-header.
+* Major: Removed title from the class metrics data-header.
 * Major: Removed the metrics::set_metrics_title() member funciton
 
 1.1.2

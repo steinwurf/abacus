@@ -9,7 +9,6 @@
 #include <map>
 #include <vector>
 
-#include "detail/raw.hpp"
 #include "detail/value_size_info.hpp"
 #include "metric.hpp"
 #include "value_type.hpp"
@@ -51,7 +50,8 @@ public:
     /// Constructor
     /// @param info The info of the metrics that will be contained within this
     /// object with types, names and descriptions
-    metrics(std::vector<metric_info> info);
+    template <std::size_t N>
+    metrics(metric_info info[N]);
 
     /// Destructor
     ~metrics();
@@ -69,14 +69,6 @@ public:
     /// @return the bytes used for metric descriptions from a metrics data
     /// pointer
     auto description_bytes() const -> uint16_t;
-
-    /// @return the number of metrics with 8-byte values (double, uint64_t or
-    /// int64_t) from a metrics data pointer
-    auto eight_byte_count() const -> uint16_t;
-
-    /// @return the number of metrics with 1-byte values (bool) from a metrics
-    /// data pointer
-    auto one_byte_count() const -> uint16_t;
 
     /// @returns true if the metric is initialized, that is if
     /// initialize_metric() has been called for the given index.
@@ -97,10 +89,13 @@ public:
     /// initialize_constant().
     auto metric_description(std::size_t index) const -> std::string;
 
-    /// @returns the type of the metric at the given index.
-    /// @param index The index of the metric to check. Must be less than
-    /// metric_count().
-    auto metric_type(std::size_t index) const -> value_type;
+    auto is_metric_uint64(std::size_t index) -> bool;
+
+    auto is_metric_int64(std::size_t index) -> bool;
+
+    auto is_metric_float64(std::size_t index) -> bool;
+
+    auto is_metric_boolean(std::size index) -> bool;
 
     /// @returns true if the metric at the given index is a constant, otherwise
     /// false.
@@ -126,8 +121,7 @@ public:
     /// @param name The name of the metric. This is used for a check to ensure
     /// that the name matches the one at the given index.
     template <value_type ValueType>
-    auto initialize_metric(std::size_t index, std::string name) const
-        -> metric<ValueType>
+    auto initialize_metric(std::string name) const -> metric<ValueType>
     {
         (void)index;
         (void)name;
@@ -152,8 +146,7 @@ public:
     /// @param value The value of the constant. A uint64_t value.
     /// @param name The name of the metric. This is used for a check to ensure
     /// that the name matches the one at the given index.
-    void initialize_constant(std::size_t index, uint64_t value,
-                             std::string name) const;
+    void initialize_constant(std::string name, uint64_t value) const;
 
     /// Initialize a constant int64_t metric at the given index.
     ///
@@ -173,8 +166,7 @@ public:
     /// @param value The value of the constant. A int64_t value.
     /// @param name The name of the metric. This is used for a check to ensure
     /// that the name matches the one at the given index.
-    void initialize_constant(std::size_t index, int64_t value,
-                             std::string name) const;
+    void initialize_constant(std::string name, int64_t value) const;
 
     /// Initialize a constant double metric at the given index.
     ///
@@ -189,13 +181,10 @@ public:
     /// type. Please do not hard-code these values, as this may break with
     /// changes to your code.
     ///
-    /// @param index The index of the metric to initialize. Must be less than
-    /// metric_count().
     /// @param value The value of the constant. A double value.
     /// @param name The name of the metric. This is used for a check to ensure
     /// that the name matches the one at the given index.
-    void initialize_constant(std::size_t index, double value,
-                             std::string name) const;
+    void initialize_constant(std::string name, double value) const;
 
     /// Initialize a constant bool metric at the given index.
     ///
@@ -215,8 +204,7 @@ public:
     /// @param value The value of the constant. A bool value.
     /// @param name The name of the metric. This is used for a check to ensure
     /// that the name matches the one at the given index.
-    void initialize_constant(std::size_t index, bool value,
-                             std::string name) const;
+    void initialize_constant(std::string name, bool value) const;
 
     /// Copy the value of the uint64_t metric into a passed reference. This is
     /// used to extract the values during runtime.
@@ -352,6 +340,10 @@ private:
     metrics& operator=(metrics&&) = delete;
 
 private:
+    ///
+    auto initialize(std::string name) -> void*;
+
+private:
     /// The info of the metrics seperated by byte-sizes
     detail::value_size_info m_info;
 
@@ -381,52 +373,26 @@ private:
 
 /// Initialize a unsigned int metric. See metrics::initialize_metric()
 template <>
-inline auto metrics::initialize_metric<value_type::unsigned_integral>(
-    std::size_t index, std::string name) const
-    -> metric<value_type::unsigned_integral>
+inline auto
+metrics::initialize_metric<value_type::uint64>(std::string name) const
+    -> metric<value_type::uint64>
 {
-    assert(index < m_count);
-    assert(!is_metric_initialized(index));
-    assert(metric_type(index) == value_type::unsigned_integral);
-    assert(!metric_is_constant(index));
-    assert(name == metric_name(index));
-
-    // Write the metric name given to the constructor into memory
-    char* name_ptr = detail::raw_name(m_data, index);
-    std::memcpy(name_ptr, metric_name(index).c_str(), m_name_sizes[index]);
-
-    // Write the metric description given to the constructor into memory
-    char* description_ptr = detail::raw_description(m_data, index);
-    std::memcpy(description_ptr, metric_description(index).c_str(),
-                m_description_sizes[index]);
-
-    // Write the metric type given to the constructor into memory
-    uint8_t* types_ptr = m_data + detail::types_offset(m_data) + index;
-    uint8_t type_byte = static_cast<uint8_t>(metric_type(index));
-    *types_ptr = type_byte;
-
-    // Write the is_constant bool given to the constructor into memory
-    uint8_t* is_constant_ptr =
-        m_data + detail::is_constant_offset(m_data) + index;
-    *(bool*)is_constant_ptr = metric_is_constant(index);
 
     uint64_t* value_ptr = detail::raw_value<uint64_t>(m_data, index);
 
     *value_ptr = 0U;
 
-    return metric<value_type::unsigned_integral>{value_ptr};
+    return metric<value_type::uint64>{value_ptr};
 }
 
 /// Initialize a unsigned int metric. See metrics::initialize_metric()
 template <>
-inline auto
-metrics::initialize_metric<value_type::signed_integral>(std::size_t index,
-                                                        std::string name) const
-    -> metric<value_type::signed_integral>
+inline auto metrics::initialize_metric<value_type::int64>(
+    std::size_t index, std::string name) const -> metric<value_type::int64>
 {
     assert(index < m_count);
     assert(!is_metric_initialized(index));
-    assert(metric_type(index) == value_type::signed_integral);
+    assert(metric_type(index) == value_type::int64);
     assert(!metric_is_constant(index));
     assert(name == metric_name(index));
 
@@ -453,19 +419,17 @@ metrics::initialize_metric<value_type::signed_integral>(std::size_t index,
 
     *value_ptr = 0;
 
-    return metric<value_type::signed_integral>{value_ptr};
+    return metric<value_type::int64>{value_ptr};
 }
 
 /// Initialize a unsigned int metric. See metrics::initialize_metric()
 template <>
-inline auto
-metrics::initialize_metric<value_type::floating_point>(std::size_t index,
-                                                       std::string name) const
-    -> metric<value_type::floating_point>
+inline auto metrics::initialize_metric<value_type::float64>(
+    std::size_t index, std::string name) const -> metric<value_type::float64>
 {
     assert(index < m_count);
     assert(!is_metric_initialized(index));
-    assert(metric_type(index) == value_type::floating_point);
+    assert(metric_type(index) == value_type::float64);
     assert(!metric_is_constant(index));
     assert(name == metric_name(index));
 
@@ -492,7 +456,7 @@ metrics::initialize_metric<value_type::floating_point>(std::size_t index,
 
     *value_ptr = 0.0;
 
-    return metric<value_type::floating_point>{value_ptr};
+    return metric<value_type::float64>{value_ptr};
 }
 
 /// Initialize a unsigned int metric. See metrics::initialize_metric()

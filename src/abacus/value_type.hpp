@@ -16,13 +16,13 @@ inline namespace STEINWURF_ABACUS_VERSION
 enum class value_type : uint8_t
 {
     /// uint64_t type
-    unsigned_integral = 0U,
+    uint64 = 0U,
 
     /// int64_t type
-    signed_integral,
+    int64,
 
     /// double type
-    floating_point,
+    float64,
 
     /// bool type
     boolean
