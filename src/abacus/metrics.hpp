@@ -95,7 +95,7 @@ public:
 
     auto is_metric_float64(std::size_t index) -> bool;
 
-    auto is_metric_boolean(std::size index) -> bool;
+    auto is_metric_boolean(std::size_t index) -> bool;
 
     /// @returns true if the metric at the given index is a constant, otherwise
     /// false.
@@ -341,7 +341,7 @@ private:
 
 private:
     ///
-    auto initialize(std::string name) -> void*;
+    auto initialize(std::string name) const -> void*;
 
 private:
     /// The info of the metrics seperated by byte-sizes
@@ -377,122 +377,37 @@ inline auto
 metrics::initialize_metric<value_type::uint64>(std::string name) const
     -> metric<value_type::uint64>
 {
-
-    uint64_t* value_ptr = detail::raw_value<uint64_t>(m_data, index);
-
-    *value_ptr = 0U;
-
+    uint64_t* value_ptr = (uint64_t*)initialize(name);
     return metric<value_type::uint64>{value_ptr};
 }
 
 /// Initialize a unsigned int metric. See metrics::initialize_metric()
 template <>
-inline auto metrics::initialize_metric<value_type::int64>(
-    std::size_t index, std::string name) const -> metric<value_type::int64>
+inline auto
+metrics::initialize_metric<value_type::int64>(std::string name) const
+    -> metric<value_type::int64>
 {
-    assert(index < m_count);
-    assert(!is_metric_initialized(index));
-    assert(metric_type(index) == value_type::int64);
-    assert(!metric_is_constant(index));
-    assert(name == metric_name(index));
-
-    // Write the metric name given to the constructor into memory
-    char* name_ptr = detail::raw_name(m_data, index);
-    std::memcpy(name_ptr, metric_name(index).c_str(), m_name_sizes[index]);
-
-    // Write the metric description given to the constructor into memory
-    char* description_ptr = detail::raw_description(m_data, index);
-    std::memcpy(description_ptr, metric_description(index).c_str(),
-                m_description_sizes[index]);
-
-    // Write the metric type given to the constructor into memory
-    uint8_t* types_ptr = m_data + detail::types_offset(m_data) + index;
-    uint8_t type_byte = static_cast<uint8_t>(metric_type(index));
-    *types_ptr = type_byte;
-
-    // Write the is_constant bool given to the constructor into memory
-    uint8_t* is_constant_ptr =
-        m_data + detail::is_constant_offset(m_data) + index;
-    *(bool*)is_constant_ptr = metric_is_constant(index);
-
-    int64_t* value_ptr = detail::raw_value<int64_t>(m_data, index);
-
-    *value_ptr = 0;
-
+    int64_t* value_ptr = (int64_t*)initialize(name);
     return metric<value_type::int64>{value_ptr};
 }
 
 /// Initialize a unsigned int metric. See metrics::initialize_metric()
 template <>
-inline auto metrics::initialize_metric<value_type::float64>(
-    std::size_t index, std::string name) const -> metric<value_type::float64>
+inline auto
+metrics::initialize_metric<value_type::float64>(std::string name) const
+    -> metric<value_type::float64>
 {
-    assert(index < m_count);
-    assert(!is_metric_initialized(index));
-    assert(metric_type(index) == value_type::float64);
-    assert(!metric_is_constant(index));
-    assert(name == metric_name(index));
-
-    // Write the metric name given to the constructor into memory
-    char* name_ptr = detail::raw_name(m_data, index);
-    std::memcpy(name_ptr, metric_name(index).c_str(), m_name_sizes[index]);
-
-    // Write the metric description given to the constructor into memory
-    char* description_ptr = detail::raw_description(m_data, index);
-    std::memcpy(description_ptr, metric_description(index).c_str(),
-                m_description_sizes[index]);
-
-    // Write the metric type given to the constructor into memory
-    uint8_t* types_ptr = m_data + detail::types_offset(m_data) + index;
-    uint8_t type_byte = static_cast<uint8_t>(metric_type(index));
-    *types_ptr = type_byte;
-
-    // Write the is_constant bool given to the constructor into memory
-    uint8_t* is_constant_ptr =
-        m_data + detail::is_constant_offset(m_data) + index;
-    *(bool*)is_constant_ptr = metric_is_constant(index);
-
-    double* value_ptr = detail::raw_value<double>(m_data, index);
-
-    *value_ptr = 0.0;
-
+    double* value_ptr = (double*)initialize(name);
     return metric<value_type::float64>{value_ptr};
 }
 
 /// Initialize a unsigned int metric. See metrics::initialize_metric()
 template <>
-inline auto metrics::initialize_metric<value_type::boolean>(
-    std::size_t index, std::string name) const -> metric<value_type::boolean>
+inline auto
+metrics::initialize_metric<value_type::boolean>(std::string name) const
+    -> metric<value_type::boolean>
 {
-    assert(index < m_count);
-    assert(!is_metric_initialized(index));
-    assert(metric_type(index) == value_type::boolean);
-    assert(!metric_is_constant(index));
-    assert(name == metric_name(index));
-
-    // Write the metric name given to the constructor into memory
-    char* name_ptr = detail::raw_name(m_data, index);
-    std::memcpy(name_ptr, metric_name(index).c_str(), m_name_sizes[index]);
-
-    // Write the metric description given to the constructor into memory
-    char* description_ptr = detail::raw_description(m_data, index);
-    std::memcpy(description_ptr, metric_description(index).c_str(),
-                m_description_sizes[index]);
-
-    // Write the metric type given to the constructor into memory
-    uint8_t* types_ptr = m_data + detail::types_offset(m_data) + index;
-    uint8_t type_byte = static_cast<uint8_t>(metric_type(index));
-    *types_ptr = type_byte;
-
-    // Write the is_constant bool given to the constructor into memory
-    uint8_t* is_constant_ptr =
-        m_data + detail::is_constant_offset(m_data) + index;
-    *(bool*)is_constant_ptr = metric_is_constant(index);
-
-    bool* value_ptr = detail::raw_value<bool>(m_data, index);
-
-    *value_ptr = false;
-
+    bool* value_ptr = (bool*)initialize(name);
     return metric<value_type::boolean>{value_ptr};
 }
 

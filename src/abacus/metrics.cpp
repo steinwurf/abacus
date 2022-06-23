@@ -143,16 +143,6 @@ auto metrics::description_bytes() const -> uint16_t
     return detail::descriptions_bytes(m_data);
 }
 
-auto metrics::eight_byte_count() const -> uint16_t
-{
-    return detail::eight_byte_count(m_data);
-}
-
-auto metrics::one_byte_count() const -> uint16_t
-{
-    return detail::one_byte_count(m_data);
-}
-
 auto metrics::is_metric_initialized(std::size_t index) const -> bool
 {
     assert(index < m_count);
@@ -171,24 +161,18 @@ auto metrics::metric_description(std::size_t index) const -> std::string
     return m_info[index].description;
 }
 
-auto metrics::metric_type(std::size_t index) const -> value_type
-{
-    assert(index < m_count);
-    return m_info[index].type;
-}
-
 auto metrics::metric_is_constant(std::size_t index) const -> bool
 {
     assert(index < m_count);
     return m_info[index].is_constant;
 }
 
-void metrics::initialize_constant(std::size_t index, uint64_t value,
-                                  std::string name) const
+void metrics::initialize_constant(std::string name, uint64_t value) const
 {
+    std::size_t index = metric_index(name);
     assert(index < m_count);
     assert(!is_metric_initialized(index));
-    assert(metric_type(index) == value_type::uint64);
+    assert(m_info[index].type == value_type::uint64);
     assert(metric_is_constant(index));
     assert(name == metric_name(index));
 
@@ -203,7 +187,7 @@ void metrics::initialize_constant(std::size_t index, uint64_t value,
 
     // Write the metric type given to the constructor into memory
     uint8_t* types_ptr = m_data + detail::types_offset(m_data) + index;
-    uint8_t type_byte = static_cast<uint8_t>(metric_type(index));
+    uint8_t type_byte = static_cast<uint8_t>(m_info[index].type);
     *types_ptr = type_byte;
 
     // Write the is_constant bool given to the constructor into memory
@@ -211,17 +195,17 @@ void metrics::initialize_constant(std::size_t index, uint64_t value,
         m_data + detail::is_constant_offset(m_data) + index;
     *(bool*)is_constant_ptr = metric_is_constant(index);
 
-    uint64_t* value_ptr = detail::raw_value<uint64_t>(m_data, index);
+    uint64_t* value_ptr = (uint64_t*)detail::raw_value(m_data, index);
 
     *value_ptr = value;
 }
 
-void metrics::initialize_constant(std::size_t index, int64_t value,
-                                  std::string name) const
+void metrics::initialize_constant(std::string name, int64_t value) const
 {
+    std::size_t index = metric_index(name);
     assert(index < m_count);
     assert(!is_metric_initialized(index));
-    assert(metric_type(index) == value_type::int64);
+    assert(m_info[index].type == value_type::int64);
     assert(metric_is_constant(index));
     assert(name == metric_name(index));
 
@@ -236,7 +220,7 @@ void metrics::initialize_constant(std::size_t index, int64_t value,
 
     // Write the metric type given to the constructor into memory
     uint8_t* types_ptr = m_data + detail::types_offset(m_data) + index;
-    uint8_t type_byte = static_cast<uint8_t>(metric_type(index));
+    uint8_t type_byte = static_cast<uint8_t>(m_info[index].type);
     *types_ptr = type_byte;
 
     // Write the is_constant bool given to the constructor into memory
@@ -244,17 +228,17 @@ void metrics::initialize_constant(std::size_t index, int64_t value,
         m_data + detail::is_constant_offset(m_data) + index;
     *(bool*)is_constant_ptr = metric_is_constant(index);
 
-    int64_t* value_ptr = detail::raw_value<int64_t>(m_data, index);
+    int64_t* value_ptr = (int64_t*)detail::raw_value(m_data, index);
 
     *value_ptr = value;
 }
 
-void metrics::initialize_constant(std::size_t index, double value,
-                                  std::string name) const
+void metrics::initialize_constant(std::string name, double value) const
 {
+    std::size_t index = metric_index(name);
     assert(index < m_count);
     assert(!is_metric_initialized(index));
-    assert(metric_type(index) == value_type::float64);
+    assert(m_info[index].type == value_type::float64);
     assert(metric_is_constant(index));
     assert(name == metric_name(index));
 
@@ -269,7 +253,7 @@ void metrics::initialize_constant(std::size_t index, double value,
 
     // Write the metric type given to the constructor into memory
     uint8_t* types_ptr = m_data + detail::types_offset(m_data) + index;
-    uint8_t type_byte = static_cast<uint8_t>(metric_type(index));
+    uint8_t type_byte = static_cast<uint8_t>(m_info[index].type);
     *types_ptr = type_byte;
 
     // Write the is_constant bool given to the constructor into memory
@@ -277,17 +261,17 @@ void metrics::initialize_constant(std::size_t index, double value,
         m_data + detail::is_constant_offset(m_data) + index;
     *(bool*)is_constant_ptr = metric_is_constant(index);
 
-    double* value_ptr = detail::raw_value<double>(m_data, index);
+    double* value_ptr = (double*)detail::raw_value(m_data, index);
 
     *value_ptr = value;
 }
 
-void metrics::initialize_constant(std::size_t index, bool value,
-                                  std::string name) const
+void metrics::initialize_constant(std::string name, bool value) const
 {
+    std::size_t index = metric_index(name);
     assert(index < m_count);
     assert(!is_metric_initialized(index));
-    assert(metric_type(index) == value_type::boolean);
+    assert(m_info[index].type == value_type::boolean);
     assert(metric_is_constant(index));
     assert(name == metric_name(index));
 
@@ -302,7 +286,7 @@ void metrics::initialize_constant(std::size_t index, bool value,
 
     // Write the metric type given to the constructor into memory
     uint8_t* types_ptr = m_data + detail::types_offset(m_data) + index;
-    uint8_t type_byte = static_cast<uint8_t>(metric_type(index));
+    uint8_t type_byte = static_cast<uint8_t>(m_info[index].type);
     *types_ptr = type_byte;
 
     // Write the is_constant bool given to the constructor into memory
@@ -310,7 +294,7 @@ void metrics::initialize_constant(std::size_t index, bool value,
         m_data + detail::is_constant_offset(m_data) + index;
     *(bool*)is_constant_ptr = metric_is_constant(index);
 
-    bool* value_ptr = detail::raw_value<bool>(m_data, index);
+    bool* value_ptr = (bool*)detail::raw_value(m_data, index);
 
     *value_ptr = value;
 }
@@ -319,9 +303,9 @@ void metrics::metric_value(std::size_t index, uint64_t& value) const
 {
     assert(index < m_count);
     assert(is_metric_initialized(index));
-    assert(metric_type(index) == value_type::uint64);
+    assert(m_info[index].type == value_type::uint64);
 
-    uint64_t* value_ptr = detail::raw_value<uint64_t>(m_data, index);
+    uint64_t* value_ptr = (uint64_t*)detail::raw_value(m_data, index);
 
     value = *value_ptr;
 }
@@ -330,9 +314,9 @@ void metrics::metric_value(std::size_t index, int64_t& value) const
 {
     assert(index < m_count);
     assert(is_metric_initialized(index));
-    assert(metric_type(index) == value_type::int64);
+    assert(m_info[index].type == value_type::int64);
 
-    int64_t* value_ptr = detail::raw_value<int64_t>(m_data, index);
+    int64_t* value_ptr = (int64_t*)detail::raw_value(m_data, index);
 
     value = *value_ptr;
 }
@@ -341,9 +325,9 @@ void metrics::metric_value(std::size_t index, double& value) const
 {
     assert(index < m_count);
     assert(is_metric_initialized(index));
-    assert(metric_type(index) == value_type::float64);
+    assert(m_info[index].type == value_type::float64);
 
-    double* value_ptr = detail::raw_value<double>(m_data, index);
+    double* value_ptr = (double*)detail::raw_value(m_data, index);
 
     value = *value_ptr;
 }
@@ -352,9 +336,9 @@ void metrics::metric_value(std::size_t index, bool& value) const
 {
     assert(index < m_count);
     assert(is_metric_initialized(index));
-    assert(metric_type(index) == value_type::boolean);
+    assert(m_info[index].type == value_type::boolean);
 
-    bool* value_ptr = detail::raw_value<bool>(m_data, index);
+    bool* value_ptr = (bool*)detail::raw_value(m_data, index);
 
     value = *value_ptr;
 }
@@ -460,30 +444,26 @@ void metrics::reset_metric(std::size_t index)
     {
     case value_type::boolean:
     {
-        bool* value_data = detail::raw_value<bool>(m_data, index);
-        bool value = false;
-        *value_data = value;
+        bool* value_data = (bool*)detail::raw_value(m_data, index);
+        *value_data = false;
         break;
     }
     case value_type::uint64:
     {
-        uint64_t* value_data = detail::raw_value<uint64_t>(m_data, index);
-        uint64_t value = 0U;
-        *value_data = value;
+        uint64_t* value_data = (uint64_t*)detail::raw_value(m_data, index);
+        *value_data = 0U;
         break;
     }
     case value_type::int64:
     {
-        int64_t* value_data = detail::raw_value<int64_t>(m_data, index);
-        int64_t value = 0;
-        *value_data = value;
+        int64_t* value_data = (int64_t*)detail::raw_value(m_data, index);
+        *value_data = 0;
         break;
     }
     case value_type::float64:
     {
-        double* value_data = detail::raw_value<double>(m_data, index);
-        double value = 0.0;
-        *value_data = value;
+        double* value_data = (double*)detail::raw_value(m_data, index);
+        *value_data = 0.0;
         break;
     }
     }
@@ -509,12 +489,11 @@ auto metrics::to_json() const -> std::string
     return detail::to_json(m_data, m_scope);
 }
 
-auto metrics::initialize(std::string name) -> void*
+auto metrics::initialize(std::string name) const -> void*
 {
     std::size_t index = metric_index(name);
     assert(index < m_count);
     assert(!is_metric_initialized(index));
-    assert(m_info[index].type == value_type::uint64);
     assert(!metric_is_constant(index));
     assert(name == metric_name(index));
 
