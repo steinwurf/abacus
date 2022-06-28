@@ -10,7 +10,9 @@
 #include "detail/raw.hpp"
 #include "view.hpp"
 
+#include <endian/big_endian.hpp>
 #include <endian/is_big_endian.hpp>
+#include <endian/little_endian.hpp>
 
 namespace abacus
 {
@@ -68,10 +70,12 @@ auto view::metric_count() const -> uint16_t
     {
         if (m_is_little_endian)
         {
+            endian::little_endian m_little_endian;
             return m_little_endian.get<uint16_t>(m_data);
         }
         else
         {
+            endian::big_endian m_big_endian;
             return m_big_endian.get<uint16_t>(m_data);
         }
     }
@@ -87,11 +91,13 @@ auto view::scope_size() const -> uint16_t
     {
         if (m_is_little_endian)
         {
+            endian::little_endian m_little_endian;
             return m_little_endian.get<uint16_t>(
                 (uint8_t*)(detail::raw_scope_size(m_data)));
         }
         else
         {
+            endian::big_endian m_big_endian;
             return m_big_endian.get<uint16_t>(
                 (uint8_t*)detail::raw_scope_size(m_data));
         }
@@ -113,11 +119,13 @@ auto view::name_bytes() const -> uint16_t
     {
         if (m_is_little_endian)
         {
+            endian::little_endian m_little_endian;
             return m_little_endian.get<uint16_t>(
                 (uint8_t*)(detail::raw_name_bytes(m_data)));
         }
         else
         {
+            endian::big_endian m_big_endian;
             return m_big_endian.get<uint16_t>(
                 (uint8_t*)detail::raw_name_bytes(m_data));
         }
@@ -134,11 +142,13 @@ auto view::description_bytes() const -> uint16_t
     {
         if (m_is_little_endian)
         {
+            endian::little_endian m_little_endian;
             return m_little_endian.get<uint16_t>(
                 (uint8_t*)(detail::raw_descriptions_bytes(m_data)));
         }
         else
         {
+            endian::big_endian m_big_endian;
             return m_big_endian.get<uint16_t>(
                 (uint8_t*)detail::raw_descriptions_bytes(m_data));
         }
@@ -155,11 +165,13 @@ auto view::eight_byte_count() const -> uint16_t
     {
         if (m_is_little_endian)
         {
+            endian::little_endian m_little_endian;
             return m_little_endian.get<uint16_t>(
                 (uint8_t*)(detail::raw_eight_byte_count(m_data)));
         }
         else
         {
+            endian::big_endian m_big_endian;
             return m_big_endian.get<uint16_t>(
                 (uint8_t*)detail::raw_eight_byte_count(m_data));
         }
@@ -176,11 +188,13 @@ auto view::one_byte_count() const -> uint16_t
     {
         if (m_is_little_endian)
         {
+            endian::little_endian m_little_endian;
             return m_little_endian.get<uint16_t>(
                 (uint8_t*)(detail::raw_one_byte_count(m_data)));
         }
         else
         {
+            endian::big_endian m_big_endian;
             return m_big_endian.get<uint16_t>(
                 (uint8_t*)detail::raw_one_byte_count(m_data));
         }
@@ -237,11 +251,13 @@ void view::metric_value(std::size_t index, uint64_t& value) const
     {
         if (m_is_little_endian)
         {
+            endian::little_endian m_little_endian;
             value = m_little_endian.get<uint64_t>(
                 (uint8_t*)(detail::raw_value(m_data, index)));
         }
         else
         {
+            endian::big_endian m_big_endian;
             value = m_big_endian.get<uint64_t>(
                 (uint8_t*)(detail::raw_value(m_data, index)));
         }
@@ -260,11 +276,13 @@ void view::metric_value(std::size_t index, int64_t& value) const
     {
         if (m_is_little_endian)
         {
+            endian::little_endian m_little_endian;
             value = m_little_endian.get<int64_t>(
                 (uint8_t*)(detail::raw_value(m_data, index)));
         }
         else
         {
+            endian::big_endian m_big_endian;
             value = m_big_endian.get<int64_t>(
                 (uint8_t*)(detail::raw_value(m_data, index)));
         }
@@ -283,11 +301,13 @@ void view::metric_value(std::size_t index, double& value) const
     {
         if (m_is_little_endian)
         {
+            endian::little_endian m_little_endian;
             value = m_little_endian.get<double>(
                 (uint8_t*)(detail::raw_value(m_data, index)));
         }
         else
         {
+            endian::big_endian m_big_endian;
             value = m_big_endian.get<double>(
                 (uint8_t*)(detail::raw_value(m_data, index)));
         }

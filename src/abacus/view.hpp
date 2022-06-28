@@ -12,9 +12,6 @@
 #include "value_type.hpp"
 #include "version.hpp"
 
-#include <endian/big_endian.hpp>
-#include <endian/little_endian.hpp>
-
 namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
@@ -188,10 +185,6 @@ private:
     bool m_is_big_endian = false;
 
     bool m_is_same_endianness = false;
-
-    endian::little_endian m_little_endian;
-
-    endian::big_endian m_big_endian;
 
     /// Map to get index from names
     std::map<std::string, std::size_t> m_name_to_index;

@@ -38,20 +38,18 @@ metrics::metrics(metric_info* info, std::size_t size) : m_info(info, size)
     // Get the sizes of all the metric names
     for (std::size_t i = 0; i < m_info.m_eight_byte_count; i++)
     {
-        m_name_sizes.push_back(
-            (uint16_t)((m_info.m_eight_byte_metrics + i)->name.size() + 1));
+        m_name_sizes.push_back((uint16_t)(m_info[i].name.size() + 1));
         m_description_sizes.push_back(
-            (uint16_t)((m_info.m_eight_byte_metrics + i)->description.size() +
-                       1));
+            (uint16_t)((m_info[i].description.size() + 1)));
     }
 
     // Get the sizes of all the metric descriptions
     for (std::size_t i = 0; i < m_info.m_one_byte_count; i++)
     {
         m_name_sizes.push_back(
-            (uint16_t)((m_info.m_one_byte_metrics + i)->name.size() + 1));
-        m_description_sizes.push_back((
-            uint16_t)((m_info.m_one_byte_metrics + i)->description.size() + 1));
+            (uint16_t)(m_info[i + m_info.m_eight_byte_count].name.size() + 1));
+        m_description_sizes.push_back((uint16_t)((
+            m_info[i + m_info.m_eight_byte_count].description.size() + 1)));
     }
 
     // Calculate the total number of bytes needed for the names
