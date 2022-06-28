@@ -17,4 +17,5 @@ Overview of the public API.
    view
    view_iterator
    value_type
+   qualifier
 

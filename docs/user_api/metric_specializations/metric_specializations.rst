@@ -10,7 +10,7 @@ Overview of the metric<ValueType> public API.
 .. toctree::
    :maxdepth: 2
 
-   unsigned_integral
-   signed_integral
-   floating_point
+   uint64
+   int64
+   float64
    boolean

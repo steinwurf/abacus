@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include "qualifier.hpp"
 #include "value_type.hpp"
 #include <string>
 
@@ -12,12 +13,6 @@ namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-
-enum class qualifier : bool
-{
-    non_constant = false,
-    constant = true
-};
 
 /// Object used to describe a metric. Used in the metrics() constructor.
 struct metric_info

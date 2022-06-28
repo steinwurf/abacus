@@ -46,9 +46,13 @@ class metrics
 {
 
 public:
+    /// Constructor
+    /// @param info The info of the metrics in a pointer.
+    /// @param size The size of the pointer in elements.
     metrics(metric_info* info, std::size_t size);
 
-    /// Constructor
+    /// Delegate Constructor. Will pass a size-deduced array to the pointer/size
+    /// constructor
     /// @param info The info of the metrics that will be contained within this
     /// object with types, names and descriptions
     template <std::size_t N>
@@ -131,12 +135,10 @@ public:
     ///
     /// The templated type must match the one given through the
     /// metric_info used for the constructor. The indices of the metrics do not
-    /// match the ones in the info, so use metric_type(), metric_name() and
-    /// metric_index() to get the correct index, name and type. Please do not
-    /// hard-code this, as this may break with changes to your code.
+    /// match the ones in the info, so use metric_index() to get the correct
+    /// index. Please do not hard-code this, as this may break with changes to
+    /// yours or our code.
     ///
-    /// @param index The index of the metric to initialize. Must be less than
-    /// metric_count().
     /// @param name The name of the metric. This is used for a check to ensure
     /// that the name matches the one at the given index.
     template <value_type ValueType>
@@ -154,13 +156,11 @@ public:
     /// these can be utilized for flags, special values or other constant
     /// values.
     ///
-    /// Make sure that the type, index and name are correct using metric_type(),
-    /// metric_name() and metric_index() to get the correct index, name and
-    /// type. Please do not hard-code these values, as this may break with
-    /// changes to your code.
+    /// The indices of the metrics do not
+    /// match the ones in the info, so use metric_index() to get the correct
+    /// index. Please do not hard-code this, as this may break with changes to
+    /// yours or our code.
     ///
-    /// @param index The index of the metric to initialize. Must be less than
-    /// metric_count().
     /// @param value The value of the constant. A uint64_t value.
     /// @param name The name of the metric. This is used for a check to ensure
     /// that the name matches the one at the given index.
@@ -174,13 +174,11 @@ public:
     /// these can be utilized for flags, special values or other constant
     /// values.
     ///
-    /// Make sure that the type, index and name are correct using metric_type(),
-    /// metric_name() and metric_index() to get the correct index, name and
-    /// type. Please do not hard-code these values, as this may break with
-    /// changes to your code.
+    /// The indices of the metrics do not
+    /// match the ones in the info, so use metric_index() to get the correct
+    /// index. Please do not hard-code this, as this may break with changes to
+    /// yours or our code.
     ///
-    /// @param index The index of the metric to initialize. Must be less than
-    /// metric_count().
     /// @param value The value of the constant. A int64_t value.
     /// @param name The name of the metric. This is used for a check to ensure
     /// that the name matches the one at the given index.
@@ -194,10 +192,10 @@ public:
     /// these can be utilized for flags, special values or other constant
     /// values.
     ///
-    /// Make sure that the type, index and name are correct using metric_type(),
-    /// metric_name() and metric_index() to get the correct index, name and
-    /// type. Please do not hard-code these values, as this may break with
-    /// changes to your code.
+    /// The indices of the metrics do not
+    /// match the ones in the info, so use metric_index() to get the correct
+    /// index. Please do not hard-code this, as this may break with changes to
+    /// yours or our code.
     ///
     /// @param value The value of the constant. A double value.
     /// @param name The name of the metric. This is used for a check to ensure
@@ -212,13 +210,11 @@ public:
     /// these can be utilized for flags, special values or other constant
     /// values.
     ///
-    /// Make sure that the type, index and name are correct using metric_type(),
-    /// metric_name() and metric_index() to get the correct index, name and
-    /// type. Please do not hard-code these values, as this may break with
-    /// changes to your code.
+    /// The indices of the metrics do not
+    /// match the ones in the info, so use metric_index() to get the correct
+    /// index. Please do not hard-code this, as this may break with changes to
+    /// yours or our code.
     ///
-    /// @param index The index of the metric to initialize. Must be less than
-    /// metric_count().
     /// @param value The value of the constant. A bool value.
     /// @param name The name of the metric. This is used for a check to ensure
     /// that the name matches the one at the given index.
