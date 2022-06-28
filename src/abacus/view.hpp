@@ -12,6 +12,9 @@
 #include "value_type.hpp"
 #include "version.hpp"
 
+#include <endian/big_endian.hpp>
+#include <endian/little_endian.hpp>
+
 namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
@@ -34,7 +37,7 @@ class view
 public:
     /// Sets the data pointer of the view to read the memory of
     /// @param data The data pointer to read the memory of
-    auto set_data(const uint8_t* data) -> void;
+    void set_data(const uint8_t* data);
 
     /// @return the data pointer for memory used by the view
     auto data() const -> const uint8_t*;
@@ -44,6 +47,10 @@ public:
 
     /// @return the size of the scope name from a metrics data pointer
     auto scope_size() const -> uint16_t;
+
+    /// @return endianness of the data. If 0 data is little-endian, 1 is
+    /// big-endian
+    auto endianness() const -> uint8_t;
 
     /// @return the bytes used for metric names from a metrics data pointer
     auto name_bytes() const -> uint16_t;
@@ -175,6 +182,16 @@ public:
 private:
     /// The raw memory from the metrics counters
     const uint8_t* m_data;
+
+    bool m_is_little_endian = false;
+
+    bool m_is_big_endian = false;
+
+    bool m_is_same_endianness = false;
+
+    endian::little_endian m_little_endian;
+
+    endian::big_endian m_big_endian;
 
     /// Map to get index from names
     std::map<std::string, std::size_t> m_name_to_index;

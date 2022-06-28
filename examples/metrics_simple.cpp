@@ -12,39 +12,36 @@
 
 int main()
 {
-    uint16_t metric_count = 4;
-
     std::string name0 = "fuel_consumption";
     std::string name1 = "wheels";
     std::string name2 = "days_until_maintenance";
     std::string name3 = "registered";
 
-    std::vector<abacus::metric_info> infos;
+    abacus::metric_info infos[4] = {
+        abacus::metric_info{name0, "Fuel consumption in kilometers per liter",
+                            abacus::value_type::float64,
+                            abacus::qualifier::constant},
+        abacus::metric_info{name1, "Wheels on the car",
+                            abacus::value_type::uint64,
+                            abacus::qualifier::constant},
+        abacus::metric_info{name2,
+                            "Days until next maintenance, if less than 0, "
+                            "maintenance is overdue",
+                            abacus::value_type::int64,
+                            abacus::qualifier::non_constant},
+        abacus::metric_info{name3, "Is the car registered",
+                            abacus::value_type::boolean,
+                            abacus::qualifier::non_constant}};
 
-    infos.reserve(metric_count);
-
-    infos.push_back(abacus::metric_info{
-        name0, "Fuel consumption in kilometers per liter",
-        abacus::value_type::floating_point, abacus::CONSTANT});
-    infos.push_back(abacus::metric_info{name1, "Wheels on the car",
-                                        abacus::value_type::unsigned_integral,
-                                        abacus::CONSTANT});
-    infos.push_back(abacus::metric_info{
-        name2,
-        "Days until next maintenance, if less than 0, maintenance is overdue",
-        abacus::value_type::signed_integral, abacus::NON_CONSTANT});
-    infos.push_back(abacus::metric_info{name3, "Is the car registered",
-                                        abacus::value_type::boolean,
-                                        abacus::NON_CONSTANT});
     abacus::metrics car(infos);
 
-    car.initialize_constant(0, (double)22.3, "fuel_consumption");
-    car.initialize_constant(1, (uint64_t)4, "wheels");
+    car.initialize_constant("fuel_consumption", (double)22.3);
+    car.initialize_constant("wheels", (uint64_t)4);
     auto days_until_maintenance =
-        car.initialize_metric<abacus::value_type::signed_integral>(
-            2, "days_until_maintenance");
+        car.initialize_metric<abacus::value_type::int64>(
+            "days_until_maintenance");
     auto registered =
-        car.initialize_metric<abacus::value_type::boolean>(3, "registered");
+        car.initialize_metric<abacus::value_type::boolean>("registered");
 
     car.push_scope("car");
 

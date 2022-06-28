@@ -13,39 +13,26 @@
 
 int main()
 {
-    /// Choose the constructor values for the metrics class
-    uint16_t metric_count = 4;
-
     std::string name0 = "fuel_consumption";
     std::string name1 = "wheels";
     std::string name2 = "days_until_maintenance";
     std::string name3 = "registered";
 
-    /// Create a vector that will contain the information
-    std::vector<abacus::metric_info> infos;
-
-    infos.reserve(metric_count);
-
-    /// Add info of the metric describing the fuel consumption
-    infos.push_back(abacus::metric_info{
-        name0, "Fuel consumption in kilometers per liter",
-        abacus::value_type::floating_point, abacus::CONSTANT});
-
-    /// Add info of the metric describing the number of wheels
-    infos.push_back(abacus::metric_info{name1, "Wheels on the car",
-                                        abacus::value_type::unsigned_integral,
-                                        abacus::CONSTANT});
-
-    /// Add info of the metric describing days until maintenance
-    infos.push_back(abacus::metric_info{
-        name2,
-        "Days until next maintenance, if less than 0, maintenance is overdue",
-        abacus::value_type::signed_integral, abacus::NON_CONSTANT});
-
-    /// Add info of the metric describing whether the car is registered
-    infos.push_back(abacus::metric_info{name3, "Is the car registered",
-                                        abacus::value_type::boolean,
-                                        abacus::NON_CONSTANT});
+    abacus::metric_info infos[4] = {
+        abacus::metric_info{name0, "Fuel consumption in kilometers per liter",
+                            abacus::value_type::float64,
+                            abacus::qualifier::constant},
+        abacus::metric_info{name1, "Wheels on the car",
+                            abacus::value_type::uint64,
+                            abacus::qualifier::constant},
+        abacus::metric_info{name2,
+                            "Days until next maintenance, if less than 0, "
+                            "maintenance is overdue",
+                            abacus::value_type::int64,
+                            abacus::qualifier::non_constant},
+        abacus::metric_info{name3, "Is the car registered",
+                            abacus::value_type::boolean,
+                            abacus::qualifier::non_constant}};
 
     /// We create two metrics objects. One for a Volkswagen and one for a BMW
     abacus::metrics vw(infos);
@@ -57,26 +44,26 @@ int main()
     /// Initialize the constant metrics
     double vw_fuel = 22.3;
     double bmw_fuel = 16.9;
-    vw.initialize_constant(0, vw_fuel, name0);
-    bmw.initialize_constant(0, bmw_fuel, name0);
+    vw.initialize_constant(name0, vw_fuel);
+    bmw.initialize_constant(name0, bmw_fuel);
 
     uint64_t wheels = 4U;
-    vw.initialize_constant(1, wheels, name1);
-    bmw.initialize_constant(1, wheels, name1);
+    vw.initialize_constant(name1, wheels);
+    bmw.initialize_constant(name1, wheels);
 
     /// Initialize the non-constant metrics
     auto vw_maintenance =
-        vw.initialize_metric<abacus::value_type::signed_integral>(2, name2);
+        vw.initialize_metric<abacus::value_type::int64>(name2);
     auto bmw_maintenance =
-        bmw.initialize_metric<abacus::value_type::signed_integral>(2, name2);
+        bmw.initialize_metric<abacus::value_type::int64>(name2);
 
     vw_maintenance = -10;
     bmw_maintenance = 240;
 
     auto vw_registered =
-        vw.initialize_metric<abacus::value_type::boolean>(3, name3);
+        vw.initialize_metric<abacus::value_type::boolean>(name3);
     auto bmw_registered =
-        bmw.initialize_metric<abacus::value_type::boolean>(3, name3);
+        bmw.initialize_metric<abacus::value_type::boolean>(name3);
 
     vw_registered = false;
     bmw_registered = true;
@@ -119,14 +106,14 @@ int main()
 
             switch (type)
             {
-            case abacus::value_type::unsigned_integral:
+            case abacus::value_type::uint64:
             {
                 uint64_t value = 0;
                 view.metric_value(i, value);
                 value_string = std::to_string(value);
                 break;
             }
-            case abacus::value_type::signed_integral:
+            case abacus::value_type::int64:
             {
                 int64_t value = 0;
                 view.metric_value(i, value);
@@ -140,7 +127,7 @@ int main()
                 value_string = value ? "true" : "false";
                 break;
             }
-            case abacus::value_type::floating_point:
+            case abacus::value_type::float64:
             {
                 double value = 0.0;
                 view.metric_value(i, value);

@@ -13,7 +13,6 @@
 #include "metric.hpp"
 #include "value_type.hpp"
 #include "version.hpp"
-#include "view.hpp"
 
 namespace abacus
 {
@@ -47,11 +46,15 @@ class metrics
 {
 
 public:
+    metrics(metric_info* info, std::size_t size);
+
     /// Constructor
     /// @param info The info of the metrics that will be contained within this
     /// object with types, names and descriptions
     template <std::size_t N>
-    metrics(metric_info info[N]);
+    metrics(metric_info (&info)[N]) : metrics(info, N)
+    {
+    }
 
     /// Destructor
     ~metrics();
@@ -89,13 +92,29 @@ public:
     /// initialize_constant().
     auto metric_description(std::size_t index) const -> std::string;
 
-    auto is_metric_uint64(std::size_t index) -> bool;
+    /// @returns true if the value of the metric is of type uint64_t
+    /// @param index The index of the metric to check. Must be less than
+    /// metric_count() and initialized with initialize_metric<>() or
+    /// initialize_constant().
+    auto is_metric_uint64(std::size_t index) const -> bool;
 
-    auto is_metric_int64(std::size_t index) -> bool;
+    /// @returns true if the value of the metric is of type int64_t
+    /// @param index The index of the metric to check. Must be less than
+    /// metric_count() and initialized with initialize_metric<>() or
+    /// initialize_constant().
+    auto is_metric_int64(std::size_t index) const -> bool;
 
-    auto is_metric_float64(std::size_t index) -> bool;
+    /// @returns true if the value of the metric is of type double
+    /// @param index The index of the metric to check. Must be less than
+    /// metric_count() and initialized with initialize_metric<>() or
+    /// initialize_constant().
+    auto is_metric_float64(std::size_t index) const -> bool;
 
-    auto is_metric_boolean(std::size_t index) -> bool;
+    /// @returns true if the value of the metric is of type bool
+    /// @param index The index of the metric to check. Must be less than
+    /// metric_count() and initialized with initialize_metric<>() or
+    /// initialize_constant().
+    auto is_metric_boolean(std::size_t index) const -> bool;
 
     /// @returns true if the metric at the given index is a constant, otherwise
     /// false.
@@ -123,7 +142,6 @@ public:
     template <value_type ValueType>
     auto initialize_metric(std::string name) const -> metric<ValueType>
     {
-        (void)index;
         (void)name;
         throw std::runtime_error("Unknown metric type");
     }

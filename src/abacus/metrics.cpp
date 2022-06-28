@@ -13,15 +13,17 @@
 #include "detail/raw.hpp"
 #include "metrics.hpp"
 
+#include <endian/is_big_endian.hpp>
+
 namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-metrics::metrics(std::vector<metric_info> info) : m_info(info)
+metrics::metrics(metric_info* info, std::size_t size) : m_info(info, size)
 {
-    assert(m_info.size() > 0);
-    assert(m_info.size() <= std::numeric_limits<uint16_t>::max());
+    assert(size > 0);
+    assert(size <= std::numeric_limits<uint16_t>::max());
 
     m_count = static_cast<uint16_t>(m_info.size());
 
@@ -34,17 +36,22 @@ metrics::metrics(std::vector<metric_info> info) : m_info(info)
     m_description_sizes.reserve(m_count);
 
     // Get the sizes of all the metric names
-    for (auto info : m_info.eight_byte_metrics)
+    for (std::size_t i = 0; i < m_info.m_eight_byte_count; i++)
     {
-        m_name_sizes.push_back((uint16_t)(info.name.size() + 1));
-        m_description_sizes.push_back((uint16_t)(info.description.size() + 1));
+        m_name_sizes.push_back(
+            (uint16_t)((m_info.m_eight_byte_metrics + i)->name.size() + 1));
+        m_description_sizes.push_back(
+            (uint16_t)((m_info.m_eight_byte_metrics + i)->description.size() +
+                       1));
     }
 
     // Get the sizes of all the metric descriptions
-    for (auto info : m_info.one_byte_metrics)
+    for (std::size_t i = 0; i < m_info.m_one_byte_count; i++)
     {
-        m_name_sizes.push_back((uint16_t)(info.name.size() + 1));
-        m_description_sizes.push_back((uint16_t)(info.description.size() + 1));
+        m_name_sizes.push_back(
+            (uint16_t)((m_info.m_one_byte_metrics + i)->name.size() + 1));
+        m_description_sizes.push_back((
+            uint16_t)((m_info.m_one_byte_metrics + i)->description.size() + 1));
     }
 
     // Calculate the total number of bytes needed for the names
@@ -71,8 +78,7 @@ metrics::metrics(std::vector<metric_info> info) : m_info(info)
     }
 
     // Finally, add the bytes needed for the values.
-    m_storage_bytes +=
-        8 * m_info.eight_byte_metrics.size() + m_info.one_byte_metrics.size();
+    m_storage_bytes += 8 * m_info.m_eight_byte_count + m_info.m_one_byte_count;
 
     // Allocate the memory needed.
     m_data = static_cast<uint8_t*>(::operator new(m_storage_bytes));
@@ -90,14 +96,16 @@ metrics::metrics(std::vector<metric_info> info) : m_info(info)
     new (m_data) uint16_t(m_count);
     // The current size of the scope in bytes
     new (m_data + 2) uint16_t(0);
+    // The endianness of the data, 0 for little-endian, 1 for big-endian
+    new (m_data + 4) uint8_t(endian::is_big_endian());
     // The total bytes used for names
-    new (m_data + 4) uint16_t(name_bytes);
+    new (m_data + 6) uint16_t(name_bytes);
     // The total bytes used for descriptions
-    new (m_data + 6) uint16_t(description_bytes);
+    new (m_data + 8) uint16_t(description_bytes);
     // The number of 8-byte metric values (uint64_t, int64_t and double types)
-    new (m_data + 8) uint16_t(m_info.eight_byte_metrics.size());
+    new (m_data + 10) uint16_t(m_info.m_eight_byte_count);
     // The number of 1-byte metric values (bool type)
-    new (m_data + 10) uint16_t(m_info.one_byte_metrics.size());
+    new (m_data + 12) uint16_t(m_info.m_one_byte_count);
 
     assert((reinterpret_cast<uint64_t>(m_data + detail::values_offset(m_data)) %
             8U) == 0U);
@@ -161,10 +169,34 @@ auto metrics::metric_description(std::size_t index) const -> std::string
     return m_info[index].description;
 }
 
+auto metrics::is_metric_boolean(std::size_t index) const -> bool
+{
+    assert(index < m_count);
+    return m_info[index].type == value_type::boolean;
+}
+
+auto metrics::is_metric_uint64(std::size_t index) const -> bool
+{
+    assert(index < m_count);
+    return m_info[index].type == value_type::uint64;
+}
+
+auto metrics::is_metric_int64(std::size_t index) const -> bool
+{
+    assert(index < m_count);
+    return m_info[index].type == value_type::int64;
+}
+
+auto metrics::is_metric_float64(std::size_t index) const -> bool
+{
+    assert(index < m_count);
+    return m_info[index].type == value_type::float64;
+}
+
 auto metrics::metric_is_constant(std::size_t index) const -> bool
 {
     assert(index < m_count);
-    return m_info[index].is_constant;
+    return static_cast<bool>(m_info[index].is_constant);
 }
 
 void metrics::initialize_constant(std::string name, uint64_t value) const

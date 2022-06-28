@@ -24,23 +24,9 @@ inline namespace STEINWURF_ABACUS_VERSION
 template <value_type ValueType>
 class metric;
 
-template <class T>
-class metric_integer
-{
-    static_assert(std::is_integral<T>::value,
-                  "metric_integer can only be used with integral types");
-};
-
-template <class T>
-class metric_float
-{
-    static_assert(std::is_float64<T>::value,
-                  "metric_float can only be used with floating point types");
-};
-
 /// Metric wrapping uint64_t value.
 template <>
-class metric<value_type::uint64> : public metric_integer<uint64_t>
+class metric<value_type::uint64>
 {
 
 public:
@@ -106,12 +92,12 @@ public:
 
 private:
     /// The metric memory
-    uint64_t* m_memory;
+    uint64_t* m_memory = nullptr;
 };
 
 /// Metric wrapping int64_t value.
 template <>
-class metric<value_type::int64> : public metric_integer<int64_t>
+class metric<value_type::int64>
 {
 
 public:
@@ -177,12 +163,12 @@ public:
 
 private:
     /// The metric memory
-    int64_t* m_memory;
+    int64_t* m_memory = nullptr;
 };
 
 /// Metric wrapping double value.
 template <>
-class metric<value_type::float64> : public metric_float<double>
+class metric<value_type::float64>
 {
 
 public:
@@ -248,12 +234,12 @@ public:
 
 private:
     /// The metric memory
-    double* m_memory;
+    double* m_memory = nullptr;
 };
 
 /// Metric wrapping bool value.
 template <>
-class metric<value_type::boolean> : public metric_integer<bool>
+class metric<value_type::boolean>
 {
 
 public:
@@ -285,7 +271,7 @@ public:
 
 private:
     /// The metric memory
-    bool* m_memory;
+    bool* m_memory = nullptr;
 };
 
 }

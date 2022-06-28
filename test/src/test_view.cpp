@@ -14,27 +14,22 @@ TEST(test_view, api)
 {
     std::string scope = "scope";
 
-    uint16_t metric_count = 2;
-
     std::string name0 = "metric0";
     std::string name1 = "metric1";
 
-    std::vector<abacus::metric_info> infos;
-
-    infos.reserve(metric_count);
-
-    infos.push_back(abacus::metric_info{name0, "An unsigned integer metric",
-                                        abacus::value_type::unsigned_integral,
-                                        abacus::NON_CONSTANT});
-    infos.push_back(abacus::metric_info{name1, "A signed integer metric",
-                                        abacus::value_type::signed_integral,
-                                        abacus::NON_CONSTANT});
+    abacus::metric_info infos[2] = {
+        abacus::metric_info{name0, "An unsigned integer metric",
+                            abacus::value_type::uint64,
+                            abacus::qualifier::non_constant},
+        abacus::metric_info{name1, "A signed integer metric",
+                            abacus::value_type::int64,
+                            abacus::qualifier::non_constant}};
 
     abacus::metrics metrics(infos);
 
-    metrics.initialize_metric<abacus::value_type::unsigned_integral>(0, name0);
+    metrics.initialize_metric<abacus::value_type::uint64>(name0);
 
-    metrics.initialize_metric<abacus::value_type::signed_integral>(1, name1);
+    metrics.initialize_metric<abacus::value_type::int64>(name1);
 
     metrics.push_scope(scope);
 
@@ -55,10 +50,8 @@ TEST(test_view, api)
     EXPECT_EQ(metrics.metric_name(0), view.metric_name(0));
     EXPECT_EQ(metrics.metric_name(1), view.metric_name(1));
 
-    EXPECT_EQ(metrics.metric_type(0), abacus::value_type::unsigned_integral);
-    EXPECT_EQ(metrics.metric_type(1), abacus::value_type::signed_integral);
-    EXPECT_EQ(view.metric_type(0), abacus::value_type::unsigned_integral);
-    EXPECT_EQ(view.metric_type(1), abacus::value_type::signed_integral);
+    EXPECT_EQ(view.metric_type(0), abacus::value_type::uint64);
+    EXPECT_EQ(view.metric_type(1), abacus::value_type::int64);
 
     uint64_t metric_value = 12;
     uint64_t view_value = 11;

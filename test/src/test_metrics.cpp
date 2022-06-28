@@ -19,25 +19,22 @@ TEST(test_metrics, default_constructor)
     std::string name3 = "metric3";
     std::string name4 = "metric4";
 
-    std::vector<abacus::metric_info> infos;
-
-    infos.reserve(metric_count);
-
-    infos.push_back(abacus::metric_info{name0, "A boolean metric",
-                                        abacus::value_type::boolean,
-                                        abacus::NON_CONSTANT});
-    infos.push_back(abacus::metric_info{name1, "An unsigned integer metric",
-                                        abacus::value_type::unsigned_integral,
-                                        abacus::NON_CONSTANT});
-    infos.push_back(abacus::metric_info{name2, "A signed integer metric",
-                                        abacus::value_type::signed_integral,
-                                        abacus::NON_CONSTANT});
-    infos.push_back(abacus::metric_info{name3, "A floating point metric",
-                                        abacus::value_type::floating_point,
-                                        abacus::NON_CONSTANT});
-    infos.push_back(abacus::metric_info{name4, "A constant boolean metric",
-                                        abacus::value_type::boolean,
-                                        abacus::CONSTANT});
+    abacus::metric_info infos[5] = {
+        abacus::metric_info{name0, "A boolean metric",
+                            abacus::value_type::boolean,
+                            abacus::qualifier::non_constant},
+        abacus::metric_info{name1, "An unsigned integer metric",
+                            abacus::value_type::uint64,
+                            abacus::qualifier::non_constant},
+        abacus::metric_info{name2, "A signed integer metric",
+                            abacus::value_type::int64,
+                            abacus::qualifier::non_constant},
+        abacus::metric_info{name3, "A floating point metric",
+                            abacus::value_type::float64,
+                            abacus::qualifier::non_constant},
+        abacus::metric_info{name4, "A constant boolean metric",
+                            abacus::value_type::boolean,
+                            abacus::qualifier::constant}};
 
     abacus::metrics metrics(infos);
 
@@ -49,36 +46,26 @@ TEST(test_metrics, default_constructor)
     EXPECT_FALSE(metrics.metric_is_constant(3));
     EXPECT_TRUE(metrics.metric_is_constant(4));
 
-    EXPECT_EQ(metrics.metric_type(0), abacus::value_type::unsigned_integral);
-    EXPECT_EQ(metrics.metric_type(1), abacus::value_type::signed_integral);
-    EXPECT_EQ(metrics.metric_type(2), abacus::value_type::floating_point);
-    EXPECT_EQ(metrics.metric_type(3), abacus::value_type::boolean);
-    EXPECT_EQ(metrics.metric_type(4), abacus::value_type::boolean);
-
     EXPECT_FALSE(metrics.is_metric_initialized(0));
-    auto metric0 =
-        metrics.initialize_metric<abacus::value_type::unsigned_integral>(0,
-                                                                         name1);
+    auto metric0 = metrics.initialize_metric<abacus::value_type::uint64>(name1);
     EXPECT_TRUE(metrics.is_metric_initialized(0));
 
     EXPECT_FALSE(metrics.is_metric_initialized(1));
-    auto metric1 =
-        metrics.initialize_metric<abacus::value_type::signed_integral>(1,
-                                                                       name2);
+    auto metric1 = metrics.initialize_metric<abacus::value_type::int64>(name2);
     EXPECT_TRUE(metrics.is_metric_initialized(1));
 
     EXPECT_FALSE(metrics.is_metric_initialized(2));
     auto metric2 =
-        metrics.initialize_metric<abacus::value_type::floating_point>(2, name3);
+        metrics.initialize_metric<abacus::value_type::float64>(name3);
     EXPECT_TRUE(metrics.is_metric_initialized(2));
 
     EXPECT_FALSE(metrics.is_metric_initialized(3));
     auto metric3 =
-        metrics.initialize_metric<abacus::value_type::boolean>(3, name0);
+        metrics.initialize_metric<abacus::value_type::boolean>(name0);
     EXPECT_TRUE(metrics.is_metric_initialized(3));
 
     EXPECT_FALSE(metrics.is_metric_initialized(4));
-    metrics.initialize_constant(4, true, name4);
+    metrics.initialize_constant(name4, true);
     EXPECT_TRUE(metrics.is_metric_initialized(4));
 
     EXPECT_EQ(metrics.metric_name(0), name1);
@@ -132,21 +119,18 @@ TEST(test_metrics, copy_storage)
     std::string name0 = "metric0";
     std::string name1 = "metric1";
 
-    std::vector<abacus::metric_info> infos;
-
-    infos.reserve(metric_count);
-
-    infos.push_back(abacus::metric_info{name0, "An unsigned integer metric",
-                                        abacus::value_type::unsigned_integral,
-                                        abacus::NON_CONSTANT});
-    infos.push_back(abacus::metric_info{name1, "A signed integer metric",
-                                        abacus::value_type::signed_integral,
-                                        abacus::NON_CONSTANT});
+    abacus::metric_info infos[2] = {
+        abacus::metric_info{name0, "An unsigned integer metric",
+                            abacus::value_type::uint64,
+                            abacus::qualifier::non_constant},
+        abacus::metric_info{name1, "A signed integer metric",
+                            abacus::value_type::int64,
+                            abacus::qualifier::non_constant}};
 
     abacus::metrics metrics(infos);
 
-    metrics.initialize_metric<abacus::value_type::unsigned_integral>(0, name0);
-    metrics.initialize_metric<abacus::value_type::signed_integral>(1, name1);
+    metrics.initialize_metric<abacus::value_type::uint64>(name0);
+    metrics.initialize_metric<abacus::value_type::int64>(name1);
 
     metrics.push_scope("scope");
 
@@ -188,30 +172,23 @@ TEST(test_metrics, copy_storage)
 
 TEST(test_metrics, reset_counters)
 {
-    uint16_t metric_count = 2;
-
     std::string name0 = "metric0";
     std::string name1 = "metric1";
 
-    std::vector<abacus::metric_info> infos;
-
-    infos.reserve(metric_count);
-
-    infos.push_back(abacus::metric_info{name0, "An unsigned integer metric",
-                                        abacus::value_type::unsigned_integral,
-                                        abacus::NON_CONSTANT});
-    infos.push_back(abacus::metric_info{name1, "A signed integer metric",
-                                        abacus::value_type::signed_integral,
-                                        abacus::NON_CONSTANT});
+    abacus::metric_info infos[2] = {
+        abacus::metric_info{name0, "An unsigned integer metric",
+                            abacus::value_type::uint64,
+                            abacus::qualifier::non_constant},
+        abacus::metric_info{name1, "A signed integer metric",
+                            abacus::value_type::int64,
+                            abacus::qualifier::non_constant}};
 
     abacus::metrics metrics(infos);
 
     auto uint_metric =
-        metrics.initialize_metric<abacus::value_type::unsigned_integral>(0,
-                                                                         name0);
+        metrics.initialize_metric<abacus::value_type::uint64>(name0);
     auto int_metric =
-        metrics.initialize_metric<abacus::value_type::signed_integral>(1,
-                                                                       name1);
+        metrics.initialize_metric<abacus::value_type::int64>(name1);
 
     uint64_t uint_value = 0U;
     int64_t int_value = 0;
@@ -262,25 +239,22 @@ TEST(test_metrics, add_scope)
     std::string name3 = "metric3";
     std::string name4 = "metric4";
 
-    std::vector<abacus::metric_info> infos;
-
-    infos.reserve(metric_count);
-
-    infos.push_back(abacus::metric_info{name0, "A boolean metric",
-                                        abacus::value_type::boolean,
-                                        abacus::NON_CONSTANT});
-    infos.push_back(abacus::metric_info{name1, "An unsigned integer metric",
-                                        abacus::value_type::unsigned_integral,
-                                        abacus::NON_CONSTANT});
-    infos.push_back(abacus::metric_info{name2, "A signed integer metric",
-                                        abacus::value_type::signed_integral,
-                                        abacus::NON_CONSTANT});
-    infos.push_back(abacus::metric_info{name3, "A floating point metric",
-                                        abacus::value_type::floating_point,
-                                        abacus::NON_CONSTANT});
-    infos.push_back(abacus::metric_info{name4, "A constant boolean metric",
-                                        abacus::value_type::boolean,
-                                        abacus::CONSTANT});
+    abacus::metric_info infos[5] = {
+        abacus::metric_info{name0, "A boolean metric",
+                            abacus::value_type::boolean,
+                            abacus::qualifier::non_constant},
+        abacus::metric_info{name1, "An unsigned integer metric",
+                            abacus::value_type::uint64,
+                            abacus::qualifier::non_constant},
+        abacus::metric_info{name2, "A signed integer metric",
+                            abacus::value_type::int64,
+                            abacus::qualifier::non_constant},
+        abacus::metric_info{name3, "A floating point metric",
+                            abacus::value_type::float64,
+                            abacus::qualifier::non_constant},
+        abacus::metric_info{name4, "A constant boolean metric",
+                            abacus::value_type::boolean,
+                            abacus::qualifier::constant}};
 
     abacus::metrics metrics(infos);
 

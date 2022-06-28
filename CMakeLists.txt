@@ -21,6 +21,11 @@ if(NOT TARGET steinwurf::bourne)
   add_subdirectory("${STEINWURF_RESOLVE}/bourne" bourne EXCLUDE_FROM_ALL)
 endif()
 
+# endian dependency
+if(NOT TARGET steinwurf::endian)
+  add_subdirectory("${STEINWURF_RESOLVE}/endian" endian EXCLUDE_FROM_ALL)
+endif()
+
 # Define library
 file(GLOB_RECURSE abacus_sources ./src/*.cpp)
 
@@ -44,6 +49,8 @@ else()
   # Link object dependencies
   target_link_libraries(abacus PRIVATE steinwurf::bourne)
 endif()
+
+target_link_libraries(abacus PRIVATE steinwurf::endian)
 
 target_include_directories(abacus INTERFACE src)
 target_compile_features(abacus PUBLIC cxx_std_14)

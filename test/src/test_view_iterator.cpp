@@ -18,18 +18,12 @@ TEST(test_view_iterator, default_constructor)
     std::string description1 = "An unsigned integer metric";
     std::string description2 = "A signed integer metric";
 
-    std::vector<abacus::metric_info> infos1;
-    std::vector<abacus::metric_info> infos2;
-
-    infos1.reserve(1);
-    infos2.reserve(1);
-
-    infos1.push_back(abacus::metric_info{name1, description1,
-                                         abacus::value_type::unsigned_integral,
-                                         abacus::NON_CONSTANT});
-    infos2.push_back(abacus::metric_info{name2, description2,
-                                         abacus::value_type::signed_integral,
-                                         abacus::NON_CONSTANT});
+    abacus::metric_info infos1[1] = {
+        abacus::metric_info{name1, description1, abacus::value_type::uint64,
+                            abacus::qualifier::non_constant}};
+    abacus::metric_info infos2[1] = {
+        abacus::metric_info{name2, description2, abacus::value_type::int64,
+                            abacus::qualifier::non_constant}};
 
     abacus::metrics metrics1(infos1);
     abacus::metrics metrics2(infos2);
@@ -37,9 +31,9 @@ TEST(test_view_iterator, default_constructor)
     metrics1.push_scope("test1");
     metrics2.push_scope("test2");
 
-    metrics1.initialize_metric<abacus::value_type::unsigned_integral>(0, name1);
+    metrics1.initialize_metric<abacus::value_type::uint64>(name1);
 
-    metrics2.initialize_metric<abacus::value_type::signed_integral>(0, name2);
+    metrics2.initialize_metric<abacus::value_type::int64>(name2);
 
     auto size1 = metrics1.storage_bytes();
     auto size2 = metrics2.storage_bytes();

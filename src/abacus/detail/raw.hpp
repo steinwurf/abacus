@@ -25,7 +25,7 @@ namespace detail
 /// @return The size of the header in bytes
 inline auto header_bytes() -> std::size_t
 {
-    return 12;
+    return 14;
 }
 
 /// @param data The raw memory for the counters
@@ -35,7 +35,7 @@ inline auto metric_count(const uint8_t* data) -> uint16_t
     assert(data != nullptr);
 
     uint16_t metric_count;
-    std::memcpy(&metric_count, data, sizeof(uint16_t));
+    metric_count = *(uint16_t*)data;
 
     assert(metric_count > 0);
 
@@ -74,9 +74,33 @@ inline auto scope_size(const uint8_t* data) -> uint16_t
     return *raw_scope_size(data);
 }
 
-inline auto name_bytes_offset() -> std::size_t
+inline auto endianness_offset() -> std::size_t
 {
     return scope_size_offset() + sizeof(uint16_t);
+}
+
+inline auto raw_endianness(uint8_t* data) -> uint8_t*
+{
+    assert(data != nullptr);
+    uint8_t* endianness_data = data + endianness_offset();
+    return endianness_data;
+}
+
+inline auto raw_endianness(const uint8_t* data) -> const uint8_t*
+{
+    assert(data != nullptr);
+    const uint8_t* endianness_data = data + endianness_offset();
+    return endianness_data;
+}
+
+inline auto endianness(const uint8_t* data) -> uint8_t
+{
+    return *raw_endianness(data);
+}
+
+inline auto name_bytes_offset() -> std::size_t
+{
+    return endianness_offset() + sizeof(uint16_t);
 }
 
 /// @param data The raw memory for the counters

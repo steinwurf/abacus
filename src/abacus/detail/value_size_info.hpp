@@ -21,44 +21,78 @@ namespace detail
 
 struct value_size_info
 {
-    std::vector<metric_info> eight_byte_metrics;
-    std::vector<metric_info> one_byte_metrics;
+    metric_info* m_eight_byte_metrics = nullptr;
+    metric_info* m_one_byte_metrics = nullptr;
+    std::size_t m_metric_count = 0;
+    std::size_t m_one_byte_count = 0;
+    std::size_t m_eight_byte_count = 0;
 
-    value_size_info(const std::vector<metric_info>& info)
+    value_size_info(metric_info* info, std::size_t size) : m_metric_count(size)
     {
-        assert(info.size() > 0);
+        assert(info != nullptr);
+        assert(m_metric_count > 0);
 
-        for (auto i : info)
+        // Get the indices of bool metrics and 8-byte type metrics.
+        std::size_t one_byte_indices[m_metric_count];
+        std::size_t eight_byte_indices[m_metric_count];
+
+        for (std::size_t i = 0; i < m_metric_count; i++)
         {
-            switch (i.type)
+            switch (info[i].type)
             {
             case value_type::boolean:
-                one_byte_metrics.push_back(i);
+                one_byte_indices[m_one_byte_count] = i;
+                m_one_byte_count++;
                 break;
             default:
-                eight_byte_metrics.push_back(i);
+                eight_byte_indices[m_eight_byte_count] = i;
+                m_eight_byte_count++;
                 break;
+            }
+        }
+
+        // Create arrays with appropriate sizes and fill them with elements from
+        // given pointer.
+        m_one_byte_metrics = new metric_info[m_one_byte_count];
+        m_eight_byte_metrics = new metric_info[m_eight_byte_count];
+
+        for (std::size_t i = 0; i < m_metric_count; i++)
+        {
+            if (i < m_one_byte_count)
+            {
+                m_one_byte_metrics[i] = info[one_byte_indices[i]];
+            }
+            else
+            {
+                m_eight_byte_metrics[i - m_one_byte_count] =
+                    info[eight_byte_indices[i - m_one_byte_count]];
             }
         }
     }
 
-    metric_info operator[](std::size_t index) const
+    ~value_size_info()
     {
-        assert(index < eight_byte_metrics.size() + one_byte_metrics.size());
-
-        if (index < eight_byte_metrics.size())
-        {
-            return eight_byte_metrics[index];
-        }
-        else
-        {
-            return one_byte_metrics[index - eight_byte_metrics.size()];
-        }
+        delete[] m_eight_byte_metrics;
+        delete[] m_one_byte_metrics;
     }
 
     std::size_t size() const
     {
-        return eight_byte_metrics.size() + one_byte_metrics.size();
+        return m_metric_count;
+    }
+
+    metric_info operator[](std::size_t index) const
+    {
+        assert(index < size());
+
+        if (index < m_eight_byte_count)
+        {
+            return m_eight_byte_metrics[index];
+        }
+        else
+        {
+            return m_one_byte_metrics[index - m_eight_byte_count];
+        }
     }
 };
 }

@@ -12,18 +12,16 @@ TEST(test_metric, constructor)
 {
     uint64_t uint_count = 10000U;
 
-    abacus::metric<abacus::value_type::unsigned_integral> uint_metric(
-        &uint_count);
+    abacus::metric<abacus::value_type::uint64> uint_metric(&uint_count);
 
     EXPECT_TRUE(uint_metric.is_initialized());
 
     int64_t int_count = 10000;
-    abacus::metric<abacus::value_type::signed_integral> int_metric(&int_count);
+    abacus::metric<abacus::value_type::int64> int_metric(&int_count);
     EXPECT_TRUE(int_metric.is_initialized());
 
     double double_count = 1123.12;
-    abacus::metric<abacus::value_type::floating_point> double_metric(
-        &double_count);
+    abacus::metric<abacus::value_type::float64> double_metric(&double_count);
     EXPECT_TRUE(double_metric.is_initialized());
 
     bool bool_count = true;

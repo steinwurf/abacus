@@ -12,11 +12,12 @@ namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-/// Wrapper for true to use as the is_constant argument in metric_info
-const bool CONSTANT = true;
 
-/// Wrapper for false
-const bool NON_CONSTANT = false;
+enum class qualifier : bool
+{
+    non_constant = false,
+    constant = true
+};
 
 /// Object used to describe a metric. Used in the metrics() constructor.
 struct metric_info
@@ -30,9 +31,8 @@ struct metric_info
     /// Type of the metric. A value_type enum.
     value_type type;
 
-    /// Bool describing if the metric is a constant or not. Use abacus::CONSTANT
-    /// or abacus::NON_CONSTANT for code-clarity.
-    bool is_constant;
+    /// enum describing if the metric is a constant or not.
+    qualifier is_constant;
 };
 }
 }
