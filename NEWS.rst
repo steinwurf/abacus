@@ -7,21 +7,28 @@ every change, see the Git log.
 Latest
 ------
 * Major: Added support for wrapping uint64_t, double, int64_t and bool with
-         class metric<>() through the value_type enum.
+         class metric<>() through the metric_type enum.
 * Major: Added metric_description, type and is_constant. Changed the memory
          memory layout thereafter.
-* Minor: Added enum value_type to parameterize metric<>() and
+* Minor: Added enum metric_type to parameterize metric<>() and
          initialize_metric() with.
-* Major: Added a struct metric_info, used in a vector to construct metrics.
-* Major: metrics::initialize_metric() is now templated.
-         Metrics are initialized with incrementally increasing index.
+* Major: Added a struct metric_info, used in a vector in the metrics constructor.
+* Major: metrics::initialize_metric() is now templated and takes a metric name.
 * Major: Switched from using a title to using a scope, that is not part of the
-         memory layout.
-* Major: Added a scope member to metrics object which prefixes the names of
-         the metrics.
+         memory layout but passed along when copying the metrics data.
 * Minor: Added add_scope() member function to class metrics.
 * Major: Removed title from the class metrics data-header.
 * Major: Removed the metrics::set_metrics_title() member funciton
+* Major: Removed to_json() functions on metrics and view classes and added
+         free functions that take a single view or a vector of views.
+* Major: Added a byte to the memory layout that indicates the endianness of the
+         machine writing into the metrics memory. Added a endianness enum.
+* Major: Added a qualifier enum used in metric_info to declare if a metric is
+         constant or not.
+* Minor: The memory of the metrics object can now be accessed directly through
+         data(), like it is for the view class.
+* Minor: Added initialize_constant to metrics class.
+
 
 1.1.2
 -----
