@@ -28,6 +28,10 @@ class metric;
 template <>
 class metric<value_type::uint64>
 {
+public:
+
+    /// The underlying data type
+    using value_type = uint64_t;
 
 public:
     /// Default constructor

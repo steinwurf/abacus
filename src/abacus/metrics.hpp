@@ -141,11 +141,13 @@ public:
     ///
     /// @param name The name of the metric. This is used for a check to ensure
     /// that the name matches the one at the given index.
-    template <value_type ValueType>
-    auto initialize_metric(std::string name) const -> metric<ValueType>
+    template <metric_type MetricType>
+    auto initialize_metric(std::string name) const -> metric<MetricType>
     {
-        (void)name;
-        throw std::runtime_error("Unknown metric type");
+        using value_type  = typename metric<MetricType>::value_type;
+
+        value_type* value_ptr = (value_type*)initialize(name);
+        return metric<MetricType>{value_ptr};
     }
 
     /// Initialize a constant uint64_t metric at the given index.
@@ -424,6 +426,39 @@ metrics::initialize_metric<value_type::boolean>(std::string name) const
     bool* value_ptr = (bool*)initialize(name);
     return metric<value_type::boolean>{value_ptr};
 }
+
+class encoder
+{
+
+    void visit_metrics(void(*callback)(const uint8_t* data, std::size_t bytes, void*), void* user_data);
+
+
+};
+
+struct values
+{
+    const uint8_t* data;
+    std::size_t bytes;
+}
+
+std::vector<values> metrics;
+std::vector<abacus::view> metrics_view;
+std::vector<uint8_t> data;
+
+auto collector = [](const uint8_t* data, std::size_t bytes, void* user)
+{
+    auto m = static_cast<std::vector<values>*>(user);
+    m->push_back({data, bytes});
+
+    
+
+};
+
+
+encoder.visit_metrics(collector);
+
+abacus::to_json(metrics_view.being(), )
+
 
 }
 }

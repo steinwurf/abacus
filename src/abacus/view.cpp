@@ -19,6 +19,20 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
+template<class Value> 
+constexpr auto read(bool is_big, const uint8_t* data) -> Value
+{
+    if (is_big)
+    {
+        return endian::big_endian::get<Value>(data);
+    }
+    else
+    {
+        return endian::little_endian::get<Value>(data);
+    }
+}
+
+
 void view::set_data(const uint8_t* data)
 {
     assert(data != nullptr);
