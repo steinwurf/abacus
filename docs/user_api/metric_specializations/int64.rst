@@ -1,2 +1,2 @@
 .. wurfapi:: class_synopsis.rst
-    :selector: abacus::metric<value_type::uint64>
+    :selector: abacus::metric<metric_type::uint64>

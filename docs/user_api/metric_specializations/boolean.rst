@@ -1,2 +1,2 @@
 .. wurfapi:: class_synopsis.rst
-    :selector: abacus::metric<value_type::boolean>
+    :selector: abacus::metric<metric_type::boolean>

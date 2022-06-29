@@ -13,9 +13,9 @@ Overview of the public API.
    metric
    metric_specializations/metric_specializations
    metric_info
+   metric_type
+   qualifier
    metrics
    view
-   view_iterator
-   value_type
-   qualifier
-
+   endianness
+   functions

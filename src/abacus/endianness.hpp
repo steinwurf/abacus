@@ -12,7 +12,7 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-/// Enum used to declare and identify the endianness of the machine.
+/// Enum used to declare the endianness of the machine copying metrics data.
 enum class endianness : uint8_t
 {
     /// little-endian machine

@@ -13,6 +13,7 @@ extensions = [
     "sphinx.ext.coverage",
     "sphinx.ext.mathjax",
     "sphinx.ext.ifconfig",
+    "sphinx.ext.autosectionlabel",
     "guzzle_sphinx_theme",
     "wurfapi",
 ]
@@ -21,16 +22,16 @@ extensions = [
 wurfapi = {
     "source_paths": [
         # API
-        "../src/abacus/value_type.hpp",
+        "../src/abacus/metric_type.hpp",
         "../src/abacus/metric.hpp",
         "../src/abacus/metric_info.hpp",
         "../src/abacus/qualifier.hpp",
         "../src/abacus/metrics.hpp",
         "../src/abacus/view.hpp",
-        "../src/abacus/view_iterator.hpp",
+        "../src/abacus/endianness.hpp",
+        "../src/abacus/to_json.hpp",
     ],
     "recursive": False,
-    "user_templates": "rst_templates",
     "include_paths": ["../src"],
     "parser": {
         "type": "doxygen",
@@ -73,7 +74,7 @@ release = u""
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
-exclude_patterns = ["rst_templates"]
+# exclude_patterns = ["rst_templates"]
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = "sphinx"
