@@ -12,15 +12,20 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-/// Enum used to declare and identify whether a metric object is a constant or
-/// not.
-enum class qualifier : bool
+/// Enum used to declare and identify the types of the metric objects.
+enum class metric_type : uint8_t
 {
-    /// wrapper for false, not a constant
-    non_constant = false,
-    /// wrapper for true, a constant
-    constant = true
-};
+    /// uint64_t type
+    uint64 = 0U,
 
+    /// int64_t type
+    int64,
+
+    /// double type
+    float64,
+
+    /// bool type
+    boolean
+};
 }
 }

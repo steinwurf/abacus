@@ -19,17 +19,17 @@ TEST(test_view, api)
 
     abacus::metric_info infos[2] = {
         abacus::metric_info{name0, "An unsigned integer metric",
-                            abacus::value_type::uint64,
+                            abacus::metric_type::uint64,
                             abacus::qualifier::non_constant},
         abacus::metric_info{name1, "A signed integer metric",
-                            abacus::value_type::int64,
+                            abacus::metric_type::int64,
                             abacus::qualifier::non_constant}};
 
     abacus::metrics metrics(infos);
 
-    metrics.initialize_metric<abacus::value_type::uint64>(name0);
+    metrics.initialize_metric<abacus::metric_type::uint64>(name0);
 
-    metrics.initialize_metric<abacus::value_type::int64>(name1);
+    metrics.initialize_metric<abacus::metric_type::int64>(name1);
 
     metrics.push_scope(scope);
 
@@ -50,8 +50,8 @@ TEST(test_view, api)
     EXPECT_EQ(metrics.metric_name(0), view.metric_name(0));
     EXPECT_EQ(metrics.metric_name(1), view.metric_name(1));
 
-    EXPECT_EQ(view.metric_type(0), abacus::value_type::uint64);
-    EXPECT_EQ(view.metric_type(1), abacus::value_type::int64);
+    EXPECT_EQ(view.get_metric_type(0), abacus::metric_type::uint64);
+    EXPECT_EQ(view.get_metric_type(1), abacus::metric_type::int64);
 
     uint64_t metric_value = 12;
     uint64_t view_value = 11;

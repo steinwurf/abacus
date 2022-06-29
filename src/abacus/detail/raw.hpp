@@ -12,7 +12,7 @@
 #include <limits>
 #include <sstream>
 
-#include "../value_type.hpp"
+#include "../metric_type.hpp"
 #include "../version.hpp"
 
 namespace abacus
@@ -74,33 +74,33 @@ inline auto scope_size(const uint8_t* data) -> uint16_t
     return *raw_scope_size(data);
 }
 
-inline auto endianness_offset() -> std::size_t
+inline auto endian_byte_offset() -> std::size_t
 {
     return scope_size_offset() + sizeof(uint16_t);
 }
 
-inline auto raw_endianness(uint8_t* data) -> uint8_t*
+inline auto raw_endian_byte(uint8_t* data) -> uint8_t*
 {
     assert(data != nullptr);
-    uint8_t* endianness_data = data + endianness_offset();
+    uint8_t* endianness_data = data + endian_byte_offset();
     return endianness_data;
 }
 
-inline auto raw_endianness(const uint8_t* data) -> const uint8_t*
+inline auto raw_endian_byte(const uint8_t* data) -> const uint8_t*
 {
     assert(data != nullptr);
-    const uint8_t* endianness_data = data + endianness_offset();
+    const uint8_t* endianness_data = data + endian_byte_offset();
     return endianness_data;
 }
 
-inline auto endianness(const uint8_t* data) -> uint8_t
+inline auto endian_byte(const uint8_t* data) -> uint8_t
 {
-    return *raw_endianness(data);
+    return *raw_endian_byte(data);
 }
 
 inline auto name_bytes_offset() -> std::size_t
 {
-    return endianness_offset() + sizeof(uint16_t);
+    return endian_byte_offset() + sizeof(uint16_t);
 }
 
 /// @param data The raw memory for the counters
@@ -563,21 +563,21 @@ inline auto to_json(const uint8_t* data, std::string scope = "",
 
         auto n = raw_name(data, i);
         auto d = raw_description(data, i);
-        auto t = static_cast<value_type>(*raw_type(data, i));
+        auto t = static_cast<metric_type>(*raw_type(data, i));
         auto c = is_constant(data, i);
         std::string value_string;
         switch (t)
         {
-        case value_type::uint64:
+        case metric_type::uint64:
             value_string = std::to_string(*(uint64_t*)raw_value(data, i));
             break;
-        case value_type::int64:
+        case metric_type::int64:
             value_string = std::to_string(*(int64_t*)raw_value(data, i));
             break;
-        case value_type::boolean:
+        case metric_type::boolean:
             value_string = *(bool*)raw_value(data, i) ? "true" : "false";
             break;
-        case value_type::float64:
+        case metric_type::float64:
             value_string = std::to_string(*(double*)raw_value(data, i));
             break;
         }

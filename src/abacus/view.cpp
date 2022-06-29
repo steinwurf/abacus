@@ -8,10 +8,10 @@
 #include <limits>
 
 #include "detail/raw.hpp"
+#include "endianness.hpp"
 #include "view.hpp"
 
 #include <endian/big_endian.hpp>
-#include <endian/is_big_endian.hpp>
 #include <endian/little_endian.hpp>
 
 namespace abacus
@@ -19,7 +19,7 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-template<class Value> 
+template <class Value>
 constexpr auto read(bool is_big, const uint8_t* data) -> Value
 {
     if (is_big)
@@ -32,7 +32,6 @@ constexpr auto read(bool is_big, const uint8_t* data) -> Value
     }
 }
 
-
 void view::set_data(const uint8_t* data)
 {
     assert(data != nullptr);
@@ -40,22 +39,9 @@ void view::set_data(const uint8_t* data)
     m_scope =
         std::string(detail::raw_scope(m_data), detail::scope_size(m_data));
 
-    uint8_t endianness = detail::endianness(m_data);
+    uint8_t endian = detail::endian_byte(m_data);
 
-    if (endianness == 0U)
-    {
-        m_is_little_endian = true;
-    }
-    else if (endianness == 1U)
-    {
-        m_is_big_endian = true;
-    }
-    else
-    {
-        assert(0 && "Endianness byte is not 0 or 1. Something went wrong.");
-    }
-
-    m_is_same_endianness = (bool)endianness == endian::is_big_endian();
+    m_is_big_endian = static_cast<endianness>(endian) == endianness::big_endian;
 
     // Fill the names and indices as keys in the map.
     for (std::size_t i = 0; i < metric_count(); i++)
@@ -76,143 +62,45 @@ auto view::data() const -> const uint8_t*
 
 auto view::metric_count() const -> uint16_t
 {
-    if (m_is_same_endianness)
-    {
-        return detail::metric_count(m_data);
-    }
-    else
-    {
-        if (m_is_little_endian)
-        {
-            endian::little_endian m_little_endian;
-            return m_little_endian.get<uint16_t>(m_data);
-        }
-        else
-        {
-            endian::big_endian m_big_endian;
-            return m_big_endian.get<uint16_t>(m_data);
-        }
-    }
+    return read<uint16_t>(m_is_big_endian, m_data);
 }
 
 auto view::scope_size() const -> uint16_t
 {
-    if (m_is_same_endianness)
-    {
-        return detail::scope_size(m_data);
-    }
-    else
-    {
-        if (m_is_little_endian)
-        {
-            endian::little_endian m_little_endian;
-            return m_little_endian.get<uint16_t>(
-                (uint8_t*)(detail::raw_scope_size(m_data)));
-        }
-        else
-        {
-            endian::big_endian m_big_endian;
-            return m_big_endian.get<uint16_t>(
-                (uint8_t*)detail::raw_scope_size(m_data));
-        }
-    }
+    auto scope_size_data = (const uint8_t*)detail::raw_scope_size(m_data);
+    return read<uint16_t>(m_is_big_endian, scope_size_data);
 }
 
-auto view::endianness() const -> uint8_t
+auto view::endian_byte() const -> uint8_t
 {
-    return detail::endianness(m_data);
+    return detail::endian_byte(m_data);
 }
 
 auto view::name_bytes() const -> uint16_t
 {
-    if (m_is_same_endianness)
-    {
-        return detail::name_bytes(m_data);
-    }
-    else
-    {
-        if (m_is_little_endian)
-        {
-            endian::little_endian m_little_endian;
-            return m_little_endian.get<uint16_t>(
-                (uint8_t*)(detail::raw_name_bytes(m_data)));
-        }
-        else
-        {
-            endian::big_endian m_big_endian;
-            return m_big_endian.get<uint16_t>(
-                (uint8_t*)detail::raw_name_bytes(m_data));
-        }
-    }
+    auto name_bytes_data = (const uint8_t*)detail::raw_name_bytes(m_data);
+    return read<uint16_t>(m_is_big_endian, name_bytes_data);
 }
 
 auto view::description_bytes() const -> uint16_t
 {
-    if (m_is_same_endianness)
-    {
-        return detail::descriptions_bytes(m_data);
-    }
-    else
-    {
-        if (m_is_little_endian)
-        {
-            endian::little_endian m_little_endian;
-            return m_little_endian.get<uint16_t>(
-                (uint8_t*)(detail::raw_descriptions_bytes(m_data)));
-        }
-        else
-        {
-            endian::big_endian m_big_endian;
-            return m_big_endian.get<uint16_t>(
-                (uint8_t*)detail::raw_descriptions_bytes(m_data));
-        }
-    }
+    auto description_bytes_data =
+        (const uint8_t*)detail::raw_descriptions_bytes(m_data);
+    return read<uint16_t>(m_is_big_endian, description_bytes_data);
 }
 
 auto view::eight_byte_count() const -> uint16_t
 {
-    if (m_is_same_endianness)
-    {
-        return detail::eight_byte_count(m_data);
-    }
-    else
-    {
-        if (m_is_little_endian)
-        {
-            endian::little_endian m_little_endian;
-            return m_little_endian.get<uint16_t>(
-                (uint8_t*)(detail::raw_eight_byte_count(m_data)));
-        }
-        else
-        {
-            endian::big_endian m_big_endian;
-            return m_big_endian.get<uint16_t>(
-                (uint8_t*)detail::raw_eight_byte_count(m_data));
-        }
-    }
+    auto eight_byte_count_data =
+        (const uint8_t*)detail::raw_eight_byte_count(m_data);
+    return read<uint16_t>(m_is_big_endian, eight_byte_count_data);
 }
 
 auto view::one_byte_count() const -> uint16_t
 {
-    if (m_is_same_endianness)
-    {
-        return detail::one_byte_count(m_data);
-    }
-    else
-    {
-        if (m_is_little_endian)
-        {
-            endian::little_endian m_little_endian;
-            return m_little_endian.get<uint16_t>(
-                (uint8_t*)(detail::raw_one_byte_count(m_data)));
-        }
-        else
-        {
-            endian::big_endian m_big_endian;
-            return m_big_endian.get<uint16_t>(
-                (uint8_t*)detail::raw_one_byte_count(m_data));
-        }
-    }
+    auto one_byte_count_data =
+        (const uint8_t*)detail::raw_one_byte_count(m_data);
+    return read<uint16_t>(m_is_big_endian, one_byte_count_data);
 }
 
 auto view::is_metric_initialized(std::size_t index) const -> bool
@@ -234,10 +122,10 @@ auto view::metric_description(std::size_t index) const -> std::string
     return detail::raw_description(m_data, index);
 }
 
-auto view::metric_type(std::size_t index) const -> value_type
+auto view::get_metric_type(std::size_t index) const -> metric_type
 {
     assert(is_metric_initialized(index));
-    return static_cast<value_type>(*detail::raw_type(m_data, index));
+    return static_cast<metric_type>(*detail::raw_type(m_data, index));
 }
 
 auto view::metric_is_constant(std::size_t index) const -> bool
@@ -249,83 +137,32 @@ auto view::metric_is_constant(std::size_t index) const -> bool
 void view::metric_value(std::size_t index, bool& value) const
 {
     assert(is_metric_initialized(index));
-    assert(metric_type(index) == value_type::boolean);
+    assert(get_metric_type(index) == metric_type::boolean);
     value = *(bool*)(detail::raw_value(m_data, index));
 }
 
 void view::metric_value(std::size_t index, uint64_t& value) const
 {
     assert(is_metric_initialized(index));
-    assert(metric_type(index) == value_type::uint64);
-    if (m_is_same_endianness)
-    {
-        value = *(uint64_t*)(detail::raw_value(m_data, index));
-    }
-    else
-    {
-        if (m_is_little_endian)
-        {
-            endian::little_endian m_little_endian;
-            value = m_little_endian.get<uint64_t>(
-                (uint8_t*)(detail::raw_value(m_data, index)));
-        }
-        else
-        {
-            endian::big_endian m_big_endian;
-            value = m_big_endian.get<uint64_t>(
-                (uint8_t*)(detail::raw_value(m_data, index)));
-        }
-    }
+    assert(get_metric_type(index) == metric_type::uint64);
+    value = read<uint64_t>(m_is_big_endian,
+                           (uint8_t*)detail::raw_value(m_data, index));
 }
 
 void view::metric_value(std::size_t index, int64_t& value) const
 {
     assert(is_metric_initialized(index));
-    assert(metric_type(index) == value_type::int64);
-    if (m_is_same_endianness)
-    {
-        value = *(int64_t*)(detail::raw_value(m_data, index));
-    }
-    else
-    {
-        if (m_is_little_endian)
-        {
-            endian::little_endian m_little_endian;
-            value = m_little_endian.get<int64_t>(
-                (uint8_t*)(detail::raw_value(m_data, index)));
-        }
-        else
-        {
-            endian::big_endian m_big_endian;
-            value = m_big_endian.get<int64_t>(
-                (uint8_t*)(detail::raw_value(m_data, index)));
-        }
-    }
+    assert(get_metric_type(index) == metric_type::int64);
+    value = read<int64_t>(m_is_big_endian,
+                          (uint8_t*)detail::raw_value(m_data, index));
 }
 
 void view::metric_value(std::size_t index, double& value) const
 {
     assert(is_metric_initialized(index));
-    assert(metric_type(index) == value_type::float64);
-    if (m_is_same_endianness)
-    {
-        value = *(double*)(detail::raw_value(m_data, index));
-    }
-    else
-    {
-        if (m_is_little_endian)
-        {
-            endian::little_endian m_little_endian;
-            value = m_little_endian.get<double>(
-                (uint8_t*)(detail::raw_value(m_data, index)));
-        }
-        else
-        {
-            endian::big_endian m_big_endian;
-            value = m_big_endian.get<double>(
-                (uint8_t*)(detail::raw_value(m_data, index)));
-        }
-    }
+    assert(get_metric_type(index) == metric_type::float64);
+    value = read<double>(m_is_big_endian,
+                         (uint8_t*)detail::raw_value(m_data, index));
 }
 
 auto view::metric_index(const std::string& name) const -> std::size_t
@@ -351,11 +188,6 @@ auto view::view_bytes() const -> std::size_t
     offset += scope_size() + detail::scope_alignment_padding(m_data);
 
     return offset;
-}
-
-auto view::to_json() const -> std::string
-{
-    return detail::to_json(m_data, scope());
 }
 }
 }

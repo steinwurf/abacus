@@ -11,7 +11,7 @@
 
 #include "detail/value_size_info.hpp"
 #include "metric.hpp"
-#include "value_type.hpp"
+#include "metric_type.hpp"
 #include "version.hpp"
 
 namespace abacus
@@ -62,6 +62,9 @@ public:
 
     /// Destructor
     ~metrics();
+
+    /// @returns the underlying data of the metrics object.
+    auto data() const -> const uint8_t*;
 
     /// @returns the number of metrics in the collection
     auto metric_count() const -> std::size_t;
@@ -144,7 +147,7 @@ public:
     template <metric_type MetricType>
     auto initialize_metric(std::string name) const -> metric<MetricType>
     {
-        using value_type  = typename metric<MetricType>::value_type;
+        using value_type = typename metric<MetricType>::value_type;
 
         value_type* value_ptr = (value_type*)initialize(name);
         return metric<MetricType>{value_ptr};
@@ -322,26 +325,6 @@ public:
     /// metric_count()
     void reset_metric(std::size_t index);
 
-    /// @return a JSON-formatted string of the counters.
-    ///
-    /// The keys in the JSON string will be "scope + metric_name", and
-    /// the values will be a JSON-object with keys "description", "value" and
-    /// "is_constant". Example output with scope "car" could be:
-    ///
-    ///     {
-    ///         "car.fuel_consumption": {
-    /// 	        "description": "Fuel consumption in kilometers per liter",
-    /// 	        "value": 22.300000,
-    /// 	        "constant": true,
-    ///         },
-    ///         "car.wheels": {
-    /// 	        "description": "Wheels on the car",
-    /// 	        "value": 4,
-    /// 	        "constant": true,
-    ///         }
-    ///     }
-    auto to_json() const -> std::string;
-
 private:
     /// No copy
     metrics(metrics&) = delete;
@@ -386,79 +369,5 @@ private:
     /// The scopes prepended to the metrics object
     std::vector<std::string> m_scopes;
 };
-
-/// Initialize a unsigned int metric. See metrics::initialize_metric()
-template <>
-inline auto
-metrics::initialize_metric<value_type::uint64>(std::string name) const
-    -> metric<value_type::uint64>
-{
-    uint64_t* value_ptr = (uint64_t*)initialize(name);
-    return metric<value_type::uint64>{value_ptr};
-}
-
-/// Initialize a unsigned int metric. See metrics::initialize_metric()
-template <>
-inline auto
-metrics::initialize_metric<value_type::int64>(std::string name) const
-    -> metric<value_type::int64>
-{
-    int64_t* value_ptr = (int64_t*)initialize(name);
-    return metric<value_type::int64>{value_ptr};
-}
-
-/// Initialize a unsigned int metric. See metrics::initialize_metric()
-template <>
-inline auto
-metrics::initialize_metric<value_type::float64>(std::string name) const
-    -> metric<value_type::float64>
-{
-    double* value_ptr = (double*)initialize(name);
-    return metric<value_type::float64>{value_ptr};
-}
-
-/// Initialize a unsigned int metric. See metrics::initialize_metric()
-template <>
-inline auto
-metrics::initialize_metric<value_type::boolean>(std::string name) const
-    -> metric<value_type::boolean>
-{
-    bool* value_ptr = (bool*)initialize(name);
-    return metric<value_type::boolean>{value_ptr};
-}
-
-class encoder
-{
-
-    void visit_metrics(void(*callback)(const uint8_t* data, std::size_t bytes, void*), void* user_data);
-
-
-};
-
-struct values
-{
-    const uint8_t* data;
-    std::size_t bytes;
-}
-
-std::vector<values> metrics;
-std::vector<abacus::view> metrics_view;
-std::vector<uint8_t> data;
-
-auto collector = [](const uint8_t* data, std::size_t bytes, void* user)
-{
-    auto m = static_cast<std::vector<values>*>(user);
-    m->push_back({data, bytes});
-
-    
-
-};
-
-
-encoder.visit_metrics(collector);
-
-abacus::to_json(metrics_view.being(), )
-
-
 }
 }

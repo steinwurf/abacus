@@ -9,7 +9,7 @@
 #include <map>
 #include <vector>
 
-#include "value_type.hpp"
+#include "metric_type.hpp"
 #include "version.hpp"
 
 namespace abacus
@@ -47,7 +47,7 @@ public:
 
     /// @return endianness of the data. If 0 data is little-endian, 1 is
     /// big-endian
-    auto endianness() const -> uint8_t;
+    auto endian_byte() const -> uint8_t;
 
     /// @return the bytes used for metric names from a metrics data pointer
     auto name_bytes() const -> uint16_t;
@@ -86,7 +86,7 @@ public:
     /// @returns the type of the metric at the given index.
     /// @param index The index of the metric to check. Must be less than
     /// metric_count().
-    auto metric_type(std::size_t index) const -> value_type;
+    auto get_metric_type(std::size_t index) const -> metric_type;
 
     /// @returns true if the metric at the given index is a constant, otherwise
     /// false.
@@ -156,35 +156,11 @@ public:
     /// @return The number of bytes in the view memory
     auto view_bytes() const -> std::size_t;
 
-    /// @return a JSON-formatted string of the counters.
-    ///
-    /// The keys in the JSON string will be "scope + metric_name", and
-    /// the values will be a JSON-object with keys "description", "value" and
-    /// "is_constant". Example output with scope "car" could be:
-    ///
-    ///     {
-    ///         "car.fuel_consumption": {
-    /// 	        "description": "Fuel consumption in kilometers per liter",
-    /// 	        "value": 22.300000,
-    /// 	        "constant": true,
-    ///         },
-    ///         "car.wheels": {
-    /// 	        "description": "Wheels on the car",
-    /// 	        "value": 4,
-    /// 	        "constant": true,
-    ///         }
-    ///     }
-    auto to_json() const -> std::string;
-
 private:
     /// The raw memory from the metrics counters
     const uint8_t* m_data;
 
-    bool m_is_little_endian = false;
-
     bool m_is_big_endian = false;
-
-    bool m_is_same_endianness = false;
 
     /// Map to get index from names
     std::map<std::string, std::size_t> m_name_to_index;

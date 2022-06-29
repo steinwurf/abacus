@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "../metric_info.hpp"
-#include "../value_type.hpp"
+#include "../metric_type.hpp"
 #include "../version.hpp"
 
 namespace abacus
@@ -36,7 +36,7 @@ struct value_size_info
         {
             switch (info[i].type)
             {
-            case value_type::boolean:
+            case metric_type::boolean:
                 m_one_byte_metrics.push_back(info[i]);
                 m_one_byte_count++;
                 break;

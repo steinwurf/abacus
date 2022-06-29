@@ -5,8 +5,8 @@
 
 #pragma once
 
+#include "metric_type.hpp"
 #include "qualifier.hpp"
-#include "value_type.hpp"
 #include <string>
 
 namespace abacus
@@ -23,8 +23,8 @@ struct metric_info
     /// Description of the metric
     std::string description;
 
-    /// Type of the metric. A value_type enum.
-    value_type type;
+    /// Type of the metric. A metric_type enum.
+    metric_type type;
 
     /// enum describing if the metric is a constant or not.
     qualifier is_constant;
