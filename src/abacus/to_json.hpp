@@ -17,11 +17,12 @@ inline namespace STEINWURF_ABACUS_VERSION
 
 /// @return a JSON-formatted string of a single views data.
 /// @param single_view A view with access to metrics-data.
-auto to_json(const view& single_view) -> std::string;
+auto to_json(const view& single_view, std::string filter = "") -> std::string;
 
 /// @return a JSON-formatted string of the data of the views given.
 /// @param views A vector of views with access to metrics-data.
-auto to_json(const std::vector<view>& views) -> std::string;
+auto to_json(const std::vector<view>& views, std::string filter = "")
+    -> std::string;
 
 }
 }

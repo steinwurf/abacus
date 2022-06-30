@@ -97,5 +97,15 @@ int main()
 
     std::cout << json_data << std::endl;
 
+    /// We can also get specific metrics in json by the scope:
+    json_data = abacus::to_json(car_views, "bmw");
+
+    std::cout << json_data << std::endl;
+
+    /// Or by full name with scope:
+    json_data = abacus::to_json(car_views, "bmw.wheels");
+
+    std::cout << json_data << std::endl;
+
     return 0;
 }

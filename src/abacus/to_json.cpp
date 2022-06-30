@@ -12,17 +12,17 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-void add_view_data_to_json(const view& single_view, bourne::json& json_data)
+void add_view_data_to_json(const view& single_view, bourne::json& json_data,
+                           std::string filter)
 {
+    std::string scope = single_view.scope();
+
     uint64_t uint_value = 0U;
     int64_t int_value = 0;
     bool bool_value = false;
     double float_value = 0.0;
-
     auto metric_count = single_view.metric_count();
     assert(metric_count > 0U);
-
-    std::string scope = single_view.scope();
 
     for (std::size_t i = 0; i < metric_count; ++i)
     {
@@ -32,6 +32,14 @@ void add_view_data_to_json(const view& single_view, bourne::json& json_data)
         }
 
         auto n = single_view.metric_name(i);
+        std::string scoped_name = scope + "." + n;
+        if (filter != scope)
+        {
+            if (scoped_name != filter)
+            {
+                continue;
+            }
+        }
         auto d = single_view.metric_description(i);
         auto t = single_view.get_metric_type(i);
         auto c = single_view.metric_is_constant(i);
@@ -55,27 +63,50 @@ void add_view_data_to_json(const view& single_view, bourne::json& json_data)
             metric_data["value"] = float_value;
             break;
         }
-        std::string scoped_name = scope + "." + n;
+
         json_data[scoped_name] = metric_data;
     }
 }
 
-auto to_json(const view& single_view) -> std::string
+auto to_json(const view& single_view, std::string filter) -> std::string
 {
-    bourne::json json_data = bourne::json::object();
 
-    add_view_data_to_json(single_view, json_data);
+    bourne::json json_data = bourne::json::object();
+    bool has_filter = !filter.empty();
+
+    std::string scope = single_view.scope();
+
+    if (!has_filter)
+    {
+        filter = scope;
+    }
+
+    if (filter.find(scope) != std::string::npos)
+    {
+        add_view_data_to_json(single_view, json_data, filter);
+    }
 
     return json_data.dump();
 }
 
-auto to_json(const std::vector<view>& views) -> std::string
+auto to_json(const std::vector<view>& views, std::string filter) -> std::string
 {
     bourne::json json_data = bourne::json::object();
+    bool has_filter = !filter.empty();
 
     for (auto v : views)
     {
-        add_view_data_to_json(v, json_data);
+        std::string scope = v.scope();
+
+        if (!has_filter)
+        {
+            filter = scope;
+        }
+
+        if (filter.find(scope) != std::string::npos)
+        {
+            add_view_data_to_json(v, json_data, filter);
+        }
     }
 
     return json_data.dump();
