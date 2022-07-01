@@ -8,10 +8,14 @@ User API
 Overview of the public API.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
    metric
+   metric_specializations/metric_specializations
+   metric_info
+   metric_type
+   qualifier
    metrics
    view
-   view_iterator
-
+   endianness
+   functions

@@ -24,10 +24,9 @@ Table of Contents
 -----------------
 
 .. toctree::
-  :maxdepth: 2
+  :maxdepth: 3
 
   user_api/user_api
-  expert_api/expert_api
   examples/examples
   license
 
