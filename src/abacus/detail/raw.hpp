@@ -503,8 +503,11 @@ inline auto is_metric_initialized(const uint8_t* data, std::size_t index)
 /// @return The scope offset in copied memory.
 inline auto scope_offset(const uint8_t* data) -> std::size_t
 {
-    return values_offset(data) + (eight_byte_count(data) * sizeof(uint64_t) +
-                                  one_byte_count(data) * sizeof(bool));
+    auto offset =
+        values_offset(data) + (eight_byte_count(data) * sizeof(uint64_t) +
+                               one_byte_count(data) * sizeof(bool));
+    offset += alignment_padding(offset);
+    return offset;
 }
 
 /// @param data The raw memory for the counters

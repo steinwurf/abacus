@@ -20,7 +20,10 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-metrics::metrics(metric_info* info, std::size_t size) : m_info(info, size)
+metrics::metrics(metric_info* info, std::size_t size,
+                 std::size_t max_scope_bytes) :
+    m_info(info, size),
+    m_max_scope_bytes(max_scope_bytes)
 {
     assert(size > 0);
     assert(size <= std::numeric_limits<uint16_t>::max());
@@ -77,6 +80,9 @@ metrics::metrics(metric_info* info, std::size_t size) : m_info(info, size)
 
     // Finally, add the bytes needed for the values.
     m_storage_bytes += 8 * m_info.m_eight_byte_count + m_info.m_one_byte_count;
+
+    m_storage_bytes +=
+        detail::alignment_padding(m_storage_bytes) + m_max_scope_bytes;
 
     // Allocate the memory needed.
     m_data = static_cast<uint8_t*>(::operator new(m_storage_bytes));
@@ -415,8 +421,14 @@ void metrics::push_scope(const std::string& text)
     // Update the scope size
     uint8_t scope_size = (uint8_t)m_scope.size() + 1;
 
+    assert(scope_size <= m_max_scope_bytes);
+
     uint16_t* scope_size_data = detail::raw_scope_size(m_data);
     *scope_size_data = scope_size;
+
+    char* scope_data = detail::raw_scope(m_data);
+
+    std::memcpy(scope_data, m_scope.c_str(), scope_size);
 }
 
 void metrics::pop_scope()
@@ -428,6 +440,8 @@ void metrics::pop_scope()
         m_scopes.pop_back();
         uint16_t* scope_size_data = detail::raw_scope_size(m_data);
         *scope_size_data = 0U;
+        char* scope_data = detail::raw_scope(m_data);
+        memset(scope_data, 0, m_max_scope_bytes);
         return;
     }
     std::size_t last_scope_size = m_scopes.back().size();
@@ -438,32 +452,24 @@ void metrics::pop_scope()
     // Update the scope size
     uint16_t* scope_size_data = detail::raw_scope_size(m_data);
     *scope_size_data = updated_scope_size;
+
+    char* scope_data = detail::raw_scope(m_data);
+
+    std::memcpy(scope_data, m_scope.c_str(), updated_scope_size);
 }
 
 void metrics::copy_storage(uint8_t* data, std::size_t size) const
 {
     assert(data != nullptr);
     assert(size == storage_bytes());
-    std::memcpy(data, m_data, detail::scope_offset(m_data));
-    if (scope_size() > 0U)
-    {
-        std::memcpy(data + detail::scope_offset(m_data), m_scope.c_str(),
-                    scope_size());
-    }
+    std::memcpy(data, m_data, storage_bytes());
 }
 
 auto metrics::storage_bytes() const -> std::size_t
 {
-
-    std::size_t offset = detail::values_offset(m_data);
-
-    assert(offset % 8 == 0);
-
-    offset += detail::eight_byte_count(m_data) * sizeof(uint64_t) +
-              detail::one_byte_count(m_data) * sizeof(bool);
-
-    offset += scope_size() + detail::scope_alignment_padding(m_data);
-
+    auto offset = detail::scope_offset(m_data);
+    offset += detail::scope_size(m_data);
+    offset += detail::alignment_padding(offset);
     return offset;
 }
 

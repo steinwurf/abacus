@@ -49,14 +49,17 @@ public:
     /// Constructor
     /// @param info The info of the metrics in a pointer.
     /// @param size The size of the pointer in elements.
-    metrics(metric_info* info, std::size_t size);
+    metrics(metric_info* info, std::size_t size,
+            std::size_t max_scope_bytes = 64);
 
     /// Delegate Constructor. Will pass a size-deduced array to the pointer/size
     /// constructor
     /// @param info The info of the metrics that will be contained within this
     /// object with types, names and descriptions
+    /// @param max_scope_bytes The amount of memory to preallocate to the scope.
     template <std::size_t N>
-    metrics(metric_info (&info)[N]) : metrics(info, N)
+    metrics(metric_info (&info)[N], std::size_t max_scope_bytes = 64) :
+        metrics(info, N, max_scope_bytes)
     {
     }
 
@@ -354,6 +357,8 @@ private:
 
     /// The sizes of the descriptions of the metrics
     std::vector<uint16_t> m_description_sizes;
+
+    std::size_t m_max_scope_bytes = 0;
 
     /// storage_size
     std::size_t m_storage_bytes = 0;
