@@ -27,7 +27,8 @@ struct value_size_info
     std::vector<metric_info> m_eight_byte_metrics;
     std::vector<metric_info> m_one_byte_metrics;
 
-    value_size_info(metric_info* info, std::size_t size) : m_metric_count(size)
+    value_size_info(const metric_info* info, std::size_t size) :
+        m_metric_count(size)
     {
         assert(info != nullptr);
         assert(m_metric_count > 0);

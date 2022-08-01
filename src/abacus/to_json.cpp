@@ -40,6 +40,7 @@ void add_view_data_to_json(const view& single_view, bourne::json& json_data,
                 continue;
             }
         }
+
         auto d = single_view.metric_description(i);
         auto t = single_view.get_metric_type(i);
         auto c = single_view.metric_is_constant(i);
@@ -87,6 +88,13 @@ auto to_json(const view& single_view, std::string filter) -> std::string
     }
 
     return json_data.dump();
+}
+
+auto to_json(const uint8_t* metrics_data) -> std::string
+{
+    view v;
+    v.set_data(metrics_data);
+    return to_json(v, "");
 }
 
 auto to_json(const std::vector<view>& views, std::string filter) -> std::string

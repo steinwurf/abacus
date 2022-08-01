@@ -20,7 +20,7 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-metrics::metrics(metric_info* info, std::size_t size,
+metrics::metrics(const metric_info* info, std::size_t size,
                  std::size_t max_scope_bytes) :
     m_info(info, size),
     m_max_scope_bytes(max_scope_bytes)
