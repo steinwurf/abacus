@@ -45,8 +45,6 @@ int main()
     auto registered =
         car.initialize_metric<abacus::metric_type::boolean>("registered");
 
-    car.push_scope("car");
-
     // The car should be registered.
     registered = true;
 

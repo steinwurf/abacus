@@ -12,8 +12,6 @@
 
 TEST(test_view, api)
 {
-    std::string scope = "scope";
-
     std::string name0 = "metric0";
     std::string name1 = "metric1";
 
@@ -31,8 +29,6 @@ TEST(test_view, api)
 
     metrics.initialize_metric<abacus::metric_type::int64>(name1);
 
-    metrics.push_scope(scope);
-
     std::vector<uint8_t> data(metrics.storage_bytes());
 
     metrics.copy_storage(data.data(), metrics.storage_bytes());
@@ -42,8 +38,6 @@ TEST(test_view, api)
     view.set_data(data.data());
 
     EXPECT_EQ(metrics.metric_count(), view.metric_count());
-    EXPECT_EQ(metrics.scope_size(), view.scope_size());
-    EXPECT_EQ(metrics.scope(), view.scope());
     EXPECT_EQ(metrics.name_bytes(), view.name_bytes());
     EXPECT_EQ(metrics.description_bytes(), view.description_bytes());
 

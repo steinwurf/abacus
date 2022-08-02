@@ -20,10 +20,7 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-metrics::metrics(const metric_info* info, std::size_t size,
-                 std::size_t max_scope_bytes) :
-    m_info(info, size),
-    m_max_scope_bytes(max_scope_bytes)
+metrics::metrics(const metric_info* info, std::size_t size) : m_info(info, size)
 {
     assert(size > 0);
     assert(size <= std::numeric_limits<uint16_t>::max());
@@ -81,14 +78,12 @@ metrics::metrics(const metric_info* info, std::size_t size,
     // Finally, add the bytes needed for the values.
     m_storage_bytes += 8 * m_info.m_eight_byte_count + m_info.m_one_byte_count;
 
-    m_storage_bytes +=
-        detail::alignment_padding(m_storage_bytes) + m_max_scope_bytes;
+    m_storage_bytes += detail::alignment_padding(m_storage_bytes);
 
     // Allocate the memory needed.
     m_data = static_cast<uint8_t*>(::operator new(m_storage_bytes));
 
-    // Make sure that the data is 8byte-aligned to append the scope to the
-    // buffer with copy_storage()
+    // Make sure that the data is 8byte-aligned
     assert(reinterpret_cast<uint64_t>(m_data) % 8U == 0U);
 
     // Zero out all memory
@@ -98,18 +93,16 @@ metrics::metrics(const metric_info* info, std::size_t size,
     //
     // The number of the metrics
     new (m_data) uint16_t(m_count);
-    // The current size of the scope in bytes
-    new (m_data + 2) uint16_t(0);
     // The endianness of the data, 0 for little-endian, 1 for big-endian
-    new (m_data + 4) uint8_t(endian::is_big_endian());
+    new (m_data + 2) uint8_t(endian::is_big_endian());
     // The total bytes used for names
-    new (m_data + 6) uint16_t(name_bytes);
+    new (m_data + 4) uint16_t(name_bytes);
     // The total bytes used for descriptions
-    new (m_data + 8) uint16_t(description_bytes);
+    new (m_data + 6) uint16_t(description_bytes);
     // The number of 8-byte metric values (uint64_t, int64_t and double types)
-    new (m_data + 10) uint16_t(m_info.m_eight_byte_count);
+    new (m_data + 8) uint16_t(m_info.m_eight_byte_count);
     // The number of 1-byte metric values (bool type)
-    new (m_data + 12) uint16_t(m_info.m_one_byte_count);
+    new (m_data + 10) uint16_t(m_info.m_one_byte_count);
 
     assert((reinterpret_cast<uint64_t>(m_data + detail::values_offset(m_data)) %
             8U) == 0U);
@@ -395,69 +388,6 @@ auto metrics::metric_index(std::string name) const -> std::size_t
     return index;
 }
 
-auto metrics::scope() const -> std::string
-{
-    return m_scope;
-}
-
-auto metrics::scope_size() const -> uint16_t
-{
-    return detail::scope_size(m_data);
-}
-
-void metrics::push_scope(const std::string& text)
-{
-    if (m_scope.size() == 0)
-    {
-        m_scope = text;
-    }
-    else
-    {
-        m_scope = text + "." + m_scope;
-    }
-
-    m_scopes.push_back(text);
-
-    // Update the scope size
-    uint8_t scope_size = (uint8_t)m_scope.size() + 1;
-
-    assert(scope_size <= m_max_scope_bytes);
-
-    uint16_t* scope_size_data = detail::raw_scope_size(m_data);
-    *scope_size_data = scope_size;
-
-    char* scope_data = detail::raw_scope(m_data);
-
-    std::memcpy(scope_data, m_scope.c_str(), scope_size);
-}
-
-void metrics::pop_scope()
-{
-    assert(!m_scopes.empty());
-    if (m_scopes.size() == 1)
-    {
-        m_scope = "";
-        m_scopes.pop_back();
-        uint16_t* scope_size_data = detail::raw_scope_size(m_data);
-        *scope_size_data = 0U;
-        char* scope_data = detail::raw_scope(m_data);
-        memset(scope_data, 0, m_max_scope_bytes);
-        return;
-    }
-    std::size_t last_scope_size = m_scopes.back().size();
-    uint16_t updated_scope_size = scope_size() - last_scope_size;
-    m_scope = m_scope.substr(last_scope_size, updated_scope_size);
-    m_scopes.pop_back();
-
-    // Update the scope size
-    uint16_t* scope_size_data = detail::raw_scope_size(m_data);
-    *scope_size_data = updated_scope_size;
-
-    char* scope_data = detail::raw_scope(m_data);
-
-    std::memcpy(scope_data, m_scope.c_str(), updated_scope_size);
-}
-
 void metrics::copy_storage(uint8_t* data, std::size_t size) const
 {
     assert(data != nullptr);
@@ -467,10 +397,7 @@ void metrics::copy_storage(uint8_t* data, std::size_t size) const
 
 auto metrics::storage_bytes() const -> std::size_t
 {
-    auto offset = detail::scope_offset(m_data);
-    offset += detail::scope_size(m_data);
-    offset += detail::alignment_padding(offset);
-    return offset;
+    return detail::storage_bytes(m_data);
 }
 
 void metrics::reset_metric(std::size_t index)

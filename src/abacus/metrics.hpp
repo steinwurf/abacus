@@ -26,7 +26,7 @@ inline namespace STEINWURF_ABACUS_VERSION
 ///
 /// 1. Header of 12 bytes
 ///     * Number of metrics (2 bytes)
-///     * Current size of the scope (2 bytes)
+///     * Endianness (2 byte)
 ///     * Total name bytes (2 bytes)
 ///     * Total description bytes (2 bytes)
 ///     * Number of 8-byte-value metrics (2 bytes)
@@ -49,17 +49,14 @@ public:
     /// Constructor
     /// @param info The info of the metrics in a pointer.
     /// @param size The size of the pointer in elements.
-    metrics(const metric_info* info, std::size_t size,
-            std::size_t max_scope_bytes = 64);
+    metrics(const metric_info* info, std::size_t size);
 
     /// Delegate Constructor. Will pass a size-deduced array to the pointer/size
     /// constructor
     /// @param info The info of the metrics that will be contained within this
     /// object with types, names and descriptions
-    /// @param max_scope_bytes The amount of memory to preallocate to the scope.
     template <std::size_t N>
-    metrics(const metric_info (&info)[N], std::size_t max_scope_bytes = 64) :
-        metrics(info, N, max_scope_bytes)
+    metrics(const metric_info (&info)[N]) : metrics(info, N)
     {
     }
 
@@ -71,10 +68,6 @@ public:
 
     /// @returns the number of metrics in the collection
     auto metric_count() const -> std::size_t;
-
-    /// @returns the current size of the metric scope. This value changes for
-    /// each push_scope() and pop_scope() call.
-    auto scope_size() const -> uint16_t;
 
     /// @return the bytes used for metric names from a metrics data pointer
     auto name_bytes() const -> uint16_t;
@@ -287,23 +280,7 @@ public:
     /// @param name The name of the metric.
     auto metric_index(std::string name) const -> std::size_t;
 
-    /// @returns The scope of the metrics.
-    ///
-    /// The scope of the metrics is copied onto memory when using the
-    /// copy_storage() function. It can be used to distinguish different metrics
-    /// objects and to identify the metrics in the memory. It is also used for
-    auto scope() const -> std::string;
-
-    /// Prepends a string to the scope and seperates it from the previous outer
-    /// scope with a '.'.
-    ///
-    /// @param text the string to become the new outer scope.
-    void push_scope(const std::string& text);
-
-    /// Removes the outer scope.
-    void pop_scope();
-
-    /// Copies the memory of the metrics + the scope into the given data buffer.
+    /// Copies the memory of the metrics into the given data buffer.
     /// The storage_bytes() function is used to allocate the exact amount of
     /// memory needed. Example code to illustrade intented use:
     ///
@@ -315,7 +292,7 @@ public:
     /// ensure memory alignment.
     void copy_storage(uint8_t* data, std::size_t size) const;
 
-    /// @return The size in bytes of the metrics data + the scope.
+    /// @return The size in bytes of the metrics data
     auto storage_bytes() const -> std::size_t;
 
     /// Resets the values of all initialized and non-constant metrics.
@@ -358,21 +335,14 @@ private:
     /// The sizes of the descriptions of the metrics
     std::vector<uint16_t> m_description_sizes;
 
-    std::size_t m_max_scope_bytes = 0;
-
     /// storage_size
     std::size_t m_storage_bytes = 0;
 
     /// The current number of metrics that have been initialized
     uint16_t m_count = 0;
-
-    std::string m_scope = "";
-
     /// The raw memory for the counters (both value and name)
-    uint8_t* m_data = nullptr;
 
-    /// The scopes prepended to the metrics object
-    std::vector<std::string> m_scopes;
+    uint8_t* m_data = nullptr;
 };
 }
 }

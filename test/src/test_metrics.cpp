@@ -133,8 +133,6 @@ TEST(test_metrics, copy_storage)
     metrics.initialize_metric<abacus::metric_type::uint64>(name0);
     metrics.initialize_metric<abacus::metric_type::int64>(name1);
 
-    metrics.push_scope("scope");
-
     std::size_t size = 0;
     // header size
     size += 12;
@@ -154,10 +152,6 @@ TEST(test_metrics, copy_storage)
     size += size % 8 == 0 ? 0 : 8 - (size % 8);
     // values
     size += metric_count * 8;
-    // scope
-    size += metrics.scope_size();
-    // scope padding
-    size += size % 8 == 0 ? 0 : 8 - (size % 8);
 
     EXPECT_EQ(size, metrics.storage_bytes());
     std::vector<uint8_t> data1(size);
@@ -228,47 +222,4 @@ TEST(test_metrics, reset_counters)
 
     EXPECT_EQ(uint_value, 0U);
     EXPECT_EQ(int_value, 0);
-}
-
-TEST(test_metrics, add_scope)
-{
-    uint16_t metric_count = 5;
-
-    std::string name0 = "metric0";
-    std::string name1 = "metric1";
-    std::string name2 = "metric2";
-    std::string name3 = "metric3";
-    std::string name4 = "metric4";
-
-    abacus::metric_info infos[5] = {
-        abacus::metric_info{name0, "A boolean metric",
-                            abacus::metric_type::boolean,
-                            abacus::qualifier::non_constant},
-        abacus::metric_info{name1, "An unsigned integer metric",
-                            abacus::metric_type::uint64,
-                            abacus::qualifier::non_constant},
-        abacus::metric_info{name2, "A signed integer metric",
-                            abacus::metric_type::int64,
-                            abacus::qualifier::non_constant},
-        abacus::metric_info{name3, "A floating point metric",
-                            abacus::metric_type::float64,
-                            abacus::qualifier::non_constant},
-        abacus::metric_info{name4, "A constant boolean metric",
-                            abacus::metric_type::boolean,
-                            abacus::qualifier::constant}};
-
-    abacus::metrics metrics(infos);
-
-    std::string scope = "metrics";
-
-    metrics.push_scope(scope);
-    metrics.push_scope("test");
-
-    EXPECT_EQ(metrics.metric_count(), metric_count);
-
-    for (std::size_t i = 0; i < metrics.metric_count(); i++)
-    {
-        EXPECT_EQ(metrics.scope(), "test.metrics");
-        EXPECT_EQ(metrics.scope_size(), std::string("test.metrics").size() + 1);
-    }
 }

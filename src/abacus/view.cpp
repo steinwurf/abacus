@@ -36,8 +36,6 @@ void view::set_data(const uint8_t* data)
 {
     assert(data != nullptr);
     m_data = data;
-    m_scope =
-        std::string(detail::raw_scope(m_data), detail::scope_size(m_data));
 
     uint8_t endian = detail::endian_byte(m_data);
 
@@ -63,12 +61,6 @@ auto view::data() const -> const uint8_t*
 auto view::metric_count() const -> uint16_t
 {
     return read<uint16_t>(m_is_big_endian, m_data);
-}
-
-auto view::scope_size() const -> uint16_t
-{
-    auto scope_size_data = (const uint8_t*)detail::raw_scope_size(m_data);
-    return read<uint16_t>(m_is_big_endian, scope_size_data);
 }
 
 auto view::endian_byte() const -> uint8_t
@@ -171,23 +163,15 @@ auto view::metric_index(const std::string& name) const -> std::size_t
     return index;
 }
 
-auto view::scope() const -> std::string
-{
-    return detail::raw_scope(m_data);
-}
-
 auto view::view_bytes() const -> std::size_t
 {
-    std::size_t offset = detail::values_offset(m_data);
-
-    assert(offset % 8 == 0);
-
-    offset +=
-        eight_byte_count() * sizeof(uint64_t) + one_byte_count() * sizeof(bool);
-
-    offset += scope_size() + detail::scope_alignment_padding(m_data);
-
-    return offset;
+    auto bytes = detail::header_bytes();
+    bytes += name_bytes();
+    bytes += description_bytes();
+    bytes = detail::alignment_padding(bytes);
+    bytes += eight_byte_count() * 8;
+    bytes += one_byte_count();
+    return bytes;
 }
 }
 }
