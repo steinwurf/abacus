@@ -60,6 +60,11 @@ public:
     {
     }
 
+    metrics(const std::vector<metric_info>& infos) :
+        metrics(infos.data(), infos.size())
+    {
+    }
+
     /// Destructor
     ~metrics();
 
