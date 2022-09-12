@@ -25,7 +25,10 @@ enum class metric_type : uint8_t
     float64,
 
     /// bool type
-    boolean
+    boolean,
+
+    // Reserved for indicating that the metric is not initialized
+    uninitialized = 255U
 };
 }
 }

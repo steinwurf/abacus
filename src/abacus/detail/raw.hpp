@@ -311,6 +311,13 @@ inline auto raw_type(const uint8_t* data, std::size_t index) -> const uint8_t*
     return (data + types_offset(data) + index);
 }
 
+inline auto type(const uint8_t* data, std::size_t index) -> metric_type
+{
+    assert(data != nullptr);
+    assert(index < metric_count(data));
+    return static_cast<metric_type>(*raw_type(data, index));
+}
+
 inline auto is_constant_offset(const uint8_t* data) -> std::size_t
 {
     return types_offset(data) + metric_count(data);
@@ -397,7 +404,7 @@ inline auto is_metric_initialized(const uint8_t* data, std::size_t index)
     assert(index < metric_count(data));
     // If the name is non-zero it is initialized and valid.
     // We just check the first byte to see if it's zero.
-    return raw_name(data, index)[0] != 0;
+    return type(data, index) != metric_type::uninitialized;
 }
 
 /// @param data The raw memory for the counters

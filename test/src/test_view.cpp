@@ -42,8 +42,8 @@ TEST(test_view, api)
     EXPECT_EQ(metrics.metric_name(0), view.metric_name(0));
     EXPECT_EQ(metrics.metric_name(1), view.metric_name(1));
 
-    EXPECT_EQ(view.get_metric_type(0), abacus::metric_type::uint64);
-    EXPECT_EQ(view.get_metric_type(1), abacus::metric_type::int64);
+    EXPECT_EQ(view.metric_type(0), abacus::metric_type::uint64);
+    EXPECT_EQ(view.metric_type(1), abacus::metric_type::int64);
 
     uint64_t metric_value = 12;
     uint64_t view_value = 11;

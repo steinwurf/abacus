@@ -11,15 +11,16 @@
 
 TEST(test_metrics, default_constructor)
 {
-    uint16_t metric_count = 5;
+    const uint16_t metric_count = 6;
 
     std::string name0 = "metric0";
     std::string name1 = "metric1";
     std::string name2 = "metric2";
     std::string name3 = "metric3";
     std::string name4 = "metric4";
+    std::string name5 = "metric5";
 
-    abacus::metric_info infos[5] = {
+    abacus::metric_info infos[metric_count] = {
         abacus::metric_info{name0, "A boolean metric",
                             abacus::metric_type::boolean,
                             abacus::qualifier::non_constant},
@@ -34,17 +35,21 @@ TEST(test_metrics, default_constructor)
                             abacus::qualifier::non_constant},
         abacus::metric_info{name4, "A constant boolean metric",
                             abacus::metric_type::boolean,
+                            abacus::qualifier::constant},
+        abacus::metric_info{name5, "A constant floating point metric",
+                            abacus::metric_type::float64,
                             abacus::qualifier::constant}};
 
     abacus::metrics metrics(infos);
 
     EXPECT_EQ(metrics.metric_count(), metric_count);
 
-    EXPECT_FALSE(metrics.metric_is_constant(0));
-    EXPECT_FALSE(metrics.metric_is_constant(1));
-    EXPECT_FALSE(metrics.metric_is_constant(2));
-    EXPECT_FALSE(metrics.metric_is_constant(3));
-    EXPECT_TRUE(metrics.metric_is_constant(4));
+    EXPECT_FALSE(metrics.is_metric_constant(0));
+    EXPECT_FALSE(metrics.is_metric_constant(1));
+    EXPECT_FALSE(metrics.is_metric_constant(2));
+    EXPECT_TRUE(metrics.is_metric_constant(3));
+    EXPECT_FALSE(metrics.is_metric_constant(4));
+    EXPECT_TRUE(metrics.is_metric_constant(5));
 
     EXPECT_FALSE(metrics.is_metric_initialized(0));
     auto metric0 =
@@ -60,26 +65,32 @@ TEST(test_metrics, default_constructor)
         metrics.initialize_metric<abacus::metric_type::float64>(name3);
     EXPECT_TRUE(metrics.is_metric_initialized(2));
 
-    EXPECT_FALSE(metrics.is_metric_initialized(3));
+    EXPECT_FALSE(metrics.is_metric_initialized(4));
     auto metric3 =
         metrics.initialize_metric<abacus::metric_type::boolean>(name0);
-    EXPECT_TRUE(metrics.is_metric_initialized(3));
-
-    EXPECT_FALSE(metrics.is_metric_initialized(4));
-    metrics.initialize_constant(name4, true);
     EXPECT_TRUE(metrics.is_metric_initialized(4));
+
+    EXPECT_FALSE(metrics.is_metric_initialized(5));
+    metrics.initialize_constant(name4, true);
+    EXPECT_TRUE(metrics.is_metric_initialized(5));
+
+    EXPECT_FALSE(metrics.is_metric_initialized(3));
+    metrics.initialize_constant(name5, 42.42);
+    EXPECT_TRUE(metrics.is_metric_initialized(3));
 
     EXPECT_EQ(metrics.metric_name(0), name1);
     EXPECT_EQ(metrics.metric_name(1), name2);
     EXPECT_EQ(metrics.metric_name(2), name3);
-    EXPECT_EQ(metrics.metric_name(3), name0);
-    EXPECT_EQ(metrics.metric_name(4), name4);
+    EXPECT_EQ(metrics.metric_name(4), name0);
+    EXPECT_EQ(metrics.metric_name(5), name4);
 
     EXPECT_EQ(metrics.metric_description(0), "An unsigned integer metric");
     EXPECT_EQ(metrics.metric_description(1), "A signed integer metric");
     EXPECT_EQ(metrics.metric_description(2), "A floating point metric");
-    EXPECT_EQ(metrics.metric_description(3), "A boolean metric");
-    EXPECT_EQ(metrics.metric_description(4), "A constant boolean metric");
+    EXPECT_EQ(metrics.metric_description(3),
+              "A constant floating point metric");
+    EXPECT_EQ(metrics.metric_description(4), "A boolean metric");
+    EXPECT_EQ(metrics.metric_description(5), "A constant boolean metric");
 
     metric0 = 4U;
     metric1 = -4;
@@ -100,17 +111,21 @@ TEST(test_metrics, default_constructor)
     metrics.metric_value(2, float_value);
     EXPECT_EQ(float_value, 3.14);
 
-    metrics.metric_value(3, bool_value);
-    EXPECT_EQ(bool_value, true);
+    metrics.metric_value(3, float_value);
+    EXPECT_EQ(float_value, 42.42);
 
     metrics.metric_value(4, bool_value);
     EXPECT_EQ(bool_value, true);
 
-    EXPECT_EQ(metrics.metric_index(name0), 3U);
+    metrics.metric_value(5, bool_value);
+    EXPECT_EQ(bool_value, true);
+
+    EXPECT_EQ(metrics.metric_index(name0), 4U);
     EXPECT_EQ(metrics.metric_index(name1), 0U);
     EXPECT_EQ(metrics.metric_index(name2), 1U);
     EXPECT_EQ(metrics.metric_index(name3), 2U);
-    EXPECT_EQ(metrics.metric_index(name4), 4U);
+    EXPECT_EQ(metrics.metric_index(name4), 5U);
+    EXPECT_EQ(metrics.metric_index(name5), 3U);
 }
 
 TEST(test_metrics, copy_storage)
@@ -141,8 +156,8 @@ TEST(test_metrics, copy_storage)
     // names and descriptions
     for (std::size_t i = 0; i < metric_count; ++i)
     {
-        size += infos[i].name.size() + 1;
-        size += infos[i].description.size() + 1;
+        size += infos[i].name.size();
+        size += infos[i].description.size();
     }
     // types
     size += metric_count;

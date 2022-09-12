@@ -128,7 +128,7 @@ public:
     /// false.
     /// @param index The index of the metric to check. Must be less than
     /// metric_count().
-    auto metric_is_constant(std::size_t index) const -> bool;
+    auto is_metric_constant(std::size_t index) const -> bool;
 
     /// @returns A wrapper for a counter at the given index with type
     /// appropriate with given enum.
@@ -146,11 +146,12 @@ public:
     /// @param name The name of the metric. This is used for a check to ensure
     /// that the name matches the one at the given index.
     template <metric_type MetricType>
-    auto initialize_metric(std::string name) const -> metric<MetricType>
+    auto initialize_metric(const std::string& name) const -> metric<MetricType>
     {
         using value_type = typename metric<MetricType>::value_type;
 
-        value_type* value_ptr = (value_type*)initialize(name);
+        auto index = metric_index(name);
+        value_type* value_ptr = (value_type*)initialize(index);
         return metric<MetricType>{value_ptr};
     }
 
@@ -170,7 +171,7 @@ public:
     /// @param value The value of the constant. A uint64_t value.
     /// @param name The name of the metric. This is used for a check to ensure
     /// that the name matches the one at the given index.
-    void initialize_constant(std::string name, uint64_t value) const;
+    void initialize_constant(const std::string& name, uint64_t value) const;
 
     /// Initialize a constant int64_t metric at the given index.
     ///
@@ -188,7 +189,7 @@ public:
     /// @param value The value of the constant. A int64_t value.
     /// @param name The name of the metric. This is used for a check to ensure
     /// that the name matches the one at the given index.
-    void initialize_constant(std::string name, int64_t value) const;
+    void initialize_constant(const std::string& name, int64_t value) const;
 
     /// Initialize a constant double metric at the given index.
     ///
@@ -206,7 +207,7 @@ public:
     /// @param value The value of the constant. A double value.
     /// @param name The name of the metric. This is used for a check to ensure
     /// that the name matches the one at the given index.
-    void initialize_constant(std::string name, double value) const;
+    void initialize_constant(const std::string& name, double value) const;
 
     /// Initialize a constant bool metric at the given index.
     ///
@@ -224,7 +225,7 @@ public:
     /// @param value The value of the constant. A bool value.
     /// @param name The name of the metric. This is used for a check to ensure
     /// that the name matches the one at the given index.
-    void initialize_constant(std::string name, bool value) const;
+    void initialize_constant(const std::string& name, bool value) const;
 
     /// Copy the value of the uint64_t metric into a passed reference. This is
     /// used to extract the values during runtime.
@@ -283,7 +284,7 @@ public:
     /// std::size_t if asserts are disabled.
     ///
     /// @param name The name of the metric.
-    auto metric_index(std::string name) const -> std::size_t;
+    auto metric_index(const std::string& name) const -> std::size_t;
 
     /// Copies the memory of the metrics into the given data buffer.
     /// The storage_bytes() function is used to allocate the exact amount of
@@ -324,8 +325,8 @@ private:
     metrics& operator=(metrics&&) = delete;
 
 private:
-    ///
-    auto initialize(std::string name) const -> void*;
+    /// initialize the metrics
+    auto initialize(std::size_t index) const -> void*;
 
 private:
     /// The info of the metrics seperated by byte-sizes
@@ -333,12 +334,6 @@ private:
 
     /// Map to get index from names
     std::map<std::string, std::size_t> m_name_to_index;
-
-    /// The sizes of the names of the metrics
-    std::vector<uint16_t> m_name_sizes;
-
-    /// The sizes of the descriptions of the metrics
-    std::vector<uint16_t> m_description_sizes;
 
     /// The raw memory for the counters (both value and name)
     uint8_t* m_data = nullptr;

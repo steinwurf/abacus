@@ -70,22 +70,24 @@ auto view::is_metric_initialized(std::size_t index) const -> bool
 auto view::metric_name(std::size_t index) const -> std::string
 {
     assert(is_metric_initialized(index));
-    return detail::raw_name(m_data, index);
+
+    return {detail::raw_name(m_data, index), detail::name_size(m_data, index)};
 }
 
 auto view::metric_description(std::size_t index) const -> std::string
 {
     assert(is_metric_initialized(index));
-    return detail::raw_description(m_data, index);
+    return {detail::raw_description(m_data, index),
+            detail::description_size(m_data, index)};
 }
 
-auto view::get_metric_type(std::size_t index) const -> metric_type
+auto view::metric_type(std::size_t index) const -> abacus::metric_type
 {
     assert(is_metric_initialized(index));
-    return static_cast<metric_type>(*detail::raw_type(m_data, index));
+    return static_cast<abacus::metric_type>(*detail::raw_type(m_data, index));
 }
 
-auto view::metric_is_constant(std::size_t index) const -> bool
+auto view::is_metric_constant(std::size_t index) const -> bool
 {
     assert(is_metric_initialized(index));
     return detail::is_constant(m_data, index);
@@ -94,14 +96,14 @@ auto view::metric_is_constant(std::size_t index) const -> bool
 void view::metric_value(std::size_t index, bool& value) const
 {
     assert(is_metric_initialized(index));
-    assert(get_metric_type(index) == metric_type::boolean);
+    assert(metric_type(index) == metric_type::boolean);
     value = *(bool*)(detail::raw_value(m_data, index));
 }
 
 void view::metric_value(std::size_t index, uint64_t& value) const
 {
     assert(is_metric_initialized(index));
-    assert(get_metric_type(index) == metric_type::uint64);
+    assert(metric_type(index) == metric_type::uint64);
     value = read<uint64_t>(m_is_big_endian,
                            (uint8_t*)detail::raw_value(m_data, index));
 }
@@ -109,7 +111,7 @@ void view::metric_value(std::size_t index, uint64_t& value) const
 void view::metric_value(std::size_t index, int64_t& value) const
 {
     assert(is_metric_initialized(index));
-    assert(get_metric_type(index) == metric_type::int64);
+    assert(metric_type(index) == metric_type::int64);
     value = read<int64_t>(m_is_big_endian,
                           (uint8_t*)detail::raw_value(m_data, index));
 }
@@ -117,7 +119,7 @@ void view::metric_value(std::size_t index, int64_t& value) const
 void view::metric_value(std::size_t index, double& value) const
 {
     assert(is_metric_initialized(index));
-    assert(get_metric_type(index) == metric_type::float64);
+    assert(metric_type(index) == metric_type::float64);
     value = read<double>(m_is_big_endian,
                          (uint8_t*)detail::raw_value(m_data, index));
 }

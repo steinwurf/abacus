@@ -64,13 +64,13 @@ public:
     /// @returns the type of the metric at the given index.
     /// @param index The index of the metric to check. Must be less than
     /// metric_count().
-    auto get_metric_type(std::size_t index) const -> metric_type;
+    auto metric_type(std::size_t index) const -> metric_type;
 
     /// @returns true if the metric at the given index is a constant, otherwise
     /// false.
     /// @param index The index of the metric to check. Must be less than
     /// metric_count().
-    auto metric_is_constant(std::size_t index) const -> bool;
+    auto is_metric_constant(std::size_t index) const -> bool;
 
     /// Copy the value of the uint64_t metric into a passed reference. This is
     /// used to extract the values during runtime.

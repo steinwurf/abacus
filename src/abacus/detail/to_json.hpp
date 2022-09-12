@@ -34,8 +34,8 @@ auto to_json(const view& view) -> bourne::json
 
         auto n = view.metric_name(i);
         auto d = view.metric_description(i);
-        auto t = view.get_metric_type(i);
-        auto c = view.metric_is_constant(i);
+        auto t = view.metric_type(i);
+        auto c = view.is_metric_constant(i);
         bourne::json metric_data = {"description", d, "is_constant", c};
         switch (t)
         {
@@ -55,6 +55,7 @@ auto to_json(const view& view) -> bourne::json
             view.metric_value(i, float_value);
             metric_data["value"] = float_value;
             break;
+        case metric_type::uninitialized:
         default:
             assert(false);
             break;
