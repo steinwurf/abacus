@@ -42,33 +42,31 @@ inline auto metric_count(const uint8_t* data) -> uint16_t
     return metric_count;
 }
 
-inline auto endian_byte_offset() -> std::size_t
+inline auto is_big_endian_byte_offset() -> std::size_t
 {
     return sizeof(uint16_t);
 }
 
-inline auto raw_endian_byte(uint8_t* data) -> uint8_t*
+inline auto raw_is_big_endian_byte(uint8_t* data) -> uint8_t*
 {
     assert(data != nullptr);
-    uint8_t* endianness_data = data + endian_byte_offset();
-    return endianness_data;
+    return data + is_big_endian_byte_offset();
 }
 
-inline auto raw_endian_byte(const uint8_t* data) -> const uint8_t*
+inline auto raw_is_big_endian_byte(const uint8_t* data) -> const uint8_t*
 {
     assert(data != nullptr);
-    const uint8_t* endianness_data = data + endian_byte_offset();
-    return endianness_data;
+    return data + is_big_endian_byte_offset();
 }
 
-inline auto endian_byte(const uint8_t* data) -> uint8_t
+inline auto is_big_endian_byte(const uint8_t* data) -> uint8_t
 {
-    return *raw_endian_byte(data);
+    return *raw_is_big_endian_byte(data);
 }
 
 inline auto name_bytes_offset() -> std::size_t
 {
-    return endian_byte_offset() + sizeof(uint16_t);
+    return is_big_endian_byte_offset() + sizeof(uint16_t);
 }
 
 /// @param data The raw memory for the counters
@@ -76,8 +74,7 @@ inline auto name_bytes_offset() -> std::size_t
 inline auto raw_name_bytes(uint8_t* data) -> uint16_t*
 {
     assert(data != nullptr);
-    uint8_t* name_bytes_data = data + name_bytes_offset();
-    return (uint16_t*)name_bytes_data;
+    return (uint16_t*)(data + name_bytes_offset());
 }
 
 /// @param data The raw memory for the counters
@@ -85,8 +82,7 @@ inline auto raw_name_bytes(uint8_t* data) -> uint16_t*
 inline auto raw_name_bytes(const uint8_t* data) -> const uint16_t*
 {
     assert(data != nullptr);
-    const uint8_t* name_bytes_data = data + name_bytes_offset();
-    return (const uint16_t*)name_bytes_data;
+    return (const uint16_t*)(data + name_bytes_offset());
 }
 
 /// @param data The raw memory for the counters
@@ -94,7 +90,6 @@ inline auto raw_name_bytes(const uint8_t* data) -> const uint16_t*
 inline auto name_bytes(const uint8_t* data) -> uint16_t
 {
     assert(data != nullptr);
-
     return *raw_name_bytes(data);
 }
 
@@ -108,21 +103,18 @@ inline auto descriptions_bytes_offset() -> std::size_t
 inline auto raw_descriptions_bytes(uint8_t* data) -> uint16_t*
 {
     assert(data != nullptr);
-    uint8_t* description_bytes_data = data + descriptions_bytes_offset();
-    return (uint16_t*)description_bytes_data;
+    return (uint16_t*)(data + descriptions_bytes_offset());
 }
 
 inline auto raw_descriptions_bytes(const uint8_t* data) -> const uint16_t*
 {
     assert(data != nullptr);
-    const uint8_t* description_bytes_data = data + descriptions_bytes_offset();
-    return (const uint16_t*)description_bytes_data;
+    return (const uint16_t*)(data + descriptions_bytes_offset());
 }
 
 inline auto descriptions_bytes(const uint8_t* data) -> uint16_t
 {
     assert(data != nullptr);
-
     return *raw_descriptions_bytes(data);
 }
 
@@ -134,21 +126,18 @@ inline auto eight_byte_count_offset() -> std::size_t
 inline auto raw_eight_byte_count(uint8_t* data) -> uint16_t*
 {
     assert(data != nullptr);
-    uint8_t* eight_byte_count_data = data + eight_byte_count_offset();
-    return (uint16_t*)eight_byte_count_data;
+    return (uint16_t*)(data + eight_byte_count_offset());
 }
 
 inline auto raw_eight_byte_count(const uint8_t* data) -> const uint16_t*
 {
     assert(data != nullptr);
-    const uint8_t* eight_byte_count_data = data + eight_byte_count_offset();
-    return (const uint16_t*)eight_byte_count_data;
+    return (const uint16_t*)(data + eight_byte_count_offset());
 }
 
 inline auto eight_byte_count(const uint8_t* data) -> uint16_t
 {
     assert(data != nullptr);
-
     return *raw_eight_byte_count(data);
 }
 
@@ -160,21 +149,18 @@ inline auto one_byte_count_offset() -> std::size_t
 inline auto raw_one_byte_count(uint8_t* data) -> uint16_t*
 {
     assert(data != nullptr);
-    uint8_t* one_byte_count_data = data + one_byte_count_offset();
-    return (uint16_t*)one_byte_count_data;
+    return (uint16_t*)(data + one_byte_count_offset());
 }
 
 inline auto raw_one_byte_count(const uint8_t* data) -> const uint16_t*
 {
     assert(data != nullptr);
-    const uint8_t* one_byte_count_data = data + one_byte_count_offset();
-    return (const uint16_t*)one_byte_count_data;
+    return (const uint16_t*)(data + one_byte_count_offset());
 }
 
 inline auto one_byte_count(const uint8_t* data) -> uint16_t
 {
     assert(data != nullptr);
-
     return *raw_one_byte_count(data);
 }
 
@@ -187,10 +173,7 @@ inline auto raw_name_size(uint8_t* data, std::size_t index) -> uint16_t*
 {
     assert(data != nullptr);
     assert(index < metric_count(data));
-
-    uint8_t* name_sizes_data =
-        data + name_sizes_offset() + index * sizeof(uint16_t);
-    return (uint16_t*)name_sizes_data;
+    return (uint16_t*)(data + name_sizes_offset() + index * sizeof(uint16_t));
 }
 
 inline auto raw_name_size(const uint8_t* data, std::size_t index)
@@ -198,17 +181,13 @@ inline auto raw_name_size(const uint8_t* data, std::size_t index)
 {
     assert(data != nullptr);
     assert(index < metric_count(data));
-
-    const uint8_t* name_sizes_data =
-        data + name_sizes_offset() + index * sizeof(uint16_t);
-    return (const uint16_t*)name_sizes_data;
+    return (uint16_t*)(data + name_sizes_offset() + index * sizeof(uint16_t));
 }
 
 inline auto name_size(const uint8_t* data, std::size_t index) -> uint16_t
 {
     assert(data != nullptr);
     assert(index < metric_count(data));
-
     return *raw_name_size(data, index);
 }
 
@@ -221,10 +200,8 @@ inline auto raw_description_size(uint8_t* data, std::size_t index) -> uint16_t*
 {
     assert(data != nullptr);
     assert(index < metric_count(data));
-
-    uint8_t* description_size_data =
-        data + description_sizes_offset(data) + index * sizeof(uint16_t);
-    return (uint16_t*)description_size_data;
+    return (uint16_t*)(data + description_sizes_offset(data) +
+                       index * sizeof(uint16_t));
 }
 
 inline auto raw_description_size(const uint8_t* data, std::size_t index)
@@ -232,17 +209,14 @@ inline auto raw_description_size(const uint8_t* data, std::size_t index)
 {
     assert(data != nullptr);
     assert(index < metric_count(data));
-
-    const uint8_t* description_sizes_data =
-        data + description_sizes_offset(data) + index * sizeof(uint16_t);
-    return (const uint16_t*)description_sizes_data;
+    return (uint16_t*)(data + description_sizes_offset(data) +
+                       index * sizeof(uint16_t));
 }
 
 inline auto description_size(const uint8_t* data, std::size_t index) -> uint16_t
 {
     assert(data != nullptr);
     assert(index < metric_count(data));
-
     return *raw_description_size(data, index);
 }
 
@@ -250,7 +224,6 @@ inline auto description_size(const uint8_t* data, std::size_t index) -> uint16_t
 /// @return The maximum metrics the raw memory can contain
 inline auto names_offset(const uint8_t* data) -> std::size_t
 {
-    // Skip header
     return description_sizes_offset(data) +
            metric_count(data) * sizeof(uint16_t);
 }
@@ -265,9 +238,7 @@ inline auto raw_name(uint8_t* data, std::size_t index) -> char*
     {
         offset += name_size(data, i);
     }
-
-    uint8_t* names_data = data + offset;
-    return (char*)names_data;
+    return (char*)(data + offset);
 }
 
 inline auto raw_name(const uint8_t* data, std::size_t index) -> const char*
@@ -280,9 +251,7 @@ inline auto raw_name(const uint8_t* data, std::size_t index) -> const char*
     {
         offset += name_size(data, i);
     }
-
-    const uint8_t* names_data = data + offset;
-    return (const char*)names_data;
+    return (const char*)(data + offset);
 }
 
 inline auto descriptions_offset(const uint8_t* data) -> std::size_t
@@ -300,9 +269,7 @@ inline auto raw_description(uint8_t* data, std::size_t index) -> char*
     {
         offset += description_size(data, i);
     }
-
-    uint8_t* description_data = data + offset;
-    return (char*)description_data;
+    return (char*)(data + offset);
 }
 
 inline auto raw_description(const uint8_t* data, std::size_t index) -> const
@@ -316,9 +283,7 @@ inline auto raw_description(const uint8_t* data, std::size_t index) -> const
     {
         offset += description_size(data, i);
     }
-
-    const uint8_t* description_data = data + offset;
-    return (const char*)description_data;
+    return (const char*)(data + offset);
 }
 
 inline auto types_offset(const uint8_t* data) -> std::size_t
@@ -333,10 +298,7 @@ inline auto raw_type(uint8_t* data, std::size_t index) -> uint8_t*
 {
     assert(data != nullptr);
     assert(index < metric_count(data));
-
-    uint8_t* type_data = data + types_offset(data) + index;
-
-    return type_data;
+    return (data + types_offset(data) + index);
 }
 
 /// @param data The raw memory for the counters
@@ -346,10 +308,7 @@ inline auto raw_type(const uint8_t* data, std::size_t index) -> const uint8_t*
 {
     assert(data != nullptr);
     assert(index < metric_count(data));
-
-    const uint8_t* type_data = data + types_offset(data) + index;
-
-    return type_data;
+    return (data + types_offset(data) + index);
 }
 
 inline auto is_constant_offset(const uint8_t* data) -> std::size_t
@@ -361,10 +320,7 @@ inline auto raw_is_constant(uint8_t* data, std::size_t index) -> bool*
 {
     assert(data != nullptr);
     assert(index < metric_count(data));
-
-    uint8_t* is_constant_data = data + is_constant_offset(data) + index;
-
-    return (bool*)is_constant_data;
+    return (bool*)(data + is_constant_offset(data) + index);
 }
 
 inline auto raw_is_constant(const uint8_t* data, std::size_t index) -> const
@@ -372,17 +328,13 @@ inline auto raw_is_constant(const uint8_t* data, std::size_t index) -> const
 {
     assert(data != nullptr);
     assert(index < metric_count(data));
-
-    const uint8_t* is_constant_data = data + is_constant_offset(data) + index;
-
-    return (const bool*)is_constant_data;
+    return (const bool*)(data + is_constant_offset(data) + index);
 }
 
 inline auto is_constant(const uint8_t* data, std::size_t index) -> bool
 {
     assert(data != nullptr);
     assert(index < metric_count(data));
-
     return *raw_is_constant(data, index);
 }
 
@@ -390,7 +342,8 @@ inline auto is_constant(const uint8_t* data, std::size_t index) -> bool
 /// @return The extra padding to add to the offset for alignment
 inline auto alignment_padding(std::size_t offset) -> std::size_t
 {
-    return offset % 8 == 0 ? 0 : 8 - offset % 8;
+    auto remainder = offset % 8;
+    return remainder == 0 ? 0 : 8 - remainder;
 }
 
 /// @param data The raw memory for the counters
@@ -399,7 +352,6 @@ inline auto values_offset(const uint8_t* data) -> std::size_t
 {
     std::size_t offset =
         is_constant_offset(data) + sizeof(bool) * metric_count(data);
-
     return offset + alignment_padding(offset);
 }
 
@@ -439,42 +391,21 @@ inline auto raw_value(const uint8_t* data, std::size_t index) -> const void*
                          (index - eight_byte_metrics));
 }
 
-inline auto metric_index(const uint8_t* data, const char* name) -> std::size_t
-{
-    assert(data != nullptr);
-    assert(name != nullptr);
-
-    for (std::size_t i = 0; i < metric_count(data); ++i)
-    {
-        if (strcmp(name, raw_name(data, i)) == 0)
-        {
-            return i;
-        }
-    }
-    assert(false && "No metric with that name was found");
-    return std::numeric_limits<std::size_t>::max();
-}
-
 inline auto is_metric_initialized(const uint8_t* data, std::size_t index)
     -> bool
 {
     assert(index < metric_count(data));
-
-    const char* name_data = raw_name(data, index);
-
-    // If the name is non-zero it is initialized and valid. We just check the
-    // first byte to see if it's zero.
-    return name_data[0] != 0;
+    // If the name is non-zero it is initialized and valid.
+    // We just check the first byte to see if it's zero.
+    return raw_name(data, index)[0] != 0;
 }
 
 /// @param data The raw memory for the counters
 /// @return The total number of bytes used.
 inline auto storage_bytes(const uint8_t* data) -> std::size_t
 {
-    auto bytes =
-        values_offset(data) + (eight_byte_count(data) * sizeof(uint64_t) +
-                               one_byte_count(data) * sizeof(bool));
-    return bytes;
+    return values_offset(data) + eight_byte_count(data) * 8U +
+           one_byte_count(data);
 }
 }
 }

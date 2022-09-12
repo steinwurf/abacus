@@ -17,5 +17,4 @@ Overview of the public API.
    qualifier
    metrics
    view
-   endianness
    functions

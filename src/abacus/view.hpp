@@ -42,28 +42,6 @@ public:
     /// @return the number of metrics from in a metrics data pointer
     auto metric_count() const -> uint16_t;
 
-    /// @return the size of the scope name from a metrics data pointer
-    auto scope_size() const -> uint16_t;
-
-    /// @return endianness of the data. If 0 data is little-endian, 1 is
-    /// big-endian
-    auto endian_byte() const -> uint8_t;
-
-    /// @return the bytes used for metric names from a metrics data pointer
-    auto name_bytes() const -> uint16_t;
-
-    /// @return the bytes used for metric descriptions from a metrics data
-    /// pointer
-    auto description_bytes() const -> uint16_t;
-
-    /// @return the number of metrics with 8-byte values (double, uint64_t or
-    /// int64_t) from a metrics data pointer
-    auto eight_byte_count() const -> uint16_t;
-
-    /// @return the number of metrics with 1-byte values (bool) from a metrics
-    /// data pointer
-    auto one_byte_count() const -> uint16_t;
-
     /// @returns true if the metric is initialized, that is if
     /// initialize_metric() has been called for the given index.
     /// @param index The index of the metric to check. Must be less than
@@ -150,9 +128,6 @@ public:
     /// @return The index of the counter with the given name
     auto metric_index(const std::string& name) const -> std::size_t;
 
-    /// @return The scope of the metrics data as a string
-    auto scope() const -> std::string;
-
     /// @return The number of bytes in the view memory
     auto view_bytes() const -> std::size_t;
 
@@ -164,8 +139,6 @@ private:
 
     /// Map to get index from names
     std::map<std::string, std::size_t> m_name_to_index;
-
-    std::string m_scope;
 };
 }
 }

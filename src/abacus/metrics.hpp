@@ -26,7 +26,7 @@ inline namespace STEINWURF_ABACUS_VERSION
 ///
 /// 1. Header of 12 bytes
 ///     * Number of metrics (2 bytes)
-///     * Endianness (2 byte)
+///     * Is big endian (2 byte)
 ///     * Total name bytes (2 bytes)
 ///     * Total description bytes (2 bytes)
 ///     * Number of 8-byte-value metrics (2 bytes)
@@ -340,13 +340,7 @@ private:
     /// The sizes of the descriptions of the metrics
     std::vector<uint16_t> m_description_sizes;
 
-    /// storage_size
-    std::size_t m_storage_bytes = 0;
-
-    /// The current number of metrics that have been initialized
-    uint16_t m_count = 0;
     /// The raw memory for the counters (both value and name)
-
     uint8_t* m_data = nullptr;
 };
 }

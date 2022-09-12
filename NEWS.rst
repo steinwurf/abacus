@@ -14,15 +14,12 @@ Latest
          initialize_metric() with.
 * Major: Added a struct metric_info, used in a vector in the metrics constructor.
 * Major: metrics::initialize_metric() is now templated and takes a metric name.
-* Major: Switched from using a title to using a scope, that is not part of the
-         memory layout but passed along when copying the metrics data.
-* Minor: Added add_scope() member function to class metrics.
 * Major: Removed title from the class metrics data-header.
 * Major: Removed the metrics::set_metrics_title() member funciton
 * Major: Removed to_json() functions on metrics and view classes and added
          free functions that take a single view or a vector of views.
-* Major: Added a byte to the memory layout that indicates the endianness of the
-         machine writing into the metrics memory. Added a endianness enum.
+* Major: Added a byte to the memory layout that indicates if the metrics are
+         written as big endian.
 * Major: Added a qualifier enum used in metric_info to declare if a metric is
          constant or not.
 * Minor: The memory of the metrics object can now be accessed directly through
@@ -53,4 +50,3 @@ Latest
 * Major: Added class view to handle the raw memory of class metrics
 * Minor: Added class view_iterator
 * Minor: Moved to_json() member function to detail
-

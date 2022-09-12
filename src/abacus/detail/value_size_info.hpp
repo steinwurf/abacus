@@ -21,50 +21,59 @@ namespace detail
 
 struct value_size_info
 {
-    std::size_t m_metric_count = 0;
-    std::size_t m_one_byte_count = 0;
-    std::size_t m_eight_byte_count = 0;
     std::vector<metric_info> m_eight_byte_metrics;
     std::vector<metric_info> m_one_byte_metrics;
 
-    value_size_info(const metric_info* info, std::size_t size) :
-        m_metric_count(size)
+    value_size_info(const metric_info* infos, std::size_t size)
     {
-        assert(info != nullptr);
-        assert(m_metric_count > 0);
+        assert(infos != nullptr);
 
-        for (std::size_t i = 0; i < m_metric_count; i++)
+        for (std::size_t i = 0; i < size; i++)
         {
-            switch (info[i].type)
+            const auto& info = infos[i];
+            switch (info.type)
             {
             case metric_type::boolean:
-                m_one_byte_metrics.push_back(info[i]);
-                m_one_byte_count++;
+                m_one_byte_metrics.push_back(info);
+                break;
+            case metric_type::float64:
+            case metric_type::int64:
+            case metric_type::uint64:
+                m_eight_byte_metrics.push_back(info);
                 break;
             default:
-                m_eight_byte_metrics.push_back(info[i]);
-                m_eight_byte_count++;
+                assert(false);
                 break;
             }
         }
     }
 
+    std::size_t eight_byte_metrics_count() const
+    {
+        return m_eight_byte_metrics.size();
+    }
+
+    std::size_t one_byte_metrics_count() const
+    {
+        return m_one_byte_metrics.size();
+    }
+
     std::size_t size() const
     {
-        return m_metric_count;
+        return m_eight_byte_metrics.size() + m_one_byte_metrics.size();
     }
 
     metric_info operator[](std::size_t index) const
     {
         assert(index < size());
 
-        if (index < m_eight_byte_count)
+        if (index < m_eight_byte_metrics.size())
         {
             return m_eight_byte_metrics[index];
         }
         else
         {
-            return m_one_byte_metrics[index - m_eight_byte_count];
+            return m_one_byte_metrics[index - m_eight_byte_metrics.size()];
         }
     }
 };

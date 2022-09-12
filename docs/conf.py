@@ -28,7 +28,6 @@ wurfapi = {
         "../src/abacus/qualifier.hpp",
         "../src/abacus/metrics.hpp",
         "../src/abacus/view.hpp",
-        "../src/abacus/endianness.hpp",
         "../src/abacus/to_json.hpp",
     ],
     "recursive": False,
@@ -58,18 +57,18 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = u"Abacus"
-copyright = u"2021, Steinwurf"
-author = u"Steinwurf"
+project = "Abacus"
+copyright = "2021, Steinwurf"
+author = "Steinwurf"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
 # The short X.Y version.
-version = u""
+version = ""
 # The full version, including alpha/beta/rc tags.
-release = u""
+release = ""
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.

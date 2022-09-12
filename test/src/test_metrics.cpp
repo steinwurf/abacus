@@ -153,7 +153,7 @@ TEST(test_metrics, copy_storage)
     // values
     size += metric_count * 8;
 
-    EXPECT_EQ(size, metrics.storage_bytes());
+    ASSERT_EQ(size, metrics.storage_bytes());
     std::vector<uint8_t> data1(size);
     std::vector<uint8_t> data2(size);
 

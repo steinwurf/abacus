@@ -8,7 +8,6 @@
 #include <limits>
 
 #include "detail/raw.hpp"
-#include "endianness.hpp"
 #include "view.hpp"
 
 #include <endian/big_endian.hpp>
@@ -37,9 +36,7 @@ void view::set_data(const uint8_t* data)
     assert(data != nullptr);
     m_data = data;
 
-    uint8_t endian = detail::endian_byte(m_data);
-
-    m_is_big_endian = static_cast<endianness>(endian) == endianness::big_endian;
+    m_is_big_endian = detail::is_big_endian_byte(m_data);
 
     // Fill the names and indices as keys in the map.
     for (std::size_t i = 0; i < metric_count(); i++)
@@ -61,38 +58,6 @@ auto view::data() const -> const uint8_t*
 auto view::metric_count() const -> uint16_t
 {
     return read<uint16_t>(m_is_big_endian, m_data);
-}
-
-auto view::endian_byte() const -> uint8_t
-{
-    return detail::endian_byte(m_data);
-}
-
-auto view::name_bytes() const -> uint16_t
-{
-    auto name_bytes_data = (const uint8_t*)detail::raw_name_bytes(m_data);
-    return read<uint16_t>(m_is_big_endian, name_bytes_data);
-}
-
-auto view::description_bytes() const -> uint16_t
-{
-    auto description_bytes_data =
-        (const uint8_t*)detail::raw_descriptions_bytes(m_data);
-    return read<uint16_t>(m_is_big_endian, description_bytes_data);
-}
-
-auto view::eight_byte_count() const -> uint16_t
-{
-    auto eight_byte_count_data =
-        (const uint8_t*)detail::raw_eight_byte_count(m_data);
-    return read<uint16_t>(m_is_big_endian, eight_byte_count_data);
-}
-
-auto view::one_byte_count() const -> uint16_t
-{
-    auto one_byte_count_data =
-        (const uint8_t*)detail::raw_one_byte_count(m_data);
-    return read<uint16_t>(m_is_big_endian, one_byte_count_data);
 }
 
 auto view::is_metric_initialized(std::size_t index) const -> bool
@@ -165,13 +130,7 @@ auto view::metric_index(const std::string& name) const -> std::size_t
 
 auto view::view_bytes() const -> std::size_t
 {
-    auto bytes = detail::header_bytes();
-    bytes += name_bytes();
-    bytes += description_bytes();
-    bytes = detail::alignment_padding(bytes);
-    bytes += eight_byte_count() * 8;
-    bytes += one_byte_count();
-    return bytes;
+    return detail::storage_bytes(m_data);
 }
 }
 }

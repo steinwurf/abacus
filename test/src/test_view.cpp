@@ -38,8 +38,6 @@ TEST(test_view, api)
     view.set_data(data.data());
 
     EXPECT_EQ(metrics.metric_count(), view.metric_count());
-    EXPECT_EQ(metrics.name_bytes(), view.name_bytes());
-    EXPECT_EQ(metrics.description_bytes(), view.description_bytes());
 
     EXPECT_EQ(metrics.metric_name(0), view.metric_name(0));
     EXPECT_EQ(metrics.metric_name(1), view.metric_name(1));
