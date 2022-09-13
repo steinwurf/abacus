@@ -41,7 +41,6 @@ struct value_size_info
             case metric_type::uint64:
                 m_eight_byte_metrics.push_back(info);
                 break;
-            case metric_type::uninitialized:
             default:
                 assert(false);
                 break;

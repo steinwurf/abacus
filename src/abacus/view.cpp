@@ -8,6 +8,7 @@
 #include <limits>
 
 #include "detail/raw.hpp"
+#include "metric_flags.hpp"
 #include "view.hpp"
 
 #include <endian/big_endian.hpp>
@@ -86,7 +87,7 @@ auto view::metric_type(std::size_t index) const -> abacus::metric_type
 auto view::is_metric_constant(std::size_t index) const -> bool
 {
     assert(is_metric_initialized(index));
-    return detail::is_constant(m_data, index);
+    return (bool)(detail::flags(m_data, index) & metric_flags::constant);
 }
 
 void view::metric_value(std::size_t index, bool& value) const

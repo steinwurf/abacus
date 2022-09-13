@@ -5,8 +5,8 @@
 
 #pragma once
 
+#include "metric_flags.hpp"
 #include "metric_type.hpp"
-#include "qualifier.hpp"
 #include <string>
 
 namespace abacus
@@ -26,8 +26,8 @@ struct metric_info
     /// Type of the metric. A metric_type enum.
     metric_type type;
 
-    /// enum describing if the metric is a constant or not.
-    qualifier is_constant;
+    /// enum describing the flags of a metric.
+    metric_flags flags{};
 };
 }
 }

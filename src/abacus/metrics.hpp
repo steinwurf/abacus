@@ -37,7 +37,7 @@ inline namespace STEINWURF_ABACUS_VERSION
 /// 4. The names of the metrics (? bytes)
 /// 5. The descriptions of the metrics (? bytes)
 /// 6. The types of the metrics (1 byte per metric)
-/// 7. The state of the metrics, constant or not (1 byte per metric)
+/// 7. The flags of the metrics; initialized, constant. (1 byte per metric)
 /// 8. Alignment padding (if needed, max 7 bytes)
 /// 9. The 8-byte-values (8 bytes per 8-byte metric)
 /// 10. The 1-byte-values (1 byte per 1-byte metric)
@@ -157,11 +157,9 @@ public:
 
     /// Initialize a constant uint64_t metric at the given index.
     ///
-    /// A constant metric that is initialized with a value. The value is
-    /// written into memory at the time of initialization and cannot be altered
-    /// within the same runtime-environment. Constants are also not reset, so
-    /// these can be utilized for flags, special values or other constant
-    /// values.
+    /// A constant metric that is initialized with a value and never reset.
+    /// The value is written into memory at the time of initialization and
+    /// cannot be altered within the same runtime-environment.
     ///
     /// The indices of the metrics do not
     /// match the ones in the info, so use metric_index() to get the correct
@@ -175,11 +173,9 @@ public:
 
     /// Initialize a constant int64_t metric at the given index.
     ///
-    /// A constant metric that is initialized with a value. The value is
-    /// written into memory at the time of initialization and cannot be altered
-    /// within the same runtime-environment. Constants are also not reset, so
-    /// these can be utilized for flags, special values or other constant
-    /// values.
+    /// A constant metric that is initialized with a value and never reset.
+    /// The value is written into memory at the time of initialization and
+    /// cannot be altered within the same runtime-environment.
     ///
     /// The indices of the metrics do not
     /// match the ones in the info, so use metric_index() to get the correct
@@ -193,11 +189,9 @@ public:
 
     /// Initialize a constant double metric at the given index.
     ///
-    /// A constant metric that is initialized with a value. The value is
-    /// written into memory at the time of initialization and cannot be altered
-    /// within the same runtime-environment. Constants are also not reset, so
-    /// these can be utilized for flags, special values or other constant
-    /// values.
+    /// A constant metric that is initialized with a value and never reset.
+    /// The value is written into memory at the time of initialization and
+    /// cannot be altered within the same runtime-environment.
     ///
     /// The indices of the metrics do not
     /// match the ones in the info, so use metric_index() to get the correct
@@ -211,11 +205,9 @@ public:
 
     /// Initialize a constant bool metric at the given index.
     ///
-    /// A constant metric that is initialized with a value. The value is
-    /// written into memory at the time of initialization and cannot be altered
-    /// within the same runtime-environment. Constants are also not reset, so
-    /// these can be utilized for flags, special values or other constant
-    /// values.
+    /// A constant metric that is initialized with a value and never reset.
+    /// The value is written into memory at the time of initialization and
+    /// cannot be altered within the same runtime-environment.
     ///
     /// The indices of the metrics do not
     /// match the ones in the info, so use metric_index() to get the correct

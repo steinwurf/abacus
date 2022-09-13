@@ -55,7 +55,6 @@ auto to_json(const view& view) -> bourne::json
             view.metric_value(i, float_value);
             metric_data["value"] = float_value;
             break;
-        case metric_type::uninitialized:
         default:
             assert(false);
             break;

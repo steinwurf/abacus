@@ -14,7 +14,7 @@ Overview of the public API.
    metric_specializations/metric_specializations
    metric_info
    metric_type
-   qualifier
+   metric_flags
    metrics
    view
    functions

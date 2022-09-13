@@ -17,11 +17,9 @@ TEST(test_view, api)
 
     abacus::metric_info infos[2] = {
         abacus::metric_info{name0, "An unsigned integer metric",
-                            abacus::metric_type::uint64,
-                            abacus::qualifier::non_constant},
+                            abacus::metric_type::uint64},
         abacus::metric_info{name1, "A signed integer metric",
-                            abacus::metric_type::int64,
-                            abacus::qualifier::non_constant}};
+                            abacus::metric_type::int64}};
 
     abacus::metrics metrics(infos);
 

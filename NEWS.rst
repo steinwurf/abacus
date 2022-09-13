@@ -8,7 +8,7 @@ Latest
 ------
 * Major: Added support for wrapping uint64_t, double, int64_t and bool with
          class metric<>() through the metric_type enum.
-* Major: Added metric_description, type and is_constant. Changed the memory
+* Major: Added metric_description, type and flags. Changed the memory
          memory layout thereafter.
 * Minor: Added enum metric_type to parameterize metric<>() and
          initialize_metric() with.
@@ -20,8 +20,8 @@ Latest
          free functions that take a single view or a vector of views.
 * Major: Added a byte to the memory layout that indicates if the metrics are
          written as big endian.
-* Major: Added a qualifier enum used in metric_info to declare if a metric is
-         constant or not.
+* Major: Added a metric_flags enum used in metric_info to declare metric traits like
+         if it's constant.
 * Minor: The memory of the metrics object can now be accessed directly through
          data(), like it is for the view class.
 * Minor: Added initialize_constant to metrics class.

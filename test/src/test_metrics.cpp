@@ -22,23 +22,19 @@ TEST(test_metrics, default_constructor)
 
     abacus::metric_info infos[metric_count] = {
         abacus::metric_info{name0, "A boolean metric",
-                            abacus::metric_type::boolean,
-                            abacus::qualifier::non_constant},
+                            abacus::metric_type::boolean},
         abacus::metric_info{name1, "An unsigned integer metric",
-                            abacus::metric_type::uint64,
-                            abacus::qualifier::non_constant},
+                            abacus::metric_type::uint64},
         abacus::metric_info{name2, "A signed integer metric",
-                            abacus::metric_type::int64,
-                            abacus::qualifier::non_constant},
+                            abacus::metric_type::int64},
         abacus::metric_info{name3, "A floating point metric",
-                            abacus::metric_type::float64,
-                            abacus::qualifier::non_constant},
+                            abacus::metric_type::float64},
         abacus::metric_info{name4, "A constant boolean metric",
                             abacus::metric_type::boolean,
-                            abacus::qualifier::constant},
+                            abacus::metric_flags::constant},
         abacus::metric_info{name5, "A constant floating point metric",
                             abacus::metric_type::float64,
-                            abacus::qualifier::constant}};
+                            abacus::metric_flags::constant}};
 
     abacus::metrics metrics(infos);
 
@@ -137,11 +133,9 @@ TEST(test_metrics, copy_storage)
 
     abacus::metric_info infos[2] = {
         abacus::metric_info{name0, "An unsigned integer metric",
-                            abacus::metric_type::uint64,
-                            abacus::qualifier::non_constant},
+                            abacus::metric_type::uint64},
         abacus::metric_info{name1, "A signed integer metric",
-                            abacus::metric_type::int64,
-                            abacus::qualifier::non_constant}};
+                            abacus::metric_type::int64}};
 
     abacus::metrics metrics(infos);
 
@@ -187,11 +181,9 @@ TEST(test_metrics, reset_counters)
 
     abacus::metric_info infos[2] = {
         abacus::metric_info{name0, "An unsigned integer metric",
-                            abacus::metric_type::uint64,
-                            abacus::qualifier::non_constant},
+                            abacus::metric_type::uint64},
         abacus::metric_info{name1, "A signed integer metric",
-                            abacus::metric_type::int64,
-                            abacus::qualifier::non_constant}};
+                            abacus::metric_type::int64}};
 
     abacus::metrics metrics(infos);
 

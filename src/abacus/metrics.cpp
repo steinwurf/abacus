@@ -46,7 +46,7 @@ metrics::metrics(const metric_info* info, std::size_t size) : m_info(info, size)
         storage_bytes += info.description.size();
         // type
         storage_bytes += sizeof(uint8_t);
-        // is_constant
+        // flags
         storage_bytes += sizeof(uint8_t);
     }
 
@@ -102,8 +102,8 @@ metrics::metrics(const metric_info* info, std::size_t size) : m_info(info, size)
     // Write the types into memory
     uint8_t* types_ptr = m_data + detail::types_offset(m_data);
 
-    // Write the is_constant into memory
-    uint8_t* is_constant_ptr = m_data + detail::is_constant_offset(m_data);
+    // Write the flags into memory
+    uint8_t* flags_ptr = m_data + detail::flags_offset(m_data);
 
     for (std::size_t i = 0; i < m_info.size(); i++)
     {
@@ -125,13 +125,11 @@ metrics::metrics(const metric_info* info, std::size_t size) : m_info(info, size)
                     info.description.size());
         descriptions_ptr += info.description.size();
 
-        std::memcpy(is_constant_ptr, &info.is_constant,
-                    sizeof(info.is_constant));
-        is_constant_ptr += sizeof(info.is_constant);
+        std::memcpy(flags_ptr, &info.flags, sizeof(info.flags));
+        flags_ptr += sizeof(info.flags);
 
-        auto type = metric_type::uninitialized;
-        std::memcpy(types_ptr, &type, sizeof(type));
-        types_ptr += sizeof(type);
+        std::memcpy(types_ptr, &info.type, sizeof(info.type));
+        types_ptr += sizeof(info.type);
     }
 }
 
@@ -205,7 +203,7 @@ auto metrics::is_metric_float64(std::size_t index) const -> bool
 auto metrics::is_metric_constant(std::size_t index) const -> bool
 {
     assert(index < metric_count());
-    return m_info[index].is_constant == qualifier::constant;
+    return (bool)(m_info[index].flags & metric_flags::constant);
 }
 
 void metrics::initialize_constant(const std::string& name, uint64_t value) const
@@ -326,7 +324,6 @@ void metrics::reset_metric(std::size_t index)
         *value_data = 0.0;
         break;
     }
-    case metric_type::uninitialized:
     default:
         assert(false && "Invalid metric type.");
     }
@@ -343,11 +340,11 @@ auto metrics::initialize(std::size_t index) const -> void*
     assert(index < metric_count());
     assert(!is_metric_initialized(index));
 
-    // Write the metric type into memory, this will mark the metric as
-    // initialized.
-    uint8_t* types_ptr = m_data + detail::types_offset(m_data) + index;
-    uint8_t type_byte = static_cast<uint8_t>(m_info[index].type);
-    *types_ptr = type_byte;
+    // Write that the metric has been initialized into memory
+    uint8_t* flags_ptr = m_data + detail::flags_offset(m_data);
+    flags_ptr[index] |= static_cast<uint8_t>(metric_flags::initialized);
+
+    assert(is_metric_initialized(index));
 
     void* value_ptr = detail::raw_value(m_data, index);
     return value_ptr;

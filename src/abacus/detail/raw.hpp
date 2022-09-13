@@ -12,6 +12,7 @@
 #include <limits>
 #include <sstream>
 
+#include "../metric_flags.hpp"
 #include "../metric_type.hpp"
 #include "../version.hpp"
 
@@ -318,31 +319,31 @@ inline auto type(const uint8_t* data, std::size_t index) -> metric_type
     return static_cast<metric_type>(*raw_type(data, index));
 }
 
-inline auto is_constant_offset(const uint8_t* data) -> std::size_t
+inline auto flags_offset(const uint8_t* data) -> std::size_t
 {
     return types_offset(data) + metric_count(data);
 }
 
-inline auto raw_is_constant(uint8_t* data, std::size_t index) -> bool*
+inline auto raw_flags(uint8_t* data, std::size_t index) -> metric_flags*
 {
     assert(data != nullptr);
     assert(index < metric_count(data));
-    return (bool*)(data + is_constant_offset(data) + index);
+    return (metric_flags*)(data + flags_offset(data) + index);
 }
 
-inline auto raw_is_constant(const uint8_t* data, std::size_t index) -> const
-    bool*
+inline auto raw_flags(const uint8_t* data, std::size_t index)
+    -> const metric_flags*
 {
     assert(data != nullptr);
     assert(index < metric_count(data));
-    return (const bool*)(data + is_constant_offset(data) + index);
+    return (const metric_flags*)(data + flags_offset(data) + index);
 }
 
-inline auto is_constant(const uint8_t* data, std::size_t index) -> bool
+inline auto flags(const uint8_t* data, std::size_t index) -> metric_flags
 {
     assert(data != nullptr);
     assert(index < metric_count(data));
-    return *raw_is_constant(data, index);
+    return static_cast<metric_flags>(*raw_flags(data, index));
 }
 
 /// @param offset The offset in the raw memory
@@ -357,8 +358,7 @@ inline auto alignment_padding(std::size_t offset) -> std::size_t
 /// @return The values offset in the raw memory
 inline auto values_offset(const uint8_t* data) -> std::size_t
 {
-    std::size_t offset =
-        is_constant_offset(data) + sizeof(bool) * metric_count(data);
+    std::size_t offset = flags_offset(data) + sizeof(bool) * metric_count(data);
     return offset + alignment_padding(offset);
 }
 
@@ -404,7 +404,7 @@ inline auto is_metric_initialized(const uint8_t* data, std::size_t index)
     assert(index < metric_count(data));
     // If the name is non-zero it is initialized and valid.
     // We just check the first byte to see if it's zero.
-    return type(data, index) != metric_type::uninitialized;
+    return (bool)(flags(data, index) & metric_flags::initialized);
 }
 
 /// @param data The raw memory for the counters
