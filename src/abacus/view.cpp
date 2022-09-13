@@ -63,20 +63,16 @@ auto view::metric_count() const -> uint16_t
 auto view::is_metric_initialized(std::size_t index) const -> bool
 {
     assert(index < metric_count());
-    const char* name_data = detail::raw_name(m_data, index);
-    return name_data[0] != 0;
+    return detail::is_metric_initialized(m_data, index);
 }
 
 auto view::metric_name(std::size_t index) const -> std::string
 {
-    assert(is_metric_initialized(index));
-
     return {detail::raw_name(m_data, index), detail::name_size(m_data, index)};
 }
 
 auto view::metric_description(std::size_t index) const -> std::string
 {
-    assert(is_metric_initialized(index));
     return {detail::raw_description(m_data, index),
             detail::description_size(m_data, index)};
 }
@@ -97,7 +93,8 @@ void view::metric_value(std::size_t index, bool& value) const
 {
     assert(is_metric_initialized(index));
     assert(metric_type(index) == metric_type::boolean);
-    value = *(bool*)(detail::raw_value(m_data, index));
+    value = read<uint8_t>(m_is_big_endian,
+                          (uint8_t*)detail::raw_value(m_data, index));
 }
 
 void view::metric_value(std::size_t index, uint64_t& value) const
@@ -126,8 +123,7 @@ void view::metric_value(std::size_t index, double& value) const
 
 auto view::metric_index(const std::string& name) const -> std::size_t
 {
-    std::size_t index = m_name_to_index.at(name);
-    return index;
+    return m_name_to_index.at(name);
 }
 
 auto view::view_bytes() const -> std::size_t

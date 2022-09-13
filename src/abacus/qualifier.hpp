@@ -11,7 +11,6 @@ namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-
 /// Enum used to declare and identify whether a metric object is a constant or
 /// not.
 enum class qualifier : bool
@@ -21,6 +20,5 @@ enum class qualifier : bool
     /// wrapper for true, a constant
     constant = true
 };
-
 }
 }
