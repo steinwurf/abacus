@@ -7,7 +7,7 @@
 
 #include <cassert>
 #include <map>
-#include <vector>
+#include <string>
 
 #include "detail/value_size_info.hpp"
 #include "metric.hpp"

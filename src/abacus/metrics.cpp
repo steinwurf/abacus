@@ -3,13 +3,14 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include <algorithm>
-#include <cmath>
+#include <cassert>
+#include <cstdint>
 #include <cstring>
-#include <limits>
-#include <numeric>
 
 #include "detail/raw.hpp"
+#include "metric_flags.hpp"
+#include "metric_info.hpp"
+#include "metric_type.hpp"
 #include "metrics.hpp"
 
 #include <endian/is_big_endian.hpp>
@@ -32,7 +33,7 @@ metrics::metrics(const metric_info* info, std::size_t size) : m_info(info, size)
     for (std::size_t i = 0; i < m_info.size(); i++)
     {
         const auto& info = m_info[i];
-        m_name_to_index.insert({info.name, i});
+        m_name_to_index.emplace(info.name, i);
         name_bytes += info.name.size();
         description_bytes += info.description.size();
 

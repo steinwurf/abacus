@@ -6,8 +6,7 @@
 #pragma once
 
 #include <cassert>
-#include <type_traits>
-#include <vector>
+#include <cstdint>
 
 #include "metric_type.hpp"
 #include "version.hpp"

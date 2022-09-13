@@ -36,17 +36,10 @@ void view::set_data(const uint8_t* data)
 {
     assert(data != nullptr);
     m_data = data;
-
     m_is_big_endian = detail::is_big_endian_byte(m_data);
-
-    // Fill the names and indices as keys in the map.
-    for (std::size_t i = 0; i < metric_count(); i++)
+    for (std::size_t i = 0; i < metric_count(); ++i)
     {
-        if (!is_metric_initialized(i))
-        {
-            continue;
-        }
-        m_name_to_index.insert({metric_name(i), i});
+        m_name_to_index.emplace(metric_name(i), i);
     }
 }
 
