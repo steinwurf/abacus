@@ -17,11 +17,10 @@ Latest
 * Major: Removed title from the class metrics data-header.
 * Major: Removed the metrics::set_metrics_title() member funciton
 * Major: Removed to_json() functions on metrics and view classes and added
-         free functions that take a single view or a vector of views.
+         free functions.
 * Major: Added a byte to the memory layout that indicates if the metrics are
          written as big endian.
-* Major: Added a metric_flags enum used in metric_info to declare metric traits like
-         if it's constant.
+* Major: Added a metric_flags enum to declare metric traits like if it's constant.
 * Minor: The memory of the metrics object can now be accessed directly through
          data(), like it is for the view class.
 * Minor: Added initialize_constant to metrics class.
