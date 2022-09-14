@@ -1,79 +1,173 @@
 // Copyright (c) Steinwurf ApS 2020.
 // All Rights Reserved
 //
-// Distributed under the "BSD License". See the accompanying LICENSE.rst file.
+// Distributed under the "BSD License". See the accompanying LICENSE.rst
+// file.
 
 #include <cstring>
 #include <gtest/gtest.h>
 
 #include <abacus/metrics.hpp>
+
 TEST(test_metrics, default_constructor)
 {
-    uint16_t max_metrics = 10;
-    uint16_t max_name_bytes = 32;
-    std::string title = "test_metrics";
+    const uint16_t metric_count = 6;
 
-    abacus::metrics metrics(max_metrics, max_name_bytes, title);
+    std::string name0 = "metric0";
+    std::string name1 = "metric1";
+    std::string name2 = "metric2";
+    std::string name3 = "metric3";
+    std::string name4 = "metric4";
+    std::string name5 = "metric5";
 
-    auto count1 = metrics.initialize_metric(0, "count_1");
+    abacus::metric_info infos[metric_count] = {
+        abacus::metric_info{name0, "A boolean metric",
+                            abacus::metric_type::boolean},
+        abacus::metric_info{name1, "An unsigned integer metric",
+                            abacus::metric_type::uint64},
+        abacus::metric_info{name2, "A signed integer metric",
+                            abacus::metric_type::int64},
+        abacus::metric_info{name3, "A floating point metric",
+                            abacus::metric_type::float64},
+        abacus::metric_info{name4, "A constant boolean metric",
+                            abacus::metric_type::boolean,
+                            abacus::metric_flags::constant},
+        abacus::metric_info{name5, "A constant floating point metric",
+                            abacus::metric_type::float64,
+                            abacus::metric_flags::constant}};
 
-    auto storage_size =
-        5 + max_name_bytes +
-        (8 - (5 + max_name_bytes + max_metrics * max_name_bytes) % 8) +
-        max_metrics * (max_name_bytes + sizeof(uint64_t));
+    abacus::metrics metrics(infos);
 
+    EXPECT_EQ(metrics.metric_count(), metric_count);
+
+    EXPECT_FALSE(metrics.is_metric_constant(0));
+    EXPECT_FALSE(metrics.is_metric_constant(1));
+    EXPECT_FALSE(metrics.is_metric_constant(2));
+    EXPECT_TRUE(metrics.is_metric_constant(3));
+    EXPECT_FALSE(metrics.is_metric_constant(4));
+    EXPECT_TRUE(metrics.is_metric_constant(5));
+
+    EXPECT_FALSE(metrics.is_metric_initialized(0));
+    auto metric0 =
+        metrics.initialize_metric<abacus::metric_type::uint64>(name1);
     EXPECT_TRUE(metrics.is_metric_initialized(0));
-    EXPECT_EQ(metrics.metric_name(0), "count_1");
-    EXPECT_EQ(metrics.metric_value(0), 0U);
-    EXPECT_EQ(metrics.storage_bytes(), storage_size);
 
-    ++count1;
+    EXPECT_FALSE(metrics.is_metric_initialized(1));
+    auto metric1 = metrics.initialize_metric<abacus::metric_type::int64>(name2);
+    EXPECT_TRUE(metrics.is_metric_initialized(1));
 
-    EXPECT_EQ(metrics.metric_value(0), 1U);
+    EXPECT_FALSE(metrics.is_metric_initialized(2));
+    auto metric2 =
+        metrics.initialize_metric<abacus::metric_type::float64>(name3);
+    EXPECT_TRUE(metrics.is_metric_initialized(2));
 
-    std::string title1 = "test_metrics1";
+    EXPECT_FALSE(metrics.is_metric_initialized(4));
+    auto metric3 =
+        metrics.initialize_metric<abacus::metric_type::boolean>(name0);
+    EXPECT_TRUE(metrics.is_metric_initialized(4));
 
-    abacus::metrics metrics1(max_metrics, max_name_bytes, title1);
+    EXPECT_FALSE(metrics.is_metric_initialized(5));
+    metrics.initialize_constant(name4, true);
+    EXPECT_TRUE(metrics.is_metric_initialized(5));
 
-    auto count2 = metrics1.initialize_metric(0, "count_2");
+    EXPECT_FALSE(metrics.is_metric_initialized(3));
+    metrics.initialize_constant(name5, 42.42);
+    EXPECT_TRUE(metrics.is_metric_initialized(3));
 
-    EXPECT_TRUE(metrics1.is_metric_initialized(0));
-    EXPECT_EQ(metrics1.metric_name(0), "count_2");
-    EXPECT_EQ(metrics1.metric_value(0), 0U);
+    EXPECT_EQ(metrics.metric_name(0), name1);
+    EXPECT_EQ(metrics.metric_name(1), name2);
+    EXPECT_EQ(metrics.metric_name(2), name3);
+    EXPECT_EQ(metrics.metric_name(4), name0);
+    EXPECT_EQ(metrics.metric_name(5), name4);
 
-    ++count2;
+    EXPECT_EQ(metrics.metric_description(0), "An unsigned integer metric");
+    EXPECT_EQ(metrics.metric_description(1), "A signed integer metric");
+    EXPECT_EQ(metrics.metric_description(2), "A floating point metric");
+    EXPECT_EQ(metrics.metric_description(3),
+              "A constant floating point metric");
+    EXPECT_EQ(metrics.metric_description(4), "A boolean metric");
+    EXPECT_EQ(metrics.metric_description(5), "A constant boolean metric");
 
-    EXPECT_EQ(metrics1.metric_value(0), 1U);
+    metric0 = 4U;
+    metric1 = -4;
+    metric2 = 3.14;
+    metric3 = true;
 
-    std::string title2 = "test_metrics2";
-    abacus::metrics metrics2(max_metrics, max_name_bytes, title2);
+    uint64_t uint_value = 0U;
+    int64_t int_value = 0;
+    double float_value = 0.0;
+    bool bool_value = false;
 
-    auto count3 = metrics2.initialize_metric(0, "count_3");
+    metrics.metric_value(0, uint_value);
+    EXPECT_EQ(uint_value, 4U);
 
-    EXPECT_TRUE(metrics2.is_metric_initialized(0));
-    EXPECT_EQ(metrics2.metric_name(0), "count_3");
-    EXPECT_EQ(metrics2.metric_value(0), 0U);
+    metrics.metric_value(1, int_value);
+    EXPECT_EQ(int_value, -4);
 
-    count3 = 5U;
+    metrics.metric_value(2, float_value);
+    EXPECT_EQ(float_value, 3.14);
 
-    EXPECT_EQ(metrics2.metric_value(0), 5U);
+    metrics.metric_value(3, float_value);
+    EXPECT_EQ(float_value, 42.42);
+
+    metrics.metric_value(4, bool_value);
+    EXPECT_EQ(bool_value, true);
+
+    metrics.metric_value(5, bool_value);
+    EXPECT_EQ(bool_value, true);
+
+    EXPECT_EQ(metrics.metric_index(name0), 4U);
+    EXPECT_EQ(metrics.metric_index(name1), 0U);
+    EXPECT_EQ(metrics.metric_index(name2), 1U);
+    EXPECT_EQ(metrics.metric_index(name3), 2U);
+    EXPECT_EQ(metrics.metric_index(name4), 5U);
+    EXPECT_EQ(metrics.metric_index(name5), 3U);
 }
 
 TEST(test_metrics, copy_storage)
 {
-    uint16_t max_metrics = 10;
-    uint16_t max_name_bytes = 32;
+    uint16_t metric_count = 2;
 
-    abacus::metrics metrics(max_metrics, max_name_bytes, "test_metrics");
+    std::string name0 = "metric0";
+    std::string name1 = "metric1";
 
-    metrics.initialize_metric(0, "count_1");
+    abacus::metric_info infos[2] = {
+        abacus::metric_info{name0, "An unsigned integer metric",
+                            abacus::metric_type::uint64},
+        abacus::metric_info{name1, "A signed integer metric",
+                            abacus::metric_type::int64}};
 
-    std::size_t size = metrics.storage_bytes();
+    abacus::metrics metrics(infos);
+
+    metrics.initialize_metric<abacus::metric_type::uint64>(name0);
+    metrics.initialize_metric<abacus::metric_type::int64>(name1);
+
+    std::size_t size = 0;
+    // header size
+    size += 12;
+    // name and description sizes
+    size += metric_count * 2 * 2;
+    // names and descriptions
+    for (std::size_t i = 0; i < metric_count; ++i)
+    {
+        size += infos[i].name.size();
+        size += infos[i].description.size();
+    }
+    // types
+    size += metric_count;
+    // is_contant bools
+    size += metric_count;
+    // alignment padding
+    size += size % 8 == 0 ? 0 : 8 - (size % 8);
+    // values
+    size += metric_count * 8;
+
+    ASSERT_EQ(size, metrics.storage_bytes());
     std::vector<uint8_t> data1(size);
     std::vector<uint8_t> data2(size);
 
-    metrics.copy_storage(data1.data());
-    metrics.copy_storage(data2.data());
+    metrics.copy_storage(data1.data(), data1.size());
+    metrics.copy_storage(data2.data(), data2.size());
 
     EXPECT_EQ(metrics.storage_bytes(), data1.size());
     EXPECT_EQ(metrics.storage_bytes(), data2.size());
@@ -82,26 +176,57 @@ TEST(test_metrics, copy_storage)
 
 TEST(test_metrics, reset_counters)
 {
-    uint64_t count = 1;
-    uint16_t max_name_bytes = 32;
-    uint16_t max_metrics = 10;
+    std::string name0 = "metric0";
+    std::string name1 = "metric1";
 
-    abacus::metrics metrics(max_metrics, max_name_bytes, "metrics");
+    abacus::metric_info infos[2] = {
+        abacus::metric_info{name0, "An unsigned integer metric",
+                            abacus::metric_type::uint64},
+        abacus::metric_info{name1, "A signed integer metric",
+                            abacus::metric_type::int64}};
 
-    for (std::size_t i = 0; i < max_metrics; i++)
-    {
-        std::string name = "metric" + std::to_string(i);
-        auto metric = metrics.initialize_metric(i, name);
-        metric = count;
-    }
+    abacus::metrics metrics(infos);
 
-    metrics.reset_metric(9);
-    EXPECT_EQ(metrics.metric_value(9), (uint64_t)0);
+    auto uint_metric =
+        metrics.initialize_metric<abacus::metric_type::uint64>(name0);
+    auto int_metric =
+        metrics.initialize_metric<abacus::metric_type::int64>(name1);
+
+    uint64_t uint_value = 0U;
+    int64_t int_value = 0;
+
+    uint_metric = 4U;
+    int_metric = -4;
+
+    metrics.metric_value(0, uint_value);
+    metrics.metric_value(1, int_value);
+
+    EXPECT_EQ(uint_value, 4U);
+    EXPECT_EQ(int_value, -4);
+
+    metrics.reset_metric(0);
+    metrics.reset_metric(1);
+
+    metrics.metric_value(0, uint_value);
+    metrics.metric_value(1, int_value);
+
+    EXPECT_EQ(uint_value, 0U);
+    EXPECT_EQ(int_value, 0);
+
+    uint_metric = 4U;
+    int_metric = -4;
+
+    metrics.metric_value(0, uint_value);
+    metrics.metric_value(1, int_value);
+
+    EXPECT_EQ(uint_value, 4U);
+    EXPECT_EQ(int_value, -4);
 
     metrics.reset_metrics();
 
-    for (std::size_t i = 0; i < max_metrics; i++)
-    {
-        EXPECT_EQ(metrics.metric_value(i), (uint64_t)0);
-    }
+    metrics.metric_value(0, uint_value);
+    metrics.metric_value(1, int_value);
+
+    EXPECT_EQ(uint_value, 0U);
+    EXPECT_EQ(int_value, 0);
 }

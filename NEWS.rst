@@ -6,7 +6,25 @@ every change, see the Git log.
 
 Latest
 ------
-* tbd
+* Major: Added support for wrapping uint64_t, double, int64_t and bool with
+         class metric<>() through the metric_type enum.
+* Major: Added metric_description, type and flags. Changed the memory
+         memory layout thereafter.
+* Minor: Added enum metric_type to parameterize metric<>() and
+         initialize_metric() with.
+* Major: Added a struct metric_info, used in a vector in the metrics constructor.
+* Major: metrics::initialize_metric() is now templated and takes a metric name.
+* Major: Removed title from the class metrics data-header.
+* Major: Removed the metrics::set_metrics_title() member funciton
+* Major: Removed to_json() functions on metrics and view classes and added
+         free functions.
+* Major: Added a byte to the memory layout that indicates if the metrics are
+         written as big endian.
+* Major: Added a metric_flags enum to declare metric traits like if it's constant.
+* Minor: The memory of the metrics object can now be accessed directly through
+         data(), like it is for the view class.
+* Minor: Added initialize_constant to metrics class.
+
 
 1.1.2
 -----
@@ -31,4 +49,3 @@ Latest
 * Major: Added class view to handle the raw memory of class metrics
 * Minor: Added class view_iterator
 * Minor: Moved to_json() member function to detail
-

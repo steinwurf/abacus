@@ -1,68 +1,65 @@
 // Copyright (c) Steinwurf ApS 2020.
 // All Rights Reserved
 //
-// Distributed under the "BSD License". See the accompanying LICENSE.rst file.
+// Distributed under the "BSD License". See the accompanying LICENSE.rst
+// file.
 
 #include <iostream>
 
 #include <abacus/metrics.hpp>
+#include <abacus/to_json.hpp>
+#include <abacus/view.hpp>
 
 // Simple example of metrics on a car.
 
 int main()
 {
-    /// Choose the constructor values for the metrics class
-    uint64_t max_metrics = 10;
-    uint64_t max_name_bytes = 32;
+    std::string name0 = "fuel_consumption";
+    std::string name1 = "wheels";
+    std::string name2 = "days_until_maintenance";
+    std::string name3 = "registered";
 
-    abacus::metrics car(max_metrics, max_name_bytes, "Car");
+    abacus::metric_info infos[4] = {
+        abacus::metric_info{name0, "Fuel consumption in kilometers per liter",
+                            abacus::metric_type::float64,
+                            abacus::metric_flags::constant},
+        abacus::metric_info{name1, "Wheels on the car",
+                            abacus::metric_type::uint64,
+                            abacus::metric_flags::constant},
+        abacus::metric_info{name2,
+                            "Days until next maintenance, if less than 0, "
+                            "maintenance is overdue",
+                            abacus::metric_type::int64},
+        abacus::metric_info{name3, "Is the car registered",
+                            abacus::metric_type::boolean}};
 
-    /// A car has headlights. Two of them usually
-    auto headlights = car.initialize_metric(0, "headlights");
+    abacus::metrics car(infos);
 
-    headlights += 2;
+    car.initialize_constant("fuel_consumption", (double)22.3);
+    car.initialize_constant("wheels", (uint64_t)4);
+    auto days_until_maintenance =
+        car.initialize_metric<abacus::metric_type::int64>(
+            "days_until_maintenance");
+    auto registered =
+        car.initialize_metric<abacus::metric_type::boolean>("registered");
 
-    /// What about the gas mileage?
-    auto fuel_consumption = car.initialize_metric(1, "fuel consumption km/L");
+    // The car should be registered.
+    registered = true;
 
-    fuel_consumption += 20;
-
-    /// Most cars are 4-wheelers as well
-    auto wheels = car.initialize_metric(2, "Wheels");
-
-    wheels += 4;
-
-    /// We can print out the counters neatly.
-    std::cout << car.to_json() << std::endl;
+    // The car is overdue maintenance.
+    days_until_maintenance = -10;
 
     /// We want to export the metrics memory, so we need a new storage
     std::vector<uint8_t> data(car.storage_bytes());
 
     /// Copy the memory into the new storage
-    car.copy_storage(data.data());
+    car.copy_storage(data.data(), data.size());
 
-    /// We can use the view class to read the pointed-to values
     abacus::view car_view;
 
-    /// The view should operate on the copied storage
     car_view.set_data(data.data());
 
-    /// Lets see what it contains:
-    std::cout << "Car has the following metrics:" << std::endl;
-
-    for (std::size_t i = 0; i < car_view.max_metrics(); i++)
-    {
-        /// If a counter in memory has no name, it's not yet initialized.
-        /// We will ignore it.
-        if (!car_view.is_metric_initialized(i))
-        {
-            continue;
-        }
-        /// Get the name from memory and the address of the value and
-        /// dereference it.
-        std::cout << "\t" << car_view.metric_name(i) << ": "
-                  << car_view.metric_value(i) << std::endl;
-    }
+    std::cout << abacus::to_json(car_view) << std::endl;
 
     return 0;
 }

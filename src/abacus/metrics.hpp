@@ -6,98 +6,302 @@
 #pragma once
 
 #include <cassert>
-#include <vector>
+#include <map>
+#include <string>
 
+#include "detail/value_size_info.hpp"
 #include "metric.hpp"
+#include "metric_type.hpp"
 #include "version.hpp"
-#include "view.hpp"
 
 namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-/// This class preallocates memory at construction to hold a header, a title
-/// of size max_name_bytes, max_metrics metrics, each having a name of size
-/// max_name_bytes, with a metric value of 8 bytes (sizeof(uint64_t)).
+/// This class is used for creating descriptive counters that are contiguous in
+/// memory, to allow for fast access fast and fast arithmetic operations.
 ///
-/// The total preallocated memory is
-/// header_size + max_name_bytes + max_metrics * (max_name_bytes + 8).
+/// The class preallocates memory at construction with the following
+/// layout
 ///
-/// To save memory, take caution in choosing the max_metrics. If your
-/// library only uses 10 counters, you should probably not choose
-/// max_metrics = 64. You can update the max_metrics value as you go to
-/// ensure optimal memory usage.
+/// 1. Header of 12 bytes
+///     * Number of metrics (2 bytes)
+///     * Is big endian (2 byte)
+///     * Total name bytes (2 bytes)
+///     * Total description bytes (2 bytes)
+///     * Number of 8-byte-value metrics (2 bytes)
+///     * Number of 1-byte-value metrics (2 bytes)
 ///
-/// The header consists of 42 bits of 3 values:
-/// 1. 16 bit denoting the max size of name
-/// 2. 16 bit denoting the max number of counters
-/// 3. 8 bit denoting the max size of values
+/// 2. The name sizes in bytes (2 bytes per metric)
+/// 3. The description sizes in bytes (2 bytes per metric)
+/// 4. The names of the metrics (? bytes)
+/// 5. The descriptions of the metrics (? bytes)
+/// 6. The types of the metrics (1 byte per metric)
+/// 7. The flags of the metrics; initialized, constant. (1 byte per metric)
+/// 8. Alignment padding (if needed, max 7 bytes)
+/// 9. The 8-byte-values (8 bytes per 8-byte metric)
+/// 10. The 1-byte-values (1 byte per 1-byte metric)
+
 class metrics
 {
 
 public:
-    /// Default constructor
-    /// @param max_metrics The maximum number of metrics this object will
-    /// contain. Must be a number that can fit in 2 bytes.
-    /// @param max_name_bytes The maximum length in bytes the title/names of the
-    /// counters will contain. Must be a number that can fit in 2 bytes.
-    /// @param title The title of the metrics object
-    metrics(std::size_t max_metrics, std::size_t max_name_bytes,
-            const std::string& title);
+    /// Constructor
+    /// @param info The info of the metrics in a pointer.
+    /// @param size The size of the pointer in elements.
+    metrics(const metric_info* info, std::size_t size);
+
+    /// Delegate Constructor. Will pass a size-deduced array to the pointer/size
+    /// constructor
+    /// @param info The info of the metrics that will be contained within this
+    /// object with types, names and descriptions
+    template <std::size_t N>
+    metrics(const metric_info (&info)[N]) : metrics(info, N)
+    {
+    }
+
+    metrics(const std::vector<metric_info>& infos) :
+        metrics(infos.data(), infos.size())
+    {
+    }
 
     /// Destructor
     ~metrics();
 
-    /// @return the maximum number of metrics that was provided to the
-    /// constructor
-    auto max_metrics() const -> std::size_t;
+    /// @returns the underlying data of the metrics object.
+    auto data() const -> const uint8_t*;
 
-    /// @return the maximum number of bytes used for a metric name that was
-    /// provided to the constructor
-    auto max_name_bytes() const -> std::size_t;
+    /// @returns the number of metrics in the collection
+    auto metric_count() const -> std::size_t;
 
-    /// Set the name of all the metrics contained within
-    /// @param title The title of the metrics object
-    void set_metrics_title(const std::string& title);
+    /// @return the bytes used for metric names from a metrics data pointer
+    auto name_bytes() const -> uint16_t;
 
-    /// @param index The index of a counter. Must be less than max_metrics.
-    /// @return The name of a counter as a string
-    auto metric_name(std::size_t index) const -> std::string;
+    /// @return the bytes used for metric descriptions from a metrics data
+    /// pointer
+    auto description_bytes() const -> uint16_t;
 
-    /// @param index The index of a counter. Must be less than max_metrics.
-    /// @return A specific count
-    auto metric_value(std::size_t index) const -> uint64_t;
-
-    /// @param index The index of the new counter. Must be less than
-    /// max_metrics.
-    /// @param name The name of the new counter. Must be less than
-    /// max_name_bytes bytes
-    /// @return The value of the counter
-    auto initialize_metric(std::size_t index, const std::string& name)
-        -> metric;
-
-    /// @param index The index of the new counter. Must be less than
-    /// max_metrics.
-    /// @return True if the counter has been initialized
+    /// @returns true if the metric is initialized, that is if
+    /// initialize_metric() has been called for the given index.
+    /// @param index The index of the metric to check. Must be less than
+    /// metric_count().
     auto is_metric_initialized(std::size_t index) const -> bool;
 
-    /// Copies the memory backing the counter storage to a data pointer
-    /// @param data The data pointer to copy the raw memory to
-    void copy_storage(uint8_t* data) const;
+    /// @returns the name of the metric at the given index.
+    /// The name is not written into memory until the metric is initialized with
+    /// either initialize_metric<>() or initialize_constant().
+    /// @param index The index of the metric to check. Must be less than
+    /// metric_count().
+    auto metric_name(std::size_t index) const -> std::string;
 
-    /// @return The size of the counter storage in bytes
+    /// @returns the description of the metric at the given index.
+    /// @param index The index of the metric to check. Must be less than
+    /// metric_count() and initialized with initialize_metric<>() or
+    /// initialize_constant().
+    auto metric_description(std::size_t index) const -> std::string;
+
+    /// @returns true if the value of the metric is of type uint64_t
+    /// @param index The index of the metric to check. Must be less than
+    /// metric_count() and initialized with initialize_metric<>() or
+    /// initialize_constant().
+    auto is_metric_uint64(std::size_t index) const -> bool;
+
+    /// @returns true if the value of the metric is of type int64_t
+    /// @param index The index of the metric to check. Must be less than
+    /// metric_count() and initialized with initialize_metric<>() or
+    /// initialize_constant().
+    auto is_metric_int64(std::size_t index) const -> bool;
+
+    /// @returns true if the value of the metric is of type double
+    /// @param index The index of the metric to check. Must be less than
+    /// metric_count() and initialized with initialize_metric<>() or
+    /// initialize_constant().
+    auto is_metric_float64(std::size_t index) const -> bool;
+
+    /// @returns true if the value of the metric is of type bool
+    /// @param index The index of the metric to check. Must be less than
+    /// metric_count() and initialized with initialize_metric<>() or
+    /// initialize_constant().
+    auto is_metric_boolean(std::size_t index) const -> bool;
+
+    /// @returns true if the metric at the given index is a constant, otherwise
+    /// false.
+    /// @param index The index of the metric to check. Must be less than
+    /// metric_count().
+    auto is_metric_constant(std::size_t index) const -> bool;
+
+    /// @returns A wrapper for a counter at the given index with type
+    /// appropriate with given enum.
+    ///
+    /// This function writes the name, description, value, etc. for this index
+    /// into memory, such that only data for initialized metrics will be
+    /// available when extracting the memory through copy_storage().
+    ///
+    /// The templated type must match the one given through the
+    /// metric_info used for the constructor. The indices of the metrics do not
+    /// match the ones in the info, so use metric_index() to get the correct
+    /// index. Please do not hard-code this, as this may break with changes to
+    /// yours or our code.
+    ///
+    /// @param name The name of the metric. This is used for a check to ensure
+    /// that the name matches the one at the given index.
+    template <metric_type MetricType>
+    auto initialize_metric(const std::string& name) const -> metric<MetricType>
+    {
+        using value_type = typename metric<MetricType>::value_type;
+
+        auto index = metric_index(name);
+        value_type* value_ptr = (value_type*)initialize(index);
+        return metric<MetricType>{value_ptr};
+    }
+
+    /// Initialize a constant uint64_t metric at the given index.
+    ///
+    /// A constant metric that is initialized with a value and never reset.
+    /// The value is written into memory at the time of initialization and
+    /// cannot be altered within the same runtime-environment.
+    ///
+    /// The indices of the metrics do not
+    /// match the ones in the info, so use metric_index() to get the correct
+    /// index. Please do not hard-code this, as this may break with changes to
+    /// yours or our code.
+    ///
+    /// @param value The value of the constant. A uint64_t value.
+    /// @param name The name of the metric. This is used for a check to ensure
+    /// that the name matches the one at the given index.
+    void initialize_constant(const std::string& name, uint64_t value) const;
+
+    /// Initialize a constant int64_t metric at the given index.
+    ///
+    /// A constant metric that is initialized with a value and never reset.
+    /// The value is written into memory at the time of initialization and
+    /// cannot be altered within the same runtime-environment.
+    ///
+    /// The indices of the metrics do not
+    /// match the ones in the info, so use metric_index() to get the correct
+    /// index. Please do not hard-code this, as this may break with changes to
+    /// yours or our code.
+    ///
+    /// @param value The value of the constant. A int64_t value.
+    /// @param name The name of the metric. This is used for a check to ensure
+    /// that the name matches the one at the given index.
+    void initialize_constant(const std::string& name, int64_t value) const;
+
+    /// Initialize a constant double metric at the given index.
+    ///
+    /// A constant metric that is initialized with a value and never reset.
+    /// The value is written into memory at the time of initialization and
+    /// cannot be altered within the same runtime-environment.
+    ///
+    /// The indices of the metrics do not
+    /// match the ones in the info, so use metric_index() to get the correct
+    /// index. Please do not hard-code this, as this may break with changes to
+    /// yours or our code.
+    ///
+    /// @param value The value of the constant. A double value.
+    /// @param name The name of the metric. This is used for a check to ensure
+    /// that the name matches the one at the given index.
+    void initialize_constant(const std::string& name, double value) const;
+
+    /// Initialize a constant bool metric at the given index.
+    ///
+    /// A constant metric that is initialized with a value and never reset.
+    /// The value is written into memory at the time of initialization and
+    /// cannot be altered within the same runtime-environment.
+    ///
+    /// The indices of the metrics do not
+    /// match the ones in the info, so use metric_index() to get the correct
+    /// index. Please do not hard-code this, as this may break with changes to
+    /// yours or our code.
+    ///
+    /// @param value The value of the constant. A bool value.
+    /// @param name The name of the metric. This is used for a check to ensure
+    /// that the name matches the one at the given index.
+    void initialize_constant(const std::string& name, bool value) const;
+
+    /// Copy the value of the uint64_t metric into a passed reference. This is
+    /// used to extract the values during runtime.
+    ///
+    /// Make sure that the type and index are correct using metric_type()
+    /// and metric_index() to get the correct index and
+    /// type. Please do not hard-code these values, as this may break with
+    /// changes to your code.
+    ///
+    /// @param index The index of the metric to copy. Must be less than
+    /// metric_count().
+    /// @param value The variable to copy the value into. A uint64_t reference.
+    void metric_value(std::size_t index, uint64_t& value) const;
+
+    /// Copy the value of the int64_t metric into a passed reference. This is
+    /// used to extract the values during runtime.
+    ///
+    /// Make sure that the type and index are correct using metric_type()
+    /// and metric_index() to get the correct index and
+    /// type. Please do not hard-code these values, as this may break with
+    /// changes to your code.
+    ///
+    /// @param index The index of the metric to copy. Must be less than
+    /// metric_count().
+    /// @param value The variable to copy the value into. A int64_t reference.
+    void metric_value(std::size_t index, int64_t& value) const;
+
+    /// Copy the value of the double metric into a passed reference. This is
+    /// used to extract the values during runtime.
+    ///
+    /// Make sure that the type and index are correct using metric_type()
+    /// and metric_index() to get the correct index and
+    /// type. Please do not hard-code these values, as this may break with
+    /// changes to your code.
+    ///
+    /// @param index The index of the metric to copy. Must be less than
+    /// metric_count().
+    /// @param value The variable to copy the value into. A double reference.
+    void metric_value(std::size_t index, double& value) const;
+
+    /// Copy the value of the bool metric into a passed reference. This is used
+    /// to extract the values during runtime.
+    ///
+    /// Make sure that the type and index are correct using metric_type()
+    /// and metric_index() to get the correct index and
+    /// type. Please do not hard-code these values, as this may break with
+    /// changes to your code.
+    ///
+    /// @param index The index of the metric to copy. Must be less than
+    /// metric_count().
+    /// @param value The variable to copy the value into. A bool reference.
+    void metric_value(std::size_t index, bool& value) const;
+
+    /// @returns The index of a metric with the given name. Throws an assert if
+    /// no metric is found with the given name. Returns the numeric max of
+    /// std::size_t if asserts are disabled.
+    ///
+    /// @param name The name of the metric.
+    auto metric_index(const std::string& name) const -> std::size_t;
+
+    /// Copies the memory of the metrics into the given data buffer.
+    /// The storage_bytes() function is used to allocate the exact amount of
+    /// memory needed. Example code to illustrade intented use:
+    ///
+    ///     std::vector<uint8_t> copied_data(metrics.storage_bytes());
+    ///     metrics.copy_storage(copied_data.data(), copied_data.size());
+    ///
+    /// @param data the buffer to copy data into.
+    /// @param size the size of the buffer. Must be equal to storage_bytes() to
+    /// ensure memory alignment.
+    void copy_storage(uint8_t* data, std::size_t size) const;
+
+    /// @return The size in bytes of the metrics data
     auto storage_bytes() const -> std::size_t;
 
-    /// Reset all the counters
+    /// Resets the values of all initialized and non-constant metrics.
     void reset_metrics();
 
-    /// Reset specific counter
-    /// @param index The index of the new counter. Must be less than
-    /// max_metrics.
+    /// Resets the value of the metric at the given index. The metric must not
+    /// be constant and must be initialized.
+    ///
+    /// @param index the index of the metric to reset. Must be less than
+    /// metric_count()
     void reset_metric(std::size_t index);
-
-    /// @return All counters in json format
-    auto to_json() const -> std::string;
 
 private:
     /// No copy
@@ -113,15 +317,18 @@ private:
     metrics& operator=(metrics&&) = delete;
 
 private:
-    /// The number of values
-    std::size_t m_max_metrics = 0;
+    /// initialize the metrics
+    auto initialize(std::size_t index) const -> void*;
 
-    /// The number of values
-    std::size_t m_max_name_bytes = 0;
+private:
+    /// The info of the metrics seperated by byte-sizes
+    detail::value_size_info m_info;
+
+    /// Map to get index from names
+    std::map<std::string, std::size_t> m_name_to_index;
 
     /// The raw memory for the counters (both value and name)
     uint8_t* m_data = nullptr;
 };
-
 }
 }

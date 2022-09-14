@@ -3,49 +3,135 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include <algorithm>
-#include <cmath>
+#include <cassert>
+#include <cstdint>
 #include <cstring>
-#include <limits>
 
 #include "detail/raw.hpp"
+#include "metric_flags.hpp"
+#include "metric_info.hpp"
+#include "metric_type.hpp"
 #include "metrics.hpp"
+
+#include <endian/is_big_endian.hpp>
 
 namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-metrics::metrics(std::size_t max_metrics, std::size_t max_name_bytes,
-                 const std::string& title) :
-    m_max_metrics(max_metrics),
-    m_max_name_bytes(max_name_bytes)
+metrics::metrics(const metric_info* info, std::size_t size) : m_info(info, size)
 {
-    assert(m_max_metrics > 0);
-    assert(m_max_metrics <= std::numeric_limits<uint16_t>::max());
-    assert(m_max_name_bytes > 0);
-    assert(m_max_name_bytes <= std::numeric_limits<uint16_t>::max());
-    assert(title.size() < m_max_name_bytes);
+    assert(size > 0);
+    assert(size <= std::numeric_limits<uint16_t>::max());
 
-    // Allocate the memory for the counters
-    std::size_t memory_needed = storage_bytes();
-    m_data = static_cast<uint8_t*>(::operator new(memory_needed));
+    uint16_t name_bytes = 0;
+    uint16_t description_bytes = 0;
 
+    // First calculate the total size of header
+    std::size_t storage_bytes = detail::header_bytes();
+    for (std::size_t i = 0; i < m_info.size(); i++)
+    {
+        const auto& info = m_info[i];
+        m_name_to_index.emplace(info.name, i);
+        name_bytes += info.name.size();
+        description_bytes += info.description.size();
+
+        // name_size
+        storage_bytes += sizeof(uint16_t);
+        // description size
+        storage_bytes += sizeof(uint16_t);
+        // name
+        storage_bytes += info.name.size();
+        // description
+        storage_bytes += info.description.size();
+        // type
+        storage_bytes += sizeof(uint8_t);
+        // flags
+        storage_bytes += sizeof(uint8_t);
+    }
+
+    // Add padding to ensure alignment for the values.
+    if (storage_bytes % 8 != 0)
+    {
+        storage_bytes += detail::alignment_padding(storage_bytes);
+    }
+
+    // Finally, add the bytes needed for the values.
+    storage_bytes +=
+        8 * m_info.eight_byte_metrics_count() + m_info.one_byte_metrics_count();
+
+    // Allocate the memory needed.
+    m_data = static_cast<uint8_t*>(::operator new(storage_bytes));
+
+    // Make sure that the data is 8byte-aligned
     assert(reinterpret_cast<uint64_t>(m_data) % 8U == 0U);
 
     // Zero out all memory
-    std::memset(m_data, 0, memory_needed);
+    std::memset(m_data, 0, storage_bytes);
 
-    // // Write the header
-    new (m_data) uint16_t(m_max_name_bytes);
-    new (m_data + 2) uint16_t(m_max_metrics);
-    new (m_data + 4) uint8_t(8);
+    // Write the header
+    // The number of the metrics
+    new (m_data) uint16_t(static_cast<uint16_t>(m_info.size()));
+    // The endianness of the data, 0 for little-endian, 1 for big-endian
+    new (m_data + 2) uint8_t(endian::is_big_endian());
+    // The total bytes used for names
+    new (m_data + 4) uint16_t(name_bytes);
+    // The total bytes used for descriptions
+    new (m_data + 6) uint16_t(description_bytes);
+    // The number of 8-byte metric values (uint64_t, int64_t and double types)
+    new (m_data + 8) uint16_t(m_info.eight_byte_metrics_count());
+    // The number of 1-byte metric values (bool type)
+    new (m_data + 10) uint16_t(m_info.one_byte_metrics_count());
 
-    // Write the title
-    set_metrics_title(title);
+    assert((reinterpret_cast<uint64_t>(m_data + detail::values_offset(m_data)) %
+            8U) == 0U);
 
-    assert((reinterpret_cast<uint64_t>(detail::raw_value(m_data, 0)) % 8U) ==
-           0U);
+    // Write the name sizes into memory
+    uint8_t* name_sizes_ptr = m_data + detail::name_sizes_offset();
+
+    // Write the description sizes into memory
+    uint8_t* description_sizes_ptr =
+        m_data + detail::description_sizes_offset(m_data);
+
+    // Write the names into memory
+    uint8_t* names_ptr = m_data + detail::names_offset(m_data);
+
+    // Write the descriptions into memory
+    uint8_t* descriptions_ptr = m_data + detail::descriptions_offset(m_data);
+
+    // Write the types into memory
+    uint8_t* types_ptr = m_data + detail::types_offset(m_data);
+
+    // Write the flags into memory
+    uint8_t* flags_ptr = m_data + detail::flags_offset(m_data);
+
+    for (std::size_t i = 0; i < m_info.size(); i++)
+    {
+        const auto& info = m_info[i];
+        uint16_t name_size = static_cast<uint16_t>(info.name.size());
+        uint16_t description_size =
+            static_cast<uint16_t>(info.description.size());
+        std::memcpy(name_sizes_ptr, &name_size, sizeof(name_size));
+        name_sizes_ptr += sizeof(name_size);
+
+        std::memcpy(description_sizes_ptr, &description_size,
+                    sizeof(description_size));
+        description_sizes_ptr += sizeof(description_size);
+
+        std::memcpy(names_ptr, info.name.data(), info.name.size());
+        names_ptr += info.name.size();
+
+        std::memcpy(descriptions_ptr, info.description.data(),
+                    info.description.size());
+        descriptions_ptr += info.description.size();
+
+        std::memcpy(flags_ptr, &info.flags, sizeof(info.flags));
+        flags_ptr += sizeof(info.flags);
+
+        std::memcpy(types_ptr, &info.type, sizeof(info.type));
+        types_ptr += sizeof(info.type);
+    }
 }
 
 metrics::~metrics()
@@ -53,111 +139,216 @@ metrics::~metrics()
     ::operator delete(m_data);
 }
 
-auto metrics::max_metrics() const -> std::size_t
+auto metrics::data() const -> const uint8_t*
 {
-    return m_max_metrics;
+    return m_data;
 }
 
-auto metrics::max_name_bytes() const -> std::size_t
+auto metrics::metric_count() const -> std::size_t
 {
-    return m_max_name_bytes;
+    return m_info.size();
 }
 
-void metrics::set_metrics_title(const std::string& title)
+auto metrics::name_bytes() const -> uint16_t
 {
-    // Write the title
-    char* title_data = detail::raw_title(m_data);
-    std::memcpy(title_data, title.data(), title.size());
+    return detail::name_bytes(m_data);
 }
 
-auto metrics::metric_name(std::size_t index) const -> std::string
+auto metrics::description_bytes() const -> uint16_t
 {
-    assert(is_metric_initialized(index));
-    return detail::raw_name(m_data, index);
-}
-
-auto metrics::metric_value(std::size_t index) const -> uint64_t
-{
-    assert(is_metric_initialized(index));
-    return *detail::raw_value(m_data, index);
-}
-
-auto metrics::initialize_metric(std::size_t index, const std::string& name)
-    -> metric
-{
-    assert(!is_metric_initialized(index));
-
-    // We check for less than since there also needs to be at least one
-    // zero terminating byte
-    assert(name.size() < m_max_name_bytes);
-
-    char* name_data = detail::raw_name(m_data, index);
-    uint64_t* value_data = detail::raw_value(m_data, index);
-
-    // Copy the name
-    std::memcpy(name_data, name.data(), name.size());
-
-    // Use memcpy here for now, since placement new causes Bus Error on
-    // Raspberry pi
-    uint64_t value = 0U;
-    std::memcpy(value_data, &value, sizeof(uint64_t));
-
-    return metric{value_data};
-}
-
-void metrics::copy_storage(uint8_t* data) const
-{
-    assert(data != nullptr);
-    std::size_t metrics_size = storage_bytes();
-    std::memcpy(data, m_data, metrics_size);
-}
-
-auto metrics::storage_bytes() const -> std::size_t
-{
-    std::size_t values_offset = detail::header_bytes() + m_max_name_bytes +
-                                m_max_metrics * m_max_name_bytes;
-
-    values_offset += detail::values_alignment_padding(values_offset);
-
-    assert(values_offset % 8 == 0);
-
-    std::size_t value_bytes = m_max_metrics * sizeof(uint64_t);
-
-    return values_offset + value_bytes;
+    return detail::descriptions_bytes(m_data);
 }
 
 auto metrics::is_metric_initialized(std::size_t index) const -> bool
 {
+    assert(index < metric_count());
     return detail::is_metric_initialized(m_data, index);
 }
 
-void metrics::reset_metrics()
+auto metrics::metric_name(std::size_t index) const -> std::string
 {
-    for (std::size_t index = 0; index < m_max_metrics; ++index)
+    assert(index < metric_count());
+    return m_info[index].name;
+}
 
-    {
-        if (!is_metric_initialized(index))
-        {
-            continue;
-        }
+auto metrics::metric_description(std::size_t index) const -> std::string
+{
+    assert(index < metric_count());
+    return m_info[index].description;
+}
 
-        reset_metric(index);
-    }
+auto metrics::is_metric_boolean(std::size_t index) const -> bool
+{
+    assert(index < metric_count());
+    return m_info[index].type == metric_type::boolean;
+}
+
+auto metrics::is_metric_uint64(std::size_t index) const -> bool
+{
+    assert(index < metric_count());
+    return m_info[index].type == metric_type::uint64;
+}
+
+auto metrics::is_metric_int64(std::size_t index) const -> bool
+{
+    assert(index < metric_count());
+    return m_info[index].type == metric_type::int64;
+}
+
+auto metrics::is_metric_float64(std::size_t index) const -> bool
+{
+    assert(index < metric_count());
+    return m_info[index].type == metric_type::float64;
+}
+
+auto metrics::is_metric_constant(std::size_t index) const -> bool
+{
+    assert(index < metric_count());
+    return (bool)(m_info[index].flags & metric_flags::constant);
+}
+
+void metrics::initialize_constant(const std::string& name, uint64_t value) const
+{
+    auto index = metric_index(name);
+    assert(is_metric_constant(index));
+    assert(is_metric_uint64(index));
+    *static_cast<uint64_t*>(initialize(index)) = value;
+}
+
+void metrics::initialize_constant(const std::string& name, int64_t value) const
+{
+    auto index = metric_index(name);
+    assert(is_metric_constant(index));
+    assert(is_metric_int64(index));
+    *static_cast<int64_t*>(initialize(index)) = value;
+}
+
+void metrics::initialize_constant(const std::string& name, double value) const
+{
+    auto index = metric_index(name);
+    assert(is_metric_constant(index));
+    assert(is_metric_float64(index));
+    *static_cast<double*>(initialize(index)) = value;
+}
+
+void metrics::initialize_constant(const std::string& name, bool value) const
+{
+    auto index = metric_index(name);
+    assert(is_metric_constant(index));
+    assert(is_metric_boolean(index));
+    *static_cast<bool*>(initialize(index)) = value;
+}
+
+void metrics::metric_value(std::size_t index, uint64_t& value) const
+{
+    assert(index < metric_count());
+    assert(is_metric_initialized(index));
+    assert(is_metric_uint64(index));
+    value = *static_cast<uint64_t*>(detail::raw_value(m_data, index));
+}
+
+void metrics::metric_value(std::size_t index, int64_t& value) const
+{
+    assert(index < metric_count());
+    assert(is_metric_initialized(index));
+    assert(is_metric_int64(index));
+    value = *static_cast<int64_t*>(detail::raw_value(m_data, index));
+}
+
+void metrics::metric_value(std::size_t index, double& value) const
+{
+    assert(index < metric_count());
+    assert(is_metric_initialized(index));
+    assert(is_metric_float64(index));
+    value = *static_cast<double*>(detail::raw_value(m_data, index));
+}
+
+void metrics::metric_value(std::size_t index, bool& value) const
+{
+    assert(index < metric_count());
+    assert(is_metric_initialized(index));
+    assert(is_metric_boolean(index));
+    value = *static_cast<bool*>(detail::raw_value(m_data, index));
+}
+
+auto metrics::metric_index(const std::string& name) const -> std::size_t
+{
+    auto it = m_name_to_index.find(name);
+    assert(it != m_name_to_index.end() && "metric name not found.");
+    return it->second;
+}
+
+void metrics::copy_storage(uint8_t* data, std::size_t size) const
+{
+    assert(data != nullptr);
+    assert(size == storage_bytes());
+    std::memcpy(data, m_data, storage_bytes());
+}
+
+auto metrics::storage_bytes() const -> std::size_t
+{
+    return detail::storage_bytes(m_data);
 }
 
 void metrics::reset_metric(std::size_t index)
 {
+    assert(index < metric_count());
+    assert(is_metric_initialized(index));
+    assert(!is_metric_constant(index));
+
+    metric_type type =
+        static_cast<metric_type>(*detail::raw_type(m_data, index));
+
+    switch (type)
+    {
+    case metric_type::boolean:
+    {
+        bool* value_data = (bool*)detail::raw_value(m_data, index);
+        *value_data = false;
+        break;
+    }
+    case metric_type::uint64:
+    {
+        uint64_t* value_data = (uint64_t*)detail::raw_value(m_data, index);
+        *value_data = 0U;
+        break;
+    }
+    case metric_type::int64:
+    {
+        int64_t* value_data = (int64_t*)detail::raw_value(m_data, index);
+        *value_data = 0;
+        break;
+    }
+    case metric_type::float64:
+    {
+        double* value_data = (double*)detail::raw_value(m_data, index);
+        *value_data = 0.0;
+        break;
+    }
+    default:
+        assert(false && "Invalid metric type.");
+    }
+}
+
+void metrics::reset_metrics()
+{
+    auto values_offset = detail::values_offset(m_data);
+    memset(m_data + values_offset, 0, storage_bytes() - values_offset);
+}
+
+auto metrics::initialize(std::size_t index) const -> void*
+{
+    assert(index < metric_count());
+    assert(!is_metric_initialized(index));
+
+    // Write that the metric has been initialized into memory
+    uint8_t* flags_ptr = m_data + detail::flags_offset(m_data);
+    flags_ptr[index] |= static_cast<uint8_t>(metric_flags::initialized);
+
     assert(is_metric_initialized(index));
 
-    uint64_t* value_data = detail::raw_value(m_data, index);
-    uint64_t value = 0U;
-    std::memcpy(value_data, &value, sizeof(uint64_t));
+    void* value_ptr = detail::raw_value(m_data, index);
+    return value_ptr;
 }
-
-auto metrics::to_json() const -> std::string
-{
-    return detail::to_json(m_data);
-}
-
 }
 }

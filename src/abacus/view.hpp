@@ -6,8 +6,10 @@
 #pragma once
 
 #include <cassert>
+#include <map>
 #include <vector>
 
+#include "metric_type.hpp"
 #include "version.hpp"
 
 namespace abacus
@@ -32,44 +34,111 @@ class view
 public:
     /// Sets the data pointer of the view to read the memory of
     /// @param data The data pointer to read the memory of
-    auto set_data(const uint8_t* data) -> void;
+    void set_data(const uint8_t* data);
 
     /// @return the data pointer for memory used by the view
     auto data() const -> const uint8_t*;
 
-    /// @return the maximum name size from a metrics data pointer
-    auto max_name_bytes() const -> uint16_t;
+    /// @return the number of metrics from in a metrics data pointer
+    auto metric_count() const -> uint16_t;
 
-    /// @return the maximum number of metrics from a metrics data pointer
-    auto max_metrics() const -> uint16_t;
+    /// @returns true if the metric is initialized, that is if
+    /// initialize_metric() has been called for the given index.
+    /// @param index The index of the metric to check. Must be less than
+    /// metric_count().
+    auto is_metric_initialized(std::size_t index) const -> bool;
 
-    /// @return the title of the metrics object
-    auto get_title() const -> std::string;
-
-    /// @param index The index of the new counter. Must be less than
-    /// max_metrics().
-    /// @return The name of a counter as a string
+    /// @returns the name of the metric at the given index.
+    /// The name is not written into memory until the metric is initialized with
+    /// either initialize_metric<>() or initialize_constant().
+    /// @param index The index of the metric to check. Must be less than
+    /// metric_count().
     auto metric_name(std::size_t index) const -> std::string;
 
-    /// @param index The index of the new counter. Must be less than
-    /// max_metrics().
-    /// @return A specific count
-    auto metric_value(std::size_t index) const -> uint64_t;
+    /// @returns the description of the metric at the given index.
+    /// @param index The index of the metric to check. Must be less than
+    /// metric_count() and initialized with initialize_metric<>() or
+    /// initialize_constant().
+    auto metric_description(std::size_t index) const -> std::string;
 
-    /// @param index The index of the new counter. Must be less than
-    /// max_metrics().
-    /// @return True if the counter has been initialized
-    auto is_metric_initialized(std::size_t index) const -> bool;
+    /// @returns the type of the metric at the given index.
+    /// @param index The index of the metric to check. Must be less than
+    /// metric_count().
+    auto metric_type(std::size_t index) const -> metric_type;
+
+    /// @returns true if the metric at the given index is a constant, otherwise
+    /// false.
+    /// @param index The index of the metric to check. Must be less than
+    /// metric_count().
+    auto is_metric_constant(std::size_t index) const -> bool;
+
+    /// Copy the value of the uint64_t metric into a passed reference. This is
+    /// used to extract the values during runtime.
+    ///
+    /// Make sure that the type and index are correct using metric_type()
+    /// and metric_index() to get the correct index and
+    /// type. Please do not hard-code these values, as this may break with
+    /// changes to your code.
+    ///
+    /// @param index The index of the metric to copy. Must be less than
+    /// metric_count().
+    /// @param value The variable to copy the value into. A uint64_t reference.
+    void metric_value(std::size_t index, uint64_t& value) const;
+
+    /// Copy the value of the int64_t metric into a passed reference. This is
+    /// used to extract the values during runtime.
+    ///
+    /// Make sure that the type and index are correct using metric_type()
+    /// and metric_index() to get the correct index and
+    /// type. Please do not hard-code these values, as this may break with
+    /// changes to your code.
+    ///
+    /// @param index The index of the metric to copy. Must be less than
+    /// metric_count().
+    /// @param value The variable to copy the value into. A int64_t reference.
+    void metric_value(std::size_t index, int64_t& value) const;
+
+    /// Copy the value of the double metric into a passed reference. This is
+    /// used to extract the values during runtime.
+    ///
+    /// Make sure that the type and index are correct using metric_type()
+    /// and metric_index() to get the correct index and
+    /// type. Please do not hard-code these values, as this may break with
+    /// changes to your code.
+    ///
+    /// @param index The index of the metric to copy. Must be less than
+    /// metric_count().
+    /// @param value The variable to copy the value into. A double reference.
+    void metric_value(std::size_t index, double& value) const;
+
+    /// Copy the value of the bool metric into a passed reference. This is used
+    /// to extract the values during runtime.
+    ///
+    /// Make sure that the type and index are correct using metric_type()
+    /// and metric_index() to get the correct index and
+    /// type. Please do not hard-code these values, as this may break with
+    /// changes to your code.
+    ///
+    /// @param index The index of the metric to copy. Must be less than
+    /// metric_count().
+    /// @param value The variable to copy the value into. A bool reference.
+    void metric_value(std::size_t index, bool& value) const;
+
+    /// @param name The name of the counter to get the index of
+    /// @return The index of the counter with the given name
+    auto metric_index(const std::string& name) const -> std::size_t;
 
     /// @return The number of bytes in the view memory
     auto view_bytes() const -> std::size_t;
 
-    /// @return All counters in json format
-    auto to_json() const -> std::string;
-
 private:
     /// The raw memory from the metrics counters
     const uint8_t* m_data;
+
+    bool m_is_big_endian = false;
+
+    /// Map to get index from names
+    std::map<std::string, std::size_t> m_name_to_index;
 };
 }
 }

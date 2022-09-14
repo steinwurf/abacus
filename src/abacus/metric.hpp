@@ -6,8 +6,9 @@
 #pragma once
 
 #include <cassert>
-#include <vector>
+#include <cstdint>
 
+#include "metric_type.hpp"
 #include "version.hpp"
 
 namespace abacus
@@ -15,49 +16,274 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 /// Wrapper for the value of a counter.
-class metric
+///
+/// See metric<metric_type::uint64>,
+/// metric<metric_type::int64>, metric<metric_type::float64> and
+/// metric<metric_type::boolean> for template specializations.
+template <metric_type MetricType>
+class metric;
+
+/// Metric wrapping uint64_t value.
+template <>
+class metric<metric_type::uint64>
 {
+public:
+    /// The underlying data type
+    using value_type = uint64_t;
+
 public:
     /// Default constructor
     metric() = default;
 
-    /// Create a new counter value from the pointer to an integer
-    /// @param memory A pointer to a uint64_t
-    metric(uint64_t* memory);
+    /// Create a new counter value from the pointer
+    /// @param memory A pointer to a value
+
+    metric(uint64_t* memory) : m_memory(memory)
+    {
+        assert(m_memory != nullptr);
+    }
 
     /// Assign the counter a new value
     /// @param value The value to assign
     /// @return a counter with the new value
-    auto operator=(uint64_t value) -> metric&;
+    auto operator=(uint64_t value) -> metric<metric_type::uint64>&
+    {
+        *m_memory = value;
+        return *this;
+    }
 
     /// Increment the counter
     /// @param value The value to add
     /// @return The result of the arithmetic
-    auto operator+=(uint64_t value) -> metric&;
-
-    /// Increment the value of the counter
-    /// @return The result of the arithmetic
-    auto operator++() -> metric&;
+    auto operator+=(uint64_t value) -> metric<metric_type::uint64>&
+    {
+        *m_memory += value;
+        return *this;
+    }
 
     /// Decrement the counter
     /// @param value The value to subtract
     /// @return The result of the arithmetic
-    auto operator-=(uint64_t value) -> metric&;
+    auto operator-=(uint64_t value) -> metric<metric_type::uint64>&
+    {
+        *m_memory -= value;
+        return *this;
+    }
+
+    /// Increment the value of the counter
+    /// @return The result of the arithmetic
+    auto operator++() -> metric<metric_type::uint64>&
+    {
+        *m_memory += 1;
+        return *this;
+    }
 
     /// Decrement the value of the counter
     /// @return The result of the arithmetic
-    auto operator--() -> metric&;
+    auto operator--() -> metric<metric_type::uint64>&
+    {
+        *m_memory -= 1;
+        return *this;
+    }
 
     /// @return True if the metric has been assigned memory. False otherwise
-    auto is_initialized() const -> bool;
+    auto is_initialized() const -> bool
+    {
+        return m_memory != nullptr;
+    }
 
 private:
-    /// Enable creation from the storage class
-    friend class metrics;
-
-private:
-    /// The counter
+    /// The metric memory
     uint64_t* m_memory = nullptr;
 };
+
+/// Metric wrapping int64_t value.
+template <>
+class metric<metric_type::int64>
+{
+public:
+    /// The underlying data type
+    using value_type = int64_t;
+
+public:
+    /// Default constructor
+    metric() = default;
+
+    /// Create a new counter value from the pointer
+    /// @param memory A pointer to a value
+
+    metric(int64_t* memory) : m_memory(memory)
+    {
+        assert(m_memory != nullptr);
+    }
+
+    /// Assign the counter a new value
+    /// @param value The value to assign
+    /// @return a counter with the new value
+    auto operator=(int64_t value) -> metric<metric_type::int64>&
+    {
+        *m_memory = value;
+        return *this;
+    }
+
+    /// Increment the counter
+    /// @param value The value to add
+    /// @return The result of the arithmetic
+    auto operator+=(int64_t value) -> metric<metric_type::int64>&
+    {
+        *m_memory += value;
+        return *this;
+    }
+
+    /// Decrement the counter
+    /// @param value The value to subtract
+    /// @return The result of the arithmetic
+    auto operator-=(int64_t value) -> metric<metric_type::int64>&
+    {
+        *m_memory -= value;
+        return *this;
+    }
+
+    /// Increment the value of the counter
+    /// @return The result of the arithmetic
+    auto operator++() -> metric<metric_type::int64>&
+    {
+        *m_memory += 1;
+        return *this;
+    }
+
+    /// Decrement the value of the counter
+    /// @return The result of the arithmetic
+    auto operator--() -> metric<metric_type::int64>&
+    {
+        *m_memory -= 1;
+        return *this;
+    }
+
+    /// @return True if the metric has been assigned memory. False otherwise
+    auto is_initialized() const -> bool
+    {
+        return m_memory != nullptr;
+    }
+
+private:
+    /// The metric memory
+    value_type* m_memory = nullptr;
+};
+
+/// Metric wrapping double value.
+template <>
+class metric<metric_type::float64>
+{
+public:
+    /// The underlying data type
+    using value_type = double;
+
+public:
+    /// Default constructor
+    metric() = default;
+
+    /// Create a new counter value from the pointer
+    /// @param memory A pointer to a value
+
+    metric(double* memory) : m_memory(memory)
+    {
+        assert(m_memory != nullptr);
+    }
+
+    /// Assign the counter a new value
+    /// @param value The value to assign
+    /// @return a counter with the new value
+    auto operator=(double value) -> metric<metric_type::float64>&
+    {
+        *m_memory = value;
+        return *this;
+    }
+
+    /// Increment the counter
+    /// @param value The value to add
+    /// @return The result of the arithmetic
+    auto operator+=(double value) -> metric<metric_type::float64>&
+    {
+        *m_memory += value;
+        return *this;
+    }
+
+    /// Decrement the counter
+    /// @param value The value to subtract
+    /// @return The result of the arithmetic
+    auto operator-=(double value) -> metric<metric_type::float64>&
+    {
+        *m_memory -= value;
+        return *this;
+    }
+
+    /// Increment the value of the counter
+    /// @return The result of the arithmetic
+    auto operator++() -> metric<metric_type::float64>&
+    {
+        *m_memory += 1;
+        return *this;
+    }
+
+    /// Decrement the value of the counter
+    /// @return The result of the arithmetic
+    auto operator--() -> metric<metric_type::float64>&
+    {
+        *m_memory -= 1;
+        return *this;
+    }
+
+    /// @return True if the metric has been assigned memory. False otherwise
+    auto is_initialized() const -> bool
+    {
+        return m_memory != nullptr;
+    }
+
+private:
+    /// The metric memory
+    double* m_memory = nullptr;
+};
+
+/// Metric wrapping bool value.
+template <>
+class metric<metric_type::boolean>
+{
+public:
+    /// The underlying data type
+    using value_type = bool;
+
+public:
+    /// Default constructor
+    metric() = default;
+
+    /// Create a new counter value from the pointer
+    /// @param memory A pointer to a value
+
+    metric(bool* memory) : m_memory(memory)
+    {
+        assert(m_memory != nullptr);
+    }
+
+    /// Assign the counter a new value
+    /// @param value The value to assign
+    /// @return a counter with the new value
+    auto operator=(bool value) -> metric<metric_type::boolean>&
+    {
+        *m_memory = value;
+        return *this;
+    }
+
+    /// @return True if the metric has been assigned memory. False otherwise
+    auto is_initialized() const -> bool
+    {
+        return m_memory != nullptr;
+    }
+
+private:
+    /// The metric memory
+    bool* m_memory = nullptr;
+};
+
 }
 }
