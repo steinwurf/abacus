@@ -6,6 +6,10 @@ every change, see the Git log.
 
 Latest
 ------
+* tbd
+
+2.0.0
+-----
 * Major: Added support for wrapping uint64_t, double, int64_t and bool with
          class metric<>() through the metric_type enum.
 * Major: Added metric_description, type and flags. Changed the memory
@@ -24,7 +28,6 @@ Latest
 * Minor: The memory of the metrics object can now be accessed directly through
          data(), like it is for the view class.
 * Minor: Added initialize_constant to metrics class.
-
 
 1.1.2
 -----
