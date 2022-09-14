@@ -60,6 +60,8 @@ public:
     {
     }
 
+    /// Constructor.
+    /// @param infos The infos of the metrics.
     metrics(const std::vector<metric_info>& infos) :
         metrics(infos.data(), infos.size())
     {
