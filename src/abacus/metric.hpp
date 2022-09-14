@@ -48,6 +48,7 @@ public:
     /// @return a counter with the new value
     auto operator=(uint64_t value) -> metric<metric_type::uint64>&
     {
+        assert(is_initialized());
         *m_memory = value;
         return *this;
     }
@@ -57,6 +58,7 @@ public:
     /// @return The result of the arithmetic
     auto operator+=(uint64_t value) -> metric<metric_type::uint64>&
     {
+        assert(is_initialized());
         *m_memory += value;
         return *this;
     }
@@ -66,6 +68,7 @@ public:
     /// @return The result of the arithmetic
     auto operator-=(uint64_t value) -> metric<metric_type::uint64>&
     {
+        assert(is_initialized());
         *m_memory -= value;
         return *this;
     }
@@ -74,6 +77,7 @@ public:
     /// @return The result of the arithmetic
     auto operator++() -> metric<metric_type::uint64>&
     {
+        assert(is_initialized());
         *m_memory += 1;
         return *this;
     }
@@ -82,6 +86,7 @@ public:
     /// @return The result of the arithmetic
     auto operator--() -> metric<metric_type::uint64>&
     {
+        assert(is_initialized());
         *m_memory -= 1;
         return *this;
     }
@@ -90,6 +95,13 @@ public:
     auto is_initialized() const -> bool
     {
         return m_memory != nullptr;
+    }
+
+    /// @return The value of the counter
+    auto value() const -> uint64_t
+    {
+        assert(is_initialized());
+        return *m_memory;
     }
 
 private:
@@ -122,6 +134,7 @@ public:
     /// @return a counter with the new value
     auto operator=(int64_t value) -> metric<metric_type::int64>&
     {
+        assert(is_initialized());
         *m_memory = value;
         return *this;
     }
@@ -131,6 +144,7 @@ public:
     /// @return The result of the arithmetic
     auto operator+=(int64_t value) -> metric<metric_type::int64>&
     {
+        assert(is_initialized());
         *m_memory += value;
         return *this;
     }
@@ -140,6 +154,7 @@ public:
     /// @return The result of the arithmetic
     auto operator-=(int64_t value) -> metric<metric_type::int64>&
     {
+        assert(is_initialized());
         *m_memory -= value;
         return *this;
     }
@@ -148,6 +163,7 @@ public:
     /// @return The result of the arithmetic
     auto operator++() -> metric<metric_type::int64>&
     {
+        assert(is_initialized());
         *m_memory += 1;
         return *this;
     }
@@ -156,6 +172,7 @@ public:
     /// @return The result of the arithmetic
     auto operator--() -> metric<metric_type::int64>&
     {
+        assert(is_initialized());
         *m_memory -= 1;
         return *this;
     }
@@ -164,6 +181,13 @@ public:
     auto is_initialized() const -> bool
     {
         return m_memory != nullptr;
+    }
+
+    /// @return The value of the counter
+    auto value() const -> int64_t
+    {
+        assert(is_initialized());
+        return *m_memory;
     }
 
 private:
@@ -196,6 +220,7 @@ public:
     /// @return a counter with the new value
     auto operator=(double value) -> metric<metric_type::float64>&
     {
+        assert(is_initialized());
         *m_memory = value;
         return *this;
     }
@@ -205,6 +230,7 @@ public:
     /// @return The result of the arithmetic
     auto operator+=(double value) -> metric<metric_type::float64>&
     {
+        assert(is_initialized());
         *m_memory += value;
         return *this;
     }
@@ -214,6 +240,7 @@ public:
     /// @return The result of the arithmetic
     auto operator-=(double value) -> metric<metric_type::float64>&
     {
+        assert(is_initialized());
         *m_memory -= value;
         return *this;
     }
@@ -222,6 +249,7 @@ public:
     /// @return The result of the arithmetic
     auto operator++() -> metric<metric_type::float64>&
     {
+        assert(is_initialized());
         *m_memory += 1;
         return *this;
     }
@@ -230,6 +258,7 @@ public:
     /// @return The result of the arithmetic
     auto operator--() -> metric<metric_type::float64>&
     {
+        assert(is_initialized());
         *m_memory -= 1;
         return *this;
     }
@@ -238,6 +267,13 @@ public:
     auto is_initialized() const -> bool
     {
         return m_memory != nullptr;
+    }
+
+    /// @return The value of the counter
+    auto value() const -> double
+    {
+        assert(is_initialized());
+        return *m_memory;
     }
 
 private:
@@ -270,6 +306,7 @@ public:
     /// @return a counter with the new value
     auto operator=(bool value) -> metric<metric_type::boolean>&
     {
+        assert(is_initialized());
         *m_memory = value;
         return *this;
     }
@@ -278,6 +315,13 @@ public:
     auto is_initialized() const -> bool
     {
         return m_memory != nullptr;
+    }
+
+    /// @return The value of the counter
+    auto value() const -> bool
+    {
+        assert(is_initialized());
+        return *m_memory;
     }
 
 private:

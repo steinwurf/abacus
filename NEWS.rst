@@ -6,7 +6,8 @@ every change, see the Git log.
 
 Latest
 ------
-* tbd
+* Minor: Added value function to abacus::metric to access the underlying
+  value.
 
 2.0.0
 -----
