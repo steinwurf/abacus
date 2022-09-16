@@ -6,6 +6,10 @@ every change, see the Git log.
 
 Latest
 ------
+* tbd
+
+2.1.1
+-----
 * Patch: Fix multiple definitions of `abacus::detail::to_json`.
 
 2.1.0

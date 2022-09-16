@@ -12,7 +12,7 @@ inline namespace STEINWURF_ABACUS_VERSION
 {
 std::string version()
 {
-    return "2.1.0";
+    return "2.1.1";
 }
 }
 }
