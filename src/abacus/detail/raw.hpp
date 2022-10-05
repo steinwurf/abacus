@@ -12,6 +12,9 @@
 #include <limits>
 #include <sstream>
 
+#include <endian/big_endian.hpp>
+#include <endian/little_endian.hpp>
+
 #include "../metric_flags.hpp"
 #include "../metric_type.hpp"
 #include "../version.hpp"
@@ -29,18 +32,22 @@ inline auto header_bytes() -> std::size_t
     return 12;
 }
 
+inline auto is_big_endian_byte(const uint8_t* data) -> uint8_t;
+
 /// @param data The raw memory for the counters
 /// @return The maximum bytes a metric name can contain
 inline auto metric_count(const uint8_t* data) -> uint16_t
 {
     assert(data != nullptr);
 
-    uint16_t metric_count;
-    metric_count = *(uint16_t*)data;
-
-    assert(metric_count > 0);
-
-    return metric_count;
+    if (is_big_endian_byte(data))
+    {
+        return endian::big_endian::get<uint16_t>(data);
+    }
+    else
+    {
+        return endian::little_endian::get<uint16_t>(data);
+    }
 }
 
 inline auto is_big_endian_byte_offset() -> std::size_t
@@ -354,48 +361,47 @@ inline auto alignment_padding(std::size_t offset) -> std::size_t
     return remainder == 0 ? 0 : 8 - remainder;
 }
 
-/// @param data The raw memory for the counters
-/// @return The values offset in the raw memory
-inline auto values_offset(const uint8_t* data) -> std::size_t
+inline auto meta_bytes(const uint8_t* data) -> std::size_t
 {
-    std::size_t offset = flags_offset(data) + sizeof(bool) * metric_count(data);
-    return offset + alignment_padding(offset);
+    return flags_offset(data) + sizeof(bool) * metric_count(data);
 }
 
 /// @param data The raw memory for the counters
 /// @param index The index of a counter. Must be less than metric_count().
 /// @return a pointer to the index'th counter value
-inline auto raw_value(uint8_t* data, std::size_t index) -> void*
+inline auto raw_value(const uint8_t* meta_data, uint8_t* value_data,
+                      std::size_t index) -> void*
 {
-    assert(data != nullptr);
-    assert(index < metric_count(data));
+    assert(meta_data != nullptr);
+    assert(value_data != nullptr);
+    assert(index < metric_count(meta_data));
 
-    std::size_t offset = values_offset(data);
-    uint16_t eight_byte_metrics = eight_byte_count(data);
+    uint16_t eight_byte_metrics = eight_byte_count(meta_data);
     if (index < eight_byte_metrics)
     {
-        return (void*)(data + offset + index * 8U);
+        return (void*)(value_data + index * 8U);
     }
-    return (void*)(data + offset + eight_byte_metrics * 8 +
+    return (void*)(value_data + eight_byte_metrics * 8 +
                    (index - eight_byte_metrics));
 }
 
 /// @param data The raw memory for the counters
 /// @param index The index of a counter. Must be less than metric_count().
 /// @return a pointer to the index'th counter value
-inline auto raw_value(const uint8_t* data, std::size_t index) -> const void*
+inline auto raw_value(const uint8_t* meta_data, const uint8_t* value_data,
+                      std::size_t index) -> const void*
 {
-    assert(data != nullptr);
-    assert(index < metric_count(data));
+    assert(meta_data != nullptr);
+    assert(value_data != nullptr);
+    assert(index < metric_count(meta_data));
 
-    std::size_t offset = values_offset(data);
-    uint16_t eight_byte_metrics = eight_byte_count(data);
+    uint16_t eight_byte_metrics = eight_byte_count(meta_data);
     if (index < eight_byte_metrics)
     {
-        return (const void*)(data + offset + index * 8U);
+        return (void*)(value_data + index * 8U);
     }
-    return (const void*)(data + offset + eight_byte_metrics * 8 +
-                         (index - eight_byte_metrics));
+    return (void*)(value_data + eight_byte_metrics * 8 +
+                   (index - eight_byte_metrics));
 }
 
 inline auto is_metric_initialized(const uint8_t* data, std::size_t index)
@@ -407,13 +413,11 @@ inline auto is_metric_initialized(const uint8_t* data, std::size_t index)
     return (bool)(flags(data, index) & metric_flags::initialized);
 }
 
-/// @param data The raw memory for the counters
-/// @return The total number of bytes used.
-inline auto storage_bytes(const uint8_t* data) -> std::size_t
+inline auto value_bytes(const uint8_t* data) -> std::size_t
 {
-    return values_offset(data) + eight_byte_count(data) * 8U +
-           one_byte_count(data);
+    return eight_byte_count(data) * 8U + one_byte_count(data);
 }
+
 }
 }
 }

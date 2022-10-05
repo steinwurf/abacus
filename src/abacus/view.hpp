@@ -27,17 +27,34 @@ inline namespace STEINWURF_ABACUS_VERSION
 /// pointed to values
 ///
 /// Note that this class has no constructor, so it can only be declared and
-/// then view.set_data() can be called to update the data
+/// then view.set_storage_data() can be called to update the data
 class view
 {
 
 public:
-    /// Sets the data pointer of the view to read the memory of
-    /// @param data The data pointer to read the memory of
-    void set_data(const uint8_t* data);
+    /// Sets the meta data pointer
+    /// @param data The meta data pointer
+    void set_meta_data(const uint8_t* meta_data);
 
-    /// @return the data pointer for memory used by the view
-    auto data() const -> const uint8_t*;
+    /// Sets the value data pointer
+    /// @param data The value data pointer
+    void set_value_data(const uint8_t* value_data);
+
+    /// Gets the meta data pointer
+    /// @return The meta data pointer
+    const uint8_t* meta_data() const;
+
+    /// Gets the value data pointer
+    /// @return The value data pointer
+    const uint8_t* value_data() const;
+
+    /// Gets the meta data size in bytes
+    /// @return The meta data size in bytes
+    std::size_t meta_bytes() const;
+
+    /// Gets the value data size in bytes
+    /// @return The value data size in bytes
+    std::size_t value_bytes() const;
 
     /// @return the number of metrics from in a metrics data pointer
     auto metric_count() const -> uint16_t;
@@ -128,13 +145,14 @@ public:
     /// @return The index of the counter with the given name
     auto metric_index(const std::string& name) const -> std::size_t;
 
-    /// @return The number of bytes in the view memory
-    auto view_bytes() const -> std::size_t;
-
 private:
-    /// The raw memory from the metrics counters
-    const uint8_t* m_data;
+    /// The meta data pointer
+    const uint8_t* m_meta_data;
 
+    /// The value data pointer
+    const uint8_t* m_value_data;
+
+    /// Flag to indicate whether the data is written as big endian or not
     bool m_is_big_endian = false;
 
     /// Map to get index from names

@@ -4,6 +4,7 @@
 // Distributed under the "BSD License". See the accompanying LICENSE.rst
 // file.
 
+#include <cstring>
 #include <iostream>
 
 #include <abacus/metrics.hpp>
@@ -50,14 +51,17 @@ int main()
     days_until_maintenance = -10;
 
     /// We want to export the metrics memory, so we need a new storage
-    std::vector<uint8_t> data(car.storage_bytes());
+    std::vector<uint8_t> meta_data(car.meta_bytes());
+    std::vector<uint8_t> value_data(car.value_bytes());
 
     /// Copy the memory into the new storage
-    car.copy_storage(data.data(), data.size());
+    std::memcpy(meta_data.data(), car.meta_data(), car.meta_bytes());
+    std::memcpy(value_data.data(), car.value_data(), car.value_bytes());
 
     abacus::view car_view;
 
-    car_view.set_data(data.data());
+    car_view.set_meta_data(meta_data.data());
+    car_view.set_value_data(value_data.data());
 
     std::cout << abacus::to_json(car_view) << std::endl;
 

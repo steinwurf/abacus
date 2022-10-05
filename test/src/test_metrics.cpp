@@ -124,14 +124,14 @@ TEST(test_metrics, default_constructor)
     EXPECT_EQ(metrics.metric_index(name5), 3U);
 }
 
-TEST(test_metrics, copy_storage)
+TEST(test_metrics, value_and_meta_bytes)
 {
-    uint16_t metric_count = 2;
+    const uint16_t metric_count = 2;
 
     std::string name0 = "metric0";
     std::string name1 = "metric1";
 
-    abacus::metric_info infos[2] = {
+    abacus::metric_info infos[metric_count] = {
         abacus::metric_info{name0, "An unsigned integer metric",
                             abacus::metric_type::uint64},
         abacus::metric_info{name1, "A signed integer metric",
@@ -142,36 +142,27 @@ TEST(test_metrics, copy_storage)
     metrics.initialize_metric<abacus::metric_type::uint64>(name0);
     metrics.initialize_metric<abacus::metric_type::int64>(name1);
 
-    std::size_t size = 0;
+    std::size_t meta_bytes = 0;
     // header size
-    size += 12;
+    meta_bytes += 12;
     // name and description sizes
-    size += metric_count * 2 * 2;
+    meta_bytes += metric_count * 2 * 2;
     // names and descriptions
     for (std::size_t i = 0; i < metric_count; ++i)
     {
-        size += infos[i].name.size();
-        size += infos[i].description.size();
+        meta_bytes += infos[i].name.size();
+        meta_bytes += infos[i].description.size();
     }
     // types
-    size += metric_count;
+    meta_bytes += metric_count;
     // is_contant bools
-    size += metric_count;
-    // alignment padding
-    size += size % 8 == 0 ? 0 : 8 - (size % 8);
-    // values
-    size += metric_count * 8;
+    meta_bytes += metric_count;
 
-    ASSERT_EQ(size, metrics.storage_bytes());
-    std::vector<uint8_t> data1(size);
-    std::vector<uint8_t> data2(size);
+    ASSERT_EQ(meta_bytes, metrics.meta_bytes());
 
-    metrics.copy_storage(data1.data(), data1.size());
-    metrics.copy_storage(data2.data(), data2.size());
-
-    EXPECT_EQ(metrics.storage_bytes(), data1.size());
-    EXPECT_EQ(metrics.storage_bytes(), data2.size());
-    EXPECT_EQ(data2, data1);
+    std::size_t value_bytes = 0;
+    value_bytes += metric_count * 8;
+    ASSERT_EQ(value_bytes, metrics.value_bytes());
 }
 
 TEST(test_metrics, reset_counters)

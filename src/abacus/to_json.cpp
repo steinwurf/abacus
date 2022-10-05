@@ -18,10 +18,11 @@ auto to_json(const view& view) -> std::string
     return json.dump();
 }
 
-auto to_json(const uint8_t* metrics_data) -> std::string
+auto to_json(const uint8_t* meta_data, const uint8_t* value_data) -> std::string
 {
     view v;
-    v.set_data(metrics_data);
+    v.set_meta_data(meta_data);
+    v.set_value_data(value_data);
     return to_json(v);
 }
 }

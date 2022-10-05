@@ -27,13 +27,15 @@ TEST(test_view, api)
 
     metrics.initialize_metric<abacus::metric_type::int64>(name1);
 
-    std::vector<uint8_t> data(metrics.storage_bytes());
-
-    metrics.copy_storage(data.data(), metrics.storage_bytes());
+    std::vector<uint8_t> meta_data(metrics.meta_bytes());
+    std::vector<uint8_t> value_data(metrics.value_bytes());
+    std::memcpy(meta_data.data(), metrics.meta_data(), metrics.meta_bytes());
+    std::memcpy(value_data.data(), metrics.value_data(), metrics.value_bytes());
 
     abacus::view view;
 
-    view.set_data(data.data());
+    view.set_meta_data(meta_data.data());
+    view.set_value_data(value_data.data());
 
     EXPECT_EQ(metrics.metric_count(), view.metric_count());
 
@@ -50,5 +52,6 @@ TEST(test_view, api)
 
     EXPECT_EQ(metric_value, view_value);
 
-    EXPECT_EQ(view.data(), data.data());
+    EXPECT_EQ(view.meta_data(), meta_data.data());
+    EXPECT_EQ(view.value_data(), value_data.data());
 }

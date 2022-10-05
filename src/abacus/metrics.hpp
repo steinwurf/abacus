@@ -48,8 +48,8 @@ class metrics
 public:
     /// Constructor
     /// @param info The info of the metrics in a pointer.
-    /// @param size The size of the pointer in elements.
-    metrics(const metric_info* info, std::size_t size);
+    /// @param count The number of infos.
+    metrics(const metric_info* info, std::size_t count);
 
     /// Delegate Constructor. Will pass a size-deduced array to the pointer/size
     /// constructor
@@ -70,18 +70,20 @@ public:
     /// Destructor
     ~metrics();
 
-    /// @returns the underlying data of the metrics object.
-    auto data() const -> const uint8_t*;
+    /// @returns the pointer to the meta data of the metrics.
+    auto meta_data() const -> const uint8_t*;
 
-    /// @returns the number of metrics in the collection
+    /// @return the size of the meta data of the metrics.
+    auto meta_bytes() const -> std::size_t;
+
+    /// @returns the pointer to the value data of the metrics.
+    auto value_data() const -> const uint8_t*;
+
+    /// @return the size of the value data of the metrics.
+    auto value_bytes() const -> std::size_t;
+
+    /// @returns the number of metrics
     auto metric_count() const -> std::size_t;
-
-    /// @return the bytes used for metric names from a metrics data pointer
-    auto name_bytes() const -> uint16_t;
-
-    /// @return the bytes used for metric descriptions from a metrics data
-    /// pointer
-    auto description_bytes() const -> uint16_t;
 
     /// @returns true if the metric is initialized, that is if
     /// initialize_metric() has been called for the given index.
@@ -280,21 +282,6 @@ public:
     /// @param name The name of the metric.
     auto metric_index(const std::string& name) const -> std::size_t;
 
-    /// Copies the memory of the metrics into the given data buffer.
-    /// The storage_bytes() function is used to allocate the exact amount of
-    /// memory needed. Example code to illustrade intented use:
-    ///
-    ///     std::vector<uint8_t> copied_data(metrics.storage_bytes());
-    ///     metrics.copy_storage(copied_data.data(), copied_data.size());
-    ///
-    /// @param data the buffer to copy data into.
-    /// @param size the size of the buffer. Must be equal to storage_bytes() to
-    /// ensure memory alignment.
-    void copy_storage(uint8_t* data, std::size_t size) const;
-
-    /// @return The size in bytes of the metrics data
-    auto storage_bytes() const -> std::size_t;
-
     /// Resets the values of all initialized and non-constant metrics.
     void reset_metrics();
 
@@ -329,8 +316,11 @@ private:
     /// Map to get index from names
     std::map<std::string, std::size_t> m_name_to_index;
 
-    /// The raw memory for the counters (both value and name)
-    uint8_t* m_data = nullptr;
+    /// The raw memory for the meta data
+    uint8_t* m_meta_data = nullptr;
+
+    /// The raw memory for the value data
+    uint8_t* m_value_data = nullptr;
 };
 }
 }
