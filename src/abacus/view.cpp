@@ -77,7 +77,7 @@ auto view::metric_count() const -> uint16_t
 auto view::is_metric_initialized(std::size_t index) const -> bool
 {
     assert(index < metric_count());
-    return detail::is_metric_initialized(m_meta_data, index);
+    return detail::is_metric_initialized(m_meta_data, m_value_data, index);
 }
 
 auto view::metric_name(std::size_t index) const -> std::string

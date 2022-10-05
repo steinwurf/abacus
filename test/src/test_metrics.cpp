@@ -162,6 +162,7 @@ TEST(test_metrics, value_and_meta_bytes)
 
     std::size_t value_bytes = 0;
     value_bytes += metric_count * 8;
+    value_bytes += (metric_count + 7) / 8;
     ASSERT_EQ(value_bytes, metrics.value_bytes());
 }
 

@@ -58,9 +58,12 @@ metrics::metrics(const metric_info* info, std::size_t count) :
         storage_bytes += detail::alignment_padding(storage_bytes);
     }
 
-    // Finally, add the bytes needed for the values.
+    // Add the bytes needed for the values.
     storage_bytes +=
         8 * m_info.eight_byte_metrics_count() + m_info.one_byte_metrics_count();
+
+    // Finally add the bytes needed for the initalized bitmap
+    storage_bytes += (m_info.size() + 7) / 8;
 
     // Allocate the memory needed.
     m_meta_data = static_cast<uint8_t*>(::operator new(storage_bytes));
@@ -170,7 +173,7 @@ auto metrics::metric_count() const -> std::size_t
 auto metrics::is_metric_initialized(std::size_t index) const -> bool
 {
     assert(index < metric_count());
-    return detail::is_metric_initialized(m_meta_data, index);
+    return detail::is_metric_initialized(m_meta_data, m_value_data, index);
 }
 
 auto metrics::metric_name(std::size_t index) const -> std::string
@@ -336,22 +339,17 @@ void metrics::reset_metric(std::size_t index)
 
 void metrics::reset_metrics()
 {
-    memset(m_value_data, 0, value_bytes());
+    memset(m_value_data, 0, detail::metrics_bytes(m_meta_data));
 }
 
 auto metrics::initialize(std::size_t index) const -> void*
 {
     assert(index < metric_count());
     assert(!is_metric_initialized(index));
-
     // Write that the metric has been initialized into memory
-    uint8_t* flags_ptr = m_meta_data + detail::flags_offset(m_meta_data);
-    flags_ptr[index] |= static_cast<uint8_t>(metric_flags::initialized);
-
+    detail::set_metric_initialized(m_meta_data, m_value_data, index);
     assert(is_metric_initialized(index));
-
-    void* value_ptr = detail::raw_value(m_meta_data, m_value_data, index);
-    return value_ptr;
+    return detail::raw_value(m_meta_data, m_value_data, index);
 }
 }
 }

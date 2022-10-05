@@ -31,7 +31,6 @@ inline namespace STEINWURF_ABACUS_VERSION
 ///     * Total description bytes (2 bytes)
 ///     * Number of 8-byte-value metrics (2 bytes)
 ///     * Number of 1-byte-value metrics (2 bytes)
-///
 /// 2. The name sizes in bytes (2 bytes per metric)
 /// 3. The description sizes in bytes (2 bytes per metric)
 /// 4. The names of the metrics (? bytes)
@@ -41,7 +40,11 @@ inline namespace STEINWURF_ABACUS_VERSION
 /// 8. Alignment padding (if needed, max 7 bytes)
 /// 9. The 8-byte-values (8 bytes per 8-byte metric)
 /// 10. The 1-byte-values (1 byte per 1-byte metric)
-
+/// 11. A bitmap of the initialized metrics (1 byte per 8 metrics)
+///
+/// 1-8 is static and is only written once, 9-11 is dynamic and is updated
+/// whenever a metric is initialized or updated.
+///
 class metrics
 {
 

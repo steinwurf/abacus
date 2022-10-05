@@ -14,8 +14,7 @@ inline namespace STEINWURF_ABACUS_VERSION
 /// Enum used for identifying various metric flags.
 enum class metric_flags : uint8_t
 {
-    initialized = 1 << 0, // 0b00000001
-    constant = 1 << 1,    // 0b00000010
+    constant = 1 << 0, // 0b00000001
 };
 
 inline metric_flags operator|(metric_flags lhs, metric_flags rhs)
