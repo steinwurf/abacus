@@ -30,8 +30,8 @@ metrics::metrics(const metric_info* info, std::size_t count) :
     uint16_t description_bytes = 0;
 
     // First calculate the total size of header
-    std::size_t storage_bytes = detail::header_bytes();
-    for (std::size_t i = 0; i < m_info.size(); i++)
+    std::size_t meta_bytes = detail::header_bytes();
+    for (std::size_t i = 0; i < m_info.count(); i++)
     {
         const auto& info = m_info[i];
         m_name_to_index.emplace(info.name, i);
@@ -39,54 +39,51 @@ metrics::metrics(const metric_info* info, std::size_t count) :
         description_bytes += info.description.size();
 
         // name_size
-        storage_bytes += sizeof(uint16_t);
+        meta_bytes += sizeof(uint16_t);
         // description size
-        storage_bytes += sizeof(uint16_t);
+        meta_bytes += sizeof(uint16_t);
         // name
-        storage_bytes += info.name.size();
+        meta_bytes += info.name.size();
         // description
-        storage_bytes += info.description.size();
+        meta_bytes += info.description.size();
         // type
-        storage_bytes += sizeof(uint8_t);
+        meta_bytes += sizeof(uint8_t);
         // flags
-        storage_bytes += sizeof(uint8_t);
+        meta_bytes += sizeof(uint8_t);
     }
-
     // Add padding to ensure alignment for the values.
-    if (storage_bytes % 8 != 0)
-    {
-        storage_bytes += detail::alignment_padding(storage_bytes);
-    }
+    std::size_t alignment = detail::alignment_padding(meta_bytes);
 
+    std::size_t value_bytes = 0;
     // Add the bytes needed for the values.
-    storage_bytes +=
+    value_bytes +=
         8 * m_info.eight_byte_metrics_count() + m_info.one_byte_metrics_count();
 
     // Finally add the bytes needed for the initalized bitmap
-    storage_bytes += (m_info.size() + 7) / 8;
+    value_bytes += (m_info.count() + 7) / 8;
+
+    std::size_t storage_bytes = meta_bytes + alignment + value_bytes;
 
     // Allocate the memory needed.
     m_meta_data = static_cast<uint8_t*>(::operator new(storage_bytes));
 
-    // Make sure that the data is 8byte-aligned
+    // Make sure that the data is 8-byte-aligned
     assert(reinterpret_cast<uint64_t>(m_meta_data) % 8U == 0U);
 
     // Zero out all memory
     std::memset(m_meta_data, 0, storage_bytes);
 
     // Write the header
-    // The number of the metrics
-    new (m_meta_data) uint16_t(static_cast<uint16_t>(m_info.size()));
     // The endianness of the data, 0 for little-endian, 1 for big-endian
-    new (m_meta_data + 2) uint8_t(endian::is_big_endian());
+    new (m_meta_data) uint8_t(endian::is_big_endian());
     // The total bytes used for names
-    new (m_meta_data + 4) uint16_t(name_bytes);
+    new (m_meta_data + 2) uint16_t(name_bytes);
     // The total bytes used for descriptions
-    new (m_meta_data + 6) uint16_t(description_bytes);
+    new (m_meta_data + 4) uint16_t(description_bytes);
     // The number of 8-byte metric values (uint64_t, int64_t and double types)
-    new (m_meta_data + 8) uint16_t(m_info.eight_byte_metrics_count());
+    new (m_meta_data + 6) uint16_t(m_info.eight_byte_metrics_count());
     // The number of 1-byte metric values (bool type)
-    new (m_meta_data + 10) uint16_t(m_info.one_byte_metrics_count());
+    new (m_meta_data + 8) uint16_t(m_info.one_byte_metrics_count());
 
     // Write the name sizes into memory
     uint8_t* name_sizes_ptr = m_meta_data + detail::name_sizes_offset();
@@ -108,7 +105,7 @@ metrics::metrics(const metric_info* info, std::size_t count) :
     // Write the flags into memory
     uint8_t* flags_ptr = m_meta_data + detail::flags_offset(m_meta_data);
 
-    for (std::size_t i = 0; i < m_info.size(); i++)
+    for (std::size_t i = 0; i < m_info.count(); i++)
     {
         const auto& info = m_info[i];
         uint16_t name_size = static_cast<uint16_t>(info.name.size());
@@ -135,9 +132,12 @@ metrics::metrics(const metric_info* info, std::size_t count) :
         types_ptr += sizeof(info.type);
     }
 
-    auto meta_bytes = metrics::meta_bytes();
-    m_value_data =
-        m_meta_data + meta_bytes + detail::alignment_padding(meta_bytes);
+    m_value_data = m_meta_data + meta_bytes + alignment;
+
+    assert(storage_bytes ==
+           (detail::meta_bytes(m_meta_data) +
+            detail::alignment_padding(detail::meta_bytes(m_meta_data)) +
+            detail::value_bytes(m_meta_data)));
 }
 
 metrics::~metrics()
@@ -167,7 +167,7 @@ auto metrics::value_bytes() const -> std::size_t
 
 auto metrics::metric_count() const -> std::size_t
 {
-    return m_info.size();
+    return m_info.count();
 }
 
 auto metrics::is_metric_initialized(std::size_t index) const -> bool
@@ -256,7 +256,7 @@ void metrics::metric_value(std::size_t index, uint64_t& value) const
     assert(is_metric_initialized(index));
     assert(is_metric_uint64(index));
     value = *static_cast<uint64_t*>(
-        detail::raw_value(m_meta_data, m_value_data, index));
+        detail::value_ptr(m_meta_data, m_value_data, index));
 }
 
 void metrics::metric_value(std::size_t index, int64_t& value) const
@@ -265,7 +265,7 @@ void metrics::metric_value(std::size_t index, int64_t& value) const
     assert(is_metric_initialized(index));
     assert(is_metric_int64(index));
     value = *static_cast<int64_t*>(
-        detail::raw_value(m_meta_data, m_value_data, index));
+        detail::value_ptr(m_meta_data, m_value_data, index));
 }
 
 void metrics::metric_value(std::size_t index, double& value) const
@@ -274,7 +274,7 @@ void metrics::metric_value(std::size_t index, double& value) const
     assert(is_metric_initialized(index));
     assert(is_metric_float64(index));
     value = *static_cast<double*>(
-        detail::raw_value(m_meta_data, m_value_data, index));
+        detail::value_ptr(m_meta_data, m_value_data, index));
 }
 
 void metrics::metric_value(std::size_t index, bool& value) const
@@ -283,7 +283,7 @@ void metrics::metric_value(std::size_t index, bool& value) const
     assert(is_metric_initialized(index));
     assert(is_metric_boolean(index));
     value = *static_cast<bool*>(
-        detail::raw_value(m_meta_data, m_value_data, index));
+        detail::value_ptr(m_meta_data, m_value_data, index));
 }
 
 auto metrics::metric_index(const std::string& name) const -> std::size_t
@@ -299,36 +299,33 @@ void metrics::reset_metric(std::size_t index)
     assert(is_metric_initialized(index));
     assert(!is_metric_constant(index));
 
-    metric_type type =
-        static_cast<metric_type>(*detail::raw_type(m_meta_data, index));
-
-    switch (type)
+    switch (detail::type(m_meta_data, index))
     {
     case metric_type::boolean:
     {
-        bool* value_data =
-            (bool*)detail::raw_value(m_meta_data, m_value_data, index);
+        bool* value_data = static_cast<bool*>(
+            detail::value_ptr(m_meta_data, m_value_data, index));
         *value_data = false;
         break;
     }
     case metric_type::uint64:
     {
-        uint64_t* value_data =
-            (uint64_t*)detail::raw_value(m_meta_data, m_value_data, index);
+        uint64_t* value_data = static_cast<uint64_t*>(
+            detail::value_ptr(m_meta_data, m_value_data, index));
         *value_data = 0U;
         break;
     }
     case metric_type::int64:
     {
-        int64_t* value_data =
-            (int64_t*)detail::raw_value(m_meta_data, m_value_data, index);
+        int64_t* value_data = static_cast<int64_t*>(
+            detail::value_ptr(m_meta_data, m_value_data, index));
         *value_data = 0;
         break;
     }
     case metric_type::float64:
     {
-        double* value_data =
-            (double*)detail::raw_value(m_meta_data, m_value_data, index);
+        double* value_data = static_cast<double*>(
+            detail::value_ptr(m_meta_data, m_value_data, index));
         *value_data = 0.0;
         break;
     }
@@ -349,7 +346,7 @@ auto metrics::initialize(std::size_t index) const -> void*
     // Write that the metric has been initialized into memory
     detail::set_metric_initialized(m_meta_data, m_value_data, index);
     assert(is_metric_initialized(index));
-    return detail::raw_value(m_meta_data, m_value_data, index);
+    return detail::value_ptr(m_meta_data, m_value_data, index);
 }
 }
 }

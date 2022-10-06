@@ -18,25 +18,11 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-template <class Value>
-constexpr auto read(bool is_big, const uint8_t* data) -> Value
-{
-    if (is_big)
-    {
-        return endian::big_endian::get<Value>(data);
-    }
-    else
-    {
-        return endian::little_endian::get<Value>(data);
-    }
-}
-
 void view::set_meta_data(const uint8_t* meta_data)
 {
     m_meta_data = meta_data;
     m_value_data = nullptr;
 
-    m_is_big_endian = detail::is_big_endian_byte(m_meta_data);
     for (std::size_t i = 0; i < metric_count(); ++i)
     {
         m_name_to_index.emplace(metric_name(i), i);
@@ -82,63 +68,55 @@ auto view::is_metric_initialized(std::size_t index) const -> bool
 
 auto view::metric_name(std::size_t index) const -> std::string
 {
-    return {detail::raw_name(m_meta_data, index),
+    return {detail::name(m_meta_data, index),
             detail::name_size(m_meta_data, index)};
 }
 
 auto view::metric_description(std::size_t index) const -> std::string
 {
-    return {detail::raw_description(m_meta_data, index),
+    return {detail::description(m_meta_data, index),
             detail::description_size(m_meta_data, index)};
 }
 
 auto view::metric_type(std::size_t index) const -> abacus::metric_type
 {
     assert(is_metric_initialized(index));
-    return static_cast<abacus::metric_type>(
-        *detail::raw_type(m_meta_data, index));
+    return detail::type(m_meta_data, index);
 }
 
 auto view::is_metric_constant(std::size_t index) const -> bool
 {
     assert(is_metric_initialized(index));
-    return (bool)(detail::flags(m_meta_data, index) & metric_flags::constant);
+    return static_cast<bool>(detail::flags(m_meta_data, index) &
+                             metric_flags::constant);
 }
 
 void view::metric_value(std::size_t index, bool& value) const
 {
     assert(is_metric_initialized(index));
     assert(metric_type(index) == metric_type::boolean);
-    value = read<uint8_t>(
-        m_is_big_endian,
-        (uint8_t*)detail::raw_value(m_meta_data, m_value_data, index));
+    value = detail::value<bool>(m_meta_data, m_value_data, index);
 }
 
 void view::metric_value(std::size_t index, uint64_t& value) const
 {
     assert(is_metric_initialized(index));
     assert(metric_type(index) == metric_type::uint64);
-    value = read<uint64_t>(
-        m_is_big_endian,
-        (uint8_t*)detail::raw_value(m_meta_data, m_value_data, index));
+    value = detail::value<uint64_t>(m_meta_data, m_value_data, index);
 }
 
 void view::metric_value(std::size_t index, int64_t& value) const
 {
     assert(is_metric_initialized(index));
     assert(metric_type(index) == metric_type::int64);
-    value = read<int64_t>(
-        m_is_big_endian,
-        (uint8_t*)detail::raw_value(m_meta_data, m_value_data, index));
+    value = detail::value<int64_t>(m_meta_data, m_value_data, index);
 }
 
 void view::metric_value(std::size_t index, double& value) const
 {
     assert(is_metric_initialized(index));
     assert(metric_type(index) == metric_type::float64);
-    value = read<double>(
-        m_is_big_endian,
-        (uint8_t*)detail::raw_value(m_meta_data, m_value_data, index));
+    value = detail::value<double>(m_meta_data, m_value_data, index);
 }
 
 auto view::metric_index(const std::string& name) const -> std::size_t

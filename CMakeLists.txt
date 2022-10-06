@@ -93,7 +93,7 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
   file(GLOB_RECURSE abacus_test_sources ./test/*.cpp)
   add_executable(abacus_test ${abacus_test_sources})
   target_link_libraries(abacus_test gtest_main)
-  target_link_libraries(abacus_test steinwurf::abacus)
+  target_link_libraries(abacus_test steinwurf::abacus steinwurf::endian steinwurf::bourne)
 
   add_test(abacus_test abacus_test)
 endif()

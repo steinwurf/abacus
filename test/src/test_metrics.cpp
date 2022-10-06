@@ -7,6 +7,7 @@
 #include <cstring>
 #include <gtest/gtest.h>
 
+#include <abacus/detail/raw.hpp>
 #include <abacus/metrics.hpp>
 
 TEST(test_metrics, default_constructor)
@@ -144,7 +145,7 @@ TEST(test_metrics, value_and_meta_bytes)
 
     std::size_t meta_bytes = 0;
     // header size
-    meta_bytes += 12;
+    meta_bytes += abacus::detail::header_bytes();
     // name and description sizes
     meta_bytes += metric_count * 2 * 2;
     // names and descriptions

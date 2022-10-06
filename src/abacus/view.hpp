@@ -152,9 +152,6 @@ private:
     /// The value data pointer
     const uint8_t* m_value_data;
 
-    /// Flag to indicate whether the data is written as big endian or not
-    bool m_is_big_endian = false;
-
     /// Map to get index from names
     std::map<std::string, std::size_t> m_name_to_index;
 };

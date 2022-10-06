@@ -24,9 +24,9 @@ inline namespace STEINWURF_ABACUS_VERSION
 /// The class preallocates memory at construction with the following
 /// layout
 ///
-/// 1. Header of 12 bytes
-///     * Number of metrics (2 bytes)
-///     * Is big endian (2 byte)
+/// 1. Header of 10 bytes
+///     * Is big endian (1 byte)
+///     * Alignment (1 byte)
 ///     * Total name bytes (2 bytes)
 ///     * Total description bytes (2 bytes)
 ///     * Number of 8-byte-value metrics (2 bytes)
