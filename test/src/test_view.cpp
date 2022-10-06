@@ -37,20 +37,20 @@ TEST(test_view, api)
     view.set_meta_data(meta_data.data());
     view.set_value_data(value_data.data());
 
-    EXPECT_EQ(metrics.metric_count(), view.metric_count());
+    EXPECT_EQ(metrics.count(), view.count());
 
-    EXPECT_EQ(metrics.metric_name(0), view.metric_name(0));
-    EXPECT_EQ(metrics.metric_name(1), view.metric_name(1));
+    EXPECT_EQ(metrics.name(0), view.name(0));
+    EXPECT_EQ(metrics.name(1), view.name(1));
 
-    EXPECT_EQ(view.metric_type(0), abacus::metric_type::uint64);
-    EXPECT_EQ(view.metric_type(1), abacus::metric_type::int64);
+    EXPECT_EQ(view.type(0), abacus::metric_type::uint64);
+    EXPECT_EQ(view.type(1), abacus::metric_type::int64);
 
-    uint64_t metric_value = 12;
+    uint64_t metrics_value = 12;
     uint64_t view_value = 11;
-    metrics.metric_value(0, metric_value);
-    view.metric_value(0, view_value);
+    metrics.value(0, metrics_value);
+    view.value(0, view_value);
 
-    EXPECT_EQ(metric_value, view_value);
+    EXPECT_EQ(metrics_value, view_value);
 
     EXPECT_EQ(view.meta_data(), meta_data.data());
     EXPECT_EQ(view.value_data(), value_data.data());

@@ -39,55 +39,54 @@ TEST(test_metrics, default_constructor)
 
     abacus::metrics metrics(infos);
 
-    EXPECT_EQ(metrics.metric_count(), metric_count);
+    EXPECT_EQ(metrics.count(), metric_count);
 
-    EXPECT_FALSE(metrics.is_metric_constant(0));
-    EXPECT_FALSE(metrics.is_metric_constant(1));
-    EXPECT_FALSE(metrics.is_metric_constant(2));
-    EXPECT_TRUE(metrics.is_metric_constant(3));
-    EXPECT_FALSE(metrics.is_metric_constant(4));
-    EXPECT_TRUE(metrics.is_metric_constant(5));
+    EXPECT_FALSE(metrics.is_constant(0));
+    EXPECT_FALSE(metrics.is_constant(1));
+    EXPECT_FALSE(metrics.is_constant(2));
+    EXPECT_TRUE(metrics.is_constant(3));
+    EXPECT_FALSE(metrics.is_constant(4));
+    EXPECT_TRUE(metrics.is_constant(5));
 
-    EXPECT_FALSE(metrics.is_metric_initialized(0));
+    EXPECT_FALSE(metrics.is_initialized(0));
     auto metric0 =
         metrics.initialize_metric<abacus::metric_type::uint64>(name1);
-    EXPECT_TRUE(metrics.is_metric_initialized(0));
+    EXPECT_TRUE(metrics.is_initialized(0));
 
-    EXPECT_FALSE(metrics.is_metric_initialized(1));
+    EXPECT_FALSE(metrics.is_initialized(1));
     auto metric1 = metrics.initialize_metric<abacus::metric_type::int64>(name2);
-    EXPECT_TRUE(metrics.is_metric_initialized(1));
+    EXPECT_TRUE(metrics.is_initialized(1));
 
-    EXPECT_FALSE(metrics.is_metric_initialized(2));
+    EXPECT_FALSE(metrics.is_initialized(2));
     auto metric2 =
         metrics.initialize_metric<abacus::metric_type::float64>(name3);
-    EXPECT_TRUE(metrics.is_metric_initialized(2));
+    EXPECT_TRUE(metrics.is_initialized(2));
 
-    EXPECT_FALSE(metrics.is_metric_initialized(4));
+    EXPECT_FALSE(metrics.is_initialized(4));
     auto metric3 =
         metrics.initialize_metric<abacus::metric_type::boolean>(name0);
-    EXPECT_TRUE(metrics.is_metric_initialized(4));
+    EXPECT_TRUE(metrics.is_initialized(4));
 
-    EXPECT_FALSE(metrics.is_metric_initialized(5));
+    EXPECT_FALSE(metrics.is_initialized(5));
     metrics.initialize_constant(name4, true);
-    EXPECT_TRUE(metrics.is_metric_initialized(5));
+    EXPECT_TRUE(metrics.is_initialized(5));
 
-    EXPECT_FALSE(metrics.is_metric_initialized(3));
+    EXPECT_FALSE(metrics.is_initialized(3));
     metrics.initialize_constant(name5, 42.42);
-    EXPECT_TRUE(metrics.is_metric_initialized(3));
+    EXPECT_TRUE(metrics.is_initialized(3));
 
-    EXPECT_EQ(metrics.metric_name(0), name1);
-    EXPECT_EQ(metrics.metric_name(1), name2);
-    EXPECT_EQ(metrics.metric_name(2), name3);
-    EXPECT_EQ(metrics.metric_name(4), name0);
-    EXPECT_EQ(metrics.metric_name(5), name4);
+    EXPECT_EQ(metrics.name(0), name1);
+    EXPECT_EQ(metrics.name(1), name2);
+    EXPECT_EQ(metrics.name(2), name3);
+    EXPECT_EQ(metrics.name(4), name0);
+    EXPECT_EQ(metrics.name(5), name4);
 
-    EXPECT_EQ(metrics.metric_description(0), "An unsigned integer metric");
-    EXPECT_EQ(metrics.metric_description(1), "A signed integer metric");
-    EXPECT_EQ(metrics.metric_description(2), "A floating point metric");
-    EXPECT_EQ(metrics.metric_description(3),
-              "A constant floating point metric");
-    EXPECT_EQ(metrics.metric_description(4), "A boolean metric");
-    EXPECT_EQ(metrics.metric_description(5), "A constant boolean metric");
+    EXPECT_EQ(metrics.description(0), "An unsigned integer metric");
+    EXPECT_EQ(metrics.description(1), "A signed integer metric");
+    EXPECT_EQ(metrics.description(2), "A floating point metric");
+    EXPECT_EQ(metrics.description(3), "A constant floating point metric");
+    EXPECT_EQ(metrics.description(4), "A boolean metric");
+    EXPECT_EQ(metrics.description(5), "A constant boolean metric");
 
     metric0 = 4U;
     metric1 = -4;
@@ -99,30 +98,30 @@ TEST(test_metrics, default_constructor)
     double float_value = 0.0;
     bool bool_value = false;
 
-    metrics.metric_value(0, uint_value);
+    metrics.value(0, uint_value);
     EXPECT_EQ(uint_value, 4U);
 
-    metrics.metric_value(1, int_value);
+    metrics.value(1, int_value);
     EXPECT_EQ(int_value, -4);
 
-    metrics.metric_value(2, float_value);
+    metrics.value(2, float_value);
     EXPECT_EQ(float_value, 3.14);
 
-    metrics.metric_value(3, float_value);
+    metrics.value(3, float_value);
     EXPECT_EQ(float_value, 42.42);
 
-    metrics.metric_value(4, bool_value);
+    metrics.value(4, bool_value);
     EXPECT_EQ(bool_value, true);
 
-    metrics.metric_value(5, bool_value);
+    metrics.value(5, bool_value);
     EXPECT_EQ(bool_value, true);
 
-    EXPECT_EQ(metrics.metric_index(name0), 4U);
-    EXPECT_EQ(metrics.metric_index(name1), 0U);
-    EXPECT_EQ(metrics.metric_index(name2), 1U);
-    EXPECT_EQ(metrics.metric_index(name3), 2U);
-    EXPECT_EQ(metrics.metric_index(name4), 5U);
-    EXPECT_EQ(metrics.metric_index(name5), 3U);
+    EXPECT_EQ(metrics.index(name0), 4U);
+    EXPECT_EQ(metrics.index(name1), 0U);
+    EXPECT_EQ(metrics.index(name2), 1U);
+    EXPECT_EQ(metrics.index(name3), 2U);
+    EXPECT_EQ(metrics.index(name4), 5U);
+    EXPECT_EQ(metrics.index(name5), 3U);
 }
 
 TEST(test_metrics, value_and_meta_bytes)
@@ -191,8 +190,8 @@ TEST(test_metrics, reset_counters)
     uint_metric = 4U;
     int_metric = -4;
 
-    metrics.metric_value(0, uint_value);
-    metrics.metric_value(1, int_value);
+    metrics.value(0, uint_value);
+    metrics.value(1, int_value);
 
     EXPECT_EQ(uint_value, 4U);
     EXPECT_EQ(int_value, -4);
@@ -200,8 +199,8 @@ TEST(test_metrics, reset_counters)
     metrics.reset_metric(0);
     metrics.reset_metric(1);
 
-    metrics.metric_value(0, uint_value);
-    metrics.metric_value(1, int_value);
+    metrics.value(0, uint_value);
+    metrics.value(1, int_value);
 
     EXPECT_EQ(uint_value, 0U);
     EXPECT_EQ(int_value, 0);
@@ -209,16 +208,16 @@ TEST(test_metrics, reset_counters)
     uint_metric = 4U;
     int_metric = -4;
 
-    metrics.metric_value(0, uint_value);
-    metrics.metric_value(1, int_value);
+    metrics.value(0, uint_value);
+    metrics.value(1, int_value);
 
     EXPECT_EQ(uint_value, 4U);
     EXPECT_EQ(int_value, -4);
 
     metrics.reset_metrics();
 
-    metrics.metric_value(0, uint_value);
-    metrics.metric_value(1, int_value);
+    metrics.value(0, uint_value);
+    metrics.value(1, int_value);
 
     EXPECT_EQ(uint_value, 0U);
     EXPECT_EQ(int_value, 0);

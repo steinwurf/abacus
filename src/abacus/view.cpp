@@ -23,9 +23,9 @@ void view::set_meta_data(const uint8_t* meta_data)
     m_meta_data = meta_data;
     m_value_data = nullptr;
 
-    for (std::size_t i = 0; i < metric_count(); ++i)
+    for (std::size_t i = 0; i < count(); ++i)
     {
-        m_name_to_index.emplace(metric_name(i), i);
+        m_name_to_index.emplace(name(i), i);
     }
 }
 
@@ -55,71 +55,69 @@ std::size_t view::value_bytes() const
     return detail::value_bytes(m_meta_data);
 }
 
-auto view::metric_count() const -> uint16_t
+auto view::count() const -> uint16_t
 {
     return detail::metric_count(m_meta_data);
 }
 
-auto view::is_metric_initialized(std::size_t index) const -> bool
+auto view::is_initialized(std::size_t index) const -> bool
 {
-    assert(index < metric_count());
+    assert(index < count());
     return detail::is_metric_initialized(m_meta_data, m_value_data, index);
 }
 
-auto view::metric_name(std::size_t index) const -> std::string
+auto view::name(std::size_t index) const -> std::string
 {
     return {detail::name(m_meta_data, index),
             detail::name_size(m_meta_data, index)};
 }
 
-auto view::metric_description(std::size_t index) const -> std::string
+auto view::description(std::size_t index) const -> std::string
 {
     return {detail::description(m_meta_data, index),
             detail::description_size(m_meta_data, index)};
 }
 
-auto view::metric_type(std::size_t index) const -> abacus::metric_type
+auto view::type(std::size_t index) const -> abacus::metric_type
 {
-    assert(is_metric_initialized(index));
     return detail::type(m_meta_data, index);
 }
 
-auto view::is_metric_constant(std::size_t index) const -> bool
+auto view::is_constant(std::size_t index) const -> bool
 {
-    assert(is_metric_initialized(index));
     return static_cast<bool>(detail::flags(m_meta_data, index) &
                              metric_flags::constant);
 }
 
-void view::metric_value(std::size_t index, bool& value) const
+void view::value(std::size_t index, bool& value) const
 {
-    assert(is_metric_initialized(index));
-    assert(metric_type(index) == metric_type::boolean);
+    assert(is_initialized(index));
+    assert(type(index) == metric_type::boolean);
     value = detail::value<bool>(m_meta_data, m_value_data, index);
 }
 
-void view::metric_value(std::size_t index, uint64_t& value) const
+void view::value(std::size_t index, uint64_t& value) const
 {
-    assert(is_metric_initialized(index));
-    assert(metric_type(index) == metric_type::uint64);
+    assert(is_initialized(index));
+    assert(type(index) == metric_type::uint64);
     value = detail::value<uint64_t>(m_meta_data, m_value_data, index);
 }
 
-void view::metric_value(std::size_t index, int64_t& value) const
+void view::value(std::size_t index, int64_t& value) const
 {
-    assert(is_metric_initialized(index));
-    assert(metric_type(index) == metric_type::int64);
+    assert(is_initialized(index));
+    assert(type(index) == metric_type::int64);
     value = detail::value<int64_t>(m_meta_data, m_value_data, index);
 }
 
-void view::metric_value(std::size_t index, double& value) const
+void view::value(std::size_t index, double& value) const
 {
-    assert(is_metric_initialized(index));
-    assert(metric_type(index) == metric_type::float64);
+    assert(is_initialized(index));
+    assert(type(index) == metric_type::float64);
     value = detail::value<double>(m_meta_data, m_value_data, index);
 }
 
-auto view::metric_index(const std::string& name) const -> std::size_t
+auto view::index(const std::string& name) const -> std::size_t
 {
     return m_name_to_index.at(name);
 }
