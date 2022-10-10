@@ -15,8 +15,10 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 /// @return a JSON-formatted string of a metrics views data.
-/// @param metrics_data the data of the metrics views to be serialized to JSON.
-auto to_json(const uint8_t* metrics_data) -> std::string;
+/// @param meta_data The meta data of the metrics view.
+/// @param value_data The value data of the metrics view.
+auto to_json(const uint8_t* meta_data, const uint8_t* value_data)
+    -> std::string;
 
 /// @return a JSON-formatted string of a single views data.
 /// @param view A view with access to metrics-data.

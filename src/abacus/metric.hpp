@@ -123,7 +123,6 @@ public:
 
     /// Create a new counter value from the pointer
     /// @param memory A pointer to a value
-
     metric(int64_t* memory) : m_memory(memory)
     {
         assert(m_memory != nullptr);

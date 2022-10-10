@@ -24,11 +24,11 @@ struct value_size_info
     std::vector<metric_info> m_eight_byte_metrics;
     std::vector<metric_info> m_one_byte_metrics;
 
-    value_size_info(const metric_info* infos, std::size_t size)
+    value_size_info(const metric_info* infos, std::size_t count)
     {
         assert(infos != nullptr);
 
-        for (std::size_t i = 0; i < size; i++)
+        for (std::size_t i = 0; i < count; i++)
         {
             const auto& info = infos[i];
             switch (info.type)
@@ -58,14 +58,14 @@ struct value_size_info
         return m_one_byte_metrics.size();
     }
 
-    std::size_t size() const
+    std::size_t count() const
     {
         return m_eight_byte_metrics.size() + m_one_byte_metrics.size();
     }
 
     metric_info operator[](std::size_t index) const
     {
-        assert(index < size());
+        assert(index < count());
 
         if (index < m_eight_byte_metrics.size())
         {
