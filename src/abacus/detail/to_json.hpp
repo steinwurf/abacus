@@ -17,7 +17,7 @@ inline namespace STEINWURF_ABACUS_VERSION
 {
 namespace detail
 {
-auto to_json(const view& view) -> bourne::json;
+auto to_json(const view& view, bool slim) -> bourne::json;
 }
 }
 }

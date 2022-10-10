@@ -10,6 +10,7 @@ Latest
 
 2.1.1
 -----
+* Minor: Added slim version of `to_json`.
 * Minor: Added `abacus::protocol_version` to the API.
 * Patch: Fix multiple definitions of `abacus::detail::to_json`.
 
