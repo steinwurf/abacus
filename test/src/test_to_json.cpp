@@ -27,6 +27,11 @@ static const char* expected_json = R"({
   "protocol_version" : 0
 })";
 
+static const char* expected_json_slim = R"({
+  "metric0" : 42,
+  "metric1" : -42
+})";
+
 TEST(test_to_json, api)
 {
     std::string name0 = "metric0";
@@ -61,4 +66,7 @@ TEST(test_to_json, api)
 
     EXPECT_EQ(json_from_view, json_from_data);
     EXPECT_EQ(json_from_view, expected_json);
+
+    auto json_from_view_slim = abacus::to_json(view, true);
+    EXPECT_EQ(json_from_view_slim, expected_json_slim);
 }
