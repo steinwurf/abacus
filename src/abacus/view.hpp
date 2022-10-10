@@ -59,6 +59,10 @@ public:
     /// @return the number of metrics from in a metrics data pointer
     auto count() const -> uint16_t;
 
+    /// Gets the protocol version of the metrics
+    /// @return The protocol version of the metrics
+    auto protocol_version() const -> uint8_t;
+
     /// @returns true if the metric is initialized, that is if
     /// initialize_metric() has been called for the given index.
     /// @param index The index of the metric to check. Must be less than

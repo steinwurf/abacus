@@ -12,6 +12,7 @@
 #include "metric_info.hpp"
 #include "metric_type.hpp"
 #include "metrics.hpp"
+#include "protocol_version.hpp"
 
 #include <endian/is_big_endian.hpp>
 
@@ -76,6 +77,8 @@ metrics::metrics(const metric_info* info, std::size_t count) :
     // Write the header
     // The endianness of the data, 0 for little-endian, 1 for big-endian
     new (m_meta_data) uint8_t(endian::is_big_endian());
+    // The version of the data protocol
+    new (m_meta_data + 1) uint8_t(abacus::protocol_version());
     // The total bytes used for names
     new (m_meta_data + 2) uint16_t(name_bytes);
     // The total bytes used for descriptions
@@ -168,6 +171,11 @@ auto metrics::value_bytes() const -> std::size_t
 auto metrics::count() const -> std::size_t
 {
     return m_info.count();
+}
+
+auto metrics::protocol_version() const -> uint8_t
+{
+    return detail::protocol_version(m_meta_data);
 }
 
 auto metrics::is_initialized(std::size_t index) const -> bool

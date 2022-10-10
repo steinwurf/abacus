@@ -23,6 +23,8 @@ auto to_json(const view& view) -> bourne::json
     bool bool_value = false;
     double float_value = 0.0;
 
+    json["protocol_version"] = view.protocol_version();
+
     for (std::size_t i = 0; i < view.count(); ++i)
     {
         if ((!view.is_initialized(i)))

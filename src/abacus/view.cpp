@@ -65,6 +65,11 @@ auto view::count() const -> uint16_t
     return detail::metric_count(m_meta_data);
 }
 
+auto view::protocol_version() const -> uint8_t
+{
+    return detail::protocol_version(m_meta_data);
+}
+
 auto view::is_initialized(std::size_t index) const -> bool
 {
     assert(index < count());

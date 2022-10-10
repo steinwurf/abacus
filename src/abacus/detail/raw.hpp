@@ -37,11 +37,15 @@ inline auto is_big_endian_byte_offset() -> std::size_t
     return 0;
 }
 
+inline auto is_big_endian(const uint8_t* meta_data) -> bool
+{
+    return meta_data[is_big_endian_byte_offset()] != 0;
+}
+
 template <class T>
 T read(const uint8_t* meta_data, const uint8_t* data)
 {
-    bool is_big = (meta_data + is_big_endian_byte_offset())[0] != 0;
-    if (is_big)
+    if (is_big_endian(meta_data))
     {
         return endian::big_endian::get<T>(data);
     }
@@ -51,9 +55,23 @@ T read(const uint8_t* meta_data, const uint8_t* data)
     }
 }
 
+inline auto protocol_version_offset() -> std::size_t
+{
+    return is_big_endian_byte_offset() + sizeof(bool);
+}
+
+inline auto protocol_version(const uint8_t* meta_data) -> uint8_t
+{
+    return meta_data[protocol_version_offset()];
+}
+
 inline auto name_bytes_offset() -> std::size_t
 {
-    return is_big_endian_byte_offset() + sizeof(uint8_t) + sizeof(uint8_t);
+    auto offset = protocol_version_offset() + sizeof(uint8_t);
+    // Assert that the offset is a multiple of 2 as name_bytes is a uint16_t and
+    // therefore must be aligned on a 2 byte boundary
+    assert(offset % 2 == 0);
+    return offset;
 }
 
 inline auto name_bytes(const uint8_t* meta_data) -> uint16_t

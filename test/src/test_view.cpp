@@ -8,6 +8,7 @@
 #include <gtest/gtest.h>
 
 #include <abacus/metrics.hpp>
+#include <abacus/protocol_version.hpp>
 #include <abacus/view.hpp>
 
 TEST(test_view, api)
@@ -35,6 +36,9 @@ TEST(test_view, api)
     abacus::view view;
 
     view.set_meta_data(meta_data.data());
+    view.set_meta_data(meta_data.data());
+    EXPECT_EQ(view.protocol_version(), abacus::protocol_version());
+
     view.set_value_data(value_data.data());
 
     EXPECT_EQ(metrics.count(), view.count());

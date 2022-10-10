@@ -26,7 +26,7 @@ inline namespace STEINWURF_ABACUS_VERSION
 ///
 /// 1. Header of 10 bytes
 ///     * Is big endian (1 byte)
-///     * Alignment (1 byte)
+///     * Protocol version (1 byte)
 ///     * Total name bytes (2 bytes)
 ///     * Total description bytes (2 bytes)
 ///     * Number of 8-byte-value metrics (2 bytes)
@@ -87,6 +87,10 @@ public:
 
     /// @returns the number of metrics
     auto count() const -> std::size_t;
+
+    /// Gets the protocol version of the metrics
+    /// @return The protocol version of the metrics
+    auto protocol_version() const -> uint8_t;
 
     /// @returns true if the metric is initialized, that is if
     /// initialize_metric() has been called for the given index.

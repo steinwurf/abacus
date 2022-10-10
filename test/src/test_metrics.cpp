@@ -9,6 +9,7 @@
 
 #include <abacus/detail/raw.hpp>
 #include <abacus/metrics.hpp>
+#include <abacus/protocol_version.hpp>
 
 TEST(test_metrics, default_constructor)
 {
@@ -40,6 +41,7 @@ TEST(test_metrics, default_constructor)
     abacus::metrics metrics(infos);
 
     EXPECT_EQ(metrics.count(), metric_count);
+    EXPECT_EQ(metrics.protocol_version(), abacus::protocol_version());
 
     EXPECT_FALSE(metrics.is_constant(0));
     EXPECT_FALSE(metrics.is_constant(1));
@@ -221,4 +223,91 @@ TEST(test_metrics, reset_counters)
 
     EXPECT_EQ(uint_value, 0U);
     EXPECT_EQ(int_value, 0);
+}
+
+static const std::vector<uint8_t> expected_meta_data = {
+    0x00, 0x00, 0x1c, 0x00, 0x58, 0x00, 0x03, 0x00, 0x01, 0x00, 0x07, 0x00,
+    0x07, 0x00, 0x07, 0x00, 0x07, 0x00, 0x1a, 0x00, 0x17, 0x00, 0x17, 0x00,
+    0x10, 0x00, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x30, 0x6d, 0x65, 0x74,
+    0x72, 0x69, 0x63, 0x31, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x32, 0x6d,
+    0x65, 0x74, 0x72, 0x69, 0x63, 0x33, 0x41, 0x6e, 0x20, 0x75, 0x6e, 0x73,
+    0x69, 0x67, 0x6e, 0x65, 0x64, 0x20, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x65,
+    0x72, 0x20, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x41, 0x20, 0x73, 0x69,
+    0x67, 0x6e, 0x65, 0x64, 0x20, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x65, 0x72,
+    0x20, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x41, 0x20, 0x66, 0x6c, 0x6f,
+    0x61, 0x74, 0x69, 0x6e, 0x67, 0x20, 0x70, 0x6f, 0x69, 0x6e, 0x74, 0x20,
+    0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x41, 0x20, 0x62, 0x6f, 0x6f, 0x6c,
+    0x65, 0x61, 0x6e, 0x20, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x00, 0x01,
+    0x02, 0x03, 0x00, 0x00, 0x00, 0x00};
+
+static const std::vector<uint8_t> expected_value_data = {
+    0x2a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xd6,
+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0xc0, 0x61, 0x40, 0x01, 0x0f};
+
+TEST(test_metrics, protocol_version)
+{
+    SCOPED_TRACE(::testing::Message()
+                 << "protocol version: " << abacus::protocol_version());
+    SCOPED_TRACE(
+        ::testing::Message()
+        << "If this test fails, you need to update the protocol version");
+    abacus::metric_info infos[4] = {
+        abacus::metric_info{"metric0", "An unsigned integer metric",
+                            abacus::metric_type::uint64},
+        abacus::metric_info{"metric1", "A signed integer metric",
+                            abacus::metric_type::int64},
+        abacus::metric_info{"metric2", "A floating point metric",
+                            abacus::metric_type::float64},
+        abacus::metric_info{"metric3", "A boolean metric",
+                            abacus::metric_type::boolean}};
+
+    abacus::metrics metrics(infos);
+
+    auto uint_metric =
+        metrics.initialize_metric<abacus::metric_type::uint64>("metric0");
+    auto int_metric =
+        metrics.initialize_metric<abacus::metric_type::int64>("metric1");
+    auto float_metric =
+        metrics.initialize_metric<abacus::metric_type::float64>("metric2");
+    auto bool_metric =
+        metrics.initialize_metric<abacus::metric_type::boolean>("metric3");
+    uint_metric = 42U;
+    int_metric = -42;
+    float_metric = 142.0;
+    bool_metric = true;
+
+    EXPECT_EQ(metrics.meta_bytes(), expected_meta_data.size());
+    EXPECT_EQ(metrics.value_bytes(), expected_value_data.size());
+    {
+        // Print the meta data as hex
+        std::stringstream meta_stream;
+        meta_stream << std::hex;
+        for (std::size_t i = 0; i < metrics.meta_bytes(); ++i)
+        {
+            meta_stream << "0x" << std::setw(2) << std::setfill('0')
+                        << static_cast<int>(metrics.meta_data()[i]) << ", ";
+        }
+        SCOPED_TRACE(::testing::Message() << "Meta data:\n"
+                                          << meta_stream.str());
+        EXPECT_EQ(
+            expected_meta_data,
+            std::vector<uint8_t>(metrics.meta_data(),
+                                 metrics.meta_data() + metrics.meta_bytes()));
+    }
+    {
+        std::stringstream value_stream;
+        value_stream << std::hex;
+        for (std::size_t i = 0; i < metrics.value_bytes(); ++i)
+        {
+            value_stream << "0x" << std::setw(2) << std::setfill('0')
+                         << static_cast<int>(metrics.value_data()[i]) << ", ";
+        }
+        SCOPED_TRACE(::testing::Message() << "Value data:\n"
+                                          << value_stream.str());
+        EXPECT_EQ(
+            expected_value_data,
+            std::vector<uint8_t>(metrics.value_data(),
+                                 metrics.value_data() + metrics.value_bytes()));
+    }
 }
