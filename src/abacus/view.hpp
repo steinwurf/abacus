@@ -33,11 +33,11 @@ class view
 
 public:
     /// Sets the meta data pointer
-    /// @param data The meta data pointer
+    /// @param meta_data The meta data pointer
     void set_meta_data(const uint8_t* meta_data);
 
     /// Sets the value data pointer
-    /// @param data The value data pointer
+    /// @param value_data The value data pointer
     void set_value_data(const uint8_t* value_data);
 
     /// Gets the meta data pointer
