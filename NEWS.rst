@@ -6,12 +6,23 @@ every change, see the Git log.
 
 Latest
 ------
-* tbd
+* Minor: Added slim version of `to_json`.
+* Minor: Added `abacus::protocol_version` to the API.
+* Major: Split meta data and value data.
+* Major: Removed `metrics::copy_storage` and `metrics::storage_bytes`,
+  instead use `metrics::meta_data`, `metrics::meta_bytes`, `metrics::value_data`,
+  and `metrics::value_bytes`.
+* Major: Replaced `view::set_data` with `view::set_meta_data` and `view::set_value_data`.
+* Major: The initialization of metrics are now stored in a bitmap instead of parts of the
+  flags field.
+* Major: Removed metrics count from the header, instead use the combination of
+  8-byte-value metrics and 1-byte-value metrics.
+* Major: General API change of member functions. Many has dropped the use of "metric", e.g.,
+  `metrics::metric_name(std::size_t index)` is now `metrics::name(std::size_t index)`.
+* Major: Refactored `src/abacus/detail/raw.hpp` to properly handle endianness.
 
 2.1.1
 -----
-* Minor: Added slim version of `to_json`.
-* Minor: Added `abacus::protocol_version` to the API.
 * Patch: Fix multiple definitions of `abacus::detail::to_json`.
 
 2.1.0

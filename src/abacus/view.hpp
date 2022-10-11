@@ -27,7 +27,10 @@ inline namespace STEINWURF_ABACUS_VERSION
 /// pointed to values
 ///
 /// Note that this class has no constructor, so it can only be declared and
-/// then view.set_storage_data() can be called to update the data
+/// then view.set_meta_data() can be called to initialize the view with the
+/// meta data, subsequently view.set_value_data() can be called to populate
+/// the view with the value data. To update the view with new value data
+/// view.set_value_data() can be called again.
 class view
 {
 
