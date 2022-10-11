@@ -6,7 +6,7 @@ from waflib.Build import BuildContext
 
 
 APPNAME = "abacus"
-VERSION = "2.1.1"
+VERSION = "3.0.0"
 
 
 def build(bld):

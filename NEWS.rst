@@ -6,6 +6,10 @@ every change, see the Git log.
 
 Latest
 ------
+* tbd
+
+3.0.0
+-----
 * Minor: Added slim version of `to_json`.
 * Minor: Added `abacus::protocol_version` to the API.
 * Major: Split meta data and value data.
