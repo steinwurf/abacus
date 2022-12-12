@@ -12,19 +12,19 @@ namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-auto to_json(const view& view, bool slim) -> std::string
+auto to_json(const view& view, bool minimal) -> std::string
 {
-    bourne::json json = detail::to_json(view, slim);
+    bourne::json json = detail::to_json(view, minimal);
     return json.dump();
 }
 
-auto to_json(const uint8_t* meta_data, const uint8_t* value_data, bool slim)
+auto to_json(const uint8_t* meta_data, const uint8_t* value_data, bool minimal)
     -> std::string
 {
     view v;
     v.set_meta_data(meta_data);
     v.set_value_data(value_data);
-    return to_json(v, slim);
+    return to_json(v, minimal);
 }
 }
 }

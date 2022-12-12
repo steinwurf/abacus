@@ -15,6 +15,7 @@
 #include <endian/big_endian.hpp>
 #include <endian/little_endian.hpp>
 
+#include "../metric_category.hpp"
 #include "../metric_flags.hpp"
 #include "../metric_type.hpp"
 #include "../version.hpp"
@@ -228,6 +229,22 @@ inline auto flags(const uint8_t* meta_data, std::size_t index) -> metric_flags
     std::size_t offset = flags_offset(meta_data) + index;
     return static_cast<metric_flags>(
         read<uint8_t>(meta_data, meta_data + offset + index));
+}
+
+inline auto category_offset(const uint8_t* meta_data) -> std::size_t
+{
+    return flags_offset(meta_data) + metric_count(meta_data);
+}
+
+inline auto category(const uint8_t* meta_data, std::size_t index)
+    -> metric_category
+{
+    assert(meta_data != nullptr);
+    assert(index < metric_count(meta_data));
+
+    std::size_t offset = category_offset(meta_data) + index;
+    return static_cast<metric_category>(
+        read<uint8_t>(meta_data, meta_data + offset));
 }
 
 inline auto meta_bytes(const uint8_t* meta_data) -> std::size_t
