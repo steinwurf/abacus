@@ -6,6 +6,10 @@ every change, see the Git log.
 
 Latest
 ------
+* tbd
+
+3.0.1
+-----
 * Patch: Fixed an issue with the offset of the metric_flags in the raw-API
 
 3.0.0
