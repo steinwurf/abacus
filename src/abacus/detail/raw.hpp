@@ -227,7 +227,7 @@ inline auto flags(const uint8_t* meta_data, std::size_t index) -> metric_flags
 
     std::size_t offset = flags_offset(meta_data) + index;
     return static_cast<metric_flags>(
-        read<uint8_t>(meta_data, meta_data + offset + index));
+        read<uint8_t>(meta_data, meta_data + offset));
 }
 
 inline auto meta_bytes(const uint8_t* meta_data) -> std::size_t
