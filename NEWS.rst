@@ -6,7 +6,7 @@ every change, see the Git log.
 
 Latest
 ------
-* tbd
+* Patch: Fixed an issue with the offset of the metric_flags in the raw-API
 
 3.0.0
 -----
