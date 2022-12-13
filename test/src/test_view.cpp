@@ -15,18 +15,24 @@ TEST(test_view, api)
 {
     std::string name0 = "metric0";
     std::string name1 = "metric1";
+    std::string name2 = "metric3";
 
-    abacus::metric_info infos[2] = {
+    abacus::metric_info infos[3] = {
         abacus::metric_info{name0, "An unsigned integer metric",
                             abacus::metric_type::uint64},
         abacus::metric_info{name1, "A signed integer metric",
-                            abacus::metric_type::int64}};
+                            abacus::metric_type::int64},
+        abacus::metric_info{name2, "Constant floating point metric",
+                            abacus::metric_type::float64,
+                            abacus::metric_flags::constant}};
 
     abacus::metrics metrics(infos);
 
     metrics.initialize_metric<abacus::metric_type::uint64>(name0);
 
     metrics.initialize_metric<abacus::metric_type::int64>(name1);
+
+    metrics.initialize_constant(name2, 3.14);
 
     std::vector<uint8_t> meta_data(metrics.meta_bytes());
     std::vector<uint8_t> value_data(metrics.value_bytes());
@@ -45,9 +51,15 @@ TEST(test_view, api)
 
     EXPECT_EQ(metrics.name(0), view.name(0));
     EXPECT_EQ(metrics.name(1), view.name(1));
+    EXPECT_EQ(metrics.name(2), view.name(2));
 
     EXPECT_EQ(view.type(0), abacus::metric_type::uint64);
     EXPECT_EQ(view.type(1), abacus::metric_type::int64);
+    EXPECT_EQ(view.type(2), abacus::metric_type::float64);
+
+    EXPECT_FALSE(view.is_constant(0));
+    EXPECT_FALSE(view.is_constant(1));
+    EXPECT_TRUE(view.is_constant(2));
 
     uint64_t metrics_value = 12;
     uint64_t view_value = 11;
