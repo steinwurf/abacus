@@ -5,7 +5,8 @@
 
 #pragma once
 
-#include "metric_flags.hpp"
+#include "metric_category.hpp"
+#include "metric_kind.hpp"
 #include "metric_type.hpp"
 #include <string>
 
@@ -27,7 +28,7 @@ struct metric_info
     metric_type type;
 
     /// enum describing the flags of a metric.
-    metric_flags flags{};
+    metric_kind kind;
 };
 }
 }
