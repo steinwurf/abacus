@@ -23,16 +23,18 @@ int main()
     abacus::metric_info infos[4] = {
         abacus::metric_info{name0, "Fuel consumption in kilometers per liter",
                             abacus::metric_type::float64,
-                            abacus::metric_flags::constant},
+                            abacus::metric_kind::constant},
         abacus::metric_info{name1, "Wheels on the car",
                             abacus::metric_type::uint64,
-                            abacus::metric_flags::constant},
+                            abacus::metric_kind::constant},
         abacus::metric_info{name2,
                             "Days until next maintenance, if less than 0, "
                             "maintenance is overdue",
-                            abacus::metric_type::int64},
+                            abacus::metric_type::int64,
+                            abacus::metric_kind::gauge},
         abacus::metric_info{name3, "Is the car registered",
-                            abacus::metric_type::boolean}};
+                            abacus::metric_type::boolean,
+                            abacus::metric_kind::gauge}};
 
     abacus::metrics car(infos);
 

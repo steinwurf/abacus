@@ -5,7 +5,6 @@
 
 #pragma once
 
-#include "metric_category.hpp"
 #include "metric_kind.hpp"
 #include "metric_type.hpp"
 #include <string>

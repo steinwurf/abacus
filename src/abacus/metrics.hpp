@@ -135,11 +135,11 @@ public:
     /// initialize_constant().
     auto is_boolean(std::size_t index) const -> bool;
 
-    /// @returns true if the metric at the given index is a constant, otherwise
-    /// false.
+    /// @returns The kind of metric at the given index. counter, gauge or
+    /// constant
     /// @param index The index of the metric to check. Must be less than
     /// count().
-    auto is_constant(std::size_t index) const -> bool;
+    auto kind(std::size_t index) const -> metric_kind;
 
     /// @returns A wrapper for a counter at the given index with type
     /// appropriate with given enum.

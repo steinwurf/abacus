@@ -15,7 +15,6 @@
 #include <endian/big_endian.hpp>
 #include <endian/little_endian.hpp>
 
-#include "../metric_category.hpp"
 #include "../metric_kind.hpp"
 #include "../metric_type.hpp"
 #include "../version.hpp"
@@ -231,26 +230,9 @@ inline auto kind(const uint8_t* meta_data, std::size_t index) -> metric_kind
         read<uint8_t>(meta_data, meta_data + offset));
 }
 
-inline auto categories_offset(const uint8_t* meta_data) -> std::size_t
-{
-    return kind_offset(meta_data) + metric_count(meta_data);
-}
-
-inline auto categories(const uint8_t* meta_data, std::size_t index)
-    -> metric_category
-{
-    assert(meta_data != nullptr);
-    assert(index < metric_count(meta_data));
-
-    std::size_t offset = categories_offset(meta_data) + index;
-    return static_cast<metric_category>(
-        read<uint8_t>(meta_data, meta_data + offset));
-}
-
 inline auto meta_bytes(const uint8_t* meta_data) -> std::size_t
 {
-    return categories_offset(meta_data) +
-           sizeof(bool) * metric_count(meta_data);
+    return kind_offset(meta_data) + sizeof(uint8_t) * metric_count(meta_data);
 }
 
 /// @param offset The offset in the raw memory

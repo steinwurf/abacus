@@ -49,16 +49,20 @@ TEST(test_raw, meta_data)
     abacus::metric_type type4 = abacus::metric_type::boolean;
     abacus::metric_type type5 = abacus::metric_type::float64;
 
-    abacus::metric_flags flags4 = abacus::metric_flags::constant;
-    abacus::metric_flags flags5 = abacus::metric_flags::constant;
+    abacus::metric_kind kind0 = abacus::metric_kind::gauge;
+    abacus::metric_kind kind1 = abacus::metric_kind::counter;
+    abacus::metric_kind kind2 = abacus::metric_kind::counter;
+    abacus::metric_kind kind3 = abacus::metric_kind::gauge;
+    abacus::metric_kind kind4 = abacus::metric_kind::constant;
+    abacus::metric_kind kind5 = abacus::metric_kind::constant;
 
     abacus::metric_info infos[metric_count] = {
-        abacus::metric_info{name0, desc0, type0},
-        abacus::metric_info{name1, desc1, type1},
-        abacus::metric_info{name2, desc2, type2},
-        abacus::metric_info{name3, desc3, type3},
-        abacus::metric_info{name4, desc4, type4, flags4},
-        abacus::metric_info{name5, desc5, type5, flags5}};
+        abacus::metric_info{name0, desc0, type0, kind0},
+        abacus::metric_info{name1, desc1, type1, kind1},
+        abacus::metric_info{name2, desc2, type2, kind2},
+        abacus::metric_info{name3, desc3, type3, kind3},
+        abacus::metric_info{name4, desc4, type4, kind4},
+        abacus::metric_info{name5, desc5, type5, kind5}};
 
     abacus::metrics metrics(infos);
 
@@ -90,8 +94,12 @@ TEST(test_raw, meta_data)
     EXPECT_EQ(type0, abacus::detail::type(meta_data, 4));
     EXPECT_EQ(type4, abacus::detail::type(meta_data, 5));
 
-    EXPECT_EQ(flags4, abacus::detail::flags(meta_data, 5));
-    EXPECT_EQ(flags5, abacus::detail::flags(meta_data, 3));
+    EXPECT_EQ(kind1, abacus::detail::kind(meta_data, 0));
+    EXPECT_EQ(kind2, abacus::detail::kind(meta_data, 1));
+    EXPECT_EQ(kind3, abacus::detail::kind(meta_data, 2));
+    EXPECT_EQ(kind5, abacus::detail::kind(meta_data, 3));
+    EXPECT_EQ(kind0, abacus::detail::kind(meta_data, 4));
+    EXPECT_EQ(kind4, abacus::detail::kind(meta_data, 5));
 
     EXPECT_EQ(name1, std::string(abacus::detail::name(meta_data, 0),
                                  abacus::detail::name_size(meta_data, 0)));

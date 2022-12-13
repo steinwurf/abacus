@@ -9,6 +9,7 @@
 #include <map>
 #include <vector>
 
+#include "metric_kind.hpp"
 #include "metric_type.hpp"
 #include "version.hpp"
 
@@ -94,7 +95,7 @@ public:
     /// false.
     /// @param index The index of the metric to check. Must be less than
     /// count().
-    auto is_constant(std::size_t index) const -> bool;
+    auto kind(std::size_t index) const -> metric_kind;
 
     /// Copy the value of the uint64_t metric into a passed reference. This is
     /// used to extract the values during runtime.
