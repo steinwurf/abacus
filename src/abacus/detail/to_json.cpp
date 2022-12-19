@@ -3,6 +3,7 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
+#include "../to_string.hpp"
 #include "to_json.hpp"
 
 #include <bourne/json.hpp>
@@ -62,22 +63,7 @@ auto to_json(const view& view, bool slim) -> bourne::json
         }
         else
         {
-            std::string kind;
-            switch (view.kind(i))
-            {
-            case metric_kind::constant:
-                kind = "constant";
-                break;
-            case metric_kind::counter:
-                kind = "counter";
-                break;
-            case metric_kind::gauge:
-                kind = "gauge";
-                break;
-            default:
-                assert(false);
-                break;
-            }
+            std::string kind = to_string(view.kind(i));
 
             json[view.name(i)] = {
                 "description", view.description(i), "kind", kind, "value",
