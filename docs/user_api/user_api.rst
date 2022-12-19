@@ -13,8 +13,9 @@ Overview of the public API.
    metric
    metric_specializations/metric_specializations
    metric_info
-   metric_type
-   metric_kind
+   type
+   kind
+   unit
    metrics
    view
    functions
