@@ -29,6 +29,7 @@ metrics::metrics(const metric_info* info, std::size_t count) :
 
     uint16_t name_bytes = 0;
     uint16_t description_bytes = 0;
+    uint16_t unit_bytes = 0;
 
     // First calculate the total size of header
     std::size_t meta_bytes = detail::header_bytes();
@@ -38,15 +39,20 @@ metrics::metrics(const metric_info* info, std::size_t count) :
         m_name_to_index.emplace(info.name, i);
         name_bytes += info.name.size();
         description_bytes += info.description.size();
+        unit_bytes += info.unit.size();
 
         // name_size
         meta_bytes += sizeof(uint16_t);
         // description size
         meta_bytes += sizeof(uint16_t);
+        // unit size
+        meta_bytes += sizeof(uint16_t);
         // name
         meta_bytes += info.name.size();
         // description
         meta_bytes += info.description.size();
+        // unit
+        meta_bytes += info.unit.size();
         // type
         meta_bytes += sizeof(uint8_t);
         // kind
@@ -83,10 +89,12 @@ metrics::metrics(const metric_info* info, std::size_t count) :
     new (m_meta_data + 2) uint16_t(name_bytes);
     // The total bytes used for descriptions
     new (m_meta_data + 4) uint16_t(description_bytes);
+    // The total bytes used for units
+    new (m_meta_data + 6) uint16_t(unit_bytes);
     // The number of 8-byte metric values (uint64_t, int64_t and double types)
-    new (m_meta_data + 6) uint16_t(m_info.eight_byte_metrics_count());
+    new (m_meta_data + 8) uint16_t(m_info.eight_byte_metrics_count());
     // The number of 1-byte metric values (bool type)
-    new (m_meta_data + 8) uint16_t(m_info.one_byte_metrics_count());
+    new (m_meta_data + 10) uint16_t(m_info.one_byte_metrics_count());
 
     // Write the name sizes into memory
     uint8_t* name_sizes_ptr = m_meta_data + detail::name_sizes_offset();
@@ -95,12 +103,19 @@ metrics::metrics(const metric_info* info, std::size_t count) :
     uint8_t* description_sizes_ptr =
         m_meta_data + detail::description_sizes_offset(m_meta_data);
 
+    // Write the unit sizes into memory
+    uint8_t* unit_sizes_ptr =
+        m_meta_data + detail::unit_sizes_offset(m_meta_data);
+
     // Write the names into memory
     uint8_t* names_ptr = m_meta_data + detail::names_offset(m_meta_data);
 
     // Write the descriptions into memory
     uint8_t* descriptions_ptr =
         m_meta_data + detail::descriptions_offset(m_meta_data);
+
+    // Write the units into memory
+    uint8_t* units_ptr = m_meta_data + detail::units_offset(m_meta_data);
 
     // Write the types into memory
     uint8_t* types_ptr = m_meta_data + detail::types_offset(m_meta_data);
@@ -114,6 +129,8 @@ metrics::metrics(const metric_info* info, std::size_t count) :
         uint16_t name_size = static_cast<uint16_t>(info.name.size());
         uint16_t description_size =
             static_cast<uint16_t>(info.description.size());
+        uint16_t unit_size = static_cast<uint16_t>(info.unit.size());
+
         std::memcpy(name_sizes_ptr, &name_size, sizeof(name_size));
         name_sizes_ptr += sizeof(name_size);
 
@@ -121,12 +138,18 @@ metrics::metrics(const metric_info* info, std::size_t count) :
                     sizeof(description_size));
         description_sizes_ptr += sizeof(description_size);
 
+        std::memcpy(unit_sizes_ptr, &unit_size, sizeof(unit_size));
+        unit_sizes_ptr += sizeof(unit_size);
+
         std::memcpy(names_ptr, info.name.data(), info.name.size());
         names_ptr += info.name.size();
 
         std::memcpy(descriptions_ptr, info.description.data(),
                     info.description.size());
         descriptions_ptr += info.description.size();
+
+        std::memcpy(units_ptr, info.unit.data(), info.unit.size());
+        units_ptr += info.unit.size();
 
         std::memcpy(kind_ptr, &info.kind, sizeof(info.kind));
         kind_ptr += sizeof(info.kind);
@@ -137,10 +160,12 @@ metrics::metrics(const metric_info* info, std::size_t count) :
 
     m_value_data = m_meta_data + meta_bytes + alignment;
 
-    assert(storage_bytes ==
-           (detail::meta_bytes(m_meta_data) +
-            detail::alignment_padding(detail::meta_bytes(m_meta_data)) +
-            detail::value_bytes(m_meta_data)));
+    std::size_t expected =
+        detail::meta_bytes(m_meta_data) +
+        detail::alignment_padding(detail::meta_bytes(m_meta_data)) +
+        detail::value_bytes(m_meta_data);
+
+    assert(storage_bytes == expected);
 }
 
 metrics::~metrics()
@@ -194,6 +219,12 @@ auto metrics::description(std::size_t index) const -> std::string
 {
     assert(index < count());
     return m_info[index].description;
+}
+
+auto metrics::unit(std::size_t index) const -> std::string
+{
+    assert(index < count());
+    return m_info[index].unit;
 }
 
 auto metrics::is_boolean(std::size_t index) const -> bool

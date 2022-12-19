@@ -25,22 +25,22 @@ TEST(test_metrics, default_constructor)
     abacus::metric_info infos[metric_count] = {
         abacus::metric_info{name0, "A boolean metric",
                             abacus::metric_type::boolean,
-                            abacus::metric_kind::counter},
+                            abacus::metric_kind::counter, ""},
         abacus::metric_info{name1, "An unsigned integer metric",
                             abacus::metric_type::uint64,
-                            abacus::metric_kind::counter},
+                            abacus::metric_kind::counter, "bytes"},
         abacus::metric_info{name2, "A signed integer metric",
                             abacus::metric_type::int64,
-                            abacus::metric_kind::gauge},
+                            abacus::metric_kind::gauge, "USD"},
         abacus::metric_info{name3, "A floating point metric",
                             abacus::metric_type::float64,
-                            abacus::metric_kind::gauge},
+                            abacus::metric_kind::gauge, "ms"},
         abacus::metric_info{name4, "A constant boolean metric",
                             abacus::metric_type::boolean,
-                            abacus::metric_kind::constant},
+                            abacus::metric_kind::constant, ""},
         abacus::metric_info{name5, "A constant floating point metric",
                             abacus::metric_type::float64,
-                            abacus::metric_kind::constant}};
+                            abacus::metric_kind::constant, "ms"}};
 
     abacus::metrics metrics(infos);
 
@@ -94,6 +94,13 @@ TEST(test_metrics, default_constructor)
     EXPECT_EQ(metrics.description(4), "A boolean metric");
     EXPECT_EQ(metrics.description(5), "A constant boolean metric");
 
+    EXPECT_EQ(metrics.unit(0), "bytes");
+    EXPECT_EQ(metrics.unit(1), "USD");
+    EXPECT_EQ(metrics.unit(2), "ms");
+    EXPECT_EQ(metrics.unit(3), "ms");
+    EXPECT_EQ(metrics.unit(4), "");
+    EXPECT_EQ(metrics.unit(5), "");
+
     metric0 = 4U;
     metric1 = -4;
     metric2 = 3.14;
@@ -140,10 +147,10 @@ TEST(test_metrics, value_and_meta_bytes)
     abacus::metric_info infos[metric_count] = {
         abacus::metric_info{name0, "An unsigned integer metric",
                             abacus::metric_type::uint64,
-                            abacus::metric_kind::counter},
+                            abacus::metric_kind::counter, "bytes"},
         abacus::metric_info{name1, "A signed integer metric",
                             abacus::metric_type::int64,
-                            abacus::metric_kind::gauge}};
+                            abacus::metric_kind::gauge, "USD"}};
 
     abacus::metrics metrics(infos);
 
@@ -154,12 +161,13 @@ TEST(test_metrics, value_and_meta_bytes)
     // header size
     meta_bytes += abacus::detail::header_bytes();
     // name and description sizes
-    meta_bytes += metric_count * 2 * 2;
+    meta_bytes += metric_count * 3 * 2;
     // names and descriptions
     for (std::size_t i = 0; i < metric_count; ++i)
     {
         meta_bytes += infos[i].name.size();
         meta_bytes += infos[i].description.size();
+        meta_bytes += infos[i].unit.size();
     }
     // types
     meta_bytes += metric_count;
@@ -182,10 +190,10 @@ TEST(test_metrics, reset_counters)
     abacus::metric_info infos[2] = {
         abacus::metric_info{name0, "An unsigned integer metric",
                             abacus::metric_type::uint64,
-                            abacus::metric_kind::counter},
+                            abacus::metric_kind::counter, "bytes"},
         abacus::metric_info{name1, "A signed integer metric",
                             abacus::metric_type::int64,
-                            abacus::metric_kind::gauge}};
+                            abacus::metric_kind::gauge, "USD"}};
 
     abacus::metrics metrics(infos);
 
@@ -234,19 +242,21 @@ TEST(test_metrics, reset_counters)
 }
 
 static const std::vector<uint8_t> expected_meta_data = {
-    0x00, 0x01, 0x1c, 0x00, 0x58, 0x00, 0x03, 0x00, 0x01, 0x00, 0x07, 0x00,
-    0x07, 0x00, 0x07, 0x00, 0x07, 0x00, 0x1a, 0x00, 0x17, 0x00, 0x17, 0x00,
-    0x10, 0x00, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x30, 0x6d, 0x65, 0x74,
-    0x72, 0x69, 0x63, 0x31, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x32, 0x6d,
-    0x65, 0x74, 0x72, 0x69, 0x63, 0x33, 0x41, 0x6e, 0x20, 0x75, 0x6e, 0x73,
-    0x69, 0x67, 0x6e, 0x65, 0x64, 0x20, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x65,
-    0x72, 0x20, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x41, 0x20, 0x73, 0x69,
-    0x67, 0x6e, 0x65, 0x64, 0x20, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x65, 0x72,
-    0x20, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x41, 0x20, 0x66, 0x6c, 0x6f,
-    0x61, 0x74, 0x69, 0x6e, 0x67, 0x20, 0x70, 0x6f, 0x69, 0x6e, 0x74, 0x20,
-    0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x41, 0x20, 0x62, 0x6f, 0x6f, 0x6c,
-    0x65, 0x61, 0x6e, 0x20, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x00, 0x01,
-    0x02, 0x03, 0x00, 0x02, 0x02, 0x02,
+    0x00, 0x01, 0x1c, 0x00, 0x58, 0x00, 0x0a, 0x00, 0x03, 0x00, 0x01, 0x00,
+    0x07, 0x00, 0x07, 0x00, 0x07, 0x00, 0x07, 0x00, 0x1a, 0x00, 0x17, 0x00,
+    0x17, 0x00, 0x10, 0x00, 0x05, 0x00, 0x03, 0x00, 0x02, 0x00, 0x00, 0x00,
+    0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x30, 0x6d, 0x65, 0x74, 0x72, 0x69,
+    0x63, 0x31, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x32, 0x6d, 0x65, 0x74,
+    0x72, 0x69, 0x63, 0x33, 0x41, 0x6e, 0x20, 0x75, 0x6e, 0x73, 0x69, 0x67,
+    0x6e, 0x65, 0x64, 0x20, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x65, 0x72, 0x20,
+    0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x41, 0x20, 0x73, 0x69, 0x67, 0x6e,
+    0x65, 0x64, 0x20, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x65, 0x72, 0x20, 0x6d,
+    0x65, 0x74, 0x72, 0x69, 0x63, 0x41, 0x20, 0x66, 0x6c, 0x6f, 0x61, 0x74,
+    0x69, 0x6e, 0x67, 0x20, 0x70, 0x6f, 0x69, 0x6e, 0x74, 0x20, 0x6d, 0x65,
+    0x74, 0x72, 0x69, 0x63, 0x41, 0x20, 0x62, 0x6f, 0x6f, 0x6c, 0x65, 0x61,
+    0x6e, 0x20, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x62, 0x79, 0x74, 0x65,
+    0x73, 0x55, 0x53, 0x44, 0x6d, 0x73, 0x00, 0x01, 0x02, 0x03, 0x00, 0x02,
+    0x02, 0x02,
 };
 
 static const std::vector<uint8_t> expected_value_data = {
@@ -264,16 +274,16 @@ TEST(test_metrics, protocol_version)
     abacus::metric_info infos[4] = {
         abacus::metric_info{"metric0", "An unsigned integer metric",
                             abacus::metric_type::uint64,
-                            abacus::metric_kind::counter},
+                            abacus::metric_kind::counter, "bytes"},
         abacus::metric_info{"metric1", "A signed integer metric",
                             abacus::metric_type::int64,
-                            abacus::metric_kind::gauge},
+                            abacus::metric_kind::gauge, "USD"},
         abacus::metric_info{"metric2", "A floating point metric",
                             abacus::metric_type::float64,
-                            abacus::metric_kind::gauge},
+                            abacus::metric_kind::gauge, "ms"},
         abacus::metric_info{"metric3", "A boolean metric",
                             abacus::metric_type::boolean,
-                            abacus::metric_kind::gauge}};
+                            abacus::metric_kind::gauge, ""}};
 
     abacus::metrics metrics(infos);
 

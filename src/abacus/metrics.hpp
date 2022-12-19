@@ -111,6 +111,12 @@ public:
     /// initialize_constant().
     auto description(std::size_t index) const -> std::string;
 
+    /// @returns the unit of the metric at the given index.
+    /// @param index The index of the metric to check. Must be less than
+    /// count() and initialized with initialize_metric<>() or
+    /// initialize_constant().
+    auto unit(std::size_t index) const -> std::string;
+
     /// @returns true if the value of the metric is of type uint64_t
     /// @param index The index of the metric to check. Must be less than
     /// count() and initialized with initialize_metric<>() or
@@ -163,6 +169,7 @@ public:
 
         auto index = metrics::index(name);
         value_type* value_ptr = (value_type*)initialize(index);
+
         return metric<MetricType>{value_ptr};
     }
 

@@ -28,6 +28,9 @@ struct metric_info
 
     /// enum describing the flags of a metric.
     metric_kind kind;
+
+    /// The unit of the metric
+    std::string unit;
 };
 }
 }

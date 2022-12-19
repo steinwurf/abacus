@@ -87,6 +87,12 @@ auto view::description(std::size_t index) const -> std::string
             detail::description_size(m_meta_data, index)};
 }
 
+auto view::unit(std::size_t index) const -> std::string
+{
+    return {detail::unit(m_meta_data, index),
+            detail::unit_size(m_meta_data, index)};
+}
+
 auto view::type(std::size_t index) const -> abacus::metric_type
 {
     return detail::type(m_meta_data, index);

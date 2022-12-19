@@ -3,8 +3,6 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#pragma once
-
 #include "to_string.hpp"
 
 namespace abacus

@@ -31,5 +31,6 @@ enum class metric_kind : uint8_t
     /// the number of concurrent requests.
     gauge,
 };
+
 }
 }

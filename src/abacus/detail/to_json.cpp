@@ -65,10 +65,10 @@ auto to_json(const view& view, bool slim) -> bourne::json
         {
             std::string kind = to_string(view.kind(i));
 
-            json[view.name(i)] = {
-                "description", view.description(i), "kind", kind, "value",
-                value,
-            };
+            json[view.name(i)] = {"description", view.description(i),
+                                  "kind",        kind,
+                                  "value",       value,
+                                  "unit",        view.unit(i)};
         }
     }
     return json;

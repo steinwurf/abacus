@@ -86,6 +86,12 @@ public:
     /// initialize_constant().
     auto description(std::size_t index) const -> std::string;
 
+    /// @returns the unit of the metric at the given index.
+    /// @param index The index of the metric to check. Must be less than
+    /// count() and initialized with initialize_metric<>() or
+    /// initialize_constant().
+    auto unit(std::size_t index) const -> std::string;
+
     /// @returns the type of the metric at the given index.
     /// @param index The index of the metric to check. Must be less than
     /// count().

@@ -29,7 +29,7 @@ namespace detail
 /// @return The size of the header in bytes
 inline auto header_bytes() -> std::size_t
 {
-    return 10;
+    return 12;
 }
 
 inline auto is_big_endian_byte_offset() -> std::size_t
@@ -94,9 +94,19 @@ inline auto description_bytes(const uint8_t* meta_data) -> uint16_t
     return read<uint16_t>(meta_data, meta_data + descriptions_bytes_offset());
 }
 
-inline auto eight_byte_count_offset() -> std::size_t
+inline auto unit_bytes_offset() -> std::size_t
 {
     return descriptions_bytes_offset() + sizeof(uint16_t);
+}
+
+inline auto unit_bytes(const uint8_t* meta_data) -> uint16_t
+{
+    return read<uint16_t>(meta_data, meta_data + unit_bytes_offset());
+}
+
+inline auto eight_byte_count_offset() -> std::size_t
+{
+    return unit_bytes_offset() + sizeof(uint16_t);
 }
 
 inline auto eight_byte_count(const uint8_t* meta_data) -> uint16_t
@@ -150,9 +160,24 @@ inline auto description_size(const uint8_t* meta_data, std::size_t index)
                                          index * sizeof(uint16_t));
 }
 
-inline auto names_offset(const uint8_t* meta_data) -> std::size_t
+inline auto unit_sizes_offset(const uint8_t* meta_data) -> std::size_t
 {
     return description_sizes_offset(meta_data) +
+           metric_count(meta_data) * sizeof(uint16_t);
+}
+
+inline auto unit_size(const uint8_t* meta_data, std::size_t index) -> uint16_t
+{
+    assert(meta_data != nullptr);
+    assert(index < metric_count(meta_data));
+
+    return read<uint16_t>(meta_data, meta_data + unit_sizes_offset(meta_data) +
+                                         index * sizeof(uint16_t));
+}
+
+inline auto names_offset(const uint8_t* meta_data) -> std::size_t
+{
+    return unit_sizes_offset(meta_data) +
            metric_count(meta_data) * sizeof(uint16_t);
 }
 
@@ -200,9 +225,33 @@ inline auto description(uint8_t* meta_data, std::size_t index) -> char*
         description(const_cast<const uint8_t*>(meta_data), index));
 }
 
-inline auto types_offset(const uint8_t* meta_data) -> std::size_t
+inline auto units_offset(const uint8_t* meta_data) -> std::size_t
 {
     return descriptions_offset(meta_data) + descriptions_bytes(meta_data);
+}
+
+inline auto unit(const uint8_t* meta_data, std::size_t index) -> const char*
+{
+    assert(meta_data != nullptr);
+    assert(index < metric_count(meta_data));
+
+    std::size_t offset = units_offset(meta_data);
+    for (std::size_t i = 0; i < index; ++i)
+    {
+        offset += unit_size(meta_data, i);
+    }
+    return (const char*)(meta_data + offset);
+}
+
+inline auto unit(uint8_t* meta_data, std::size_t index) -> char*
+{
+    return const_cast<char*>(
+        unit(const_cast<const uint8_t*>(meta_data), index));
+}
+
+inline auto types_offset(const uint8_t* meta_data) -> std::size_t
+{
+    return units_offset(meta_data) + unit_bytes(meta_data);
 }
 
 inline auto type(const uint8_t* meta_data, std::size_t index) -> metric_type
