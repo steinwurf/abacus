@@ -5,8 +5,10 @@
 
 #pragma once
 
-#include "metric_kind.hpp"
-#include "metric_type.hpp"
+#include "kind.hpp"
+#include "type.hpp"
+#include "unit.hpp"
+
 #include <string>
 
 namespace abacus
@@ -24,13 +26,13 @@ struct metric_info
     std::string description;
 
     /// Type of the metric. A metric_type enum.
-    metric_type type;
+    abacus::type type;
 
     /// enum describing the flags of a metric.
-    metric_kind kind;
+    abacus::kind kind;
 
     /// The unit of the metric
-    std::string unit;
+    abacus::unit unit = abacus::unit{""};
 };
 }
 }

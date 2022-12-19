@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "metric_kind.hpp"
+#include "kind.hpp"
 #include "version.hpp"
 
 namespace abacus
@@ -13,7 +13,7 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-std::string to_string(metric_kind kind);
+std::string to_string(abacus::kind kind);
 
 }
 }

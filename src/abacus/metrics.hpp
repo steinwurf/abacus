@@ -11,7 +11,7 @@
 
 #include "detail/value_size_info.hpp"
 #include "metric.hpp"
-#include "metric_type.hpp"
+#include "type.hpp"
 #include "version.hpp"
 
 namespace abacus
@@ -145,7 +145,7 @@ public:
     /// constant
     /// @param index The index of the metric to check. Must be less than
     /// count().
-    auto kind(std::size_t index) const -> metric_kind;
+    auto kind(std::size_t index) const -> abacus::kind;
 
     /// @returns A wrapper for a counter at the given index with type
     /// appropriate with given enum.
@@ -162,7 +162,7 @@ public:
     ///
     /// @param name The name of the metric. This is used for a check to ensure
     /// that the name matches the one at the given index.
-    template <metric_type MetricType>
+    template <abacus::type MetricType>
     auto initialize_metric(const std::string& name) const -> metric<MetricType>
     {
         using value_type = typename metric<MetricType>::value_type;

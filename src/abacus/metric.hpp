@@ -8,7 +8,7 @@
 #include <cassert>
 #include <cstdint>
 
-#include "metric_type.hpp"
+#include "type.hpp"
 #include "version.hpp"
 
 namespace abacus
@@ -17,15 +17,15 @@ inline namespace STEINWURF_ABACUS_VERSION
 {
 /// Wrapper for the value of a counter.
 ///
-/// See metric<metric_type::uint64>,
-/// metric<metric_type::int64>, metric<metric_type::float64> and
-/// metric<metric_type::boolean> for template specializations.
-template <metric_type MetricType>
+/// See metric<abacus::type::uint64>,
+/// metric<abacus::type::int64>, metric<abacus::type::float64> and
+/// metric<abacus::type::boolean> for template specializations.
+template <abacus::type MetricType>
 class metric;
 
 /// Metric wrapping uint64_t value.
 template <>
-class metric<metric_type::uint64>
+class metric<abacus::type::uint64>
 {
 public:
     /// The underlying data type
@@ -46,7 +46,7 @@ public:
     /// Assign the counter a new value
     /// @param value The value to assign
     /// @return a counter with the new value
-    auto operator=(uint64_t value) -> metric<metric_type::uint64>&
+    auto operator=(uint64_t value) -> metric<abacus::type::uint64>&
     {
         assert(is_initialized());
         *m_memory = value;
@@ -56,7 +56,7 @@ public:
     /// Increment the counter
     /// @param value The value to add
     /// @return The result of the arithmetic
-    auto operator+=(uint64_t value) -> metric<metric_type::uint64>&
+    auto operator+=(uint64_t value) -> metric<abacus::type::uint64>&
     {
         assert(is_initialized());
         *m_memory += value;
@@ -66,7 +66,7 @@ public:
     /// Decrement the counter
     /// @param value The value to subtract
     /// @return The result of the arithmetic
-    auto operator-=(uint64_t value) -> metric<metric_type::uint64>&
+    auto operator-=(uint64_t value) -> metric<abacus::type::uint64>&
     {
         assert(is_initialized());
         *m_memory -= value;
@@ -75,7 +75,7 @@ public:
 
     /// Increment the value of the counter
     /// @return The result of the arithmetic
-    auto operator++() -> metric<metric_type::uint64>&
+    auto operator++() -> metric<abacus::type::uint64>&
     {
         assert(is_initialized());
         *m_memory += 1;
@@ -84,7 +84,7 @@ public:
 
     /// Decrement the value of the counter
     /// @return The result of the arithmetic
-    auto operator--() -> metric<metric_type::uint64>&
+    auto operator--() -> metric<abacus::type::uint64>&
     {
         assert(is_initialized());
         *m_memory -= 1;
@@ -111,7 +111,7 @@ private:
 
 /// Metric wrapping int64_t value.
 template <>
-class metric<metric_type::int64>
+class metric<abacus::type::int64>
 {
 public:
     /// The underlying data type
@@ -131,7 +131,7 @@ public:
     /// Assign the counter a new value
     /// @param value The value to assign
     /// @return a counter with the new value
-    auto operator=(int64_t value) -> metric<metric_type::int64>&
+    auto operator=(int64_t value) -> metric<abacus::type::int64>&
     {
         assert(is_initialized());
         *m_memory = value;
@@ -141,7 +141,7 @@ public:
     /// Increment the counter
     /// @param value The value to add
     /// @return The result of the arithmetic
-    auto operator+=(int64_t value) -> metric<metric_type::int64>&
+    auto operator+=(int64_t value) -> metric<abacus::type::int64>&
     {
         assert(is_initialized());
         *m_memory += value;
@@ -151,7 +151,7 @@ public:
     /// Decrement the counter
     /// @param value The value to subtract
     /// @return The result of the arithmetic
-    auto operator-=(int64_t value) -> metric<metric_type::int64>&
+    auto operator-=(int64_t value) -> metric<abacus::type::int64>&
     {
         assert(is_initialized());
         *m_memory -= value;
@@ -160,7 +160,7 @@ public:
 
     /// Increment the value of the counter
     /// @return The result of the arithmetic
-    auto operator++() -> metric<metric_type::int64>&
+    auto operator++() -> metric<abacus::type::int64>&
     {
         assert(is_initialized());
         *m_memory += 1;
@@ -169,7 +169,7 @@ public:
 
     /// Decrement the value of the counter
     /// @return The result of the arithmetic
-    auto operator--() -> metric<metric_type::int64>&
+    auto operator--() -> metric<abacus::type::int64>&
     {
         assert(is_initialized());
         *m_memory -= 1;
@@ -196,7 +196,7 @@ private:
 
 /// Metric wrapping double value.
 template <>
-class metric<metric_type::float64>
+class metric<abacus::type::float64>
 {
 public:
     /// The underlying data type
@@ -217,7 +217,7 @@ public:
     /// Assign the counter a new value
     /// @param value The value to assign
     /// @return a counter with the new value
-    auto operator=(double value) -> metric<metric_type::float64>&
+    auto operator=(double value) -> metric<abacus::type::float64>&
     {
         assert(is_initialized());
         *m_memory = value;
@@ -227,7 +227,7 @@ public:
     /// Increment the counter
     /// @param value The value to add
     /// @return The result of the arithmetic
-    auto operator+=(double value) -> metric<metric_type::float64>&
+    auto operator+=(double value) -> metric<abacus::type::float64>&
     {
         assert(is_initialized());
         *m_memory += value;
@@ -237,7 +237,7 @@ public:
     /// Decrement the counter
     /// @param value The value to subtract
     /// @return The result of the arithmetic
-    auto operator-=(double value) -> metric<metric_type::float64>&
+    auto operator-=(double value) -> metric<abacus::type::float64>&
     {
         assert(is_initialized());
         *m_memory -= value;
@@ -246,7 +246,7 @@ public:
 
     /// Increment the value of the counter
     /// @return The result of the arithmetic
-    auto operator++() -> metric<metric_type::float64>&
+    auto operator++() -> metric<abacus::type::float64>&
     {
         assert(is_initialized());
         *m_memory += 1;
@@ -255,7 +255,7 @@ public:
 
     /// Decrement the value of the counter
     /// @return The result of the arithmetic
-    auto operator--() -> metric<metric_type::float64>&
+    auto operator--() -> metric<abacus::type::float64>&
     {
         assert(is_initialized());
         *m_memory -= 1;
@@ -282,7 +282,7 @@ private:
 
 /// Metric wrapping bool value.
 template <>
-class metric<metric_type::boolean>
+class metric<abacus::type::boolean>
 {
 public:
     /// The underlying data type
@@ -303,7 +303,7 @@ public:
     /// Assign the counter a new value
     /// @param value The value to assign
     /// @return a counter with the new value
-    auto operator=(bool value) -> metric<metric_type::boolean>&
+    auto operator=(bool value) -> metric<abacus::type::boolean>&
     {
         assert(is_initialized());
         *m_memory = value;

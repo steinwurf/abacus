@@ -36,19 +36,19 @@ auto to_json(const view& view, bool slim) -> bourne::json
         {
             switch (view.type(i))
             {
-            case metric_type::uint64:
+            case abacus::type::uint64:
                 view.value(i, uint_value);
                 value = uint_value;
                 break;
-            case metric_type::int64:
+            case abacus::type::int64:
                 view.value(i, int_value);
                 value = int_value;
                 break;
-            case metric_type::boolean:
+            case abacus::type::boolean:
                 view.value(i, bool_value);
                 value = bool_value;
                 break;
-            case metric_type::float64:
+            case abacus::type::float64:
                 view.value(i, float_value);
                 value = float_value;
                 break;

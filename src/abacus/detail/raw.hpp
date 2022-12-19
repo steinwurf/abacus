@@ -15,8 +15,8 @@
 #include <endian/big_endian.hpp>
 #include <endian/little_endian.hpp>
 
-#include "../metric_kind.hpp"
-#include "../metric_type.hpp"
+#include "../kind.hpp"
+#include "../type.hpp"
 #include "../version.hpp"
 
 namespace abacus
@@ -254,13 +254,13 @@ inline auto types_offset(const uint8_t* meta_data) -> std::size_t
     return units_offset(meta_data) + unit_bytes(meta_data);
 }
 
-inline auto type(const uint8_t* meta_data, std::size_t index) -> metric_type
+inline auto type(const uint8_t* meta_data, std::size_t index) -> abacus::type
 {
     assert(meta_data != nullptr);
     assert(index < metric_count(meta_data));
 
     std::size_t offset = types_offset(meta_data) + index;
-    return static_cast<metric_type>(
+    return static_cast<abacus::type>(
         read<uint8_t>(meta_data, meta_data + offset));
 }
 
@@ -269,13 +269,13 @@ inline auto kind_offset(const uint8_t* meta_data) -> std::size_t
     return types_offset(meta_data) + metric_count(meta_data);
 }
 
-inline auto kind(const uint8_t* meta_data, std::size_t index) -> metric_kind
+inline auto kind(const uint8_t* meta_data, std::size_t index) -> abacus::kind
 {
     assert(meta_data != nullptr);
     assert(index < metric_count(meta_data));
 
     std::size_t offset = kind_offset(meta_data) + index;
-    return static_cast<metric_kind>(
+    return static_cast<abacus::kind>(
         read<uint8_t>(meta_data, meta_data + offset));
 }
 

@@ -22,29 +22,26 @@ int main()
 
     abacus::metric_info infos[4] = {
         abacus::metric_info{name0, "Fuel consumption in kilometers per liter",
-                            abacus::metric_type::float64,
-                            abacus::metric_kind::constant, "km/l"},
-        abacus::metric_info{name1, "Wheels on the car",
-                            abacus::metric_type::uint64,
-                            abacus::metric_kind::constant, "wheels"},
+                            abacus::type::float64, abacus::kind::constant,
+                            abacus::unit{"km/l"}},
+        abacus::metric_info{name1, "Wheels on the car", abacus::type::uint64,
+                            abacus::kind::constant, abacus::unit{"wheels"}},
         abacus::metric_info{name2,
                             "Days until next maintenance, if less than 0, "
                             "maintenance is overdue",
-                            abacus::metric_type::int64,
-                            abacus::metric_kind::gauge, "days"},
+                            abacus::type::int64, abacus::kind::gauge,
+                            abacus::unit{"days"}},
         abacus::metric_info{name3, "Is the car registered",
-                            abacus::metric_type::boolean,
-                            abacus::metric_kind::gauge, ""}};
+                            abacus::type::boolean, abacus::kind::gauge}};
 
     abacus::metrics car(infos);
 
     car.initialize_constant("fuel_consumption", (double)22.3);
     car.initialize_constant("wheels", (uint64_t)4);
     auto days_until_maintenance =
-        car.initialize_metric<abacus::metric_type::int64>(
-            "days_until_maintenance");
+        car.initialize_metric<abacus::type::int64>("days_until_maintenance");
     auto registered =
-        car.initialize_metric<abacus::metric_type::boolean>("registered");
+        car.initialize_metric<abacus::type::boolean>("registered");
 
     // The car should be registered.
     registered = true;

@@ -23,54 +23,49 @@ TEST(test_metrics, default_constructor)
     std::string name5 = "metric5";
 
     abacus::metric_info infos[metric_count] = {
-        abacus::metric_info{name0, "A boolean metric",
-                            abacus::metric_type::boolean,
-                            abacus::metric_kind::counter, ""},
+        abacus::metric_info{name0, "A boolean metric", abacus::type::boolean,
+                            abacus::kind::counter},
         abacus::metric_info{name1, "An unsigned integer metric",
-                            abacus::metric_type::uint64,
-                            abacus::metric_kind::counter, "bytes"},
+                            abacus::type::uint64, abacus::kind::counter,
+                            abacus::unit{"bytes"}},
         abacus::metric_info{name2, "A signed integer metric",
-                            abacus::metric_type::int64,
-                            abacus::metric_kind::gauge, "USD"},
+                            abacus::type::int64, abacus::kind::gauge,
+                            abacus::unit{"USD"}},
         abacus::metric_info{name3, "A floating point metric",
-                            abacus::metric_type::float64,
-                            abacus::metric_kind::gauge, "ms"},
+                            abacus::type::float64, abacus::kind::gauge,
+                            abacus::unit{"ms"}},
         abacus::metric_info{name4, "A constant boolean metric",
-                            abacus::metric_type::boolean,
-                            abacus::metric_kind::constant, ""},
+                            abacus::type::boolean, abacus::kind::constant},
         abacus::metric_info{name5, "A constant floating point metric",
-                            abacus::metric_type::float64,
-                            abacus::metric_kind::constant, "ms"}};
+                            abacus::type::float64, abacus::kind::constant,
+                            abacus::unit{"ms"}}};
 
     abacus::metrics metrics(infos);
 
     EXPECT_EQ(metrics.count(), metric_count);
     EXPECT_EQ(metrics.protocol_version(), abacus::protocol_version());
 
-    EXPECT_EQ(metrics.kind(0), abacus::metric_kind::counter);
-    EXPECT_EQ(metrics.kind(1), abacus::metric_kind::gauge);
-    EXPECT_EQ(metrics.kind(2), abacus::metric_kind::gauge);
-    EXPECT_EQ(metrics.kind(3), abacus::metric_kind::constant);
-    EXPECT_EQ(metrics.kind(4), abacus::metric_kind::counter);
-    EXPECT_EQ(metrics.kind(5), abacus::metric_kind::constant);
+    EXPECT_EQ(metrics.kind(0), abacus::kind::counter);
+    EXPECT_EQ(metrics.kind(1), abacus::kind::gauge);
+    EXPECT_EQ(metrics.kind(2), abacus::kind::gauge);
+    EXPECT_EQ(metrics.kind(3), abacus::kind::constant);
+    EXPECT_EQ(metrics.kind(4), abacus::kind::counter);
+    EXPECT_EQ(metrics.kind(5), abacus::kind::constant);
 
     EXPECT_FALSE(metrics.is_initialized(0));
-    auto metric0 =
-        metrics.initialize_metric<abacus::metric_type::uint64>(name1);
+    auto metric0 = metrics.initialize_metric<abacus::type::uint64>(name1);
     EXPECT_TRUE(metrics.is_initialized(0));
 
     EXPECT_FALSE(metrics.is_initialized(1));
-    auto metric1 = metrics.initialize_metric<abacus::metric_type::int64>(name2);
+    auto metric1 = metrics.initialize_metric<abacus::type::int64>(name2);
     EXPECT_TRUE(metrics.is_initialized(1));
 
     EXPECT_FALSE(metrics.is_initialized(2));
-    auto metric2 =
-        metrics.initialize_metric<abacus::metric_type::float64>(name3);
+    auto metric2 = metrics.initialize_metric<abacus::type::float64>(name3);
     EXPECT_TRUE(metrics.is_initialized(2));
 
     EXPECT_FALSE(metrics.is_initialized(4));
-    auto metric3 =
-        metrics.initialize_metric<abacus::metric_type::boolean>(name0);
+    auto metric3 = metrics.initialize_metric<abacus::type::boolean>(name0);
     EXPECT_TRUE(metrics.is_initialized(4));
 
     EXPECT_FALSE(metrics.is_initialized(5));
@@ -146,16 +141,16 @@ TEST(test_metrics, value_and_meta_bytes)
 
     abacus::metric_info infos[metric_count] = {
         abacus::metric_info{name0, "An unsigned integer metric",
-                            abacus::metric_type::uint64,
-                            abacus::metric_kind::counter, "bytes"},
+                            abacus::type::uint64, abacus::kind::counter,
+                            abacus::unit{"bytes"}},
         abacus::metric_info{name1, "A signed integer metric",
-                            abacus::metric_type::int64,
-                            abacus::metric_kind::gauge, "USD"}};
+                            abacus::type::int64, abacus::kind::gauge,
+                            abacus::unit{"USD"}}};
 
     abacus::metrics metrics(infos);
 
-    metrics.initialize_metric<abacus::metric_type::uint64>(name0);
-    metrics.initialize_metric<abacus::metric_type::int64>(name1);
+    metrics.initialize_metric<abacus::type::uint64>(name0);
+    metrics.initialize_metric<abacus::type::int64>(name1);
 
     std::size_t meta_bytes = 0;
     // header size
@@ -167,7 +162,7 @@ TEST(test_metrics, value_and_meta_bytes)
     {
         meta_bytes += infos[i].name.size();
         meta_bytes += infos[i].description.size();
-        meta_bytes += infos[i].unit.size();
+        meta_bytes += infos[i].unit.value.size();
     }
     // types
     meta_bytes += metric_count;
@@ -189,18 +184,16 @@ TEST(test_metrics, reset_counters)
 
     abacus::metric_info infos[2] = {
         abacus::metric_info{name0, "An unsigned integer metric",
-                            abacus::metric_type::uint64,
-                            abacus::metric_kind::counter, "bytes"},
+                            abacus::type::uint64, abacus::kind::counter,
+                            abacus::unit{"bytes"}},
         abacus::metric_info{name1, "A signed integer metric",
-                            abacus::metric_type::int64,
-                            abacus::metric_kind::gauge, "USD"}};
+                            abacus::type::int64, abacus::kind::gauge,
+                            abacus::unit{"USD"}}};
 
     abacus::metrics metrics(infos);
 
-    auto uint_metric =
-        metrics.initialize_metric<abacus::metric_type::uint64>(name0);
-    auto int_metric =
-        metrics.initialize_metric<abacus::metric_type::int64>(name1);
+    auto uint_metric = metrics.initialize_metric<abacus::type::uint64>(name0);
+    auto int_metric = metrics.initialize_metric<abacus::type::int64>(name1);
 
     uint64_t uint_value = 0U;
     int64_t int_value = 0;
@@ -273,28 +266,26 @@ TEST(test_metrics, protocol_version)
         << "If this test fails, you need to update the protocol version");
     abacus::metric_info infos[4] = {
         abacus::metric_info{"metric0", "An unsigned integer metric",
-                            abacus::metric_type::uint64,
-                            abacus::metric_kind::counter, "bytes"},
+                            abacus::type::uint64, abacus::kind::counter,
+                            abacus::unit{"bytes"}},
         abacus::metric_info{"metric1", "A signed integer metric",
-                            abacus::metric_type::int64,
-                            abacus::metric_kind::gauge, "USD"},
+                            abacus::type::int64, abacus::kind::gauge,
+                            abacus::unit{"USD"}},
         abacus::metric_info{"metric2", "A floating point metric",
-                            abacus::metric_type::float64,
-                            abacus::metric_kind::gauge, "ms"},
+                            abacus::type::float64, abacus::kind::gauge,
+                            abacus::unit{"ms"}},
         abacus::metric_info{"metric3", "A boolean metric",
-                            abacus::metric_type::boolean,
-                            abacus::metric_kind::gauge, ""}};
+                            abacus::type::boolean, abacus::kind::gauge}};
 
     abacus::metrics metrics(infos);
 
     auto uint_metric =
-        metrics.initialize_metric<abacus::metric_type::uint64>("metric0");
-    auto int_metric =
-        metrics.initialize_metric<abacus::metric_type::int64>("metric1");
+        metrics.initialize_metric<abacus::type::uint64>("metric0");
+    auto int_metric = metrics.initialize_metric<abacus::type::int64>("metric1");
     auto float_metric =
-        metrics.initialize_metric<abacus::metric_type::float64>("metric2");
+        metrics.initialize_metric<abacus::type::float64>("metric2");
     auto bool_metric =
-        metrics.initialize_metric<abacus::metric_type::boolean>("metric3");
+        metrics.initialize_metric<abacus::type::boolean>("metric3");
     uint_metric = 42U;
     int_metric = -42;
     float_metric = 142.0;

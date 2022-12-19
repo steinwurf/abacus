@@ -19,20 +19,19 @@ TEST(test_view, api)
 
     abacus::metric_info infos[3] = {
         abacus::metric_info{name0, "An unsigned integer metric",
-                            abacus::metric_type::uint64,
-                            abacus::metric_kind::counter, "bytes"},
+                            abacus::type::uint64, abacus::kind::counter,
+                            abacus::unit{"bytes"}},
         abacus::metric_info{name1, "A signed integer metric",
-                            abacus::metric_type::int64,
-                            abacus::metric_kind::gauge, "USD"},
+                            abacus::type::int64, abacus::kind::gauge,
+                            abacus::unit{"USD"}},
         abacus::metric_info{name2, "Constant floating point metric",
-                            abacus::metric_type::float64,
-                            abacus::metric_kind::constant, ""}};
+                            abacus::type::float64, abacus::kind::constant}};
 
     abacus::metrics metrics(infos);
 
-    metrics.initialize_metric<abacus::metric_type::uint64>(name0);
+    metrics.initialize_metric<abacus::type::uint64>(name0);
 
-    metrics.initialize_metric<abacus::metric_type::int64>(name1);
+    metrics.initialize_metric<abacus::type::int64>(name1);
 
     metrics.initialize_constant(name2, 3.14);
 
@@ -55,13 +54,13 @@ TEST(test_view, api)
     EXPECT_EQ(metrics.name(1), view.name(1));
     EXPECT_EQ(metrics.name(2), view.name(2));
 
-    EXPECT_EQ(view.type(0), abacus::metric_type::uint64);
-    EXPECT_EQ(view.type(1), abacus::metric_type::int64);
-    EXPECT_EQ(view.type(2), abacus::metric_type::float64);
+    EXPECT_EQ(view.type(0), abacus::type::uint64);
+    EXPECT_EQ(view.type(1), abacus::type::int64);
+    EXPECT_EQ(view.type(2), abacus::type::float64);
 
-    EXPECT_EQ(view.kind(0), abacus::metric_kind::counter);
-    EXPECT_EQ(view.kind(1), abacus::metric_kind::gauge);
-    EXPECT_EQ(view.kind(2), abacus::metric_kind::constant);
+    EXPECT_EQ(view.kind(0), abacus::kind::counter);
+    EXPECT_EQ(view.kind(1), abacus::kind::gauge);
+    EXPECT_EQ(view.kind(2), abacus::kind::constant);
 
     EXPECT_EQ(view.unit(0), "bytes");
     EXPECT_EQ(view.unit(1), "USD");

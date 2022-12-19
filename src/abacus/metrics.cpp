@@ -8,11 +8,11 @@
 #include <cstring>
 
 #include "detail/raw.hpp"
+#include "kind.hpp"
 #include "metric_info.hpp"
-#include "metric_kind.hpp"
-#include "metric_type.hpp"
 #include "metrics.hpp"
 #include "protocol_version.hpp"
+#include "type.hpp"
 
 #include <endian/is_big_endian.hpp>
 
@@ -39,7 +39,7 @@ metrics::metrics(const metric_info* info, std::size_t count) :
         m_name_to_index.emplace(info.name, i);
         name_bytes += info.name.size();
         description_bytes += info.description.size();
-        unit_bytes += info.unit.size();
+        unit_bytes += info.unit.value.size();
 
         // name_size
         meta_bytes += sizeof(uint16_t);
@@ -52,7 +52,7 @@ metrics::metrics(const metric_info* info, std::size_t count) :
         // description
         meta_bytes += info.description.size();
         // unit
-        meta_bytes += info.unit.size();
+        meta_bytes += info.unit.value.size();
         // type
         meta_bytes += sizeof(uint8_t);
         // kind
@@ -129,7 +129,7 @@ metrics::metrics(const metric_info* info, std::size_t count) :
         uint16_t name_size = static_cast<uint16_t>(info.name.size());
         uint16_t description_size =
             static_cast<uint16_t>(info.description.size());
-        uint16_t unit_size = static_cast<uint16_t>(info.unit.size());
+        uint16_t unit_size = static_cast<uint16_t>(info.unit.value.size());
 
         std::memcpy(name_sizes_ptr, &name_size, sizeof(name_size));
         name_sizes_ptr += sizeof(name_size);
@@ -148,8 +148,8 @@ metrics::metrics(const metric_info* info, std::size_t count) :
                     info.description.size());
         descriptions_ptr += info.description.size();
 
-        std::memcpy(units_ptr, info.unit.data(), info.unit.size());
-        units_ptr += info.unit.size();
+        std::memcpy(units_ptr, info.unit.value.data(), info.unit.value.size());
+        units_ptr += info.unit.value.size();
 
         std::memcpy(kind_ptr, &info.kind, sizeof(info.kind));
         kind_ptr += sizeof(info.kind);
@@ -160,12 +160,10 @@ metrics::metrics(const metric_info* info, std::size_t count) :
 
     m_value_data = m_meta_data + meta_bytes + alignment;
 
-    std::size_t expected =
-        detail::meta_bytes(m_meta_data) +
-        detail::alignment_padding(detail::meta_bytes(m_meta_data)) +
-        detail::value_bytes(m_meta_data);
-
-    assert(storage_bytes == expected);
+    assert(storage_bytes ==
+           detail::meta_bytes(m_meta_data) +
+               detail::alignment_padding(detail::meta_bytes(m_meta_data)) +
+               detail::value_bytes(m_meta_data));
 }
 
 metrics::~metrics()
@@ -224,34 +222,34 @@ auto metrics::description(std::size_t index) const -> std::string
 auto metrics::unit(std::size_t index) const -> std::string
 {
     assert(index < count());
-    return m_info[index].unit;
+    return m_info[index].unit.value;
 }
 
 auto metrics::is_boolean(std::size_t index) const -> bool
 {
     assert(index < count());
-    return m_info[index].type == metric_type::boolean;
+    return m_info[index].type == abacus::type::boolean;
 }
 
 auto metrics::is_uint64(std::size_t index) const -> bool
 {
     assert(index < count());
-    return m_info[index].type == metric_type::uint64;
+    return m_info[index].type == abacus::type::uint64;
 }
 
 auto metrics::is_int64(std::size_t index) const -> bool
 {
     assert(index < count());
-    return m_info[index].type == metric_type::int64;
+    return m_info[index].type == abacus::type::int64;
 }
 
 auto metrics::is_float64(std::size_t index) const -> bool
 {
     assert(index < count());
-    return m_info[index].type == metric_type::float64;
+    return m_info[index].type == abacus::type::float64;
 }
 
-auto metrics::kind(std::size_t index) const -> metric_kind
+auto metrics::kind(std::size_t index) const -> abacus::kind
 {
     assert(index < count());
     return m_info[index].kind;
@@ -260,7 +258,7 @@ auto metrics::kind(std::size_t index) const -> metric_kind
 void metrics::initialize_constant(const std::string& name, uint64_t value) const
 {
     auto index = metrics::index(name);
-    assert(kind(index) == metric_kind::constant);
+    assert(kind(index) == abacus::kind::constant);
     assert(is_uint64(index));
     *static_cast<uint64_t*>(initialize(index)) = value;
 }
@@ -268,7 +266,7 @@ void metrics::initialize_constant(const std::string& name, uint64_t value) const
 void metrics::initialize_constant(const std::string& name, int64_t value) const
 {
     auto index = metrics::index(name);
-    assert(kind(index) == metric_kind::constant);
+    assert(kind(index) == abacus::kind::constant);
     assert(is_int64(index));
     *static_cast<int64_t*>(initialize(index)) = value;
 }
@@ -276,7 +274,7 @@ void metrics::initialize_constant(const std::string& name, int64_t value) const
 void metrics::initialize_constant(const std::string& name, double value) const
 {
     auto index = metrics::index(name);
-    assert(kind(index) == metric_kind::constant);
+    assert(kind(index) == abacus::kind::constant);
     assert(is_float64(index));
     *static_cast<double*>(initialize(index)) = value;
 }
@@ -284,7 +282,7 @@ void metrics::initialize_constant(const std::string& name, double value) const
 void metrics::initialize_constant(const std::string& name, bool value) const
 {
     auto index = metrics::index(name);
-    assert(kind(index) == metric_kind::constant);
+    assert(kind(index) == abacus::kind::constant);
     assert(is_boolean(index));
     *static_cast<bool*>(initialize(index)) = value;
 }
@@ -336,32 +334,32 @@ void metrics::reset_metric(std::size_t index)
 {
     assert(index < count());
     assert(is_initialized(index));
-    assert(kind(index) != metric_kind::constant);
+    assert(kind(index) != abacus::kind::constant);
 
     switch (detail::type(m_meta_data, index))
     {
-    case metric_type::boolean:
+    case abacus::type::boolean:
     {
         bool* value_data = static_cast<bool*>(
             detail::value_ptr(m_meta_data, m_value_data, index));
         *value_data = false;
         break;
     }
-    case metric_type::uint64:
+    case abacus::type::uint64:
     {
         uint64_t* value_data = static_cast<uint64_t*>(
             detail::value_ptr(m_meta_data, m_value_data, index));
         *value_data = 0U;
         break;
     }
-    case metric_type::int64:
+    case abacus::type::int64:
     {
         int64_t* value_data = static_cast<int64_t*>(
             detail::value_ptr(m_meta_data, m_value_data, index));
         *value_data = 0;
         break;
     }
-    case metric_type::float64:
+    case abacus::type::float64:
     {
         double* value_data = static_cast<double*>(
             detail::value_ptr(m_meta_data, m_value_data, index));
