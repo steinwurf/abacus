@@ -6,6 +6,8 @@
 #pragma once
 
 #include "kind.hpp"
+#include "max.hpp"
+#include "min.hpp"
 #include "type.hpp"
 #include "unit.hpp"
 
@@ -33,6 +35,12 @@ struct metric_info
 
     /// The unit of the metric
     abacus::unit unit = abacus::unit{""};
+
+    /// The minimum value of the metric
+    abacus::min min = abacus::min{uint64_t{0U}};
+
+    /// The maximum value of the metric
+    abacus::max max = abacus::max{uint64_t{0U}};
 };
 }
 }

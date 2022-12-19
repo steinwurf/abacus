@@ -103,6 +103,16 @@ auto view::kind(std::size_t index) const -> abacus::kind
     return detail::kind(m_meta_data, index);
 }
 
+auto view::min(std::size_t index) const -> abacus::min
+{
+    return detail::min_value(m_meta_data, index);
+}
+
+auto view::max(std::size_t index) const -> abacus::max
+{
+    return detail::max_value(m_meta_data, index);
+}
+
 void view::value(std::size_t index, bool& value) const
 {
     assert(is_initialized(index));

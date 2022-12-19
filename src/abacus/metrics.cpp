@@ -9,8 +9,10 @@
 
 #include "detail/raw.hpp"
 #include "kind.hpp"
+#include "max.hpp"
 #include "metric_info.hpp"
 #include "metrics.hpp"
+#include "min.hpp"
 #include "protocol_version.hpp"
 #include "type.hpp"
 
@@ -57,6 +59,10 @@ metrics::metrics(const metric_info* info, std::size_t count) :
         meta_bytes += sizeof(uint8_t);
         // kind
         meta_bytes += sizeof(uint8_t);
+        // min
+        meta_bytes += sizeof(uint64_t);
+        // max
+        meta_bytes += sizeof(uint64_t);
     }
     // Add padding to ensure alignment for the values.
     std::size_t alignment = detail::alignment_padding(meta_bytes);
@@ -123,6 +129,12 @@ metrics::metrics(const metric_info* info, std::size_t count) :
     // Write the kind into memory
     uint8_t* kind_ptr = m_meta_data + detail::kind_offset(m_meta_data);
 
+    // Write the min into memory
+    uint8_t* min_ptr = m_meta_data + detail::min_offset(m_meta_data);
+
+    // Write the max into memory
+    uint8_t* max_ptr = m_meta_data + detail::max_offset(m_meta_data);
+
     for (std::size_t i = 0; i < m_info.count(); i++)
     {
         const auto& info = m_info[i];
@@ -156,6 +168,12 @@ metrics::metrics(const metric_info* info, std::size_t count) :
 
         std::memcpy(types_ptr, &info.type, sizeof(info.type));
         types_ptr += sizeof(info.type);
+
+        std::memcpy(min_ptr, &info.min, sizeof(info.min));
+        min_ptr += sizeof(info.min);
+
+        std::memcpy(max_ptr, &info.max, sizeof(info.max));
+        max_ptr += sizeof(info.max);
     }
 
     m_value_data = m_meta_data + meta_bytes + alignment;
