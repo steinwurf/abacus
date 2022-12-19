@@ -29,7 +29,6 @@ static const char* expected_json = R"({
   "metric2" : {
     "description" : "A boolean constant",
     "kind" : "constant",
-    "unit" : "",
     "value" : true
   },
   "protocol_version" : 1
