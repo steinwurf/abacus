@@ -15,7 +15,7 @@ TEST(test_raw, header_data)
     using namespace abacus;
 
     // The header data is 10 bytes
-    EXPECT_EQ(detail::header_bytes(), 10U);
+    EXPECT_EQ(detail::header_bytes(), 12U);
 
     // The first byte is the is_big_endian flag
     EXPECT_EQ(detail::is_big_endian_byte_offset(), 0U);
@@ -42,27 +42,32 @@ TEST(test_raw, meta_data)
     std::string desc4 = "A constant boolean metric";
     std::string desc5 = "A constant floating point metric";
 
-    abacus::metric_type type0 = abacus::metric_type::boolean;
-    abacus::metric_type type1 = abacus::metric_type::uint64;
-    abacus::metric_type type2 = abacus::metric_type::int64;
-    abacus::metric_type type3 = abacus::metric_type::float64;
-    abacus::metric_type type4 = abacus::metric_type::boolean;
-    abacus::metric_type type5 = abacus::metric_type::float64;
+    abacus::type type0 = abacus::type::boolean;
+    abacus::type type1 = abacus::type::uint64;
+    abacus::type type2 = abacus::type::int64;
+    abacus::type type3 = abacus::type::float64;
+    abacus::type type4 = abacus::type::boolean;
+    abacus::type type5 = abacus::type::float64;
 
-    abacus::metric_kind kind0 = abacus::metric_kind::gauge;
-    abacus::metric_kind kind1 = abacus::metric_kind::counter;
-    abacus::metric_kind kind2 = abacus::metric_kind::counter;
-    abacus::metric_kind kind3 = abacus::metric_kind::gauge;
-    abacus::metric_kind kind4 = abacus::metric_kind::constant;
-    abacus::metric_kind kind5 = abacus::metric_kind::constant;
+    abacus::kind kind0 = abacus::kind::gauge;
+    abacus::kind kind1 = abacus::kind::counter;
+    abacus::kind kind2 = abacus::kind::counter;
+    abacus::kind kind3 = abacus::kind::gauge;
+    abacus::kind kind4 = abacus::kind::constant;
+    abacus::kind kind5 = abacus::kind::constant;
+
+    abacus::unit unit1 = abacus::unit{"bytes"};
+    abacus::unit unit2 = abacus::unit{"USD"};
+    abacus::unit unit3 = abacus::unit{"ms"};
+    abacus::unit unit5 = abacus::unit{"us"};
 
     abacus::metric_info infos[metric_count] = {
         abacus::metric_info{name0, desc0, type0, kind0},
-        abacus::metric_info{name1, desc1, type1, kind1},
-        abacus::metric_info{name2, desc2, type2, kind2},
-        abacus::metric_info{name3, desc3, type3, kind3},
+        abacus::metric_info{name1, desc1, type1, kind1, unit1},
+        abacus::metric_info{name2, desc2, type2, kind2, unit2},
+        abacus::metric_info{name3, desc3, type3, kind3, unit3},
         abacus::metric_info{name4, desc4, type4, kind4},
-        abacus::metric_info{name5, desc5, type5, kind5}};
+        abacus::metric_info{name5, desc5, type5, kind5, unit5}};
 
     abacus::metrics metrics(infos);
 
@@ -132,4 +137,21 @@ TEST(test_raw, meta_data)
     EXPECT_EQ(desc4,
               std::string(abacus::detail::description(meta_data, 5),
                           abacus::detail::description_size(meta_data, 5)));
+
+    EXPECT_EQ(unit1.value,
+              std::string(abacus::detail::unit(meta_data, 0),
+                          abacus::detail::unit_size(meta_data, 0)));
+    EXPECT_EQ(unit2.value,
+              std::string(abacus::detail::unit(meta_data, 1),
+                          abacus::detail::unit_size(meta_data, 1)));
+    EXPECT_EQ(unit3.value,
+              std::string(abacus::detail::unit(meta_data, 2),
+                          abacus::detail::unit_size(meta_data, 2)));
+    EXPECT_EQ(unit5.value,
+              std::string(abacus::detail::unit(meta_data, 3),
+                          abacus::detail::unit_size(meta_data, 3)));
+    EXPECT_EQ("", std::string(abacus::detail::unit(meta_data, 4),
+                              abacus::detail::unit_size(meta_data, 4)));
+    EXPECT_EQ("", std::string(abacus::detail::unit(meta_data, 5),
+                              abacus::detail::unit_size(meta_data, 5)));
 }

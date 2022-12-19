@@ -12,7 +12,7 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 /// Enum used for identifying various metric flags.
-enum class metric_kind : uint8_t
+enum class kind : uint8_t
 {
     /// A counter is a cumulative metric that represents a single monotonically
     /// increasing counter whose value can only increase or be reset to zero on

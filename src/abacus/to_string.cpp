@@ -3,8 +3,6 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#pragma once
-
 #include "to_string.hpp"
 
 namespace abacus
@@ -12,15 +10,15 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-std::string to_string(metric_kind kind)
+std::string to_string(abacus::kind kind)
 {
     switch (kind)
     {
-    case metric_kind::counter:
+    case abacus::kind::counter:
         return "counter";
-    case metric_kind::gauge:
+    case abacus::kind::gauge:
         return "gauge";
-    case metric_kind::constant:
+    case abacus::kind::constant:
         return "constant";
     default:
         return "unknown";

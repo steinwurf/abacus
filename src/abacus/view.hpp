@@ -9,8 +9,8 @@
 #include <map>
 #include <vector>
 
-#include "metric_kind.hpp"
-#include "metric_type.hpp"
+#include "kind.hpp"
+#include "type.hpp"
 #include "version.hpp"
 
 namespace abacus
@@ -86,16 +86,22 @@ public:
     /// initialize_constant().
     auto description(std::size_t index) const -> std::string;
 
+    /// @returns the unit of the metric at the given index.
+    /// @param index The index of the metric to check. Must be less than
+    /// count() and initialized with initialize_metric<>() or
+    /// initialize_constant().
+    auto unit(std::size_t index) const -> std::string;
+
     /// @returns the type of the metric at the given index.
     /// @param index The index of the metric to check. Must be less than
     /// count().
-    auto type(std::size_t index) const -> metric_type;
+    auto type(std::size_t index) const -> abacus::type;
 
     /// @returns true if the metric at the given index is a constant, otherwise
     /// false.
     /// @param index The index of the metric to check. Must be less than
     /// count().
-    auto kind(std::size_t index) const -> metric_kind;
+    auto kind(std::size_t index) const -> abacus::kind;
 
     /// Copy the value of the uint64_t metric into a passed reference. This is
     /// used to extract the values during runtime.

@@ -17,11 +17,13 @@ static const char* expected_json = R"({
   "metric0" : {
     "description" : "An unsigned integer metric",
     "kind" : "counter",
+    "unit" : "bytes",
     "value" : 42
   },
   "metric1" : {
     "description" : "A signed integer metric",
     "kind" : "gauge",
+    "unit" : "USD",
     "value" : -42
   },
   "metric2" : {
@@ -46,19 +48,18 @@ TEST(test_to_json, api)
 
     abacus::metric_info infos[3] = {
         abacus::metric_info{name0, "An unsigned integer metric",
-                            abacus::metric_type::uint64,
-                            abacus::metric_kind::counter},
+                            abacus::type::uint64, abacus::kind::counter,
+                            abacus::unit{"bytes"}},
         abacus::metric_info{name1, "A signed integer metric",
-                            abacus::metric_type::int64,
-                            abacus::metric_kind::gauge},
-        abacus::metric_info{name2, "A boolean constant",
-                            abacus::metric_type::boolean,
-                            abacus::metric_kind::constant}};
+                            abacus::type::int64, abacus::kind::gauge,
+                            abacus::unit{"USD"}},
+        abacus::metric_info{name2, "A boolean constant", abacus::type::boolean,
+                            abacus::kind::constant}};
 
     abacus::metrics metrics(infos);
 
-    auto m0 = metrics.initialize_metric<abacus::metric_type::uint64>(name0);
-    auto m1 = metrics.initialize_metric<abacus::metric_type::int64>(name1);
+    auto m0 = metrics.initialize_metric<abacus::type::uint64>(name0);
+    auto m1 = metrics.initialize_metric<abacus::type::int64>(name1);
     metrics.initialize_constant(name2, true);
 
     m0 = 42;

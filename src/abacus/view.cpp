@@ -87,12 +87,18 @@ auto view::description(std::size_t index) const -> std::string
             detail::description_size(m_meta_data, index)};
 }
 
-auto view::type(std::size_t index) const -> abacus::metric_type
+auto view::unit(std::size_t index) const -> std::string
+{
+    return {detail::unit(m_meta_data, index),
+            detail::unit_size(m_meta_data, index)};
+}
+
+auto view::type(std::size_t index) const -> abacus::type
 {
     return detail::type(m_meta_data, index);
 }
 
-auto view::kind(std::size_t index) const -> metric_kind
+auto view::kind(std::size_t index) const -> abacus::kind
 {
     return detail::kind(m_meta_data, index);
 }
@@ -100,28 +106,28 @@ auto view::kind(std::size_t index) const -> metric_kind
 void view::value(std::size_t index, bool& value) const
 {
     assert(is_initialized(index));
-    assert(type(index) == metric_type::boolean);
+    assert(type(index) == abacus::type::boolean);
     value = detail::value<bool>(m_meta_data, m_value_data, index);
 }
 
 void view::value(std::size_t index, uint64_t& value) const
 {
     assert(is_initialized(index));
-    assert(type(index) == metric_type::uint64);
+    assert(type(index) == abacus::type::uint64);
     value = detail::value<uint64_t>(m_meta_data, m_value_data, index);
 }
 
 void view::value(std::size_t index, int64_t& value) const
 {
     assert(is_initialized(index));
-    assert(type(index) == metric_type::int64);
+    assert(type(index) == abacus::type::int64);
     value = detail::value<int64_t>(m_meta_data, m_value_data, index);
 }
 
 void view::value(std::size_t index, double& value) const
 {
     assert(is_initialized(index));
-    assert(type(index) == metric_type::float64);
+    assert(type(index) == abacus::type::float64);
     value = detail::value<double>(m_meta_data, m_value_data, index);
 }
 
