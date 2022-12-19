@@ -16,37 +16,50 @@
 static const char* expected_json = R"({
   "metric0" : {
     "description" : "An unsigned integer metric",
-    "is_constant" : false,
+    "kind" : "counter",
     "value" : 42
   },
   "metric1" : {
     "description" : "A signed integer metric",
-    "is_constant" : false,
+    "kind" : "gauge",
     "value" : -42
   },
-  "protocol_version" : 0
+  "metric2" : {
+    "description" : "A boolean constant",
+    "kind" : "constant",
+    "value" : true
+  },
+  "protocol_version" : 1
 })";
 
 static const char* expected_json_slim = R"({
   "metric0" : 42,
-  "metric1" : -42
+  "metric1" : -42,
+  "metric2" : true
 })";
 
 TEST(test_to_json, api)
 {
     std::string name0 = "metric0";
     std::string name1 = "metric1";
+    std::string name2 = "metric2";
 
-    abacus::metric_info infos[2] = {
+    abacus::metric_info infos[3] = {
         abacus::metric_info{name0, "An unsigned integer metric",
-                            abacus::metric_type::uint64},
+                            abacus::metric_type::uint64,
+                            abacus::metric_kind::counter},
         abacus::metric_info{name1, "A signed integer metric",
-                            abacus::metric_type::int64}};
+                            abacus::metric_type::int64,
+                            abacus::metric_kind::gauge},
+        abacus::metric_info{name2, "A boolean constant",
+                            abacus::metric_type::boolean,
+                            abacus::metric_kind::constant}};
 
     abacus::metrics metrics(infos);
 
     auto m0 = metrics.initialize_metric<abacus::metric_type::uint64>(name0);
     auto m1 = metrics.initialize_metric<abacus::metric_type::int64>(name1);
+    metrics.initialize_constant(name2, true);
 
     m0 = 42;
     m1 = -42;

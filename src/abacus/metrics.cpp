@@ -8,8 +8,8 @@
 #include <cstring>
 
 #include "detail/raw.hpp"
-#include "metric_flags.hpp"
 #include "metric_info.hpp"
+#include "metric_kind.hpp"
 #include "metric_type.hpp"
 #include "metrics.hpp"
 #include "protocol_version.hpp"
@@ -49,7 +49,7 @@ metrics::metrics(const metric_info* info, std::size_t count) :
         meta_bytes += info.description.size();
         // type
         meta_bytes += sizeof(uint8_t);
-        // flags
+        // kind
         meta_bytes += sizeof(uint8_t);
     }
     // Add padding to ensure alignment for the values.
@@ -105,8 +105,8 @@ metrics::metrics(const metric_info* info, std::size_t count) :
     // Write the types into memory
     uint8_t* types_ptr = m_meta_data + detail::types_offset(m_meta_data);
 
-    // Write the flags into memory
-    uint8_t* flags_ptr = m_meta_data + detail::flags_offset(m_meta_data);
+    // Write the kind into memory
+    uint8_t* kind_ptr = m_meta_data + detail::kind_offset(m_meta_data);
 
     for (std::size_t i = 0; i < m_info.count(); i++)
     {
@@ -128,8 +128,8 @@ metrics::metrics(const metric_info* info, std::size_t count) :
                     info.description.size());
         descriptions_ptr += info.description.size();
 
-        std::memcpy(flags_ptr, &info.flags, sizeof(info.flags));
-        flags_ptr += sizeof(info.flags);
+        std::memcpy(kind_ptr, &info.kind, sizeof(info.kind));
+        kind_ptr += sizeof(info.kind);
 
         std::memcpy(types_ptr, &info.type, sizeof(info.type));
         types_ptr += sizeof(info.type);
@@ -220,16 +220,16 @@ auto metrics::is_float64(std::size_t index) const -> bool
     return m_info[index].type == metric_type::float64;
 }
 
-auto metrics::is_constant(std::size_t index) const -> bool
+auto metrics::kind(std::size_t index) const -> metric_kind
 {
     assert(index < count());
-    return (bool)(m_info[index].flags & metric_flags::constant);
+    return m_info[index].kind;
 }
 
 void metrics::initialize_constant(const std::string& name, uint64_t value) const
 {
     auto index = metrics::index(name);
-    assert(is_constant(index));
+    assert(kind(index) == metric_kind::constant);
     assert(is_uint64(index));
     *static_cast<uint64_t*>(initialize(index)) = value;
 }
@@ -237,7 +237,7 @@ void metrics::initialize_constant(const std::string& name, uint64_t value) const
 void metrics::initialize_constant(const std::string& name, int64_t value) const
 {
     auto index = metrics::index(name);
-    assert(is_constant(index));
+    assert(kind(index) == metric_kind::constant);
     assert(is_int64(index));
     *static_cast<int64_t*>(initialize(index)) = value;
 }
@@ -245,7 +245,7 @@ void metrics::initialize_constant(const std::string& name, int64_t value) const
 void metrics::initialize_constant(const std::string& name, double value) const
 {
     auto index = metrics::index(name);
-    assert(is_constant(index));
+    assert(kind(index) == metric_kind::constant);
     assert(is_float64(index));
     *static_cast<double*>(initialize(index)) = value;
 }
@@ -253,7 +253,7 @@ void metrics::initialize_constant(const std::string& name, double value) const
 void metrics::initialize_constant(const std::string& name, bool value) const
 {
     auto index = metrics::index(name);
-    assert(is_constant(index));
+    assert(kind(index) == metric_kind::constant);
     assert(is_boolean(index));
     *static_cast<bool*>(initialize(index)) = value;
 }
@@ -305,7 +305,7 @@ void metrics::reset_metric(std::size_t index)
 {
     assert(index < count());
     assert(is_initialized(index));
-    assert(!is_constant(index));
+    assert(kind(index) != metric_kind::constant);
 
     switch (detail::type(m_meta_data, index))
     {

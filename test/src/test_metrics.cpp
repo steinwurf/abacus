@@ -24,31 +24,35 @@ TEST(test_metrics, default_constructor)
 
     abacus::metric_info infos[metric_count] = {
         abacus::metric_info{name0, "A boolean metric",
-                            abacus::metric_type::boolean},
+                            abacus::metric_type::boolean,
+                            abacus::metric_kind::counter},
         abacus::metric_info{name1, "An unsigned integer metric",
-                            abacus::metric_type::uint64},
+                            abacus::metric_type::uint64,
+                            abacus::metric_kind::counter},
         abacus::metric_info{name2, "A signed integer metric",
-                            abacus::metric_type::int64},
+                            abacus::metric_type::int64,
+                            abacus::metric_kind::gauge},
         abacus::metric_info{name3, "A floating point metric",
-                            abacus::metric_type::float64},
+                            abacus::metric_type::float64,
+                            abacus::metric_kind::gauge},
         abacus::metric_info{name4, "A constant boolean metric",
                             abacus::metric_type::boolean,
-                            abacus::metric_flags::constant},
+                            abacus::metric_kind::constant},
         abacus::metric_info{name5, "A constant floating point metric",
                             abacus::metric_type::float64,
-                            abacus::metric_flags::constant}};
+                            abacus::metric_kind::constant}};
 
     abacus::metrics metrics(infos);
 
     EXPECT_EQ(metrics.count(), metric_count);
     EXPECT_EQ(metrics.protocol_version(), abacus::protocol_version());
 
-    EXPECT_FALSE(metrics.is_constant(0));
-    EXPECT_FALSE(metrics.is_constant(1));
-    EXPECT_FALSE(metrics.is_constant(2));
-    EXPECT_TRUE(metrics.is_constant(3));
-    EXPECT_FALSE(metrics.is_constant(4));
-    EXPECT_TRUE(metrics.is_constant(5));
+    EXPECT_EQ(metrics.kind(0), abacus::metric_kind::counter);
+    EXPECT_EQ(metrics.kind(1), abacus::metric_kind::gauge);
+    EXPECT_EQ(metrics.kind(2), abacus::metric_kind::gauge);
+    EXPECT_EQ(metrics.kind(3), abacus::metric_kind::constant);
+    EXPECT_EQ(metrics.kind(4), abacus::metric_kind::counter);
+    EXPECT_EQ(metrics.kind(5), abacus::metric_kind::constant);
 
     EXPECT_FALSE(metrics.is_initialized(0));
     auto metric0 =
@@ -135,9 +139,11 @@ TEST(test_metrics, value_and_meta_bytes)
 
     abacus::metric_info infos[metric_count] = {
         abacus::metric_info{name0, "An unsigned integer metric",
-                            abacus::metric_type::uint64},
+                            abacus::metric_type::uint64,
+                            abacus::metric_kind::counter},
         abacus::metric_info{name1, "A signed integer metric",
-                            abacus::metric_type::int64}};
+                            abacus::metric_type::int64,
+                            abacus::metric_kind::gauge}};
 
     abacus::metrics metrics(infos);
 
@@ -175,9 +181,11 @@ TEST(test_metrics, reset_counters)
 
     abacus::metric_info infos[2] = {
         abacus::metric_info{name0, "An unsigned integer metric",
-                            abacus::metric_type::uint64},
+                            abacus::metric_type::uint64,
+                            abacus::metric_kind::counter},
         abacus::metric_info{name1, "A signed integer metric",
-                            abacus::metric_type::int64}};
+                            abacus::metric_type::int64,
+                            abacus::metric_kind::gauge}};
 
     abacus::metrics metrics(infos);
 
@@ -226,7 +234,7 @@ TEST(test_metrics, reset_counters)
 }
 
 static const std::vector<uint8_t> expected_meta_data = {
-    0x00, 0x00, 0x1c, 0x00, 0x58, 0x00, 0x03, 0x00, 0x01, 0x00, 0x07, 0x00,
+    0x00, 0x01, 0x1c, 0x00, 0x58, 0x00, 0x03, 0x00, 0x01, 0x00, 0x07, 0x00,
     0x07, 0x00, 0x07, 0x00, 0x07, 0x00, 0x1a, 0x00, 0x17, 0x00, 0x17, 0x00,
     0x10, 0x00, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x30, 0x6d, 0x65, 0x74,
     0x72, 0x69, 0x63, 0x31, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x32, 0x6d,
@@ -238,7 +246,8 @@ static const std::vector<uint8_t> expected_meta_data = {
     0x61, 0x74, 0x69, 0x6e, 0x67, 0x20, 0x70, 0x6f, 0x69, 0x6e, 0x74, 0x20,
     0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x41, 0x20, 0x62, 0x6f, 0x6f, 0x6c,
     0x65, 0x61, 0x6e, 0x20, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x00, 0x01,
-    0x02, 0x03, 0x00, 0x00, 0x00, 0x00};
+    0x02, 0x03, 0x00, 0x02, 0x02, 0x02,
+};
 
 static const std::vector<uint8_t> expected_value_data = {
     0x2a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xd6,
@@ -254,13 +263,17 @@ TEST(test_metrics, protocol_version)
         << "If this test fails, you need to update the protocol version");
     abacus::metric_info infos[4] = {
         abacus::metric_info{"metric0", "An unsigned integer metric",
-                            abacus::metric_type::uint64},
+                            abacus::metric_type::uint64,
+                            abacus::metric_kind::counter},
         abacus::metric_info{"metric1", "A signed integer metric",
-                            abacus::metric_type::int64},
+                            abacus::metric_type::int64,
+                            abacus::metric_kind::gauge},
         abacus::metric_info{"metric2", "A floating point metric",
-                            abacus::metric_type::float64},
+                            abacus::metric_type::float64,
+                            abacus::metric_kind::gauge},
         abacus::metric_info{"metric3", "A boolean metric",
-                            abacus::metric_type::boolean}};
+                            abacus::metric_type::boolean,
+                            abacus::metric_kind::gauge}};
 
     abacus::metrics metrics(infos);
 

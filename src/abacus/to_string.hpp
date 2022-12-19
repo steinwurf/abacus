@@ -3,16 +3,17 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include "protocol_version.hpp"
+#pragma once
+
+#include "metric_kind.hpp"
 #include "version.hpp"
 
 namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-uint8_t protocol_version()
-{
-    return 1;
-}
+
+std::string to_string(metric_kind kind);
+
 }
 }

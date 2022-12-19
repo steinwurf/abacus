@@ -15,7 +15,7 @@
 #include <endian/big_endian.hpp>
 #include <endian/little_endian.hpp>
 
-#include "../metric_flags.hpp"
+#include "../metric_kind.hpp"
 #include "../metric_type.hpp"
 #include "../version.hpp"
 
@@ -215,24 +215,24 @@ inline auto type(const uint8_t* meta_data, std::size_t index) -> metric_type
         read<uint8_t>(meta_data, meta_data + offset));
 }
 
-inline auto flags_offset(const uint8_t* meta_data) -> std::size_t
+inline auto kind_offset(const uint8_t* meta_data) -> std::size_t
 {
     return types_offset(meta_data) + metric_count(meta_data);
 }
 
-inline auto flags(const uint8_t* meta_data, std::size_t index) -> metric_flags
+inline auto kind(const uint8_t* meta_data, std::size_t index) -> metric_kind
 {
     assert(meta_data != nullptr);
     assert(index < metric_count(meta_data));
 
-    std::size_t offset = flags_offset(meta_data) + index;
-    return static_cast<metric_flags>(
+    std::size_t offset = kind_offset(meta_data) + index;
+    return static_cast<metric_kind>(
         read<uint8_t>(meta_data, meta_data + offset));
 }
 
 inline auto meta_bytes(const uint8_t* meta_data) -> std::size_t
 {
-    return flags_offset(meta_data) + sizeof(bool) * metric_count(meta_data);
+    return kind_offset(meta_data) + sizeof(uint8_t) * metric_count(meta_data);
 }
 
 /// @param offset The offset in the raw memory

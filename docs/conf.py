@@ -25,7 +25,7 @@ wurfapi = {
         "../src/abacus/metric_type.hpp",
         "../src/abacus/metric.hpp",
         "../src/abacus/metric_info.hpp",
-        "../src/abacus/metric_flags.hpp",
+        "../src/abacus/metric_kind.hpp",
         "../src/abacus/metrics.hpp",
         "../src/abacus/view.hpp",
         "../src/abacus/to_json.hpp",

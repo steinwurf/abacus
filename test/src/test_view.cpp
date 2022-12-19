@@ -19,12 +19,14 @@ TEST(test_view, api)
 
     abacus::metric_info infos[3] = {
         abacus::metric_info{name0, "An unsigned integer metric",
-                            abacus::metric_type::uint64},
+                            abacus::metric_type::uint64,
+                            abacus::metric_kind::counter},
         abacus::metric_info{name1, "A signed integer metric",
-                            abacus::metric_type::int64},
+                            abacus::metric_type::int64,
+                            abacus::metric_kind::gauge},
         abacus::metric_info{name2, "Constant floating point metric",
                             abacus::metric_type::float64,
-                            abacus::metric_flags::constant}};
+                            abacus::metric_kind::constant}};
 
     abacus::metrics metrics(infos);
 
@@ -57,9 +59,9 @@ TEST(test_view, api)
     EXPECT_EQ(view.type(1), abacus::metric_type::int64);
     EXPECT_EQ(view.type(2), abacus::metric_type::float64);
 
-    EXPECT_FALSE(view.is_constant(0));
-    EXPECT_FALSE(view.is_constant(1));
-    EXPECT_TRUE(view.is_constant(2));
+    EXPECT_EQ(view.kind(0), abacus::metric_kind::counter);
+    EXPECT_EQ(view.kind(1), abacus::metric_kind::gauge);
+    EXPECT_EQ(view.kind(2), abacus::metric_kind::constant);
 
     uint64_t metrics_value = 12;
     uint64_t view_value = 11;

@@ -7,6 +7,7 @@
 
 #include <bourne/json.hpp>
 
+#include "../to_string.hpp"
 #include "../version.hpp"
 
 namespace abacus
@@ -62,10 +63,11 @@ auto to_json(const view& view, bool slim) -> bourne::json
         }
         else
         {
+            std::string kind = to_string(view.kind(i));
+
             json[view.name(i)] = {
-                "description", view.description(i),
-                "is_constant", view.is_constant(i),
-                "value",       value,
+                "description", view.description(i), "kind", kind, "value",
+                value,
             };
         }
     }

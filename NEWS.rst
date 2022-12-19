@@ -6,7 +6,8 @@ every change, see the Git log.
 
 Latest
 ------
-* tbd
+* Major: Changed the protocol. New protocol version is 1.
+* Major: Changed the metric_flags to a metric_kind representing whether the metric is a counter, constant or a gauge.
 
 3.0.1
 -----
