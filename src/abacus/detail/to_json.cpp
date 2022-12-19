@@ -3,11 +3,11 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include "../to_string.hpp"
 #include "to_json.hpp"
 
 #include <bourne/json.hpp>
 
+#include "../to_string.hpp"
 #include "../version.hpp"
 
 namespace abacus
