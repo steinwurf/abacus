@@ -75,47 +75,20 @@ auto to_json(const view& view, bool slim) -> bourne::json
         {
             std::string kind = to_string(view.kind(i));
 
-            if (view.unit(i) == "")
+            json[view.name(i)] = {
+                "description", view.description(i), "kind", kind, "value",
+                value,
+            };
+
+            if (min != 0 || max != 0)
             {
-                if (min == 0U && max == 0U)
-                {
-                    json[view.name(i)] = {
-                        "description", view.description(i),
-                        "kind",        kind,
-                        "value",       value,
-                    };
-                }
-                else
-                {
-                    json[view.name(i)] = {
-                        "description", view.description(i),
-                        "kind",        kind,
-                        "min",         min,
-                        "max",         max,
-                        "value",       value,
-                    };
-                }
+                json[view.name(i)]["min"] = min;
+                json[view.name(i)]["max"] = max;
             }
-            else
+
+            if (view.unit(i) != "")
             {
-                if (min == 0U && max == 0U)
-                {
-                    json[view.name(i)] = {
-                        "description", view.description(i), "kind",  kind,
-                        "unit",        view.unit(i),        "value", value,
-                    };
-                }
-                else
-                {
-                    json[view.name(i)] = {
-                        "description", view.description(i),
-                        "kind",        kind,
-                        "unit",        view.unit(i),
-                        "min",         min,
-                        "max",         max,
-                        "value",       value,
-                    };
-                }
+                json[view.name(i)]["unit"] = view.unit(i);
             }
         }
     }
