@@ -169,7 +169,7 @@ TEST(test_metrics, value_and_meta_bytes)
     // is_contant bools
     meta_bytes += metric_count;
     // min and max
-    meta_bytes += sizeof(uint64_t) * metric_count * 2;
+    meta_bytes += metric_count * sizeof(uint64_t) * 2;
 
     ASSERT_EQ(meta_bytes, metrics.meta_bytes());
 

@@ -86,7 +86,7 @@ auto to_json(const view& view, bool slim) -> bourne::json
                 json[view.name(i)]["max"] = max;
             }
 
-            if (view.unit(i) != "")
+            if (!view.unit(i).empty())
             {
                 json[view.name(i)]["unit"] = view.unit(i);
             }

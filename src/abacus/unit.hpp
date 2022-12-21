@@ -20,6 +20,11 @@ struct unit
     {
     }
 
+    bool empty() const
+    {
+        return value.empty();
+    }
+
     /// The unit string
     std::string value;
 };
