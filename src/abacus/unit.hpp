@@ -20,6 +20,8 @@ struct unit
     {
     }
 
+    /// @brief  Check if the unit is empty
+    /// @return True if the unit is empty otherwise false
     bool empty() const
     {
         return value.empty();
