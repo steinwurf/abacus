@@ -7,6 +7,7 @@ every change, see the Git log.
 Latest
 ------
 * Major: Changed the protocol. New protocol version is 1.
+* Major: Added min and max values to describe the range of a metric.
 * Major: Changed the metric_flags to a metric_kind representing whether the metric is a counter, constant or a gauge.
 * Major: Added units of metrics to the metadata.
 * Major: Changed names of metric_type, metric_kind to type, kind.
