@@ -103,6 +103,42 @@ auto view::kind(std::size_t index) const -> abacus::kind
     return detail::kind(m_meta_data, index);
 }
 
+auto view::min(std::size_t index) const -> abacus::min
+{
+    switch (type(index))
+    {
+    case abacus::type::boolean:
+        return detail::min_value<uint64_t>(m_meta_data, index);
+    case abacus::type::uint64:
+        return detail::min_value<uint64_t>(m_meta_data, index);
+    case abacus::type::int64:
+        return detail::min_value<int64_t>(m_meta_data, index);
+    case abacus::type::float64:
+        return detail::min_value<double>(m_meta_data, index);
+    default:
+        assert(false && "Unknown type");
+        return abacus::min{};
+    }
+}
+
+auto view::max(std::size_t index) const -> abacus::max
+{
+    switch (type(index))
+    {
+    case abacus::type::boolean:
+        return detail::max_value<uint64_t>(m_meta_data, index);
+    case abacus::type::uint64:
+        return detail::max_value<uint64_t>(m_meta_data, index);
+    case abacus::type::int64:
+        return detail::max_value<int64_t>(m_meta_data, index);
+    case abacus::type::float64:
+        return detail::max_value<double>(m_meta_data, index);
+    default:
+        assert(false && "Unknown type");
+        return abacus::max{};
+    }
+}
+
 void view::value(std::size_t index, bool& value) const
 {
     assert(is_initialized(index));

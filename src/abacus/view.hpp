@@ -10,6 +10,8 @@
 #include <vector>
 
 #include "kind.hpp"
+#include "max.hpp"
+#include "min.hpp"
 #include "type.hpp"
 #include "version.hpp"
 
@@ -102,6 +104,18 @@ public:
     /// @param index The index of the metric to check. Must be less than
     /// count().
     auto kind(std::size_t index) const -> abacus::kind;
+
+    /// @returns the minimum value of the metric at the given index.
+    /// @param index The index of the metric to check. Must be less than
+    /// count() and initialized with initialize_metric<>() or
+    /// initialize_constant().
+    auto min(std::size_t index) const -> abacus::min;
+
+    /// @returns the maximum value of the metric at the given index.
+    /// @param index The index of the metric to check. Must be less than
+    /// count() and initialized with initialize_metric<>() or
+    /// initialize_constant().
+    auto max(std::size_t index) const -> abacus::max;
 
     /// Copy the value of the uint64_t metric into a passed reference. This is
     /// used to extract the values during runtime.

@@ -17,12 +17,16 @@ static const char* expected_json = R"({
   "metric0" : {
     "description" : "An unsigned integer metric",
     "kind" : "counter",
+    "max" : 100,
+    "min" : 0,
     "unit" : "bytes",
     "value" : 42
   },
   "metric1" : {
     "description" : "A signed integer metric",
     "kind" : "gauge",
+    "max" : 100,
+    "min" : -100,
     "unit" : "USD",
     "value" : -42
   },
@@ -49,10 +53,12 @@ TEST(test_to_json, api)
     abacus::metric_info infos[3] = {
         abacus::metric_info{name0, "An unsigned integer metric",
                             abacus::type::uint64, abacus::kind::counter,
-                            abacus::unit{"bytes"}},
+                            abacus::unit{"bytes"}, abacus::min{uint64_t{0U}},
+                            abacus::max{uint64_t{100U}}},
         abacus::metric_info{name1, "A signed integer metric",
                             abacus::type::int64, abacus::kind::gauge,
-                            abacus::unit{"USD"}},
+                            abacus::unit{"USD"}, abacus::min{int64_t{-100}},
+                            abacus::max{int64_t{100}}},
         abacus::metric_info{name2, "A boolean constant", abacus::type::boolean,
                             abacus::kind::constant}};
 

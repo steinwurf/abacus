@@ -16,6 +16,8 @@
 #include <endian/little_endian.hpp>
 
 #include "../kind.hpp"
+#include "../max.hpp"
+#include "../min.hpp"
 #include "../type.hpp"
 #include "../version.hpp"
 
@@ -279,9 +281,40 @@ inline auto kind(const uint8_t* meta_data, std::size_t index) -> abacus::kind
         read<uint8_t>(meta_data, meta_data + offset));
 }
 
+inline auto min_offset(const uint8_t* meta_data) -> std::size_t
+{
+    return kind_offset(meta_data) + metric_count(meta_data);
+}
+
+template <class T>
+inline auto min_value(const uint8_t* meta_data, std::size_t index)
+    -> abacus::min
+{
+    assert(meta_data != nullptr);
+    assert(index < metric_count(meta_data));
+
+    std::size_t offset = min_offset(meta_data) + index * sizeof(uint64_t);
+    return abacus::min{read<T>(meta_data, meta_data + offset)};
+}
+
+inline auto max_offset(const uint8_t* meta_data) -> std::size_t
+{
+    return min_offset(meta_data) + metric_count(meta_data) * sizeof(uint64_t);
+}
+template <class T>
+inline auto max_value(const uint8_t* meta_data, std::size_t index)
+    -> abacus::max
+{
+    assert(meta_data != nullptr);
+    assert(index < metric_count(meta_data));
+
+    std::size_t offset = max_offset(meta_data) + index * sizeof(uint64_t);
+    return abacus::max{read<T>(meta_data, meta_data + offset)};
+}
+
 inline auto meta_bytes(const uint8_t* meta_data) -> std::size_t
 {
-    return kind_offset(meta_data) + sizeof(uint8_t) * metric_count(meta_data);
+    return max_offset(meta_data) + sizeof(uint64_t) * metric_count(meta_data);
 }
 
 /// @param offset The offset in the raw memory
