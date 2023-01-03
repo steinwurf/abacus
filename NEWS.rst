@@ -6,6 +6,10 @@ every change, see the Git log.
 
 Latest
 ------
+* tbd
+
+4.0.0
+-----
 * Major: Changed the protocol. New protocol version is 1.
 * Major: Added min and max values to describe the range of a metric.
 * Major: Changed the metric_flags to a metric_kind representing whether the metric is a counter, constant or a gauge.
