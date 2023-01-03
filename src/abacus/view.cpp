@@ -117,6 +117,7 @@ auto view::min(std::size_t index) const -> abacus::min
         return detail::min_value<double>(m_meta_data, index);
     default:
         assert(false && "Unknown type");
+        return abacus::min{};
     }
 }
 
@@ -134,6 +135,7 @@ auto view::max(std::size_t index) const -> abacus::max
         return detail::max_value<double>(m_meta_data, index);
     default:
         assert(false && "Unknown type");
+        return abacus::max{};
     }
 }
 
