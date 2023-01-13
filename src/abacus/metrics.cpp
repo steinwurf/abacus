@@ -273,6 +273,11 @@ auto metrics::kind(std::size_t index) const -> abacus::kind
     return m_info[index].kind;
 }
 
+void metrics::observe_metric(const std::string& name,
+                             delegate<uint64_t()> callback) const
+{
+}
+
 void metrics::initialize_constant(const std::string& name, uint64_t value) const
 {
     auto index = metrics::index(name);

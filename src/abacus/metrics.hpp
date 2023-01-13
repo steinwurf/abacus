@@ -9,6 +9,7 @@
 #include <map>
 #include <string>
 
+#include "delegate.hpp"
 #include "detail/value_size_info.hpp"
 #include "metric.hpp"
 #include "type.hpp"
@@ -172,6 +173,18 @@ public:
 
         return metric<MetricType>{value_ptr};
     }
+
+    void observe_metric(const std::string& name,
+                        delegate<uint64_t()> callback) const;
+
+    void observe_metric(const std::string& name,
+                        delegate<int64_t()> callback) const;
+
+    void observe_metric(const std::string& name,
+                        delegate<double()> callback) const;
+
+    void observe_metric(const std::string& name,
+                        delegate<bool()> callback) const;
 
     /// Initialize a constant uint64_t metric at the given index.
     ///
