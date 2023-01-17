@@ -284,8 +284,8 @@ void metrics::observe_metric(const std::string& name,
     auto metric_index = index(name);
     assert(is_uint64(metric_index));
     auto value_ptr = static_cast<uint64_t*>(initialize(metric_index));
-    delegate<void()> mem_callback(
-        [&callback, &value_ptr]()
+    std::function<void()> mem_callback(
+        [callback, value_ptr]()
         {
             uint64_t value = callback();
             *value_ptr = value;
@@ -300,8 +300,8 @@ void metrics::observe_metric(const std::string& name,
     auto metric_index = index(name);
     assert(is_int64(metric_index));
     auto value_ptr = static_cast<int64_t*>(initialize(metric_index));
-    delegate<void()> mem_callback(
-        [&callback, &value_ptr]()
+    std::function<void()> mem_callback(
+        [callback, value_ptr]()
         {
             int64_t value = callback();
             *value_ptr = value;
@@ -316,8 +316,8 @@ void metrics::observe_metric(const std::string& name,
     auto metric_index = index(name);
     assert(is_float64(metric_index));
     auto value_ptr = static_cast<double*>(initialize(metric_index));
-    delegate<void()> mem_callback(
-        [&callback, &value_ptr]()
+    std::function<void()> mem_callback(
+        [callback, value_ptr]()
         {
             double value = callback();
             *value_ptr = value;
@@ -331,8 +331,8 @@ void metrics::observe_metric(const std::string& name, delegate<bool()> callback)
     auto metric_index = index(name);
     assert(is_boolean(metric_index));
     auto value_ptr = static_cast<bool*>(initialize(metric_index));
-    delegate<void()> mem_callback(
-        [&callback, &value_ptr]()
+    std::function<void()> mem_callback(
+        [callback, value_ptr]()
         {
             bool value = callback();
             *value_ptr = value;

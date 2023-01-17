@@ -391,7 +391,7 @@ private:
 
     /// Map of the observed metrics and the callbacks that are called on
     /// value_data() and value()
-    std::map<std::string, delegate<void()>> m_observer_map;
+    std::map<std::string, std::function<void()>> m_observer_map;
 };
 }
 }
