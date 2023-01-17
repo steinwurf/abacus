@@ -6,6 +6,10 @@ every change, see the Git log.
 
 Latest
 ------
+* tbd
+
+4.1.0
+-----
 * Minor: Added `metrics::observe_metric()` to sample the value of a metric through a callback.
 
 4.0.0
