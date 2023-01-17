@@ -201,6 +201,10 @@ auto metrics::meta_bytes() const -> std::size_t
 
 auto metrics::value_data() const -> const uint8_t*
 {
+    for (auto const& item : m_observer_map)
+    {
+        item.second();
+    }
     return m_value_data;
 }
 
@@ -273,6 +277,70 @@ auto metrics::kind(std::size_t index) const -> abacus::kind
     return m_info[index].kind;
 }
 
+void metrics::observe_metric(const std::string& name,
+                             delegate<uint64_t()> callback) const
+{
+    assert(m_observer_map.find(name) == m_observer_map.end());
+    auto metric_index = index(name);
+    assert(is_uint64(metric_index));
+    auto value_ptr = static_cast<uint64_t*>(initialize(metric_index));
+    std::function<void()> mem_callback(
+        [callback, value_ptr]()
+        {
+            uint64_t value = callback();
+            *value_ptr = value;
+        });
+    m_observer_map.emplace(name, mem_callback);
+}
+
+void metrics::observe_metric(const std::string& name,
+                             delegate<int64_t()> callback) const
+{
+    assert(m_observer_map.find(name) == m_observer_map.end());
+    auto metric_index = index(name);
+    assert(is_int64(metric_index));
+    auto value_ptr = static_cast<int64_t*>(initialize(metric_index));
+    std::function<void()> mem_callback(
+        [callback, value_ptr]()
+        {
+            int64_t value = callback();
+            *value_ptr = value;
+        });
+    m_observer_map.emplace(name, mem_callback);
+}
+
+void metrics::observe_metric(const std::string& name,
+                             delegate<double()> callback) const
+{
+    assert(m_observer_map.find(name) == m_observer_map.end());
+    auto metric_index = index(name);
+    assert(is_float64(metric_index));
+    auto value_ptr = static_cast<double*>(initialize(metric_index));
+    std::function<void()> mem_callback(
+        [callback, value_ptr]()
+        {
+            double value = callback();
+            *value_ptr = value;
+        });
+    m_observer_map.emplace(name, mem_callback);
+}
+
+void metrics::observe_metric(const std::string& name,
+                             delegate<bool()> callback) const
+{
+    assert(m_observer_map.find(name) == m_observer_map.end());
+    auto metric_index = index(name);
+    assert(is_boolean(metric_index));
+    auto value_ptr = static_cast<bool*>(initialize(metric_index));
+    std::function<void()> mem_callback(
+        [callback, value_ptr]()
+        {
+            bool value = callback();
+            *value_ptr = value;
+        });
+    m_observer_map.emplace(name, mem_callback);
+}
+
 void metrics::initialize_constant(const std::string& name, uint64_t value) const
 {
     auto index = metrics::index(name);
@@ -310,6 +378,8 @@ void metrics::value(std::size_t index, uint64_t& value) const
     assert(index < count());
     assert(is_initialized(index));
     assert(is_uint64(index));
+    if (m_observer_map.find(m_info[index].name) != m_observer_map.end())
+        m_observer_map[m_info[index].name]();
     value = *static_cast<uint64_t*>(
         detail::value_ptr(m_meta_data, m_value_data, index));
 }
@@ -319,6 +389,8 @@ void metrics::value(std::size_t index, int64_t& value) const
     assert(index < count());
     assert(is_initialized(index));
     assert(is_int64(index));
+    if (m_observer_map.find(m_info[index].name) != m_observer_map.end())
+        m_observer_map[m_info[index].name]();
     value = *static_cast<int64_t*>(
         detail::value_ptr(m_meta_data, m_value_data, index));
 }
@@ -328,6 +400,8 @@ void metrics::value(std::size_t index, double& value) const
     assert(index < count());
     assert(is_initialized(index));
     assert(is_float64(index));
+    if (m_observer_map.find(m_info[index].name) != m_observer_map.end())
+        m_observer_map[m_info[index].name]();
     value = *static_cast<double*>(
         detail::value_ptr(m_meta_data, m_value_data, index));
 }
@@ -337,6 +411,8 @@ void metrics::value(std::size_t index, bool& value) const
     assert(index < count());
     assert(is_initialized(index));
     assert(is_boolean(index));
+    if (m_observer_map.find(m_info[index].name) != m_observer_map.end())
+        m_observer_map[m_info[index].name]();
     value = *static_cast<bool*>(
         detail::value_ptr(m_meta_data, m_value_data, index));
 }
