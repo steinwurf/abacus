@@ -81,7 +81,7 @@ public:
     auto meta_bytes() const -> std::size_t;
 
     /// @returns the pointer to the value data of the metrics.
-    auto value_data() -> const uint8_t*;
+    auto value_data() const -> const uint8_t*;
 
     /// @return the size of the value data of the metrics.
     auto value_bytes() const -> std::size_t;
@@ -185,7 +185,8 @@ public:
     /// that the name matches the one at the given index.
     /// @param callback The callback that will be called when the metric data
     /// is sampled.
-    void observe_metric(const std::string& name, delegate<uint64_t()> callback);
+    void observe_metric(const std::string& name,
+                        delegate<uint64_t()> callback) const;
 
     /// This function registers a callback that will be called when the metric
     /// data is sampled, i.e when value_data() or value() is called. The
@@ -198,7 +199,8 @@ public:
     /// that the name matches the one at the given index.
     /// @param callback The callback that will be called when the metric data
     /// is sampled.
-    void observe_metric(const std::string& name, delegate<int64_t()> callback);
+    void observe_metric(const std::string& name,
+                        delegate<int64_t()> callback) const;
 
     /// This function registers a callback that will be called when the metric
     /// data is sampled, i.e when value_data() or value() is called. The
@@ -211,7 +213,8 @@ public:
     /// that the name matches the one at the given index.
     /// @param callback The callback that will be called when the metric data
     /// is sampled.
-    void observe_metric(const std::string& name, delegate<double()> callback);
+    void observe_metric(const std::string& name,
+                        delegate<double()> callback) const;
 
     /// This function registers a callback that will be called when the metric
     /// data is sampled, i.e when value_data() or value() is called. The
@@ -224,7 +227,8 @@ public:
     /// that the name matches the one at the given index.
     /// @param callback The callback that will be called when the metric data
     /// is sampled.
-    void observe_metric(const std::string& name, delegate<bool()> callback);
+    void observe_metric(const std::string& name,
+                        delegate<bool()> callback) const;
 
     /// Initialize a constant uint64_t metric at the given index.
     ///
@@ -301,7 +305,7 @@ public:
     /// @param index The index of the metric to copy. Must be less than
     /// count().
     /// @param value The variable to copy the value into. A uint64_t reference.
-    void value(std::size_t index, uint64_t& value);
+    void value(std::size_t index, uint64_t& value) const;
 
     /// Copy the value of the int64_t metric into a passed reference. This is
     /// used to extract the values during runtime.
@@ -314,7 +318,7 @@ public:
     /// @param index The index of the metric to copy. Must be less than
     /// count().
     /// @param value The variable to copy the value into. A int64_t reference.
-    void value(std::size_t index, int64_t& value);
+    void value(std::size_t index, int64_t& value) const;
 
     /// Copy the value of the double metric into a passed reference. This is
     /// used to extract the values during runtime.
@@ -327,7 +331,7 @@ public:
     /// @param index The index of the metric to copy. Must be less than
     /// count().
     /// @param value The variable to copy the value into. A double reference.
-    void value(std::size_t index, double& value);
+    void value(std::size_t index, double& value) const;
 
     /// Copy the value of the bool metric into a passed reference. This is used
     /// to extract the values during runtime.
@@ -340,7 +344,7 @@ public:
     /// @param index The index of the metric to copy. Must be less than
     /// count().
     /// @param value The variable to copy the value into. A bool reference.
-    void value(std::size_t index, bool& value);
+    void value(std::size_t index, bool& value) const;
 
     /// @returns The index of a metric with the given name. Throws an assert if
     /// no metric is found with the given name. Returns the numeric max of
@@ -391,7 +395,7 @@ private:
 
     /// Map of the observed metrics and the callbacks that are called on
     /// value_data() and value()
-    std::map<std::string, std::function<void()>> m_observer_map;
+    mutable std::map<std::string, std::function<void()>> m_observer_map;
 };
 }
 }
