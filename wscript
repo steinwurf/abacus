@@ -2,11 +2,58 @@
 # encoding: utf-8
 
 import os
+import sys
 from waflib.Build import BuildContext
+from waflib import Options, ConfigSet, Context
+from waflib.extras.wurf.waf_resolve_context import WafResolveContext
 
 
 APPNAME = "abacus"
 VERSION = "4.1.0"
+
+
+def options(opt):
+
+    if opt.is_toplevel():
+        opts = opt.add_option_group("Bindings options")
+
+        opts.add_option(
+            "--python-bindings",
+            action="store_true",
+            default=None,
+            help="Enable python bindings",
+        )
+
+
+def resolve(ctx):
+
+    if ctx.is_toplevel():
+
+        # check if resolve or configure is in sys.argv
+        if "resolve" in sys.argv or "configure" in sys.argv:
+            # (re)configuring
+            argv = sys.argv
+        else:
+            # Get the argv of the configure step
+            env = ConfigSet.ConfigSet()
+            try:
+                env.load(os.path.join(Context.top_dir, Options.lockfile))
+            except EnvironmentError:
+                pass
+            argv = env.argv if "argv" in env else []
+
+        if "--python-bindings" in argv:
+            # If --python-bindings is/was specified at configure we add the
+            # pybind11 dependency.
+            ctx.add_dependency(
+                name="pybind11",
+                recurse=True,
+                optional=False,
+                resolver="git",
+                method="semver",
+                major=4,
+                sources=["github.com/steinwurf/pybind11.git"],
+            )
 
 
 def build(bld):
@@ -61,6 +108,9 @@ def build(bld):
         )
 
         bld.install_files(dest="${PREFIX}/", files=bld.path.ant_glob("NEWS.rst"))
+
+        if bld.has_tool_option("python_bindings"):
+            bld.recurse("bindings/python")
 
 
 class ReleaseContext(BuildContext):
