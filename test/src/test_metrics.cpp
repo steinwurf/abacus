@@ -11,6 +11,18 @@
 #include <abacus/metrics.hpp>
 #include <abacus/protocol_version.hpp>
 
+TEST(test_metrics, empty)
+{
+    abacus::metrics metrics;
+
+    EXPECT_EQ(0U, metrics.count());
+
+    std::vector<abacus::metric_info> infos;
+    abacus::metrics metrics2(infos.data(), infos.size());
+
+    EXPECT_EQ(0U, metrics2.count());
+}
+
 TEST(test_metrics, default_constructor)
 {
     const uint16_t metric_count = 6;

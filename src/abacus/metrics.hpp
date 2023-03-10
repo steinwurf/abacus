@@ -37,20 +37,24 @@ inline namespace STEINWURF_ABACUS_VERSION
 /// 3. The description sizes in bytes (2 bytes per metric)
 /// 4. The names of the metrics (? bytes)
 /// 5. The descriptions of the metrics (? bytes)
-/// 6. The types of the metrics (1 byte per metric)
+/// 6. The types of metrics (1 byte per metric)
 /// 7. The flags of the metrics; initialized, constant. (1 byte per metric)
 /// 8. Alignment padding (if needed, max 7 bytes)
 /// 9. The 8-byte-values (8 bytes per 8-byte metric)
 /// 10. The 1-byte-values (1 byte per 1-byte metric)
 /// 11. A bitmap of the initialized metrics (1 byte per 8 metrics)
 ///
-/// 1-8 is static and is only written once, 9-11 is dynamic and is updated
+/// 1-8 are static and are only written once, 9-11 are dynamic and are updated
 /// whenever a metric is initialized and updated.
 ///
 class metrics
 {
 
 public:
+    /// Default constructor
+    /// No metrics will be contained within this object.
+    metrics();
+
     /// Constructor
     /// @param info The info of the metrics in a pointer.
     /// @param count The number of infos.
