@@ -6,6 +6,10 @@ every change, see the Git log.
 
 Latest
 ------
+* tbd
+
+4.2.0
+-----
 * Minor: Added support for "empty" metrics object with a count of 0.
 
 4.1.0
