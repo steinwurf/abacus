@@ -23,11 +23,15 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
+metrics::metrics() : metrics(nullptr, 0)
+{
+}
+
 metrics::metrics(const metric_info* info, std::size_t count) :
     m_info(info, count)
 {
-    assert(count > 0);
     assert(count <= std::numeric_limits<uint16_t>::max());
+    assert(count == 0 || info != nullptr);
 
     uint16_t name_bytes = 0;
     uint16_t description_bytes = 0;

@@ -26,8 +26,7 @@ struct value_size_info
 
     value_size_info(const metric_info* infos, std::size_t count)
     {
-        assert(infos != nullptr);
-
+        assert(count == 0 || infos != nullptr);
         for (std::size_t i = 0; i < count; i++)
         {
             const auto& info = infos[i];
