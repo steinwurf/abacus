@@ -20,8 +20,6 @@ inline namespace STEINWURF_ABACUS_VERSION
 void view::set_meta_data(const uint8_t* meta_data)
 {
     m_meta_data = meta_data;
-    // Make sure that the data is 8-byte-aligned
-    // assert(reinterpret_cast<uint64_t>(m_meta_data) % 8U == 0U);
     m_value_data = nullptr;
 
     for (std::size_t i = 0; i < count(); ++i)
@@ -34,9 +32,6 @@ void view::set_value_data(const uint8_t* value_data)
 {
     assert(m_meta_data != nullptr);
     m_value_data = value_data;
-
-    // Make sure that the data is 8-byte-aligned
-    // assert(reinterpret_cast<uint64_t>(m_value_data) % 8U == 0U);
 }
 
 const uint8_t* view::meta_data() const
