@@ -6,6 +6,10 @@ every change, see the Git log.
 
 Latest
 ------
+* tbd
+
+4.2.1
+-----
 * Patch: Remove unneeded assert on unaligned memory access in the view.
 
 4.2.0
