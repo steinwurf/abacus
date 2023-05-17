@@ -6,7 +6,7 @@ every change, see the Git log.
 
 Latest
 ------
-* tbd
+* Patch: Fix missing cstdint for newer compilers
 
 4.2.1
 -----
