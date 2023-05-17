@@ -6,6 +6,7 @@
 #pragma once
 
 #include "version.hpp"
+#include <cstdint>
 
 namespace abacus
 {
