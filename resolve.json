@@ -3,7 +3,7 @@
         "name": "waf-tools",
         "resolver": "git",
         "method": "semver",
-        "major": 4,
+        "major": 5,
         "sources": [
             "github.com/steinwurf/waf-tools.git"
         ]
@@ -13,7 +13,7 @@
         "internal": true,
         "resolver": "git",
         "method": "semver",
-        "major": 4,
+        "major": 5,
         "sources": [
             "github.com/steinwurf/gtest.git"
         ]
@@ -22,7 +22,7 @@
         "name": "bourne",
         "resolver": "git",
         "method": "semver",
-        "major": 9,
+        "major": 10,
         "sources": [
             "github.com/steinwurf/bourne.git"
         ]
@@ -31,7 +31,7 @@
         "name": "endian",
         "resolver": "git",
         "method": "semver",
-        "major": 12,
+        "major": 13,
         "sources": [
             "github.com/steinwurf/endian.git"
         ]
