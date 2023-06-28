@@ -33,9 +33,9 @@ metrics::metrics(const metric_info* info, std::size_t count) :
     assert(count <= std::numeric_limits<uint16_t>::max());
     assert(count == 0 || info != nullptr);
 
-    uint16_t name_bytes = 0;
-    uint16_t description_bytes = 0;
-    uint16_t unit_bytes = 0;
+    std::size_t name_bytes = 0;
+    std::size_t description_bytes = 0;
+    std::size_t unit_bytes = 0;
 
     // First calculate the total size of header
     std::size_t meta_bytes = detail::header_bytes();
@@ -95,16 +95,20 @@ metrics::metrics(const metric_info* info, std::size_t count) :
     new (m_meta_data) uint8_t(endian::is_big_endian());
     // The version of the data protocol
     new (m_meta_data + 1) uint8_t(abacus::protocol_version());
+
     // The total bytes used for names
-    new (m_meta_data + 2) uint16_t(name_bytes);
+    assert(name_bytes <= std::numeric_limits<uint16_t>::max());
+    new (m_meta_data + 2) uint16_t((uint16_t)name_bytes);
     // The total bytes used for descriptions
-    new (m_meta_data + 4) uint16_t(description_bytes);
+    assert(description_bytes <= std::numeric_limits<uint16_t>::max());
+    new (m_meta_data + 4) uint16_t((uint16_t)description_bytes);
     // The total bytes used for units
-    new (m_meta_data + 6) uint16_t(unit_bytes);
+    assert(unit_bytes <= std::numeric_limits<uint16_t>::max());
+    new (m_meta_data + 6) uint16_t((uint16_t)unit_bytes);
     // The number of 8-byte metric values (uint64_t, int64_t and double types)
-    new (m_meta_data + 8) uint16_t(m_info.eight_byte_metrics_count());
+    new (m_meta_data + 8) uint16_t((uint16_t)m_info.eight_byte_metrics_count());
     // The number of 1-byte metric values (bool type)
-    new (m_meta_data + 10) uint16_t(m_info.one_byte_metrics_count());
+    new (m_meta_data + 10) uint16_t((uint16_t)m_info.one_byte_metrics_count());
 
     // Write the name sizes into memory
     uint8_t* name_sizes_ptr = m_meta_data + detail::name_sizes_offset();

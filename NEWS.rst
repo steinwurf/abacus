@@ -6,7 +6,7 @@ every change, see the Git log.
 
 Latest
 ------
-* tbd
+* Patch: Fix warnings reported by MSVC.
 
 5.0.0
 -----
