@@ -45,26 +45,26 @@ auto to_protobuf(const view& view) -> metrics_message
             case abacus::type::uint64:
                 view.value(i, uint_value);
                 metric->set_uint64_value(uint_value);
-                info->set_max(view.max(i).m_uint);
-                info->set_min(view.min(i).m_uint);
+                info->set_uint64_max(view.max(i).m_uint);
+                info->set_uint64_min(view.min(i).m_uint);
                 break;
             case abacus::type::int64:
                 view.value(i, int_value);
                 metric->set_int64_value(int_value);
-                info->set_max(view.max(i).m_int);
-                info->set_min(view.min(i).m_int);
+                info->set_int64_max(view.max(i).m_int);
+                info->set_int64_min(view.min(i).m_int);
                 break;
             case abacus::type::boolean:
                 view.value(i, bool_value);
                 metric->set_bool_value(bool_value);
-                info->set_max(view.max(i).m_uint);
-                info->set_min(view.min(i).m_uint);
+                info->set_uint64_max(view.max(i).m_uint);
+                info->set_uint64_max(view.min(i).m_uint);
                 break;
             case abacus::type::float64:
                 view.value(i, float_value);
                 metric->set_float64_value(float_value);
-                info->set_max(view.max(i).m_double);
-                info->set_min(view.min(i).m_double);
+                info->set_float64_max(view.max(i).m_double);
+                info->set_float64_min(view.min(i).m_double);
                 break;
             default:
                 assert(false);

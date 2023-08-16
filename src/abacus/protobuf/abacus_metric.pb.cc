@@ -28,9 +28,10 @@ PROTOBUF_CONSTEXPR Info::Info(
   , /*decltype(_impl_.unit_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.type_)*/0
   , /*decltype(_impl_.kind_)*/0
-  , /*decltype(_impl_.min_)*/uint64_t{0u}
-  , /*decltype(_impl_.max_)*/uint64_t{0u}
-  , /*decltype(_impl_._cached_size_)*/{}} {}
+  , /*decltype(_impl_.min_)*/{}
+  , /*decltype(_impl_.max_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_._oneof_case_)*/{}} {}
 struct InfoDefaultTypeInternal {
   PROTOBUF_CONSTEXPR InfoDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
@@ -78,7 +79,7 @@ const uint32_t TableStruct_abacus_5fmetric_2eproto::offsets[] PROTOBUF_SECTION_V
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::protobuf::Info, _internal_metadata_),
   ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
+  PROTOBUF_FIELD_OFFSET(::protobuf::Info, _impl_._oneof_case_[0]),
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::protobuf::Info, _impl_.name_),
@@ -86,6 +87,12 @@ const uint32_t TableStruct_abacus_5fmetric_2eproto::offsets[] PROTOBUF_SECTION_V
   PROTOBUF_FIELD_OFFSET(::protobuf::Info, _impl_.type_),
   PROTOBUF_FIELD_OFFSET(::protobuf::Info, _impl_.kind_),
   PROTOBUF_FIELD_OFFSET(::protobuf::Info, _impl_.unit_),
+  ::_pbi::kInvalidFieldOffsetTag,
+  ::_pbi::kInvalidFieldOffsetTag,
+  ::_pbi::kInvalidFieldOffsetTag,
+  ::_pbi::kInvalidFieldOffsetTag,
+  ::_pbi::kInvalidFieldOffsetTag,
+  ::_pbi::kInvalidFieldOffsetTag,
   PROTOBUF_FIELD_OFFSET(::protobuf::Info, _impl_.min_),
   PROTOBUF_FIELD_OFFSET(::protobuf::Info, _impl_.max_),
   ~0u,  // no _has_bits_
@@ -111,8 +118,8 @@ const uint32_t TableStruct_abacus_5fmetric_2eproto::offsets[] PROTOBUF_SECTION_V
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::protobuf::Info)},
-  { 13, -1, -1, sizeof(::protobuf::Metric)},
-  { 25, -1, -1, sizeof(::protobuf::Metrics)},
+  { 19, -1, -1, sizeof(::protobuf::Metric)},
+  { 31, -1, -1, sizeof(::protobuf::Metrics)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -122,11 +129,14 @@ static const ::_pb::Message* const file_default_instances[] = {
 };
 
 const char descriptor_table_protodef_abacus_5fmetric_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\023abacus_metric.proto\022\010protobuf\"\215\001\n\004Info"
+  "\n\023abacus_metric.proto\022\010protobuf\"\205\002\n\004Info"
   "\022\014\n\004name\030\001 \001(\t\022\023\n\013description\030\002 \001(\t\022\034\n\004t"
   "ype\030\003 \001(\0162\016.protobuf.Type\022\034\n\004kind\030\004 \001(\0162"
-  "\016.protobuf.Kind\022\014\n\004unit\030\005 \001(\t\022\013\n\003min\030\006 \001"
-  "(\004\022\013\n\003max\030\007 \001(\004\"\215\001\n\006Metric\022\034\n\004info\030\001 \001(\013"
+  "\016.protobuf.Kind\022\014\n\004unit\030\005 \001(\t\022\024\n\nuint64_"
+  "min\030\006 \001(\004H\000\022\023\n\tint64_min\030\007 \001(\003H\000\022\025\n\013floa"
+  "t64_min\030\010 \001(\001H\000\022\024\n\nuint64_max\030\t \001(\004H\001\022\023\n"
+  "\tint64_max\030\n \001(\003H\001\022\025\n\013float64_max\030\013 \001(\001H"
+  "\001B\005\n\003minB\005\n\003max\"\215\001\n\006Metric\022\034\n\004info\030\001 \001(\013"
   "2\016.protobuf.Info\022\026\n\014uint64_value\030\002 \001(\004H\000"
   "\022\025\n\013int64_value\030\003 \001(\003H\000\022\027\n\rfloat64_value"
   "\030\004 \001(\001H\000\022\024\n\nbool_value\030\005 \001(\010H\000B\007\n\005value\""
@@ -138,7 +148,7 @@ const char descriptor_table_protodef_abacus_5fmetric_2eproto[] PROTOBUF_SECTION_
   ;
 static ::_pbi::once_flag descriptor_table_abacus_5fmetric_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_abacus_5fmetric_2eproto = {
-    false, false, 498, descriptor_table_protodef_abacus_5fmetric_2eproto,
+    false, false, 618, descriptor_table_protodef_abacus_5fmetric_2eproto,
     "abacus_metric.proto",
     &descriptor_table_abacus_5fmetric_2eproto_once, nullptr, 0, 3,
     schemas, file_default_instances, TableStruct_abacus_5fmetric_2eproto::offsets,
@@ -207,7 +217,8 @@ Info::Info(const Info& from)
     , decltype(_impl_.kind_){}
     , decltype(_impl_.min_){}
     , decltype(_impl_.max_){}
-    , /*decltype(_impl_._cached_size_)*/{}};
+    , /*decltype(_impl_._cached_size_)*/{}
+    , /*decltype(_impl_._oneof_case_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   _impl_.name_.InitDefault();
@@ -235,8 +246,44 @@ Info::Info(const Info& from)
       _this->GetArenaForAllocation());
   }
   ::memcpy(&_impl_.type_, &from._impl_.type_,
-    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.max_) -
-    reinterpret_cast<char*>(&_impl_.type_)) + sizeof(_impl_.max_));
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.kind_) -
+    reinterpret_cast<char*>(&_impl_.type_)) + sizeof(_impl_.kind_));
+  clear_has_min();
+  switch (from.min_case()) {
+    case kUint64Min: {
+      _this->_internal_set_uint64_min(from._internal_uint64_min());
+      break;
+    }
+    case kInt64Min: {
+      _this->_internal_set_int64_min(from._internal_int64_min());
+      break;
+    }
+    case kFloat64Min: {
+      _this->_internal_set_float64_min(from._internal_float64_min());
+      break;
+    }
+    case MIN_NOT_SET: {
+      break;
+    }
+  }
+  clear_has_max();
+  switch (from.max_case()) {
+    case kUint64Max: {
+      _this->_internal_set_uint64_max(from._internal_uint64_max());
+      break;
+    }
+    case kInt64Max: {
+      _this->_internal_set_int64_max(from._internal_int64_max());
+      break;
+    }
+    case kFloat64Max: {
+      _this->_internal_set_float64_max(from._internal_float64_max());
+      break;
+    }
+    case MAX_NOT_SET: {
+      break;
+    }
+  }
   // @@protoc_insertion_point(copy_constructor:protobuf.Info)
 }
 
@@ -250,9 +297,10 @@ inline void Info::SharedCtor(
     , decltype(_impl_.unit_){}
     , decltype(_impl_.type_){0}
     , decltype(_impl_.kind_){0}
-    , decltype(_impl_.min_){uint64_t{0u}}
-    , decltype(_impl_.max_){uint64_t{0u}}
+    , decltype(_impl_.min_){}
+    , decltype(_impl_.max_){}
     , /*decltype(_impl_._cached_size_)*/{}
+    , /*decltype(_impl_._oneof_case_)*/{}
   };
   _impl_.name_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
@@ -266,6 +314,8 @@ inline void Info::SharedCtor(
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
     _impl_.unit_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  clear_has_min();
+  clear_has_max();
 }
 
 Info::~Info() {
@@ -282,11 +332,62 @@ inline void Info::SharedDtor() {
   _impl_.name_.Destroy();
   _impl_.description_.Destroy();
   _impl_.unit_.Destroy();
+  if (has_min()) {
+    clear_min();
+  }
+  if (has_max()) {
+    clear_max();
+  }
 }
 
 void Info::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
+
+void Info::clear_min() {
+// @@protoc_insertion_point(one_of_clear_start:protobuf.Info)
+  switch (min_case()) {
+    case kUint64Min: {
+      // No need to clear
+      break;
+    }
+    case kInt64Min: {
+      // No need to clear
+      break;
+    }
+    case kFloat64Min: {
+      // No need to clear
+      break;
+    }
+    case MIN_NOT_SET: {
+      break;
+    }
+  }
+  _impl_._oneof_case_[0] = MIN_NOT_SET;
+}
+
+void Info::clear_max() {
+// @@protoc_insertion_point(one_of_clear_start:protobuf.Info)
+  switch (max_case()) {
+    case kUint64Max: {
+      // No need to clear
+      break;
+    }
+    case kInt64Max: {
+      // No need to clear
+      break;
+    }
+    case kFloat64Max: {
+      // No need to clear
+      break;
+    }
+    case MAX_NOT_SET: {
+      break;
+    }
+  }
+  _impl_._oneof_case_[1] = MAX_NOT_SET;
+}
+
 
 void Info::Clear() {
 // @@protoc_insertion_point(message_clear_start:protobuf.Info)
@@ -298,8 +399,10 @@ void Info::Clear() {
   _impl_.description_.ClearToEmpty();
   _impl_.unit_.ClearToEmpty();
   ::memset(&_impl_.type_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&_impl_.max_) -
-      reinterpret_cast<char*>(&_impl_.type_)) + sizeof(_impl_.max_));
+      reinterpret_cast<char*>(&_impl_.kind_) -
+      reinterpret_cast<char*>(&_impl_.type_)) + sizeof(_impl_.kind_));
+  clear_min();
+  clear_max();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -357,19 +460,51 @@ const char* Info::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
         } else
           goto handle_unusual;
         continue;
-      // uint64 min = 6;
+      // uint64 uint64_min = 6;
       case 6:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 48)) {
-          _impl_.min_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _internal_set_uint64_min(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr));
           CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
-      // uint64 max = 7;
+      // int64 int64_min = 7;
       case 7:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 56)) {
-          _impl_.max_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _internal_set_int64_min(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr));
           CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // double float64_min = 8;
+      case 8:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 65)) {
+          _internal_set_float64_min(::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr));
+          ptr += sizeof(double);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint64 uint64_max = 9;
+      case 9:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 72)) {
+          _internal_set_uint64_max(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr));
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // int64 int64_max = 10;
+      case 10:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 80)) {
+          _internal_set_int64_max(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr));
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // double float64_max = 11;
+      case 11:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 89)) {
+          _internal_set_float64_max(::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr));
+          ptr += sizeof(double);
         } else
           goto handle_unusual;
         continue;
@@ -446,16 +581,40 @@ uint8_t* Info::_InternalSerialize(
         5, this->_internal_unit(), target);
   }
 
-  // uint64 min = 6;
-  if (this->_internal_min() != 0) {
+  // uint64 uint64_min = 6;
+  if (_internal_has_uint64_min()) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(6, this->_internal_min(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(6, this->_internal_uint64_min(), target);
   }
 
-  // uint64 max = 7;
-  if (this->_internal_max() != 0) {
+  // int64 int64_min = 7;
+  if (_internal_has_int64_min()) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(7, this->_internal_max(), target);
+    target = ::_pbi::WireFormatLite::WriteInt64ToArray(7, this->_internal_int64_min(), target);
+  }
+
+  // double float64_min = 8;
+  if (_internal_has_float64_min()) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(8, this->_internal_float64_min(), target);
+  }
+
+  // uint64 uint64_max = 9;
+  if (_internal_has_uint64_max()) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(9, this->_internal_uint64_max(), target);
+  }
+
+  // int64 int64_max = 10;
+  if (_internal_has_int64_max()) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt64ToArray(10, this->_internal_int64_max(), target);
+  }
+
+  // double float64_max = 11;
+  if (_internal_has_float64_max()) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteDoubleToArray(11, this->_internal_float64_max(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -507,16 +666,46 @@ size_t Info::ByteSizeLong() const {
       ::_pbi::WireFormatLite::EnumSize(this->_internal_kind());
   }
 
-  // uint64 min = 6;
-  if (this->_internal_min() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_min());
+  switch (min_case()) {
+    // uint64 uint64_min = 6;
+    case kUint64Min: {
+      total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_uint64_min());
+      break;
+    }
+    // int64 int64_min = 7;
+    case kInt64Min: {
+      total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_int64_min());
+      break;
+    }
+    // double float64_min = 8;
+    case kFloat64Min: {
+      total_size += 1 + 8;
+      break;
+    }
+    case MIN_NOT_SET: {
+      break;
+    }
   }
-
-  // uint64 max = 7;
-  if (this->_internal_max() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_max());
+  switch (max_case()) {
+    // uint64 uint64_max = 9;
+    case kUint64Max: {
+      total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_uint64_max());
+      break;
+    }
+    // int64 int64_max = 10;
+    case kInt64Max: {
+      total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_int64_max());
+      break;
+    }
+    // double float64_max = 11;
+    case kFloat64Max: {
+      total_size += 1 + 8;
+      break;
+    }
+    case MAX_NOT_SET: {
+      break;
+    }
   }
-
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
@@ -550,11 +739,39 @@ void Info::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_
   if (from._internal_kind() != 0) {
     _this->_internal_set_kind(from._internal_kind());
   }
-  if (from._internal_min() != 0) {
-    _this->_internal_set_min(from._internal_min());
+  switch (from.min_case()) {
+    case kUint64Min: {
+      _this->_internal_set_uint64_min(from._internal_uint64_min());
+      break;
+    }
+    case kInt64Min: {
+      _this->_internal_set_int64_min(from._internal_int64_min());
+      break;
+    }
+    case kFloat64Min: {
+      _this->_internal_set_float64_min(from._internal_float64_min());
+      break;
+    }
+    case MIN_NOT_SET: {
+      break;
+    }
   }
-  if (from._internal_max() != 0) {
-    _this->_internal_set_max(from._internal_max());
+  switch (from.max_case()) {
+    case kUint64Max: {
+      _this->_internal_set_uint64_max(from._internal_uint64_max());
+      break;
+    }
+    case kInt64Max: {
+      _this->_internal_set_int64_max(from._internal_int64_max());
+      break;
+    }
+    case kFloat64Max: {
+      _this->_internal_set_float64_max(from._internal_float64_max());
+      break;
+    }
+    case MAX_NOT_SET: {
+      break;
+    }
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -588,11 +805,15 @@ void Info::InternalSwap(Info* other) {
       &other->_impl_.unit_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Info, _impl_.max_)
-      + sizeof(Info::_impl_.max_)
+      PROTOBUF_FIELD_OFFSET(Info, _impl_.kind_)
+      + sizeof(Info::_impl_.kind_)
       - PROTOBUF_FIELD_OFFSET(Info, _impl_.type_)>(
           reinterpret_cast<char*>(&_impl_.type_),
           reinterpret_cast<char*>(&other->_impl_.type_));
+  swap(_impl_.min_, other->_impl_.min_);
+  swap(_impl_.max_, other->_impl_.max_);
+  swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);
+  swap(_impl_._oneof_case_[1], other->_impl_._oneof_case_[1]);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Info::GetMetadata() const {

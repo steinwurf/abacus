@@ -56,8 +56,8 @@ TEST(test_to_protobuf, api)
     info0->set_type(static_cast<protobuf::Type>(infos[0].type));
     info0->set_unit(infos[0].unit.value);
     metric0->set_uint64_value(42);
-    info0->set_max(infos[0].max.m_uint);
-    info0->set_min(infos[0].min.m_uint);
+    info0->set_uint64_max(infos[0].max.m_uint);
+    info0->set_uint64_min(infos[0].min.m_uint);
 
     auto metric1 = expected.add_metric();
     auto info1 = metric1->mutable_info();
@@ -67,8 +67,8 @@ TEST(test_to_protobuf, api)
     info1->set_type(static_cast<protobuf::Type>(infos[1].type));
     info1->set_unit(infos[1].unit.value);
     metric1->set_int64_value(-42);
-    info1->set_max(infos[1].max.m_int);
-    info1->set_min(infos[1].min.m_int);
+    info1->set_int64_max(infos[1].max.m_int);
+    info1->set_int64_min(infos[1].min.m_int);
 
     auto metric2 = expected.add_metric();
     auto info2 = metric2->mutable_info();

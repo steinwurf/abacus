@@ -161,6 +161,20 @@ class Info final :
   static const Info& default_instance() {
     return *internal_default_instance();
   }
+  enum MinCase {
+    kUint64Min = 6,
+    kInt64Min = 7,
+    kFloat64Min = 8,
+    MIN_NOT_SET = 0,
+  };
+
+  enum MaxCase {
+    kUint64Max = 9,
+    kInt64Max = 10,
+    kFloat64Max = 11,
+    MAX_NOT_SET = 0,
+  };
+
   static inline const Info* internal_default_instance() {
     return reinterpret_cast<const Info*>(
                &_Info_default_instance_);
@@ -244,8 +258,12 @@ class Info final :
     kUnitFieldNumber = 5,
     kTypeFieldNumber = 3,
     kKindFieldNumber = 4,
-    kMinFieldNumber = 6,
-    kMaxFieldNumber = 7,
+    kUint64MinFieldNumber = 6,
+    kInt64MinFieldNumber = 7,
+    kFloat64MinFieldNumber = 8,
+    kUint64MaxFieldNumber = 9,
+    kInt64MaxFieldNumber = 10,
+    kFloat64MaxFieldNumber = 11,
   };
   // string name = 1;
   void clear_name();
@@ -307,27 +325,103 @@ class Info final :
   void _internal_set_kind(::protobuf::Kind value);
   public:
 
-  // uint64 min = 6;
+  // uint64 uint64_min = 6;
+  bool has_uint64_min() const;
+  private:
+  bool _internal_has_uint64_min() const;
+  public:
+  void clear_uint64_min();
+  uint64_t uint64_min() const;
+  void set_uint64_min(uint64_t value);
+  private:
+  uint64_t _internal_uint64_min() const;
+  void _internal_set_uint64_min(uint64_t value);
+  public:
+
+  // int64 int64_min = 7;
+  bool has_int64_min() const;
+  private:
+  bool _internal_has_int64_min() const;
+  public:
+  void clear_int64_min();
+  int64_t int64_min() const;
+  void set_int64_min(int64_t value);
+  private:
+  int64_t _internal_int64_min() const;
+  void _internal_set_int64_min(int64_t value);
+  public:
+
+  // double float64_min = 8;
+  bool has_float64_min() const;
+  private:
+  bool _internal_has_float64_min() const;
+  public:
+  void clear_float64_min();
+  double float64_min() const;
+  void set_float64_min(double value);
+  private:
+  double _internal_float64_min() const;
+  void _internal_set_float64_min(double value);
+  public:
+
+  // uint64 uint64_max = 9;
+  bool has_uint64_max() const;
+  private:
+  bool _internal_has_uint64_max() const;
+  public:
+  void clear_uint64_max();
+  uint64_t uint64_max() const;
+  void set_uint64_max(uint64_t value);
+  private:
+  uint64_t _internal_uint64_max() const;
+  void _internal_set_uint64_max(uint64_t value);
+  public:
+
+  // int64 int64_max = 10;
+  bool has_int64_max() const;
+  private:
+  bool _internal_has_int64_max() const;
+  public:
+  void clear_int64_max();
+  int64_t int64_max() const;
+  void set_int64_max(int64_t value);
+  private:
+  int64_t _internal_int64_max() const;
+  void _internal_set_int64_max(int64_t value);
+  public:
+
+  // double float64_max = 11;
+  bool has_float64_max() const;
+  private:
+  bool _internal_has_float64_max() const;
+  public:
+  void clear_float64_max();
+  double float64_max() const;
+  void set_float64_max(double value);
+  private:
+  double _internal_float64_max() const;
+  void _internal_set_float64_max(double value);
+  public:
+
   void clear_min();
-  uint64_t min() const;
-  void set_min(uint64_t value);
-  private:
-  uint64_t _internal_min() const;
-  void _internal_set_min(uint64_t value);
-  public:
-
-  // uint64 max = 7;
+  MinCase min_case() const;
   void clear_max();
-  uint64_t max() const;
-  void set_max(uint64_t value);
-  private:
-  uint64_t _internal_max() const;
-  void _internal_set_max(uint64_t value);
-  public:
-
+  MaxCase max_case() const;
   // @@protoc_insertion_point(class_scope:protobuf.Info)
  private:
   class _Internal;
+  void set_has_uint64_min();
+  void set_has_int64_min();
+  void set_has_float64_min();
+  void set_has_uint64_max();
+  void set_has_int64_max();
+  void set_has_float64_max();
+
+  inline bool has_min() const;
+  inline void clear_has_min();
+
+  inline bool has_max() const;
+  inline void clear_has_max();
 
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
@@ -338,9 +432,23 @@ class Info final :
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr unit_;
     int type_;
     int kind_;
-    uint64_t min_;
-    uint64_t max_;
+    union MinUnion {
+      constexpr MinUnion() : _constinit_{} {}
+        ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized _constinit_;
+      uint64_t uint64_min_;
+      int64_t int64_min_;
+      double float64_min_;
+    } min_;
+    union MaxUnion {
+      constexpr MaxUnion() : _constinit_{} {}
+        ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized _constinit_;
+      uint64_t uint64_max_;
+      int64_t int64_max_;
+      double float64_max_;
+    } max_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    uint32_t _oneof_case_[2];
+
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_abacus_5fmetric_2eproto;
@@ -954,46 +1062,252 @@ inline void Info::set_allocated_unit(std::string* unit) {
   // @@protoc_insertion_point(field_set_allocated:protobuf.Info.unit)
 }
 
-// uint64 min = 6;
-inline void Info::clear_min() {
-  _impl_.min_ = uint64_t{0u};
+// uint64 uint64_min = 6;
+inline bool Info::_internal_has_uint64_min() const {
+  return min_case() == kUint64Min;
 }
-inline uint64_t Info::_internal_min() const {
-  return _impl_.min_;
+inline bool Info::has_uint64_min() const {
+  return _internal_has_uint64_min();
 }
-inline uint64_t Info::min() const {
-  // @@protoc_insertion_point(field_get:protobuf.Info.min)
-  return _internal_min();
+inline void Info::set_has_uint64_min() {
+  _impl_._oneof_case_[0] = kUint64Min;
 }
-inline void Info::_internal_set_min(uint64_t value) {
-  
-  _impl_.min_ = value;
+inline void Info::clear_uint64_min() {
+  if (_internal_has_uint64_min()) {
+    _impl_.min_.uint64_min_ = uint64_t{0u};
+    clear_has_min();
+  }
 }
-inline void Info::set_min(uint64_t value) {
-  _internal_set_min(value);
-  // @@protoc_insertion_point(field_set:protobuf.Info.min)
+inline uint64_t Info::_internal_uint64_min() const {
+  if (_internal_has_uint64_min()) {
+    return _impl_.min_.uint64_min_;
+  }
+  return uint64_t{0u};
 }
-
-// uint64 max = 7;
-inline void Info::clear_max() {
-  _impl_.max_ = uint64_t{0u};
+inline void Info::_internal_set_uint64_min(uint64_t value) {
+  if (!_internal_has_uint64_min()) {
+    clear_min();
+    set_has_uint64_min();
+  }
+  _impl_.min_.uint64_min_ = value;
 }
-inline uint64_t Info::_internal_max() const {
-  return _impl_.max_;
+inline uint64_t Info::uint64_min() const {
+  // @@protoc_insertion_point(field_get:protobuf.Info.uint64_min)
+  return _internal_uint64_min();
 }
-inline uint64_t Info::max() const {
-  // @@protoc_insertion_point(field_get:protobuf.Info.max)
-  return _internal_max();
-}
-inline void Info::_internal_set_max(uint64_t value) {
-  
-  _impl_.max_ = value;
-}
-inline void Info::set_max(uint64_t value) {
-  _internal_set_max(value);
-  // @@protoc_insertion_point(field_set:protobuf.Info.max)
+inline void Info::set_uint64_min(uint64_t value) {
+  _internal_set_uint64_min(value);
+  // @@protoc_insertion_point(field_set:protobuf.Info.uint64_min)
 }
 
+// int64 int64_min = 7;
+inline bool Info::_internal_has_int64_min() const {
+  return min_case() == kInt64Min;
+}
+inline bool Info::has_int64_min() const {
+  return _internal_has_int64_min();
+}
+inline void Info::set_has_int64_min() {
+  _impl_._oneof_case_[0] = kInt64Min;
+}
+inline void Info::clear_int64_min() {
+  if (_internal_has_int64_min()) {
+    _impl_.min_.int64_min_ = int64_t{0};
+    clear_has_min();
+  }
+}
+inline int64_t Info::_internal_int64_min() const {
+  if (_internal_has_int64_min()) {
+    return _impl_.min_.int64_min_;
+  }
+  return int64_t{0};
+}
+inline void Info::_internal_set_int64_min(int64_t value) {
+  if (!_internal_has_int64_min()) {
+    clear_min();
+    set_has_int64_min();
+  }
+  _impl_.min_.int64_min_ = value;
+}
+inline int64_t Info::int64_min() const {
+  // @@protoc_insertion_point(field_get:protobuf.Info.int64_min)
+  return _internal_int64_min();
+}
+inline void Info::set_int64_min(int64_t value) {
+  _internal_set_int64_min(value);
+  // @@protoc_insertion_point(field_set:protobuf.Info.int64_min)
+}
+
+// double float64_min = 8;
+inline bool Info::_internal_has_float64_min() const {
+  return min_case() == kFloat64Min;
+}
+inline bool Info::has_float64_min() const {
+  return _internal_has_float64_min();
+}
+inline void Info::set_has_float64_min() {
+  _impl_._oneof_case_[0] = kFloat64Min;
+}
+inline void Info::clear_float64_min() {
+  if (_internal_has_float64_min()) {
+    _impl_.min_.float64_min_ = 0;
+    clear_has_min();
+  }
+}
+inline double Info::_internal_float64_min() const {
+  if (_internal_has_float64_min()) {
+    return _impl_.min_.float64_min_;
+  }
+  return 0;
+}
+inline void Info::_internal_set_float64_min(double value) {
+  if (!_internal_has_float64_min()) {
+    clear_min();
+    set_has_float64_min();
+  }
+  _impl_.min_.float64_min_ = value;
+}
+inline double Info::float64_min() const {
+  // @@protoc_insertion_point(field_get:protobuf.Info.float64_min)
+  return _internal_float64_min();
+}
+inline void Info::set_float64_min(double value) {
+  _internal_set_float64_min(value);
+  // @@protoc_insertion_point(field_set:protobuf.Info.float64_min)
+}
+
+// uint64 uint64_max = 9;
+inline bool Info::_internal_has_uint64_max() const {
+  return max_case() == kUint64Max;
+}
+inline bool Info::has_uint64_max() const {
+  return _internal_has_uint64_max();
+}
+inline void Info::set_has_uint64_max() {
+  _impl_._oneof_case_[1] = kUint64Max;
+}
+inline void Info::clear_uint64_max() {
+  if (_internal_has_uint64_max()) {
+    _impl_.max_.uint64_max_ = uint64_t{0u};
+    clear_has_max();
+  }
+}
+inline uint64_t Info::_internal_uint64_max() const {
+  if (_internal_has_uint64_max()) {
+    return _impl_.max_.uint64_max_;
+  }
+  return uint64_t{0u};
+}
+inline void Info::_internal_set_uint64_max(uint64_t value) {
+  if (!_internal_has_uint64_max()) {
+    clear_max();
+    set_has_uint64_max();
+  }
+  _impl_.max_.uint64_max_ = value;
+}
+inline uint64_t Info::uint64_max() const {
+  // @@protoc_insertion_point(field_get:protobuf.Info.uint64_max)
+  return _internal_uint64_max();
+}
+inline void Info::set_uint64_max(uint64_t value) {
+  _internal_set_uint64_max(value);
+  // @@protoc_insertion_point(field_set:protobuf.Info.uint64_max)
+}
+
+// int64 int64_max = 10;
+inline bool Info::_internal_has_int64_max() const {
+  return max_case() == kInt64Max;
+}
+inline bool Info::has_int64_max() const {
+  return _internal_has_int64_max();
+}
+inline void Info::set_has_int64_max() {
+  _impl_._oneof_case_[1] = kInt64Max;
+}
+inline void Info::clear_int64_max() {
+  if (_internal_has_int64_max()) {
+    _impl_.max_.int64_max_ = int64_t{0};
+    clear_has_max();
+  }
+}
+inline int64_t Info::_internal_int64_max() const {
+  if (_internal_has_int64_max()) {
+    return _impl_.max_.int64_max_;
+  }
+  return int64_t{0};
+}
+inline void Info::_internal_set_int64_max(int64_t value) {
+  if (!_internal_has_int64_max()) {
+    clear_max();
+    set_has_int64_max();
+  }
+  _impl_.max_.int64_max_ = value;
+}
+inline int64_t Info::int64_max() const {
+  // @@protoc_insertion_point(field_get:protobuf.Info.int64_max)
+  return _internal_int64_max();
+}
+inline void Info::set_int64_max(int64_t value) {
+  _internal_set_int64_max(value);
+  // @@protoc_insertion_point(field_set:protobuf.Info.int64_max)
+}
+
+// double float64_max = 11;
+inline bool Info::_internal_has_float64_max() const {
+  return max_case() == kFloat64Max;
+}
+inline bool Info::has_float64_max() const {
+  return _internal_has_float64_max();
+}
+inline void Info::set_has_float64_max() {
+  _impl_._oneof_case_[1] = kFloat64Max;
+}
+inline void Info::clear_float64_max() {
+  if (_internal_has_float64_max()) {
+    _impl_.max_.float64_max_ = 0;
+    clear_has_max();
+  }
+}
+inline double Info::_internal_float64_max() const {
+  if (_internal_has_float64_max()) {
+    return _impl_.max_.float64_max_;
+  }
+  return 0;
+}
+inline void Info::_internal_set_float64_max(double value) {
+  if (!_internal_has_float64_max()) {
+    clear_max();
+    set_has_float64_max();
+  }
+  _impl_.max_.float64_max_ = value;
+}
+inline double Info::float64_max() const {
+  // @@protoc_insertion_point(field_get:protobuf.Info.float64_max)
+  return _internal_float64_max();
+}
+inline void Info::set_float64_max(double value) {
+  _internal_set_float64_max(value);
+  // @@protoc_insertion_point(field_set:protobuf.Info.float64_max)
+}
+
+inline bool Info::has_min() const {
+  return min_case() != MIN_NOT_SET;
+}
+inline void Info::clear_has_min() {
+  _impl_._oneof_case_[0] = MIN_NOT_SET;
+}
+inline bool Info::has_max() const {
+  return max_case() != MAX_NOT_SET;
+}
+inline void Info::clear_has_max() {
+  _impl_._oneof_case_[1] = MAX_NOT_SET;
+}
+inline Info::MinCase Info::min_case() const {
+  return Info::MinCase(_impl_._oneof_case_[0]);
+}
+inline Info::MaxCase Info::max_case() const {
+  return Info::MaxCase(_impl_._oneof_case_[1]);
+}
 // -------------------------------------------------------------------
 
 // Metric
