@@ -2,6 +2,7 @@
 # encoding: utf-8
 
 import os
+import shutil
 from waflib.Build import BuildContext
 
 
@@ -27,9 +28,9 @@ def build(bld):
 
     bld(
         features=features,
-        source=bld.path.ant_glob("src/**/*.cpp"),
+        source=bld.path.ant_glob("src/**/*.cpp") + bld.path.ant_glob("src/**/*.cc"),
         target="abacus",
-        use=["endian_includes", "bourne"],
+        use=["protobuf", "endian_includes", "bourne"],
         install_path="${PREFIX}/lib",
         cxxflags=cxxflags,
         export_includes=["src"],
@@ -40,9 +41,9 @@ def build(bld):
         # i.e. not when included as a dependency
         bld.program(
             features="cxx test",
-            source=bld.path.ant_glob("test/**/*.cpp"),
+            source=bld.path.ant_glob("test/**/*.cpp") + bld.path.ant_glob("src/**/*.cc"),
             target="abacus_tests",
-            use=["abacus", "gtest"],
+            use=["abacus", "protobuf", "gtest"],
         )
 
         bld.program(
@@ -64,6 +65,25 @@ def build(bld):
 
         bld.install_files(dest="${PREFIX}/", files=bld.path.ant_glob("NEWS.rst"))
 
+def protogen(ctx):
+    # check if protec is available
+    protoc_location = "build_current/resolve_symlinks/protobuf/protoc"
+    if not os.path.isfile(protoc_location):
+        ctx.fatal("protoc not found. Make sure to configure waf with `--with_protoc` to include protoc in build.")
+        return
+    try:
+        shutil.rmtree("src/abacus/protobuf")
+    except:
+        pass
+    os.mkdir("src/abacus/protobuf")
+
+    ctx.exec_command(
+        f"./{protoc_location} --cpp_out ./src/abacus/protobuf --proto_path ./protobuf protobuf/*.proto"
+    )
+
+    ctx.exec_command(
+        "echo 'DisableFormat: true\nSortIncludes: false' > src/abacus/protobuf/.clang-format"
+    )
 
 class ReleaseContext(BuildContext):
     cmd = "prepare_release"

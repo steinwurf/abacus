@@ -5,5 +5,5 @@ bld.program(
     features="cxx test",
     source=["template_tests.cpp"] + bld.path.ant_glob("src/*.cpp"),
     target="template_tests",
-    use=["template", "gtest"],
+    use=["protobuf", "template", "gtest"],
 )
