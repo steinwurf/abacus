@@ -79,11 +79,11 @@ TEST(test_to_protobuf, api)
     info2->set_unit(infos[2].unit.value);
     metric2->set_bool_value(true);
 
-    std::string expected_json;
-    google::protobuf::util::MessageToJsonString(expected, &expected_json);
+    std::string expected_output;
+    google::protobuf::util::MessageToJsonString(expected, &expected_output);
 
     std::string protobuf_json;
     google::protobuf::util::MessageToJsonString(protobuf, &protobuf_json);
 
-    EXPECT_EQ(expected_json, protobuf_json);
+    EXPECT_EQ(expected_output, protobuf_json);
 }
