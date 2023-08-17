@@ -28,8 +28,8 @@ auto to_protobuf(const view& view) -> metrics_message
 
         auto metric = metrics.add_metric();
         auto info = metric->mutable_info();
-        info->set_kind(static_cast<protobuf::Kind>(view.kind(i)));
-        info->set_type(static_cast<protobuf::Type>(view.type(i)));
+        info->set_kind(static_cast<abacus::protobuf::Kind>(view.kind(i)));
+        info->set_type(static_cast<abacus::protobuf::Type>(view.type(i)));
         info->set_name(view.name(i));
         info->set_description(view.description(i));
         if (!view.unit(i).empty())

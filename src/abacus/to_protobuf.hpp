@@ -17,7 +17,7 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-using metrics_message = protobuf::Metrics;
+using metrics_message = abacus::protobuf::Metrics;
 /// @return a protobuf of a metrics views data.
 /// @param meta_data The meta data of the metrics view.
 /// @param value_data The value data of the metrics view.

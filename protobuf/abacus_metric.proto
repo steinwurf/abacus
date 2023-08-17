@@ -1,5 +1,5 @@
 syntax = "proto3";
-package protobuf;
+package abacus.protobuf;
 
 enum Kind
 {

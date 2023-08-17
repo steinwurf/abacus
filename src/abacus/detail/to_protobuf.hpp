@@ -15,7 +15,7 @@ namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-using metrics_message = protobuf::Metrics;
+using metrics_message = abacus::protobuf::Metrics;
 namespace detail
 {
 auto to_protobuf(const view& view) -> metrics_message;

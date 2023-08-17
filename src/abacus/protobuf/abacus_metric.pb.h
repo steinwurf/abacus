@@ -45,6 +45,7 @@ struct TableStruct_abacus_5fmetric_2eproto {
   static const uint32_t offsets[];
 };
 extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_abacus_5fmetric_2eproto;
+namespace abacus {
 namespace protobuf {
 class Info;
 struct InfoDefaultTypeInternal;
@@ -56,11 +57,13 @@ class Metrics;
 struct MetricsDefaultTypeInternal;
 extern MetricsDefaultTypeInternal _Metrics_default_instance_;
 }  // namespace protobuf
+}  // namespace abacus
 PROTOBUF_NAMESPACE_OPEN
-template<> ::protobuf::Info* Arena::CreateMaybeMessage<::protobuf::Info>(Arena*);
-template<> ::protobuf::Metric* Arena::CreateMaybeMessage<::protobuf::Metric>(Arena*);
-template<> ::protobuf::Metrics* Arena::CreateMaybeMessage<::protobuf::Metrics>(Arena*);
+template<> ::abacus::protobuf::Info* Arena::CreateMaybeMessage<::abacus::protobuf::Info>(Arena*);
+template<> ::abacus::protobuf::Metric* Arena::CreateMaybeMessage<::abacus::protobuf::Metric>(Arena*);
+template<> ::abacus::protobuf::Metrics* Arena::CreateMaybeMessage<::abacus::protobuf::Metrics>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
+namespace abacus {
 namespace protobuf {
 
 enum Kind : int {
@@ -119,7 +122,7 @@ inline bool Type_Parse(
 // ===================================================================
 
 class Info final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:protobuf.Info) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:abacus.protobuf.Info) */ {
  public:
   inline Info() : Info(nullptr) {}
   ~Info() override;
@@ -236,7 +239,7 @@ class Info final :
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "protobuf.Info";
+    return "abacus.protobuf.Info";
   }
   protected:
   explicit Info(::PROTOBUF_NAMESPACE_ID::Arena* arena,
@@ -307,22 +310,22 @@ class Info final :
   std::string* _internal_mutable_unit();
   public:
 
-  // .protobuf.Type type = 3;
+  // .abacus.protobuf.Type type = 3;
   void clear_type();
-  ::protobuf::Type type() const;
-  void set_type(::protobuf::Type value);
+  ::abacus::protobuf::Type type() const;
+  void set_type(::abacus::protobuf::Type value);
   private:
-  ::protobuf::Type _internal_type() const;
-  void _internal_set_type(::protobuf::Type value);
+  ::abacus::protobuf::Type _internal_type() const;
+  void _internal_set_type(::abacus::protobuf::Type value);
   public:
 
-  // .protobuf.Kind kind = 4;
+  // .abacus.protobuf.Kind kind = 4;
   void clear_kind();
-  ::protobuf::Kind kind() const;
-  void set_kind(::protobuf::Kind value);
+  ::abacus::protobuf::Kind kind() const;
+  void set_kind(::abacus::protobuf::Kind value);
   private:
-  ::protobuf::Kind _internal_kind() const;
-  void _internal_set_kind(::protobuf::Kind value);
+  ::abacus::protobuf::Kind _internal_kind() const;
+  void _internal_set_kind(::abacus::protobuf::Kind value);
   public:
 
   // uint64 uint64_min = 6;
@@ -407,7 +410,7 @@ class Info final :
   MinCase min_case() const;
   void clear_max();
   MaxCase max_case() const;
-  // @@protoc_insertion_point(class_scope:protobuf.Info)
+  // @@protoc_insertion_point(class_scope:abacus.protobuf.Info)
  private:
   class _Internal;
   void set_has_uint64_min();
@@ -456,7 +459,7 @@ class Info final :
 // -------------------------------------------------------------------
 
 class Metric final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:protobuf.Metric) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:abacus.protobuf.Metric) */ {
  public:
   inline Metric() : Metric(nullptr) {}
   ~Metric() override;
@@ -567,7 +570,7 @@ class Metric final :
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "protobuf.Metric";
+    return "abacus.protobuf.Metric";
   }
   protected:
   explicit Metric(::PROTOBUF_NAMESPACE_ID::Arena* arena,
@@ -590,23 +593,23 @@ class Metric final :
     kFloat64ValueFieldNumber = 4,
     kBoolValueFieldNumber = 5,
   };
-  // optional .protobuf.Info info = 1;
+  // optional .abacus.protobuf.Info info = 1;
   bool has_info() const;
   private:
   bool _internal_has_info() const;
   public:
   void clear_info();
-  const ::protobuf::Info& info() const;
-  PROTOBUF_NODISCARD ::protobuf::Info* release_info();
-  ::protobuf::Info* mutable_info();
-  void set_allocated_info(::protobuf::Info* info);
+  const ::abacus::protobuf::Info& info() const;
+  PROTOBUF_NODISCARD ::abacus::protobuf::Info* release_info();
+  ::abacus::protobuf::Info* mutable_info();
+  void set_allocated_info(::abacus::protobuf::Info* info);
   private:
-  const ::protobuf::Info& _internal_info() const;
-  ::protobuf::Info* _internal_mutable_info();
+  const ::abacus::protobuf::Info& _internal_info() const;
+  ::abacus::protobuf::Info* _internal_mutable_info();
   public:
   void unsafe_arena_set_allocated_info(
-      ::protobuf::Info* info);
-  ::protobuf::Info* unsafe_arena_release_info();
+      ::abacus::protobuf::Info* info);
+  ::abacus::protobuf::Info* unsafe_arena_release_info();
 
   // uint64 uint64_value = 2;
   bool has_uint64_value() const;
@@ -662,7 +665,7 @@ class Metric final :
 
   void clear_value();
   ValueCase value_case() const;
-  // @@protoc_insertion_point(class_scope:protobuf.Metric)
+  // @@protoc_insertion_point(class_scope:abacus.protobuf.Metric)
  private:
   class _Internal;
   void set_has_uint64_value();
@@ -679,7 +682,7 @@ class Metric final :
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-    ::protobuf::Info* info_;
+    ::abacus::protobuf::Info* info_;
     union ValueUnion {
       constexpr ValueUnion() : _constinit_{} {}
         ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized _constinit_;
@@ -697,7 +700,7 @@ class Metric final :
 // -------------------------------------------------------------------
 
 class Metrics final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:protobuf.Metrics) */ {
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:abacus.protobuf.Metrics) */ {
  public:
   inline Metrics() : Metrics(nullptr) {}
   ~Metrics() override;
@@ -800,7 +803,7 @@ class Metrics final :
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "protobuf.Metrics";
+    return "abacus.protobuf.Metrics";
   }
   protected:
   explicit Metrics(::PROTOBUF_NAMESPACE_ID::Arena* arena,
@@ -820,22 +823,22 @@ class Metrics final :
     kMetricFieldNumber = 2,
     kProtocolVersionFieldNumber = 1,
   };
-  // repeated .protobuf.Metric metric = 2;
+  // repeated .abacus.protobuf.Metric metric = 2;
   int metric_size() const;
   private:
   int _internal_metric_size() const;
   public:
   void clear_metric();
-  ::protobuf::Metric* mutable_metric(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protobuf::Metric >*
+  ::abacus::protobuf::Metric* mutable_metric(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::abacus::protobuf::Metric >*
       mutable_metric();
   private:
-  const ::protobuf::Metric& _internal_metric(int index) const;
-  ::protobuf::Metric* _internal_add_metric();
+  const ::abacus::protobuf::Metric& _internal_metric(int index) const;
+  ::abacus::protobuf::Metric* _internal_add_metric();
   public:
-  const ::protobuf::Metric& metric(int index) const;
-  ::protobuf::Metric* add_metric();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protobuf::Metric >&
+  const ::abacus::protobuf::Metric& metric(int index) const;
+  ::abacus::protobuf::Metric* add_metric();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::abacus::protobuf::Metric >&
       metric() const;
 
   // uint32 protocol_version = 1;
@@ -847,7 +850,7 @@ class Metrics final :
   void _internal_set_protocol_version(uint32_t value);
   public:
 
-  // @@protoc_insertion_point(class_scope:protobuf.Metrics)
+  // @@protoc_insertion_point(class_scope:abacus.protobuf.Metrics)
  private:
   class _Internal;
 
@@ -855,7 +858,7 @@ class Metrics final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protobuf::Metric > metric_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::abacus::protobuf::Metric > metric_;
     uint32_t protocol_version_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
@@ -878,7 +881,7 @@ inline void Info::clear_name() {
   _impl_.name_.ClearToEmpty();
 }
 inline const std::string& Info::name() const {
-  // @@protoc_insertion_point(field_get:protobuf.Info.name)
+  // @@protoc_insertion_point(field_get:abacus.protobuf.Info.name)
   return _internal_name();
 }
 template <typename ArgT0, typename... ArgT>
@@ -886,11 +889,11 @@ inline PROTOBUF_ALWAYS_INLINE
 void Info::set_name(ArgT0&& arg0, ArgT... args) {
  
  _impl_.name_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:protobuf.Info.name)
+  // @@protoc_insertion_point(field_set:abacus.protobuf.Info.name)
 }
 inline std::string* Info::mutable_name() {
   std::string* _s = _internal_mutable_name();
-  // @@protoc_insertion_point(field_mutable:protobuf.Info.name)
+  // @@protoc_insertion_point(field_mutable:abacus.protobuf.Info.name)
   return _s;
 }
 inline const std::string& Info::_internal_name() const {
@@ -905,7 +908,7 @@ inline std::string* Info::_internal_mutable_name() {
   return _impl_.name_.Mutable(GetArenaForAllocation());
 }
 inline std::string* Info::release_name() {
-  // @@protoc_insertion_point(field_release:protobuf.Info.name)
+  // @@protoc_insertion_point(field_release:abacus.protobuf.Info.name)
   return _impl_.name_.Release();
 }
 inline void Info::set_allocated_name(std::string* name) {
@@ -920,7 +923,7 @@ inline void Info::set_allocated_name(std::string* name) {
     _impl_.name_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:protobuf.Info.name)
+  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Info.name)
 }
 
 // string description = 2;
@@ -928,7 +931,7 @@ inline void Info::clear_description() {
   _impl_.description_.ClearToEmpty();
 }
 inline const std::string& Info::description() const {
-  // @@protoc_insertion_point(field_get:protobuf.Info.description)
+  // @@protoc_insertion_point(field_get:abacus.protobuf.Info.description)
   return _internal_description();
 }
 template <typename ArgT0, typename... ArgT>
@@ -936,11 +939,11 @@ inline PROTOBUF_ALWAYS_INLINE
 void Info::set_description(ArgT0&& arg0, ArgT... args) {
  
  _impl_.description_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:protobuf.Info.description)
+  // @@protoc_insertion_point(field_set:abacus.protobuf.Info.description)
 }
 inline std::string* Info::mutable_description() {
   std::string* _s = _internal_mutable_description();
-  // @@protoc_insertion_point(field_mutable:protobuf.Info.description)
+  // @@protoc_insertion_point(field_mutable:abacus.protobuf.Info.description)
   return _s;
 }
 inline const std::string& Info::_internal_description() const {
@@ -955,7 +958,7 @@ inline std::string* Info::_internal_mutable_description() {
   return _impl_.description_.Mutable(GetArenaForAllocation());
 }
 inline std::string* Info::release_description() {
-  // @@protoc_insertion_point(field_release:protobuf.Info.description)
+  // @@protoc_insertion_point(field_release:abacus.protobuf.Info.description)
   return _impl_.description_.Release();
 }
 inline void Info::set_allocated_description(std::string* description) {
@@ -970,47 +973,47 @@ inline void Info::set_allocated_description(std::string* description) {
     _impl_.description_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:protobuf.Info.description)
+  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Info.description)
 }
 
-// .protobuf.Type type = 3;
+// .abacus.protobuf.Type type = 3;
 inline void Info::clear_type() {
   _impl_.type_ = 0;
 }
-inline ::protobuf::Type Info::_internal_type() const {
-  return static_cast< ::protobuf::Type >(_impl_.type_);
+inline ::abacus::protobuf::Type Info::_internal_type() const {
+  return static_cast< ::abacus::protobuf::Type >(_impl_.type_);
 }
-inline ::protobuf::Type Info::type() const {
-  // @@protoc_insertion_point(field_get:protobuf.Info.type)
+inline ::abacus::protobuf::Type Info::type() const {
+  // @@protoc_insertion_point(field_get:abacus.protobuf.Info.type)
   return _internal_type();
 }
-inline void Info::_internal_set_type(::protobuf::Type value) {
+inline void Info::_internal_set_type(::abacus::protobuf::Type value) {
   
   _impl_.type_ = value;
 }
-inline void Info::set_type(::protobuf::Type value) {
+inline void Info::set_type(::abacus::protobuf::Type value) {
   _internal_set_type(value);
-  // @@protoc_insertion_point(field_set:protobuf.Info.type)
+  // @@protoc_insertion_point(field_set:abacus.protobuf.Info.type)
 }
 
-// .protobuf.Kind kind = 4;
+// .abacus.protobuf.Kind kind = 4;
 inline void Info::clear_kind() {
   _impl_.kind_ = 0;
 }
-inline ::protobuf::Kind Info::_internal_kind() const {
-  return static_cast< ::protobuf::Kind >(_impl_.kind_);
+inline ::abacus::protobuf::Kind Info::_internal_kind() const {
+  return static_cast< ::abacus::protobuf::Kind >(_impl_.kind_);
 }
-inline ::protobuf::Kind Info::kind() const {
-  // @@protoc_insertion_point(field_get:protobuf.Info.kind)
+inline ::abacus::protobuf::Kind Info::kind() const {
+  // @@protoc_insertion_point(field_get:abacus.protobuf.Info.kind)
   return _internal_kind();
 }
-inline void Info::_internal_set_kind(::protobuf::Kind value) {
+inline void Info::_internal_set_kind(::abacus::protobuf::Kind value) {
   
   _impl_.kind_ = value;
 }
-inline void Info::set_kind(::protobuf::Kind value) {
+inline void Info::set_kind(::abacus::protobuf::Kind value) {
   _internal_set_kind(value);
-  // @@protoc_insertion_point(field_set:protobuf.Info.kind)
+  // @@protoc_insertion_point(field_set:abacus.protobuf.Info.kind)
 }
 
 // string unit = 5;
@@ -1018,7 +1021,7 @@ inline void Info::clear_unit() {
   _impl_.unit_.ClearToEmpty();
 }
 inline const std::string& Info::unit() const {
-  // @@protoc_insertion_point(field_get:protobuf.Info.unit)
+  // @@protoc_insertion_point(field_get:abacus.protobuf.Info.unit)
   return _internal_unit();
 }
 template <typename ArgT0, typename... ArgT>
@@ -1026,11 +1029,11 @@ inline PROTOBUF_ALWAYS_INLINE
 void Info::set_unit(ArgT0&& arg0, ArgT... args) {
  
  _impl_.unit_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:protobuf.Info.unit)
+  // @@protoc_insertion_point(field_set:abacus.protobuf.Info.unit)
 }
 inline std::string* Info::mutable_unit() {
   std::string* _s = _internal_mutable_unit();
-  // @@protoc_insertion_point(field_mutable:protobuf.Info.unit)
+  // @@protoc_insertion_point(field_mutable:abacus.protobuf.Info.unit)
   return _s;
 }
 inline const std::string& Info::_internal_unit() const {
@@ -1045,7 +1048,7 @@ inline std::string* Info::_internal_mutable_unit() {
   return _impl_.unit_.Mutable(GetArenaForAllocation());
 }
 inline std::string* Info::release_unit() {
-  // @@protoc_insertion_point(field_release:protobuf.Info.unit)
+  // @@protoc_insertion_point(field_release:abacus.protobuf.Info.unit)
   return _impl_.unit_.Release();
 }
 inline void Info::set_allocated_unit(std::string* unit) {
@@ -1060,7 +1063,7 @@ inline void Info::set_allocated_unit(std::string* unit) {
     _impl_.unit_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:protobuf.Info.unit)
+  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Info.unit)
 }
 
 // uint64 uint64_min = 6;
@@ -1093,12 +1096,12 @@ inline void Info::_internal_set_uint64_min(uint64_t value) {
   _impl_.min_.uint64_min_ = value;
 }
 inline uint64_t Info::uint64_min() const {
-  // @@protoc_insertion_point(field_get:protobuf.Info.uint64_min)
+  // @@protoc_insertion_point(field_get:abacus.protobuf.Info.uint64_min)
   return _internal_uint64_min();
 }
 inline void Info::set_uint64_min(uint64_t value) {
   _internal_set_uint64_min(value);
-  // @@protoc_insertion_point(field_set:protobuf.Info.uint64_min)
+  // @@protoc_insertion_point(field_set:abacus.protobuf.Info.uint64_min)
 }
 
 // int64 int64_min = 7;
@@ -1131,12 +1134,12 @@ inline void Info::_internal_set_int64_min(int64_t value) {
   _impl_.min_.int64_min_ = value;
 }
 inline int64_t Info::int64_min() const {
-  // @@protoc_insertion_point(field_get:protobuf.Info.int64_min)
+  // @@protoc_insertion_point(field_get:abacus.protobuf.Info.int64_min)
   return _internal_int64_min();
 }
 inline void Info::set_int64_min(int64_t value) {
   _internal_set_int64_min(value);
-  // @@protoc_insertion_point(field_set:protobuf.Info.int64_min)
+  // @@protoc_insertion_point(field_set:abacus.protobuf.Info.int64_min)
 }
 
 // double float64_min = 8;
@@ -1169,12 +1172,12 @@ inline void Info::_internal_set_float64_min(double value) {
   _impl_.min_.float64_min_ = value;
 }
 inline double Info::float64_min() const {
-  // @@protoc_insertion_point(field_get:protobuf.Info.float64_min)
+  // @@protoc_insertion_point(field_get:abacus.protobuf.Info.float64_min)
   return _internal_float64_min();
 }
 inline void Info::set_float64_min(double value) {
   _internal_set_float64_min(value);
-  // @@protoc_insertion_point(field_set:protobuf.Info.float64_min)
+  // @@protoc_insertion_point(field_set:abacus.protobuf.Info.float64_min)
 }
 
 // uint64 uint64_max = 9;
@@ -1207,12 +1210,12 @@ inline void Info::_internal_set_uint64_max(uint64_t value) {
   _impl_.max_.uint64_max_ = value;
 }
 inline uint64_t Info::uint64_max() const {
-  // @@protoc_insertion_point(field_get:protobuf.Info.uint64_max)
+  // @@protoc_insertion_point(field_get:abacus.protobuf.Info.uint64_max)
   return _internal_uint64_max();
 }
 inline void Info::set_uint64_max(uint64_t value) {
   _internal_set_uint64_max(value);
-  // @@protoc_insertion_point(field_set:protobuf.Info.uint64_max)
+  // @@protoc_insertion_point(field_set:abacus.protobuf.Info.uint64_max)
 }
 
 // int64 int64_max = 10;
@@ -1245,12 +1248,12 @@ inline void Info::_internal_set_int64_max(int64_t value) {
   _impl_.max_.int64_max_ = value;
 }
 inline int64_t Info::int64_max() const {
-  // @@protoc_insertion_point(field_get:protobuf.Info.int64_max)
+  // @@protoc_insertion_point(field_get:abacus.protobuf.Info.int64_max)
   return _internal_int64_max();
 }
 inline void Info::set_int64_max(int64_t value) {
   _internal_set_int64_max(value);
-  // @@protoc_insertion_point(field_set:protobuf.Info.int64_max)
+  // @@protoc_insertion_point(field_set:abacus.protobuf.Info.int64_max)
 }
 
 // double float64_max = 11;
@@ -1283,12 +1286,12 @@ inline void Info::_internal_set_float64_max(double value) {
   _impl_.max_.float64_max_ = value;
 }
 inline double Info::float64_max() const {
-  // @@protoc_insertion_point(field_get:protobuf.Info.float64_max)
+  // @@protoc_insertion_point(field_get:abacus.protobuf.Info.float64_max)
   return _internal_float64_max();
 }
 inline void Info::set_float64_max(double value) {
   _internal_set_float64_max(value);
-  // @@protoc_insertion_point(field_set:protobuf.Info.float64_max)
+  // @@protoc_insertion_point(field_set:abacus.protobuf.Info.float64_max)
 }
 
 inline bool Info::has_min() const {
@@ -1313,7 +1316,7 @@ inline Info::MaxCase Info::max_case() const {
 
 // Metric
 
-// optional .protobuf.Info info = 1;
+// optional .abacus.protobuf.Info info = 1;
 inline bool Metric::_internal_has_info() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.info_ != nullptr);
@@ -1326,17 +1329,17 @@ inline void Metric::clear_info() {
   if (_impl_.info_ != nullptr) _impl_.info_->Clear();
   _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::protobuf::Info& Metric::_internal_info() const {
-  const ::protobuf::Info* p = _impl_.info_;
-  return p != nullptr ? *p : reinterpret_cast<const ::protobuf::Info&>(
-      ::protobuf::_Info_default_instance_);
+inline const ::abacus::protobuf::Info& Metric::_internal_info() const {
+  const ::abacus::protobuf::Info* p = _impl_.info_;
+  return p != nullptr ? *p : reinterpret_cast<const ::abacus::protobuf::Info&>(
+      ::abacus::protobuf::_Info_default_instance_);
 }
-inline const ::protobuf::Info& Metric::info() const {
-  // @@protoc_insertion_point(field_get:protobuf.Metric.info)
+inline const ::abacus::protobuf::Info& Metric::info() const {
+  // @@protoc_insertion_point(field_get:abacus.protobuf.Metric.info)
   return _internal_info();
 }
 inline void Metric::unsafe_arena_set_allocated_info(
-    ::protobuf::Info* info) {
+    ::abacus::protobuf::Info* info) {
   if (GetArenaForAllocation() == nullptr) {
     delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.info_);
   }
@@ -1346,11 +1349,11 @@ inline void Metric::unsafe_arena_set_allocated_info(
   } else {
     _impl_._has_bits_[0] &= ~0x00000001u;
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:protobuf.Metric.info)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:abacus.protobuf.Metric.info)
 }
-inline ::protobuf::Info* Metric::release_info() {
+inline ::abacus::protobuf::Info* Metric::release_info() {
   _impl_._has_bits_[0] &= ~0x00000001u;
-  ::protobuf::Info* temp = _impl_.info_;
+  ::abacus::protobuf::Info* temp = _impl_.info_;
   _impl_.info_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
@@ -1363,27 +1366,27 @@ inline ::protobuf::Info* Metric::release_info() {
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::protobuf::Info* Metric::unsafe_arena_release_info() {
-  // @@protoc_insertion_point(field_release:protobuf.Metric.info)
+inline ::abacus::protobuf::Info* Metric::unsafe_arena_release_info() {
+  // @@protoc_insertion_point(field_release:abacus.protobuf.Metric.info)
   _impl_._has_bits_[0] &= ~0x00000001u;
-  ::protobuf::Info* temp = _impl_.info_;
+  ::abacus::protobuf::Info* temp = _impl_.info_;
   _impl_.info_ = nullptr;
   return temp;
 }
-inline ::protobuf::Info* Metric::_internal_mutable_info() {
+inline ::abacus::protobuf::Info* Metric::_internal_mutable_info() {
   _impl_._has_bits_[0] |= 0x00000001u;
   if (_impl_.info_ == nullptr) {
-    auto* p = CreateMaybeMessage<::protobuf::Info>(GetArenaForAllocation());
+    auto* p = CreateMaybeMessage<::abacus::protobuf::Info>(GetArenaForAllocation());
     _impl_.info_ = p;
   }
   return _impl_.info_;
 }
-inline ::protobuf::Info* Metric::mutable_info() {
-  ::protobuf::Info* _msg = _internal_mutable_info();
-  // @@protoc_insertion_point(field_mutable:protobuf.Metric.info)
+inline ::abacus::protobuf::Info* Metric::mutable_info() {
+  ::abacus::protobuf::Info* _msg = _internal_mutable_info();
+  // @@protoc_insertion_point(field_mutable:abacus.protobuf.Metric.info)
   return _msg;
 }
-inline void Metric::set_allocated_info(::protobuf::Info* info) {
+inline void Metric::set_allocated_info(::abacus::protobuf::Info* info) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
     delete _impl_.info_;
@@ -1400,7 +1403,7 @@ inline void Metric::set_allocated_info(::protobuf::Info* info) {
     _impl_._has_bits_[0] &= ~0x00000001u;
   }
   _impl_.info_ = info;
-  // @@protoc_insertion_point(field_set_allocated:protobuf.Metric.info)
+  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Metric.info)
 }
 
 // uint64 uint64_value = 2;
@@ -1433,12 +1436,12 @@ inline void Metric::_internal_set_uint64_value(uint64_t value) {
   _impl_.value_.uint64_value_ = value;
 }
 inline uint64_t Metric::uint64_value() const {
-  // @@protoc_insertion_point(field_get:protobuf.Metric.uint64_value)
+  // @@protoc_insertion_point(field_get:abacus.protobuf.Metric.uint64_value)
   return _internal_uint64_value();
 }
 inline void Metric::set_uint64_value(uint64_t value) {
   _internal_set_uint64_value(value);
-  // @@protoc_insertion_point(field_set:protobuf.Metric.uint64_value)
+  // @@protoc_insertion_point(field_set:abacus.protobuf.Metric.uint64_value)
 }
 
 // int64 int64_value = 3;
@@ -1471,12 +1474,12 @@ inline void Metric::_internal_set_int64_value(int64_t value) {
   _impl_.value_.int64_value_ = value;
 }
 inline int64_t Metric::int64_value() const {
-  // @@protoc_insertion_point(field_get:protobuf.Metric.int64_value)
+  // @@protoc_insertion_point(field_get:abacus.protobuf.Metric.int64_value)
   return _internal_int64_value();
 }
 inline void Metric::set_int64_value(int64_t value) {
   _internal_set_int64_value(value);
-  // @@protoc_insertion_point(field_set:protobuf.Metric.int64_value)
+  // @@protoc_insertion_point(field_set:abacus.protobuf.Metric.int64_value)
 }
 
 // double float64_value = 4;
@@ -1509,12 +1512,12 @@ inline void Metric::_internal_set_float64_value(double value) {
   _impl_.value_.float64_value_ = value;
 }
 inline double Metric::float64_value() const {
-  // @@protoc_insertion_point(field_get:protobuf.Metric.float64_value)
+  // @@protoc_insertion_point(field_get:abacus.protobuf.Metric.float64_value)
   return _internal_float64_value();
 }
 inline void Metric::set_float64_value(double value) {
   _internal_set_float64_value(value);
-  // @@protoc_insertion_point(field_set:protobuf.Metric.float64_value)
+  // @@protoc_insertion_point(field_set:abacus.protobuf.Metric.float64_value)
 }
 
 // bool bool_value = 5;
@@ -1547,12 +1550,12 @@ inline void Metric::_internal_set_bool_value(bool value) {
   _impl_.value_.bool_value_ = value;
 }
 inline bool Metric::bool_value() const {
-  // @@protoc_insertion_point(field_get:protobuf.Metric.bool_value)
+  // @@protoc_insertion_point(field_get:abacus.protobuf.Metric.bool_value)
   return _internal_bool_value();
 }
 inline void Metric::set_bool_value(bool value) {
   _internal_set_bool_value(value);
-  // @@protoc_insertion_point(field_set:protobuf.Metric.bool_value)
+  // @@protoc_insertion_point(field_set:abacus.protobuf.Metric.bool_value)
 }
 
 inline bool Metric::has_value() const {
@@ -1576,7 +1579,7 @@ inline uint32_t Metrics::_internal_protocol_version() const {
   return _impl_.protocol_version_;
 }
 inline uint32_t Metrics::protocol_version() const {
-  // @@protoc_insertion_point(field_get:protobuf.Metrics.protocol_version)
+  // @@protoc_insertion_point(field_get:abacus.protobuf.Metrics.protocol_version)
   return _internal_protocol_version();
 }
 inline void Metrics::_internal_set_protocol_version(uint32_t value) {
@@ -1585,10 +1588,10 @@ inline void Metrics::_internal_set_protocol_version(uint32_t value) {
 }
 inline void Metrics::set_protocol_version(uint32_t value) {
   _internal_set_protocol_version(value);
-  // @@protoc_insertion_point(field_set:protobuf.Metrics.protocol_version)
+  // @@protoc_insertion_point(field_set:abacus.protobuf.Metrics.protocol_version)
 }
 
-// repeated .protobuf.Metric metric = 2;
+// repeated .abacus.protobuf.Metric metric = 2;
 inline int Metrics::_internal_metric_size() const {
   return _impl_.metric_.size();
 }
@@ -1598,33 +1601,33 @@ inline int Metrics::metric_size() const {
 inline void Metrics::clear_metric() {
   _impl_.metric_.Clear();
 }
-inline ::protobuf::Metric* Metrics::mutable_metric(int index) {
-  // @@protoc_insertion_point(field_mutable:protobuf.Metrics.metric)
+inline ::abacus::protobuf::Metric* Metrics::mutable_metric(int index) {
+  // @@protoc_insertion_point(field_mutable:abacus.protobuf.Metrics.metric)
   return _impl_.metric_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protobuf::Metric >*
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::abacus::protobuf::Metric >*
 Metrics::mutable_metric() {
-  // @@protoc_insertion_point(field_mutable_list:protobuf.Metrics.metric)
+  // @@protoc_insertion_point(field_mutable_list:abacus.protobuf.Metrics.metric)
   return &_impl_.metric_;
 }
-inline const ::protobuf::Metric& Metrics::_internal_metric(int index) const {
+inline const ::abacus::protobuf::Metric& Metrics::_internal_metric(int index) const {
   return _impl_.metric_.Get(index);
 }
-inline const ::protobuf::Metric& Metrics::metric(int index) const {
-  // @@protoc_insertion_point(field_get:protobuf.Metrics.metric)
+inline const ::abacus::protobuf::Metric& Metrics::metric(int index) const {
+  // @@protoc_insertion_point(field_get:abacus.protobuf.Metrics.metric)
   return _internal_metric(index);
 }
-inline ::protobuf::Metric* Metrics::_internal_add_metric() {
+inline ::abacus::protobuf::Metric* Metrics::_internal_add_metric() {
   return _impl_.metric_.Add();
 }
-inline ::protobuf::Metric* Metrics::add_metric() {
-  ::protobuf::Metric* _add = _internal_add_metric();
-  // @@protoc_insertion_point(field_add:protobuf.Metrics.metric)
+inline ::abacus::protobuf::Metric* Metrics::add_metric() {
+  ::abacus::protobuf::Metric* _add = _internal_add_metric();
+  // @@protoc_insertion_point(field_add:abacus.protobuf.Metrics.metric)
   return _add;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::protobuf::Metric >&
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::abacus::protobuf::Metric >&
 Metrics::metric() const {
-  // @@protoc_insertion_point(field_list:protobuf.Metrics.metric)
+  // @@protoc_insertion_point(field_list:abacus.protobuf.Metrics.metric)
   return _impl_.metric_;
 }
 
@@ -1639,18 +1642,19 @@ Metrics::metric() const {
 // @@protoc_insertion_point(namespace_scope)
 
 }  // namespace protobuf
+}  // namespace abacus
 
 PROTOBUF_NAMESPACE_OPEN
 
-template <> struct is_proto_enum< ::protobuf::Kind> : ::std::true_type {};
+template <> struct is_proto_enum< ::abacus::protobuf::Kind> : ::std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::protobuf::Kind>() {
-  return ::protobuf::Kind_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::abacus::protobuf::Kind>() {
+  return ::abacus::protobuf::Kind_descriptor();
 }
-template <> struct is_proto_enum< ::protobuf::Type> : ::std::true_type {};
+template <> struct is_proto_enum< ::abacus::protobuf::Type> : ::std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::protobuf::Type>() {
-  return ::protobuf::Type_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::abacus::protobuf::Type>() {
+  return ::abacus::protobuf::Type_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE
