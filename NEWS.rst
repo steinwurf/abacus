@@ -6,7 +6,7 @@ every change, see the Git log.
 
 Latest
 ------
-* tbd
+* Patch: Fix namespacing of protobuf definitions.
 
 5.1.0
 -----
