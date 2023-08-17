@@ -1,0 +1,56 @@
+syntax = "proto3";
+package protobuf;
+
+enum Kind
+{
+    COUNTER = 0;
+    CONSTANT = 1;
+    GAUGE = 2;
+}
+
+enum Type
+{
+    UINT64 = 0;
+    INT64 = 1;
+    FLOAT64 = 2;
+    BOOL = 3;
+}
+
+message Info
+{
+    string name = 1;
+    string description = 2;
+    Type type = 3;
+    Kind kind = 4;
+    string unit = 5;
+    oneof min
+    {
+        uint64 uint64_min = 6;
+        int64 int64_min = 7;
+        double float64_min = 8;
+    }
+    oneof max
+    {
+        uint64 uint64_max = 9;
+        int64 int64_max = 10;
+        double float64_max = 11;
+    }
+}
+
+message Metric
+{
+    optional Info info = 1;
+    oneof value
+    {
+        uint64 uint64_value = 2;
+        int64 int64_value = 3;
+        double float64_value = 4;
+        bool bool_value = 5;
+    }
+}
+
+message Metrics
+{
+    uint32 protocol_version = 1;
+    repeated Metric metric = 2;
+}

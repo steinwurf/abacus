@@ -7,6 +7,7 @@
 
 #include <vector>
 
+#include "protobuf/abacus_metric.pb.h"
 #include "version.hpp"
 #include "view.hpp"
 
@@ -14,6 +15,8 @@ namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
+using metrics_message = protobuf::Metrics;
+
 /// @return a JSON-formatted string of a metrics views data.
 /// @param meta_data The meta data of the metrics view.
 /// @param value_data The value data of the metrics view.

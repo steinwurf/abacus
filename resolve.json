@@ -28,6 +28,15 @@
         ]
     },
     {
+        "name": "protobuf",
+        "resolver": "git",
+        "method": "semver",
+        "major": 1,
+        "sources": [
+            "github.com/steinwurf/protobuf.git"
+        ]
+    },
+    {
         "name": "endian",
         "resolver": "git",
         "method": "semver",
