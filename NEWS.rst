@@ -6,6 +6,14 @@ every change, see the Git log.
 
 Latest
 ------
+* tbd
+
+5.1.0
+-----
+* Minor: Added support for protobuf serialization via `abacus::to_protobuf()`.
+
+5.0.1
+-----
 * Patch: Fix warnings reported by MSVC.
 
 5.0.0
