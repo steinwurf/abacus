@@ -43,9 +43,10 @@ struct InfoDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 InfoDefaultTypeInternal _Info_default_instance_;
 PROTOBUF_CONSTEXPR Metric::Metric(
     ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.info_)*/nullptr
-  , /*decltype(_impl_.value_)*/{}
+    /*decltype(_impl_._has_bits_)*/{}
   , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.info_)*/nullptr
+  , /*decltype(_impl_.value_)*/{}
   , /*decltype(_impl_._oneof_case_)*/{}} {}
 struct MetricDefaultTypeInternal {
   PROTOBUF_CONSTEXPR MetricDefaultTypeInternal()
@@ -95,7 +96,7 @@ const uint32_t TableStruct_abacus_5fmetric_2eproto::offsets[] PROTOBUF_SECTION_V
   ::_pbi::kInvalidFieldOffsetTag,
   PROTOBUF_FIELD_OFFSET(::protobuf::Info, _impl_.min_),
   PROTOBUF_FIELD_OFFSET(::protobuf::Info, _impl_.max_),
-  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::protobuf::Metric, _impl_._has_bits_),
   PROTOBUF_FIELD_OFFSET(::protobuf::Metric, _internal_metadata_),
   ~0u,  // no _extensions_
   PROTOBUF_FIELD_OFFSET(::protobuf::Metric, _impl_._oneof_case_[0]),
@@ -107,6 +108,11 @@ const uint32_t TableStruct_abacus_5fmetric_2eproto::offsets[] PROTOBUF_SECTION_V
   ::_pbi::kInvalidFieldOffsetTag,
   ::_pbi::kInvalidFieldOffsetTag,
   PROTOBUF_FIELD_OFFSET(::protobuf::Metric, _impl_.value_),
+  0,
+  ~0u,
+  ~0u,
+  ~0u,
+  ~0u,
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::protobuf::Metrics, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -118,8 +124,8 @@ const uint32_t TableStruct_abacus_5fmetric_2eproto::offsets[] PROTOBUF_SECTION_V
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::protobuf::Info)},
-  { 19, -1, -1, sizeof(::protobuf::Metric)},
-  { 31, -1, -1, sizeof(::protobuf::Metrics)},
+  { 19, 31, -1, sizeof(::protobuf::Metric)},
+  { 36, -1, -1, sizeof(::protobuf::Metrics)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -136,19 +142,19 @@ const char descriptor_table_protodef_abacus_5fmetric_2eproto[] PROTOBUF_SECTION_
   "min\030\006 \001(\004H\000\022\023\n\tint64_min\030\007 \001(\003H\000\022\025\n\013floa"
   "t64_min\030\010 \001(\001H\000\022\024\n\nuint64_max\030\t \001(\004H\001\022\023\n"
   "\tint64_max\030\n \001(\003H\001\022\025\n\013float64_max\030\013 \001(\001H"
-  "\001B\005\n\003minB\005\n\003max\"\215\001\n\006Metric\022\034\n\004info\030\001 \001(\013"
-  "2\016.protobuf.Info\022\026\n\014uint64_value\030\002 \001(\004H\000"
-  "\022\025\n\013int64_value\030\003 \001(\003H\000\022\027\n\rfloat64_value"
-  "\030\004 \001(\001H\000\022\024\n\nbool_value\030\005 \001(\010H\000B\007\n\005value\""
-  "E\n\007Metrics\022\030\n\020protocol_version\030\001 \001(\r\022 \n\006"
-  "metric\030\002 \003(\0132\020.protobuf.Metric*,\n\004Kind\022\013"
-  "\n\007COUNTER\020\000\022\014\n\010CONSTANT\020\001\022\t\n\005GAUGE\020\002*4\n\004"
-  "Type\022\n\n\006UINT64\020\000\022\t\n\005INT64\020\001\022\013\n\007FLOAT64\020\002"
-  "\022\010\n\004BOOL\020\003b\006proto3"
+  "\001B\005\n\003minB\005\n\003max\"\233\001\n\006Metric\022!\n\004info\030\001 \001(\013"
+  "2\016.protobuf.InfoH\001\210\001\001\022\026\n\014uint64_value\030\002 "
+  "\001(\004H\000\022\025\n\013int64_value\030\003 \001(\003H\000\022\027\n\rfloat64_"
+  "value\030\004 \001(\001H\000\022\024\n\nbool_value\030\005 \001(\010H\000B\007\n\005v"
+  "alueB\007\n\005_info\"E\n\007Metrics\022\030\n\020protocol_ver"
+  "sion\030\001 \001(\r\022 \n\006metric\030\002 \003(\0132\020.protobuf.Me"
+  "tric*,\n\004Kind\022\013\n\007COUNTER\020\000\022\014\n\010CONSTANT\020\001\022"
+  "\t\n\005GAUGE\020\002*4\n\004Type\022\n\n\006UINT64\020\000\022\t\n\005INT64\020"
+  "\001\022\013\n\007FLOAT64\020\002\022\010\n\004BOOL\020\003b\006proto3"
   ;
 static ::_pbi::once_flag descriptor_table_abacus_5fmetric_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_abacus_5fmetric_2eproto = {
-    false, false, 618, descriptor_table_protodef_abacus_5fmetric_2eproto,
+    false, false, 632, descriptor_table_protodef_abacus_5fmetric_2eproto,
     "abacus_metric.proto",
     &descriptor_table_abacus_5fmetric_2eproto_once, nullptr, 0, 3,
     schemas, file_default_instances, TableStruct_abacus_5fmetric_2eproto::offsets,
@@ -826,7 +832,11 @@ void Info::InternalSwap(Info* other) {
 
 class Metric::_Internal {
  public:
+  using HasBits = decltype(std::declval<Metric>()._impl_._has_bits_);
   static const ::protobuf::Info& info(const Metric* msg);
+  static void set_has_info(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
 const ::protobuf::Info&
@@ -843,9 +853,10 @@ Metric::Metric(const Metric& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   Metric* const _this = this; (void)_this;
   new (&_impl_) Impl_{
-      decltype(_impl_.info_){nullptr}
-    , decltype(_impl_.value_){}
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
     , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.info_){nullptr}
+    , decltype(_impl_.value_){}
     , /*decltype(_impl_._oneof_case_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
@@ -882,9 +893,10 @@ inline void Metric::SharedCtor(
   (void)arena;
   (void)is_message_owned;
   new (&_impl_) Impl_{
-      decltype(_impl_.info_){nullptr}
-    , decltype(_impl_.value_){}
+      decltype(_impl_._has_bits_){}
     , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.info_){nullptr}
+    , decltype(_impl_.value_){}
     , /*decltype(_impl_._oneof_case_)*/{}
   };
   clear_has_value();
@@ -944,21 +956,24 @@ void Metric::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (GetArenaForAllocation() == nullptr && _impl_.info_ != nullptr) {
-    delete _impl_.info_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    GOOGLE_DCHECK(_impl_.info_ != nullptr);
+    _impl_.info_->Clear();
   }
-  _impl_.info_ = nullptr;
   clear_value();
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* Metric::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // .protobuf.Info info = 1;
+      // optional .protobuf.Info info = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_info(), ptr);
@@ -1014,6 +1029,7 @@ const char* Metric::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
     CHK_(ptr != nullptr);
   }  // while
 message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -1027,8 +1043,8 @@ uint8_t* Metric::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // .protobuf.Info info = 1;
-  if (this->_internal_has_info()) {
+  // optional .protobuf.Info info = 1;
+  if (_internal_has_info()) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::info(this),
         _Internal::info(this).GetCachedSize(), target, stream);
@@ -1074,8 +1090,9 @@ size_t Metric::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // .protobuf.Info info = 1;
-  if (this->_internal_has_info()) {
+  // optional .protobuf.Info info = 1;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *_impl_.info_);
@@ -1166,6 +1183,7 @@ bool Metric::IsInitialized() const {
 void Metric::InternalSwap(Metric* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.info_, other->_impl_.info_);
   swap(_impl_.value_, other->_impl_.value_);
   swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);

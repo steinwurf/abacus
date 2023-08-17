@@ -590,7 +590,7 @@ class Metric final :
     kFloat64ValueFieldNumber = 4,
     kBoolValueFieldNumber = 5,
   };
-  // .protobuf.Info info = 1;
+  // optional .protobuf.Info info = 1;
   bool has_info() const;
   private:
   bool _internal_has_info() const;
@@ -677,6 +677,8 @@ class Metric final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
     ::protobuf::Info* info_;
     union ValueUnion {
       constexpr ValueUnion() : _constinit_{} {}
@@ -686,7 +688,6 @@ class Metric final :
       double float64_value_;
       bool bool_value_;
     } value_;
-    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
     uint32_t _oneof_case_[1];
 
   };
@@ -1312,18 +1313,18 @@ inline Info::MaxCase Info::max_case() const {
 
 // Metric
 
-// .protobuf.Info info = 1;
+// optional .protobuf.Info info = 1;
 inline bool Metric::_internal_has_info() const {
-  return this != internal_default_instance() && _impl_.info_ != nullptr;
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.info_ != nullptr);
+  return value;
 }
 inline bool Metric::has_info() const {
   return _internal_has_info();
 }
 inline void Metric::clear_info() {
-  if (GetArenaForAllocation() == nullptr && _impl_.info_ != nullptr) {
-    delete _impl_.info_;
-  }
-  _impl_.info_ = nullptr;
+  if (_impl_.info_ != nullptr) _impl_.info_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
 inline const ::protobuf::Info& Metric::_internal_info() const {
   const ::protobuf::Info* p = _impl_.info_;
@@ -1341,14 +1342,14 @@ inline void Metric::unsafe_arena_set_allocated_info(
   }
   _impl_.info_ = info;
   if (info) {
-    
+    _impl_._has_bits_[0] |= 0x00000001u;
   } else {
-    
+    _impl_._has_bits_[0] &= ~0x00000001u;
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:protobuf.Metric.info)
 }
 inline ::protobuf::Info* Metric::release_info() {
-  
+  _impl_._has_bits_[0] &= ~0x00000001u;
   ::protobuf::Info* temp = _impl_.info_;
   _impl_.info_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
@@ -1364,13 +1365,13 @@ inline ::protobuf::Info* Metric::release_info() {
 }
 inline ::protobuf::Info* Metric::unsafe_arena_release_info() {
   // @@protoc_insertion_point(field_release:protobuf.Metric.info)
-  
+  _impl_._has_bits_[0] &= ~0x00000001u;
   ::protobuf::Info* temp = _impl_.info_;
   _impl_.info_ = nullptr;
   return temp;
 }
 inline ::protobuf::Info* Metric::_internal_mutable_info() {
-  
+  _impl_._has_bits_[0] |= 0x00000001u;
   if (_impl_.info_ == nullptr) {
     auto* p = CreateMaybeMessage<::protobuf::Info>(GetArenaForAllocation());
     _impl_.info_ = p;
@@ -1394,9 +1395,9 @@ inline void Metric::set_allocated_info(::protobuf::Info* info) {
       info = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
           message_arena, info, submessage_arena);
     }
-    
+    _impl_._has_bits_[0] |= 0x00000001u;
   } else {
-    
+    _impl_._has_bits_[0] &= ~0x00000001u;
   }
   _impl_.info_ = info;
   // @@protoc_insertion_point(field_set_allocated:protobuf.Metric.info)
