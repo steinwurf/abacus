@@ -20,6 +20,7 @@ PROTOBUF_PRAGMA_INIT_SEG
 namespace _pb = ::PROTOBUF_NAMESPACE_ID;
 namespace _pbi = _pb::internal;
 
+namespace abacus {
 namespace protobuf {
 PROTOBUF_CONSTEXPR Info::Info(
     ::_pbi::ConstantInitialized): _impl_{
@@ -72,89 +73,91 @@ struct MetricsDefaultTypeInternal {
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 MetricsDefaultTypeInternal _Metrics_default_instance_;
 }  // namespace protobuf
+}  // namespace abacus
 static ::_pb::Metadata file_level_metadata_abacus_5fmetric_2eproto[3];
 static const ::_pb::EnumDescriptor* file_level_enum_descriptors_abacus_5fmetric_2eproto[2];
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_abacus_5fmetric_2eproto = nullptr;
 
 const uint32_t TableStruct_abacus_5fmetric_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::protobuf::Info, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Info, _internal_metadata_),
   ~0u,  // no _extensions_
-  PROTOBUF_FIELD_OFFSET(::protobuf::Info, _impl_._oneof_case_[0]),
+  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Info, _impl_._oneof_case_[0]),
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::protobuf::Info, _impl_.name_),
-  PROTOBUF_FIELD_OFFSET(::protobuf::Info, _impl_.description_),
-  PROTOBUF_FIELD_OFFSET(::protobuf::Info, _impl_.type_),
-  PROTOBUF_FIELD_OFFSET(::protobuf::Info, _impl_.kind_),
-  PROTOBUF_FIELD_OFFSET(::protobuf::Info, _impl_.unit_),
+  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Info, _impl_.name_),
+  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Info, _impl_.description_),
+  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Info, _impl_.type_),
+  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Info, _impl_.kind_),
+  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Info, _impl_.unit_),
   ::_pbi::kInvalidFieldOffsetTag,
   ::_pbi::kInvalidFieldOffsetTag,
   ::_pbi::kInvalidFieldOffsetTag,
   ::_pbi::kInvalidFieldOffsetTag,
   ::_pbi::kInvalidFieldOffsetTag,
   ::_pbi::kInvalidFieldOffsetTag,
-  PROTOBUF_FIELD_OFFSET(::protobuf::Info, _impl_.min_),
-  PROTOBUF_FIELD_OFFSET(::protobuf::Info, _impl_.max_),
-  PROTOBUF_FIELD_OFFSET(::protobuf::Metric, _impl_._has_bits_),
-  PROTOBUF_FIELD_OFFSET(::protobuf::Metric, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Info, _impl_.min_),
+  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Info, _impl_.max_),
+  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Metric, _impl_._has_bits_),
+  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Metric, _internal_metadata_),
   ~0u,  // no _extensions_
-  PROTOBUF_FIELD_OFFSET(::protobuf::Metric, _impl_._oneof_case_[0]),
+  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Metric, _impl_._oneof_case_[0]),
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::protobuf::Metric, _impl_.info_),
+  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Metric, _impl_.info_),
   ::_pbi::kInvalidFieldOffsetTag,
   ::_pbi::kInvalidFieldOffsetTag,
   ::_pbi::kInvalidFieldOffsetTag,
   ::_pbi::kInvalidFieldOffsetTag,
-  PROTOBUF_FIELD_OFFSET(::protobuf::Metric, _impl_.value_),
+  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Metric, _impl_.value_),
   0,
   ~0u,
   ~0u,
   ~0u,
   ~0u,
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::protobuf::Metrics, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Metrics, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::protobuf::Metrics, _impl_.protocol_version_),
-  PROTOBUF_FIELD_OFFSET(::protobuf::Metrics, _impl_.metric_),
+  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Metrics, _impl_.protocol_version_),
+  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Metrics, _impl_.metric_),
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, -1, sizeof(::protobuf::Info)},
-  { 19, 31, -1, sizeof(::protobuf::Metric)},
-  { 36, -1, -1, sizeof(::protobuf::Metrics)},
+  { 0, -1, -1, sizeof(::abacus::protobuf::Info)},
+  { 19, 31, -1, sizeof(::abacus::protobuf::Metric)},
+  { 36, -1, -1, sizeof(::abacus::protobuf::Metrics)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
-  &::protobuf::_Info_default_instance_._instance,
-  &::protobuf::_Metric_default_instance_._instance,
-  &::protobuf::_Metrics_default_instance_._instance,
+  &::abacus::protobuf::_Info_default_instance_._instance,
+  &::abacus::protobuf::_Metric_default_instance_._instance,
+  &::abacus::protobuf::_Metrics_default_instance_._instance,
 };
 
 const char descriptor_table_protodef_abacus_5fmetric_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\023abacus_metric.proto\022\010protobuf\"\205\002\n\004Info"
-  "\022\014\n\004name\030\001 \001(\t\022\023\n\013description\030\002 \001(\t\022\034\n\004t"
-  "ype\030\003 \001(\0162\016.protobuf.Type\022\034\n\004kind\030\004 \001(\0162"
-  "\016.protobuf.Kind\022\014\n\004unit\030\005 \001(\t\022\024\n\nuint64_"
-  "min\030\006 \001(\004H\000\022\023\n\tint64_min\030\007 \001(\003H\000\022\025\n\013floa"
-  "t64_min\030\010 \001(\001H\000\022\024\n\nuint64_max\030\t \001(\004H\001\022\023\n"
-  "\tint64_max\030\n \001(\003H\001\022\025\n\013float64_max\030\013 \001(\001H"
-  "\001B\005\n\003minB\005\n\003max\"\233\001\n\006Metric\022!\n\004info\030\001 \001(\013"
-  "2\016.protobuf.InfoH\001\210\001\001\022\026\n\014uint64_value\030\002 "
-  "\001(\004H\000\022\025\n\013int64_value\030\003 \001(\003H\000\022\027\n\rfloat64_"
-  "value\030\004 \001(\001H\000\022\024\n\nbool_value\030\005 \001(\010H\000B\007\n\005v"
-  "alueB\007\n\005_info\"E\n\007Metrics\022\030\n\020protocol_ver"
-  "sion\030\001 \001(\r\022 \n\006metric\030\002 \003(\0132\020.protobuf.Me"
-  "tric*,\n\004Kind\022\013\n\007COUNTER\020\000\022\014\n\010CONSTANT\020\001\022"
-  "\t\n\005GAUGE\020\002*4\n\004Type\022\n\n\006UINT64\020\000\022\t\n\005INT64\020"
-  "\001\022\013\n\007FLOAT64\020\002\022\010\n\004BOOL\020\003b\006proto3"
+  "\n\023abacus_metric.proto\022\017abacus.protobuf\"\223"
+  "\002\n\004Info\022\014\n\004name\030\001 \001(\t\022\023\n\013description\030\002 \001"
+  "(\t\022#\n\004type\030\003 \001(\0162\025.abacus.protobuf.Type\022"
+  "#\n\004kind\030\004 \001(\0162\025.abacus.protobuf.Kind\022\014\n\004"
+  "unit\030\005 \001(\t\022\024\n\nuint64_min\030\006 \001(\004H\000\022\023\n\tint6"
+  "4_min\030\007 \001(\003H\000\022\025\n\013float64_min\030\010 \001(\001H\000\022\024\n\n"
+  "uint64_max\030\t \001(\004H\001\022\023\n\tint64_max\030\n \001(\003H\001\022"
+  "\025\n\013float64_max\030\013 \001(\001H\001B\005\n\003minB\005\n\003max\"\242\001\n"
+  "\006Metric\022(\n\004info\030\001 \001(\0132\025.abacus.protobuf."
+  "InfoH\001\210\001\001\022\026\n\014uint64_value\030\002 \001(\004H\000\022\025\n\013int"
+  "64_value\030\003 \001(\003H\000\022\027\n\rfloat64_value\030\004 \001(\001H"
+  "\000\022\024\n\nbool_value\030\005 \001(\010H\000B\007\n\005valueB\007\n\005_inf"
+  "o\"L\n\007Metrics\022\030\n\020protocol_version\030\001 \001(\r\022\'"
+  "\n\006metric\030\002 \003(\0132\027.abacus.protobuf.Metric*"
+  ",\n\004Kind\022\013\n\007COUNTER\020\000\022\014\n\010CONSTANT\020\001\022\t\n\005GA"
+  "UGE\020\002*4\n\004Type\022\n\n\006UINT64\020\000\022\t\n\005INT64\020\001\022\013\n\007"
+  "FLOAT64\020\002\022\010\n\004BOOL\020\003b\006proto3"
   ;
 static ::_pbi::once_flag descriptor_table_abacus_5fmetric_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_abacus_5fmetric_2eproto = {
-    false, false, 632, descriptor_table_protodef_abacus_5fmetric_2eproto,
+    false, false, 667, descriptor_table_protodef_abacus_5fmetric_2eproto,
     "abacus_metric.proto",
     &descriptor_table_abacus_5fmetric_2eproto_once, nullptr, 0, 3,
     schemas, file_default_instances, TableStruct_abacus_5fmetric_2eproto::offsets,
@@ -167,6 +170,7 @@ PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable* descriptor_table_abacus_5
 
 // Force running AddDescriptors() at dynamic initialization time.
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_abacus_5fmetric_2eproto(&descriptor_table_abacus_5fmetric_2eproto);
+namespace abacus {
 namespace protobuf {
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Kind_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_abacus_5fmetric_2eproto);
@@ -210,7 +214,7 @@ Info::Info(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor(arena, is_message_owned);
-  // @@protoc_insertion_point(arena_constructor:protobuf.Info)
+  // @@protoc_insertion_point(arena_constructor:abacus.protobuf.Info)
 }
 Info::Info(const Info& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
@@ -290,7 +294,7 @@ Info::Info(const Info& from)
       break;
     }
   }
-  // @@protoc_insertion_point(copy_constructor:protobuf.Info)
+  // @@protoc_insertion_point(copy_constructor:abacus.protobuf.Info)
 }
 
 inline void Info::SharedCtor(
@@ -325,7 +329,7 @@ inline void Info::SharedCtor(
 }
 
 Info::~Info() {
-  // @@protoc_insertion_point(destructor:protobuf.Info)
+  // @@protoc_insertion_point(destructor:abacus.protobuf.Info)
   if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
   (void)arena;
     return;
@@ -351,7 +355,7 @@ void Info::SetCachedSize(int size) const {
 }
 
 void Info::clear_min() {
-// @@protoc_insertion_point(one_of_clear_start:protobuf.Info)
+// @@protoc_insertion_point(one_of_clear_start:abacus.protobuf.Info)
   switch (min_case()) {
     case kUint64Min: {
       // No need to clear
@@ -373,7 +377,7 @@ void Info::clear_min() {
 }
 
 void Info::clear_max() {
-// @@protoc_insertion_point(one_of_clear_start:protobuf.Info)
+// @@protoc_insertion_point(one_of_clear_start:abacus.protobuf.Info)
   switch (max_case()) {
     case kUint64Max: {
       // No need to clear
@@ -396,7 +400,7 @@ void Info::clear_max() {
 
 
 void Info::Clear() {
-// @@protoc_insertion_point(message_clear_start:protobuf.Info)
+// @@protoc_insertion_point(message_clear_start:abacus.protobuf.Info)
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -424,7 +428,7 @@ const char* Info::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
           auto str = _internal_mutable_name();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "protobuf.Info.name"));
+          CHK_(::_pbi::VerifyUTF8(str, "abacus.protobuf.Info.name"));
         } else
           goto handle_unusual;
         continue;
@@ -434,25 +438,25 @@ const char* Info::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
           auto str = _internal_mutable_description();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "protobuf.Info.description"));
+          CHK_(::_pbi::VerifyUTF8(str, "abacus.protobuf.Info.description"));
         } else
           goto handle_unusual;
         continue;
-      // .protobuf.Type type = 3;
+      // .abacus.protobuf.Type type = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
           uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-          _internal_set_type(static_cast<::protobuf::Type>(val));
+          _internal_set_type(static_cast<::abacus::protobuf::Type>(val));
         } else
           goto handle_unusual;
         continue;
-      // .protobuf.Kind kind = 4;
+      // .abacus.protobuf.Kind kind = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
           uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
-          _internal_set_kind(static_cast<::protobuf::Kind>(val));
+          _internal_set_kind(static_cast<::abacus::protobuf::Kind>(val));
         } else
           goto handle_unusual;
         continue;
@@ -462,7 +466,7 @@ const char* Info::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
           auto str = _internal_mutable_unit();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "protobuf.Info.unit"));
+          CHK_(::_pbi::VerifyUTF8(str, "abacus.protobuf.Info.unit"));
         } else
           goto handle_unusual;
         continue;
@@ -539,7 +543,7 @@ failure:
 
 uint8_t* Info::_InternalSerialize(
     uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:protobuf.Info)
+  // @@protoc_insertion_point(serialize_to_array_start:abacus.protobuf.Info)
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -548,7 +552,7 @@ uint8_t* Info::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_name().data(), static_cast<int>(this->_internal_name().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "protobuf.Info.name");
+      "abacus.protobuf.Info.name");
     target = stream->WriteStringMaybeAliased(
         1, this->_internal_name(), target);
   }
@@ -558,19 +562,19 @@ uint8_t* Info::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_description().data(), static_cast<int>(this->_internal_description().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "protobuf.Info.description");
+      "abacus.protobuf.Info.description");
     target = stream->WriteStringMaybeAliased(
         2, this->_internal_description(), target);
   }
 
-  // .protobuf.Type type = 3;
+  // .abacus.protobuf.Type type = 3;
   if (this->_internal_type() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteEnumToArray(
       3, this->_internal_type(), target);
   }
 
-  // .protobuf.Kind kind = 4;
+  // .abacus.protobuf.Kind kind = 4;
   if (this->_internal_kind() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteEnumToArray(
@@ -582,7 +586,7 @@ uint8_t* Info::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_unit().data(), static_cast<int>(this->_internal_unit().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "protobuf.Info.unit");
+      "abacus.protobuf.Info.unit");
     target = stream->WriteStringMaybeAliased(
         5, this->_internal_unit(), target);
   }
@@ -627,12 +631,12 @@ uint8_t* Info::_InternalSerialize(
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:protobuf.Info)
+  // @@protoc_insertion_point(serialize_to_array_end:abacus.protobuf.Info)
   return target;
 }
 
 size_t Info::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:protobuf.Info)
+// @@protoc_insertion_point(message_byte_size_start:abacus.protobuf.Info)
   size_t total_size = 0;
 
   uint32_t cached_has_bits = 0;
@@ -660,13 +664,13 @@ size_t Info::ByteSizeLong() const {
         this->_internal_unit());
   }
 
-  // .protobuf.Type type = 3;
+  // .abacus.protobuf.Type type = 3;
   if (this->_internal_type() != 0) {
     total_size += 1 +
       ::_pbi::WireFormatLite::EnumSize(this->_internal_type());
   }
 
-  // .protobuf.Kind kind = 4;
+  // .abacus.protobuf.Kind kind = 4;
   if (this->_internal_kind() != 0) {
     total_size += 1 +
       ::_pbi::WireFormatLite::EnumSize(this->_internal_kind());
@@ -725,7 +729,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Info::GetClassData() const { r
 void Info::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
   auto* const _this = static_cast<Info*>(&to_msg);
   auto& from = static_cast<const Info&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:protobuf.Info)
+  // @@protoc_insertion_point(class_specific_merge_from_start:abacus.protobuf.Info)
   GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -783,7 +787,7 @@ void Info::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_
 }
 
 void Info::CopyFrom(const Info& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:protobuf.Info)
+// @@protoc_insertion_point(class_specific_copy_from_start:abacus.protobuf.Info)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -833,13 +837,13 @@ void Info::InternalSwap(Info* other) {
 class Metric::_Internal {
  public:
   using HasBits = decltype(std::declval<Metric>()._impl_._has_bits_);
-  static const ::protobuf::Info& info(const Metric* msg);
+  static const ::abacus::protobuf::Info& info(const Metric* msg);
   static void set_has_info(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
 };
 
-const ::protobuf::Info&
+const ::abacus::protobuf::Info&
 Metric::_Internal::info(const Metric* msg) {
   return *msg->_impl_.info_;
 }
@@ -847,7 +851,7 @@ Metric::Metric(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor(arena, is_message_owned);
-  // @@protoc_insertion_point(arena_constructor:protobuf.Metric)
+  // @@protoc_insertion_point(arena_constructor:abacus.protobuf.Metric)
 }
 Metric::Metric(const Metric& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
@@ -861,7 +865,7 @@ Metric::Metric(const Metric& from)
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   if (from._internal_has_info()) {
-    _this->_impl_.info_ = new ::protobuf::Info(*from._impl_.info_);
+    _this->_impl_.info_ = new ::abacus::protobuf::Info(*from._impl_.info_);
   }
   clear_has_value();
   switch (from.value_case()) {
@@ -885,7 +889,7 @@ Metric::Metric(const Metric& from)
       break;
     }
   }
-  // @@protoc_insertion_point(copy_constructor:protobuf.Metric)
+  // @@protoc_insertion_point(copy_constructor:abacus.protobuf.Metric)
 }
 
 inline void Metric::SharedCtor(
@@ -903,7 +907,7 @@ inline void Metric::SharedCtor(
 }
 
 Metric::~Metric() {
-  // @@protoc_insertion_point(destructor:protobuf.Metric)
+  // @@protoc_insertion_point(destructor:abacus.protobuf.Metric)
   if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
   (void)arena;
     return;
@@ -924,7 +928,7 @@ void Metric::SetCachedSize(int size) const {
 }
 
 void Metric::clear_value() {
-// @@protoc_insertion_point(one_of_clear_start:protobuf.Metric)
+// @@protoc_insertion_point(one_of_clear_start:abacus.protobuf.Metric)
   switch (value_case()) {
     case kUint64Value: {
       // No need to clear
@@ -951,7 +955,7 @@ void Metric::clear_value() {
 
 
 void Metric::Clear() {
-// @@protoc_insertion_point(message_clear_start:protobuf.Metric)
+// @@protoc_insertion_point(message_clear_start:abacus.protobuf.Metric)
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -973,7 +977,7 @@ const char* Metric::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // optional .protobuf.Info info = 1;
+      // optional .abacus.protobuf.Info info = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_info(), ptr);
@@ -1039,11 +1043,11 @@ failure:
 
 uint8_t* Metric::_InternalSerialize(
     uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:protobuf.Metric)
+  // @@protoc_insertion_point(serialize_to_array_start:abacus.protobuf.Metric)
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // optional .protobuf.Info info = 1;
+  // optional .abacus.protobuf.Info info = 1;
   if (_internal_has_info()) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::info(this),
@@ -1078,19 +1082,19 @@ uint8_t* Metric::_InternalSerialize(
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:protobuf.Metric)
+  // @@protoc_insertion_point(serialize_to_array_end:abacus.protobuf.Metric)
   return target;
 }
 
 size_t Metric::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:protobuf.Metric)
+// @@protoc_insertion_point(message_byte_size_start:abacus.protobuf.Metric)
   size_t total_size = 0;
 
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // optional .protobuf.Info info = 1;
+  // optional .abacus.protobuf.Info info = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
@@ -1136,13 +1140,13 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Metric::GetClassData() const {
 void Metric::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
   auto* const _this = static_cast<Metric*>(&to_msg);
   auto& from = static_cast<const Metric&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:protobuf.Metric)
+  // @@protoc_insertion_point(class_specific_merge_from_start:abacus.protobuf.Metric)
   GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_has_info()) {
-    _this->_internal_mutable_info()->::protobuf::Info::MergeFrom(
+    _this->_internal_mutable_info()->::abacus::protobuf::Info::MergeFrom(
         from._internal_info());
   }
   switch (from.value_case()) {
@@ -1170,7 +1174,7 @@ void Metric::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBU
 }
 
 void Metric::CopyFrom(const Metric& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:protobuf.Metric)
+// @@protoc_insertion_point(class_specific_copy_from_start:abacus.protobuf.Metric)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -1205,7 +1209,7 @@ Metrics::Metrics(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor(arena, is_message_owned);
-  // @@protoc_insertion_point(arena_constructor:protobuf.Metrics)
+  // @@protoc_insertion_point(arena_constructor:abacus.protobuf.Metrics)
 }
 Metrics::Metrics(const Metrics& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
@@ -1217,7 +1221,7 @@ Metrics::Metrics(const Metrics& from)
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   _this->_impl_.protocol_version_ = from._impl_.protocol_version_;
-  // @@protoc_insertion_point(copy_constructor:protobuf.Metrics)
+  // @@protoc_insertion_point(copy_constructor:abacus.protobuf.Metrics)
 }
 
 inline void Metrics::SharedCtor(
@@ -1232,7 +1236,7 @@ inline void Metrics::SharedCtor(
 }
 
 Metrics::~Metrics() {
-  // @@protoc_insertion_point(destructor:protobuf.Metrics)
+  // @@protoc_insertion_point(destructor:abacus.protobuf.Metrics)
   if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
   (void)arena;
     return;
@@ -1250,7 +1254,7 @@ void Metrics::SetCachedSize(int size) const {
 }
 
 void Metrics::Clear() {
-// @@protoc_insertion_point(message_clear_start:protobuf.Metrics)
+// @@protoc_insertion_point(message_clear_start:abacus.protobuf.Metrics)
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -1274,7 +1278,7 @@ const char* Metrics::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) 
         } else
           goto handle_unusual;
         continue;
-      // repeated .protobuf.Metric metric = 2;
+      // repeated .abacus.protobuf.Metric metric = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
           ptr -= 1;
@@ -1312,7 +1316,7 @@ failure:
 
 uint8_t* Metrics::_InternalSerialize(
     uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:protobuf.Metrics)
+  // @@protoc_insertion_point(serialize_to_array_start:abacus.protobuf.Metrics)
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1322,7 +1326,7 @@ uint8_t* Metrics::_InternalSerialize(
     target = ::_pbi::WireFormatLite::WriteUInt32ToArray(1, this->_internal_protocol_version(), target);
   }
 
-  // repeated .protobuf.Metric metric = 2;
+  // repeated .abacus.protobuf.Metric metric = 2;
   for (unsigned i = 0,
       n = static_cast<unsigned>(this->_internal_metric_size()); i < n; i++) {
     const auto& repfield = this->_internal_metric(i);
@@ -1334,19 +1338,19 @@ uint8_t* Metrics::_InternalSerialize(
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:protobuf.Metrics)
+  // @@protoc_insertion_point(serialize_to_array_end:abacus.protobuf.Metrics)
   return target;
 }
 
 size_t Metrics::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:protobuf.Metrics)
+// @@protoc_insertion_point(message_byte_size_start:abacus.protobuf.Metrics)
   size_t total_size = 0;
 
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated .protobuf.Metric metric = 2;
+  // repeated .abacus.protobuf.Metric metric = 2;
   total_size += 1UL * this->_internal_metric_size();
   for (const auto& msg : this->_impl_.metric_) {
     total_size +=
@@ -1371,7 +1375,7 @@ const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Metrics::GetClassData() const 
 void Metrics::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
   auto* const _this = static_cast<Metrics*>(&to_msg);
   auto& from = static_cast<const Metrics&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:protobuf.Metrics)
+  // @@protoc_insertion_point(class_specific_merge_from_start:abacus.protobuf.Metrics)
   GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -1384,7 +1388,7 @@ void Metrics::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOB
 }
 
 void Metrics::CopyFrom(const Metrics& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:protobuf.Metrics)
+// @@protoc_insertion_point(class_specific_copy_from_start:abacus.protobuf.Metrics)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -1409,18 +1413,19 @@ void Metrics::InternalSwap(Metrics* other) {
 
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace protobuf
+}  // namespace abacus
 PROTOBUF_NAMESPACE_OPEN
-template<> PROTOBUF_NOINLINE ::protobuf::Info*
-Arena::CreateMaybeMessage< ::protobuf::Info >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::protobuf::Info >(arena);
+template<> PROTOBUF_NOINLINE ::abacus::protobuf::Info*
+Arena::CreateMaybeMessage< ::abacus::protobuf::Info >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::abacus::protobuf::Info >(arena);
 }
-template<> PROTOBUF_NOINLINE ::protobuf::Metric*
-Arena::CreateMaybeMessage< ::protobuf::Metric >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::protobuf::Metric >(arena);
+template<> PROTOBUF_NOINLINE ::abacus::protobuf::Metric*
+Arena::CreateMaybeMessage< ::abacus::protobuf::Metric >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::abacus::protobuf::Metric >(arena);
 }
-template<> PROTOBUF_NOINLINE ::protobuf::Metrics*
-Arena::CreateMaybeMessage< ::protobuf::Metrics >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::protobuf::Metrics >(arena);
+template<> PROTOBUF_NOINLINE ::abacus::protobuf::Metrics*
+Arena::CreateMaybeMessage< ::abacus::protobuf::Metrics >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::abacus::protobuf::Metrics >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

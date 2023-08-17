@@ -52,8 +52,8 @@ TEST(test_to_protobuf, api)
     auto info0 = metric0->mutable_info();
     info0->set_name(name0);
     info0->set_description(infos[0].description);
-    info0->set_kind(static_cast<protobuf::Kind>(infos[0].kind));
-    info0->set_type(static_cast<protobuf::Type>(infos[0].type));
+    info0->set_kind(static_cast<abacus::protobuf::Kind>(infos[0].kind));
+    info0->set_type(static_cast<abacus::protobuf::Type>(infos[0].type));
     info0->set_unit(infos[0].unit.value);
     metric0->set_uint64_value(42);
     info0->set_uint64_max(infos[0].max.m_uint);
@@ -63,8 +63,8 @@ TEST(test_to_protobuf, api)
     auto info1 = metric1->mutable_info();
     info1->set_name(name1);
     info1->set_description(infos[1].description);
-    info1->set_kind(static_cast<protobuf::Kind>(infos[1].kind));
-    info1->set_type(static_cast<protobuf::Type>(infos[1].type));
+    info1->set_kind(static_cast<abacus::protobuf::Kind>(infos[1].kind));
+    info1->set_type(static_cast<abacus::protobuf::Type>(infos[1].type));
     info1->set_unit(infos[1].unit.value);
     metric1->set_int64_value(-42);
     info1->set_int64_max(infos[1].max.m_int);
@@ -74,8 +74,8 @@ TEST(test_to_protobuf, api)
     auto info2 = metric2->mutable_info();
     info2->set_name(name2);
     info2->set_description(infos[2].description);
-    info2->set_kind(static_cast<protobuf::Kind>(infos[2].kind));
-    info2->set_type(static_cast<protobuf::Type>(infos[2].type));
+    info2->set_kind(static_cast<abacus::protobuf::Kind>(infos[2].kind));
+    info2->set_type(static_cast<abacus::protobuf::Type>(infos[2].type));
     info2->set_unit(infos[2].unit.value);
     metric2->set_bool_value(true);
 
