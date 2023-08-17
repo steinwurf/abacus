@@ -39,7 +39,7 @@ message Info
 
 message Metric
 {
-    Info info = 1;
+    optional Info info = 1;
     oneof value
     {
         uint64 uint64_value = 2;
