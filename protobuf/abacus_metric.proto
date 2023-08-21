@@ -1,5 +1,6 @@
 syntax = "proto3";
 package abacus.protobuf;
+option go_package = "abacus/protobuf";
 
 enum Kind
 {
