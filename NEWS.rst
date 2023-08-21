@@ -6,6 +6,10 @@ every change, see the Git log.
 
 Latest
 ------
+* tbd
+
+5.1.2
+-----
 * Patch: Add go package option to protobuf definitions.
 
 5.1.1
