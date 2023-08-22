@@ -61,7 +61,7 @@ else()
 endif()
 
 target_link_libraries(abacus PRIVATE steinwurf::endian)
-target_link_libraries(abacus PRIVATE protobuf::libprotobuf)
+target_link_libraries(abacus PUBLIC protobuf::libprotobuf)
 
 target_include_directories(abacus INTERFACE src)
 target_compile_features(abacus PUBLIC cxx_std_14)
