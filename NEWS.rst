@@ -6,6 +6,10 @@ every change, see the Git log.
 
 Latest
 ------
+* tbd
+
+5.1.3
+-----
 * Patch: Make protobuf a PUBLIC dependency in CMake.
 
 5.1.2
