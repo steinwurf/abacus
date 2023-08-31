@@ -76,6 +76,10 @@ public:
     {
     }
 
+    /// Move-constructor
+    /// @param other The metrics to move from.
+    metrics(metrics&& other);
+
     /// Destructor
     ~metrics();
 

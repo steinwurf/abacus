@@ -192,6 +192,12 @@ metrics::metrics(const metric_info* info, std::size_t count) :
                detail::value_bytes(m_meta_data));
 }
 
+metrics::metrics(metrics&& other)
+{
+    other.m_meta_data = nullptr;
+    other.m_value_data = nullptr;
+}
+
 metrics::~metrics()
 {
     ::operator delete(m_meta_data);

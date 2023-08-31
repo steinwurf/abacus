@@ -21,6 +21,9 @@ namespace detail
 
 struct value_size_info
 {
+
+    value_size_info() = default;
+
     std::vector<metric_info> m_eight_byte_metrics;
     std::vector<metric_info> m_one_byte_metrics;
 
