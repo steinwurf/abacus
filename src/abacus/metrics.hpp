@@ -78,7 +78,11 @@ public:
 
     /// Move-constructor
     /// @param other The metrics to move from.
-    metrics(metrics&& other);
+    metrics(metrics&& other)
+    {
+        other.m_meta_data = nullptr;
+        other.m_value_data = nullptr;
+    }
 
     /// Destructor
     ~metrics();
