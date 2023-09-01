@@ -192,23 +192,54 @@ metrics::metrics(const metric_info* info, std::size_t count) :
                detail::value_bytes(m_meta_data));
 }
 
+metrics::metrics(metrics&& other) noexcept :
+    m_info(std::move(other.m_info)),
+    m_name_to_index(std::move(other.m_name_to_index)),
+    m_meta_data(other.m_meta_data), m_value_data(other.m_value_data),
+    m_observer_map(std::move(other.m_observer_map))
+{
+    other.m_meta_data = nullptr;
+    other.m_value_data = nullptr;
+}
+
+auto metrics::operator=(metrics&& other) noexcept -> metrics&
+{
+    if (this != &other)
+    {
+        m_info = std::move(other.m_info);
+        m_name_to_index = std::move(other.m_name_to_index);
+        m_observer_map = std::move(other.m_observer_map);
+        m_meta_data = other.m_meta_data;
+        m_value_data = other.m_value_data;
+        other.m_meta_data = nullptr;
+        other.m_value_data = nullptr;
+    }
+    return *this;
+}
+
 metrics::~metrics()
 {
-    ::operator delete(m_meta_data);
+    if (m_meta_data != nullptr)
+    {
+        ::operator delete(m_meta_data);
+    }
 }
 
 auto metrics::meta_data() const -> const uint8_t*
 {
+    assert(m_meta_data != nullptr);
     return m_meta_data;
 }
 
 auto metrics::meta_bytes() const -> std::size_t
 {
+    assert(m_meta_data != nullptr);
     return detail::meta_bytes(m_meta_data);
 }
 
 auto metrics::value_data() const -> const uint8_t*
 {
+    assert(m_meta_data != nullptr);
     for (auto const& item : m_observer_map)
     {
         item.second();
@@ -218,51 +249,60 @@ auto metrics::value_data() const -> const uint8_t*
 
 auto metrics::value_bytes() const -> std::size_t
 {
+    assert(m_meta_data != nullptr);
     return detail::value_bytes(m_meta_data);
 }
 
 auto metrics::count() const -> std::size_t
 {
+    assert(m_meta_data != nullptr);
     return m_info.count();
 }
 
 auto metrics::protocol_version() const -> uint8_t
 {
+    assert(m_meta_data != nullptr);
     return detail::protocol_version(m_meta_data);
 }
 
 auto metrics::is_initialized(std::size_t index) const -> bool
 {
+    assert(m_meta_data != nullptr);
     assert(index < count());
     return detail::is_metric_initialized(m_meta_data, m_value_data, index);
 }
 
 auto metrics::name(std::size_t index) const -> std::string
 {
+    assert(m_meta_data != nullptr);
     assert(index < count());
     return m_info[index].name;
 }
 
 auto metrics::description(std::size_t index) const -> std::string
 {
+    assert(m_meta_data != nullptr);
     assert(index < count());
     return m_info[index].description;
 }
 
 auto metrics::unit(std::size_t index) const -> std::string
 {
+    assert(m_meta_data != nullptr);
     assert(index < count());
     return m_info[index].unit.value;
 }
 
 auto metrics::is_boolean(std::size_t index) const -> bool
 {
+    assert(m_meta_data != nullptr);
     assert(index < count());
     return m_info[index].type == abacus::type::boolean;
 }
 
 auto metrics::is_uint64(std::size_t index) const -> bool
 {
+    assert(m_meta_data != nullptr);
     assert(index < count());
     return m_info[index].type == abacus::type::uint64;
 }
@@ -275,12 +315,14 @@ auto metrics::is_int64(std::size_t index) const -> bool
 
 auto metrics::is_float64(std::size_t index) const -> bool
 {
+    assert(m_meta_data != nullptr);
     assert(index < count());
     return m_info[index].type == abacus::type::float64;
 }
 
 auto metrics::kind(std::size_t index) const -> abacus::kind
 {
+    assert(m_meta_data != nullptr);
     assert(index < count());
     return m_info[index].kind;
 }
@@ -288,6 +330,7 @@ auto metrics::kind(std::size_t index) const -> abacus::kind
 void metrics::observe_metric(const std::string& name,
                              delegate<uint64_t()> callback) const
 {
+    assert(m_meta_data != nullptr);
     assert(m_observer_map.find(name) == m_observer_map.end());
     auto metric_index = index(name);
     assert(is_uint64(metric_index));
@@ -304,6 +347,7 @@ void metrics::observe_metric(const std::string& name,
 void metrics::observe_metric(const std::string& name,
                              delegate<int64_t()> callback) const
 {
+    assert(m_meta_data != nullptr);
     assert(m_observer_map.find(name) == m_observer_map.end());
     auto metric_index = index(name);
     assert(is_int64(metric_index));
@@ -320,6 +364,7 @@ void metrics::observe_metric(const std::string& name,
 void metrics::observe_metric(const std::string& name,
                              delegate<double()> callback) const
 {
+    assert(m_meta_data != nullptr);
     assert(m_observer_map.find(name) == m_observer_map.end());
     auto metric_index = index(name);
     assert(is_float64(metric_index));
@@ -336,6 +381,7 @@ void metrics::observe_metric(const std::string& name,
 void metrics::observe_metric(const std::string& name,
                              delegate<bool()> callback) const
 {
+    assert(m_meta_data != nullptr);
     assert(m_observer_map.find(name) == m_observer_map.end());
     auto metric_index = index(name);
     assert(is_boolean(metric_index));
@@ -351,6 +397,7 @@ void metrics::observe_metric(const std::string& name,
 
 void metrics::initialize_constant(const std::string& name, uint64_t value) const
 {
+    assert(m_meta_data != nullptr);
     auto index = metrics::index(name);
     assert(kind(index) == abacus::kind::constant);
     assert(is_uint64(index));
@@ -359,6 +406,7 @@ void metrics::initialize_constant(const std::string& name, uint64_t value) const
 
 void metrics::initialize_constant(const std::string& name, int64_t value) const
 {
+    assert(m_meta_data != nullptr);
     auto index = metrics::index(name);
     assert(kind(index) == abacus::kind::constant);
     assert(is_int64(index));
@@ -367,6 +415,7 @@ void metrics::initialize_constant(const std::string& name, int64_t value) const
 
 void metrics::initialize_constant(const std::string& name, double value) const
 {
+    assert(m_meta_data != nullptr);
     auto index = metrics::index(name);
     assert(kind(index) == abacus::kind::constant);
     assert(is_float64(index));
@@ -375,6 +424,7 @@ void metrics::initialize_constant(const std::string& name, double value) const
 
 void metrics::initialize_constant(const std::string& name, bool value) const
 {
+    assert(m_meta_data != nullptr);
     auto index = metrics::index(name);
     assert(kind(index) == abacus::kind::constant);
     assert(is_boolean(index));
@@ -383,6 +433,7 @@ void metrics::initialize_constant(const std::string& name, bool value) const
 
 void metrics::value(std::size_t index, uint64_t& value) const
 {
+    assert(m_meta_data != nullptr);
     assert(index < count());
     assert(is_initialized(index));
     assert(is_uint64(index));
@@ -394,6 +445,7 @@ void metrics::value(std::size_t index, uint64_t& value) const
 
 void metrics::value(std::size_t index, int64_t& value) const
 {
+    assert(m_meta_data != nullptr);
     assert(index < count());
     assert(is_initialized(index));
     assert(is_int64(index));
@@ -405,6 +457,7 @@ void metrics::value(std::size_t index, int64_t& value) const
 
 void metrics::value(std::size_t index, double& value) const
 {
+    assert(m_meta_data != nullptr);
     assert(index < count());
     assert(is_initialized(index));
     assert(is_float64(index));
@@ -416,6 +469,7 @@ void metrics::value(std::size_t index, double& value) const
 
 void metrics::value(std::size_t index, bool& value) const
 {
+    assert(m_meta_data != nullptr);
     assert(index < count());
     assert(is_initialized(index));
     assert(is_boolean(index));
@@ -427,6 +481,7 @@ void metrics::value(std::size_t index, bool& value) const
 
 auto metrics::index(const std::string& name) const -> std::size_t
 {
+    assert(m_meta_data != nullptr);
     auto it = m_name_to_index.find(name);
     assert(it != m_name_to_index.end() && "metric name not found.");
     return it->second;
@@ -434,6 +489,7 @@ auto metrics::index(const std::string& name) const -> std::size_t
 
 void metrics::reset_metric(std::size_t index)
 {
+    assert(m_meta_data != nullptr);
     assert(index < count());
     assert(is_initialized(index));
     assert(kind(index) != abacus::kind::constant);
@@ -475,11 +531,13 @@ void metrics::reset_metric(std::size_t index)
 
 void metrics::reset_metrics()
 {
+    assert(m_meta_data != nullptr);
     memset(m_value_data, 0, detail::metrics_bytes(m_meta_data));
 }
 
 auto metrics::initialize(std::size_t index) const -> void*
 {
+    assert(m_meta_data != nullptr);
     assert(index < count());
     assert(!is_initialized(index));
     // Write that the metric has been initialized into memory

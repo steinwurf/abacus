@@ -52,7 +52,8 @@ TEST(test_metrics, default_constructor)
                             abacus::type::float64, abacus::kind::constant,
                             abacus::unit{"ms"}}};
 
-    abacus::metrics metrics(infos);
+    abacus::metrics from_metrics(infos);
+    abacus::metrics metrics(std::move(from_metrics));
 
     EXPECT_EQ(metrics.count(), metric_count);
     EXPECT_EQ(metrics.protocol_version(), abacus::protocol_version());
