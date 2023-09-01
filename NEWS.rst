@@ -6,6 +6,10 @@ every change, see the Git log.
 
 Latest
 ------
+* tbd
+
+5.2.0
+-----
 * Minor: Added move and move assignment operators to `abacus::metrics`.
 
 5.1.3

@@ -7,7 +7,7 @@ from waflib.Build import BuildContext
 
 
 APPNAME = "abacus"
-VERSION = "5.1.3"
+VERSION = "5.2.0"
 
 
 def configure(conf):
