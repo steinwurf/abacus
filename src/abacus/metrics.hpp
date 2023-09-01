@@ -76,6 +76,13 @@ public:
     {
     }
 
+    /// Move constructor
+    /// @param other The metrics to move from.
+    metrics(metrics&& other) noexcept;
+
+    /// Move assignment
+    auto operator=(metrics&& other) noexcept -> metrics&;
+
     /// Destructor
     ~metrics();
 
@@ -374,12 +381,6 @@ private:
 
     /// No copy assignment
     metrics& operator=(metrics&) = delete;
-
-    /// No move
-    metrics(metrics&&) = delete;
-
-    /// No move assignment
-    metrics& operator=(metrics&&) = delete;
 
 private:
     /// initialize the metrics
