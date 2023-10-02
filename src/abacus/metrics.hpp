@@ -21,7 +21,7 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 /// This class is used for creating descriptive counters that are contiguous in
-/// memory, to allow for fast access fast and fast arithmetic operations.
+/// memory, to allow for fast access and arithmetic operations.
 ///
 /// The class preallocates memory at construction with the following
 /// layout
@@ -387,7 +387,7 @@ private:
     auto initialize(std::size_t index) const -> void*;
 
 private:
-    /// The info of the metrics seperated by byte-sizes
+    /// The info of the metrics separated by byte-sizes
     detail::value_size_info m_info;
 
     /// Map to get index from names

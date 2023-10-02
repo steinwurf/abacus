@@ -18,7 +18,7 @@ Latest
 
 5.1.2
 -----
-* Patch: Add go package option to protobuf definitions.
+* Patch: Add Go package option to protobuf definitions.
 
 5.1.1
 -----

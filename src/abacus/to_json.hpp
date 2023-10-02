@@ -7,7 +7,6 @@
 
 #include <vector>
 
-#include "protobuf/abacus_metric.pb.h"
 #include "version.hpp"
 #include "view.hpp"
 
