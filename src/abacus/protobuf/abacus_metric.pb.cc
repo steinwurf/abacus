@@ -4,176 +4,224 @@
 #include "abacus_metric.pb.h"
 
 #include <algorithm>
-
-#include <google/protobuf/io/coded_stream.h>
-#include <google/protobuf/extension_set.h>
-#include <google/protobuf/wire_format_lite.h>
-#include <google/protobuf/descriptor.h>
-#include <google/protobuf/generated_message_reflection.h>
-#include <google/protobuf/reflection_ops.h>
-#include <google/protobuf/wire_format.h>
+#include "google/protobuf/io/coded_stream.h"
+#include "google/protobuf/extension_set.h"
+#include "google/protobuf/wire_format_lite.h"
+#include "google/protobuf/descriptor.h"
+#include "google/protobuf/generated_message_reflection.h"
+#include "google/protobuf/reflection_ops.h"
+#include "google/protobuf/wire_format.h"
+#include "google/protobuf/generated_message_tctable_impl.h"
 // @@protoc_insertion_point(includes)
-#include <google/protobuf/port_def.inc>
 
+// Must be included last.
+#include "google/protobuf/port_def.inc"
 PROTOBUF_PRAGMA_INIT_SEG
-
-namespace _pb = ::PROTOBUF_NAMESPACE_ID;
-namespace _pbi = _pb::internal;
-
+namespace _pb = ::google::protobuf;
+namespace _pbi = ::google::protobuf::internal;
+namespace _fl = ::google::protobuf::internal::field_layout;
 namespace abacus {
 namespace protobuf {
-PROTOBUF_CONSTEXPR Info::Info(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.name_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.description_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.unit_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.type_)*/0
-  , /*decltype(_impl_.kind_)*/0
-  , /*decltype(_impl_.min_)*/{}
-  , /*decltype(_impl_.max_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_._oneof_case_)*/{}} {}
+        template <typename>
+PROTOBUF_CONSTEXPR Info::Info(::_pbi::ConstantInitialized)
+    : _impl_{
+      /*decltype(_impl_.name_)*/ {
+          &::_pbi::fixed_address_empty_string,
+          ::_pbi::ConstantInitialized{},
+      },
+      /*decltype(_impl_.description_)*/ {
+          &::_pbi::fixed_address_empty_string,
+          ::_pbi::ConstantInitialized{},
+      },
+      /*decltype(_impl_.unit_)*/ {
+          &::_pbi::fixed_address_empty_string,
+          ::_pbi::ConstantInitialized{},
+      },
+      /*decltype(_impl_.type_)*/ 0,
+      /*decltype(_impl_.kind_)*/ 0,
+      /*decltype(_impl_.min_)*/ {},
+      /*decltype(_impl_.max_)*/ {},
+      /*decltype(_impl_._cached_size_)*/ {},
+      /*decltype(_impl_._oneof_case_)*/ {},
+    } {}
 struct InfoDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR InfoDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR InfoDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~InfoDefaultTypeInternal() {}
   union {
     Info _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 InfoDefaultTypeInternal _Info_default_instance_;
-PROTOBUF_CONSTEXPR Metric::Metric(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.info_)*/nullptr
-  , /*decltype(_impl_.value_)*/{}
-  , /*decltype(_impl_._oneof_case_)*/{}} {}
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 InfoDefaultTypeInternal _Info_default_instance_;
+        template <typename>
+PROTOBUF_CONSTEXPR Metric::Metric(::_pbi::ConstantInitialized)
+    : _impl_{
+      /*decltype(_impl_._has_bits_)*/ {},
+      /*decltype(_impl_._cached_size_)*/ {},
+      /*decltype(_impl_.info_)*/ nullptr,
+      /*decltype(_impl_.value_)*/ {},
+      /*decltype(_impl_._oneof_case_)*/ {},
+    } {}
 struct MetricDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR MetricDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR MetricDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~MetricDefaultTypeInternal() {}
   union {
     Metric _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 MetricDefaultTypeInternal _Metric_default_instance_;
-PROTOBUF_CONSTEXPR Metrics::Metrics(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.metric_)*/{}
-  , /*decltype(_impl_.protocol_version_)*/0u
-  , /*decltype(_impl_._cached_size_)*/{}} {}
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 MetricDefaultTypeInternal _Metric_default_instance_;
+        template <typename>
+PROTOBUF_CONSTEXPR Metrics::Metrics(::_pbi::ConstantInitialized)
+    : _impl_{
+      /*decltype(_impl_.metric_)*/ {},
+      /*decltype(_impl_.protocol_version_)*/ 0u,
+      /*decltype(_impl_._cached_size_)*/ {},
+    } {}
 struct MetricsDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR MetricsDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR MetricsDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~MetricsDefaultTypeInternal() {}
   union {
     Metrics _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 MetricsDefaultTypeInternal _Metrics_default_instance_;
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 MetricsDefaultTypeInternal _Metrics_default_instance_;
 }  // namespace protobuf
 }  // namespace abacus
 static ::_pb::Metadata file_level_metadata_abacus_5fmetric_2eproto[3];
 static const ::_pb::EnumDescriptor* file_level_enum_descriptors_abacus_5fmetric_2eproto[2];
-static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_abacus_5fmetric_2eproto = nullptr;
-
-const uint32_t TableStruct_abacus_5fmetric_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Info, _internal_metadata_),
-  ~0u,  // no _extensions_
-  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Info, _impl_._oneof_case_[0]),
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Info, _impl_.name_),
-  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Info, _impl_.description_),
-  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Info, _impl_.type_),
-  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Info, _impl_.kind_),
-  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Info, _impl_.unit_),
-  ::_pbi::kInvalidFieldOffsetTag,
-  ::_pbi::kInvalidFieldOffsetTag,
-  ::_pbi::kInvalidFieldOffsetTag,
-  ::_pbi::kInvalidFieldOffsetTag,
-  ::_pbi::kInvalidFieldOffsetTag,
-  ::_pbi::kInvalidFieldOffsetTag,
-  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Info, _impl_.min_),
-  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Info, _impl_.max_),
-  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Metric, _impl_._has_bits_),
-  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Metric, _internal_metadata_),
-  ~0u,  // no _extensions_
-  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Metric, _impl_._oneof_case_[0]),
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Metric, _impl_.info_),
-  ::_pbi::kInvalidFieldOffsetTag,
-  ::_pbi::kInvalidFieldOffsetTag,
-  ::_pbi::kInvalidFieldOffsetTag,
-  ::_pbi::kInvalidFieldOffsetTag,
-  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Metric, _impl_.value_),
-  0,
-  ~0u,
-  ~0u,
-  ~0u,
-  ~0u,
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Metrics, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Metrics, _impl_.protocol_version_),
-  PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Metrics, _impl_.metric_),
+static constexpr const ::_pb::ServiceDescriptor**
+    file_level_service_descriptors_abacus_5fmetric_2eproto = nullptr;
+const ::uint32_t TableStruct_abacus_5fmetric_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
+    protodesc_cold) = {
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Info, _internal_metadata_),
+    ~0u,  // no _extensions_
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Info, _impl_._oneof_case_[0]),
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Info, _impl_.name_),
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Info, _impl_.description_),
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Info, _impl_.type_),
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Info, _impl_.kind_),
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Info, _impl_.unit_),
+    ::_pbi::kInvalidFieldOffsetTag,
+    ::_pbi::kInvalidFieldOffsetTag,
+    ::_pbi::kInvalidFieldOffsetTag,
+    ::_pbi::kInvalidFieldOffsetTag,
+    ::_pbi::kInvalidFieldOffsetTag,
+    ::_pbi::kInvalidFieldOffsetTag,
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Info, _impl_.min_),
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Info, _impl_.max_),
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Metric, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Metric, _internal_metadata_),
+    ~0u,  // no _extensions_
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Metric, _impl_._oneof_case_[0]),
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Metric, _impl_.info_),
+    ::_pbi::kInvalidFieldOffsetTag,
+    ::_pbi::kInvalidFieldOffsetTag,
+    ::_pbi::kInvalidFieldOffsetTag,
+    ::_pbi::kInvalidFieldOffsetTag,
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Metric, _impl_.value_),
+    0,
+    ~0u,
+    ~0u,
+    ~0u,
+    ~0u,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Metrics, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Metrics, _impl_.protocol_version_),
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Metrics, _impl_.metric_),
 };
-static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, -1, sizeof(::abacus::protobuf::Info)},
-  { 19, 31, -1, sizeof(::abacus::protobuf::Metric)},
-  { 36, -1, -1, sizeof(::abacus::protobuf::Metrics)},
+
+static const ::_pbi::MigrationSchema
+    schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+        {0, -1, -1, sizeof(::abacus::protobuf::Info)},
+        {21, 35, -1, sizeof(::abacus::protobuf::Metric)},
+        {40, -1, -1, sizeof(::abacus::protobuf::Metrics)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
-  &::abacus::protobuf::_Info_default_instance_._instance,
-  &::abacus::protobuf::_Metric_default_instance_._instance,
-  &::abacus::protobuf::_Metrics_default_instance_._instance,
+    &::abacus::protobuf::_Info_default_instance_._instance,
+    &::abacus::protobuf::_Metric_default_instance_._instance,
+    &::abacus::protobuf::_Metrics_default_instance_._instance,
 };
-
-const char descriptor_table_protodef_abacus_5fmetric_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\023abacus_metric.proto\022\017abacus.protobuf\"\223"
-  "\002\n\004Info\022\014\n\004name\030\001 \001(\t\022\023\n\013description\030\002 \001"
-  "(\t\022#\n\004type\030\003 \001(\0162\025.abacus.protobuf.Type\022"
-  "#\n\004kind\030\004 \001(\0162\025.abacus.protobuf.Kind\022\014\n\004"
-  "unit\030\005 \001(\t\022\024\n\nuint64_min\030\006 \001(\004H\000\022\023\n\tint6"
-  "4_min\030\007 \001(\003H\000\022\025\n\013float64_min\030\010 \001(\001H\000\022\024\n\n"
-  "uint64_max\030\t \001(\004H\001\022\023\n\tint64_max\030\n \001(\003H\001\022"
-  "\025\n\013float64_max\030\013 \001(\001H\001B\005\n\003minB\005\n\003max\"\242\001\n"
-  "\006Metric\022(\n\004info\030\001 \001(\0132\025.abacus.protobuf."
-  "InfoH\001\210\001\001\022\026\n\014uint64_value\030\002 \001(\004H\000\022\025\n\013int"
-  "64_value\030\003 \001(\003H\000\022\027\n\rfloat64_value\030\004 \001(\001H"
-  "\000\022\024\n\nbool_value\030\005 \001(\010H\000B\007\n\005valueB\007\n\005_inf"
-  "o\"L\n\007Metrics\022\030\n\020protocol_version\030\001 \001(\r\022\'"
-  "\n\006metric\030\002 \003(\0132\027.abacus.protobuf.Metric*"
-  ",\n\004Kind\022\013\n\007COUNTER\020\000\022\014\n\010CONSTANT\020\001\022\t\n\005GA"
-  "UGE\020\002*4\n\004Type\022\n\n\006UINT64\020\000\022\t\n\005INT64\020\001\022\013\n\007"
-  "FLOAT64\020\002\022\010\n\004BOOL\020\003b\006proto3"
-  ;
-static ::_pbi::once_flag descriptor_table_abacus_5fmetric_2eproto_once;
+const char descriptor_table_protodef_abacus_5fmetric_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+    "\n\023abacus_metric.proto\022\017abacus.protobuf\"\223"
+    "\002\n\004Info\022\014\n\004name\030\001 \001(\t\022\023\n\013description\030\002 \001"
+    "(\t\022#\n\004type\030\003 \001(\0162\025.abacus.protobuf.Type\022"
+    "#\n\004kind\030\004 \001(\0162\025.abacus.protobuf.Kind\022\014\n\004"
+    "unit\030\005 \001(\t\022\024\n\nuint64_min\030\006 \001(\004H\000\022\023\n\tint6"
+    "4_min\030\007 \001(\003H\000\022\025\n\013float64_min\030\010 \001(\001H\000\022\024\n\n"
+    "uint64_max\030\t \001(\004H\001\022\023\n\tint64_max\030\n \001(\003H\001\022"
+    "\025\n\013float64_max\030\013 \001(\001H\001B\005\n\003minB\005\n\003max\"\242\001\n"
+    "\006Metric\022(\n\004info\030\001 \001(\0132\025.abacus.protobuf."
+    "InfoH\001\210\001\001\022\026\n\014uint64_value\030\002 \001(\004H\000\022\025\n\013int"
+    "64_value\030\003 \001(\003H\000\022\027\n\rfloat64_value\030\004 \001(\001H"
+    "\000\022\024\n\nbool_value\030\005 \001(\010H\000B\007\n\005valueB\007\n\005_inf"
+    "o\"L\n\007Metrics\022\030\n\020protocol_version\030\001 \001(\r\022\'"
+    "\n\006metric\030\002 \003(\0132\027.abacus.protobuf.Metric*"
+    ",\n\004Kind\022\013\n\007COUNTER\020\000\022\014\n\010CONSTANT\020\001\022\t\n\005GA"
+    "UGE\020\002*4\n\004Type\022\n\n\006UINT64\020\000\022\t\n\005INT64\020\001\022\013\n\007"
+    "FLOAT64\020\002\022\010\n\004BOOL\020\003B\021Z\017abacus/protobufb\006"
+    "proto3"
+};
+static ::absl::once_flag descriptor_table_abacus_5fmetric_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_abacus_5fmetric_2eproto = {
-    false, false, 667, descriptor_table_protodef_abacus_5fmetric_2eproto,
+    false,
+    false,
+    686,
+    descriptor_table_protodef_abacus_5fmetric_2eproto,
     "abacus_metric.proto",
-    &descriptor_table_abacus_5fmetric_2eproto_once, nullptr, 0, 3,
-    schemas, file_default_instances, TableStruct_abacus_5fmetric_2eproto::offsets,
-    file_level_metadata_abacus_5fmetric_2eproto, file_level_enum_descriptors_abacus_5fmetric_2eproto,
+    &descriptor_table_abacus_5fmetric_2eproto_once,
+    nullptr,
+    0,
+    3,
+    schemas,
+    file_default_instances,
+    TableStruct_abacus_5fmetric_2eproto::offsets,
+    file_level_metadata_abacus_5fmetric_2eproto,
+    file_level_enum_descriptors_abacus_5fmetric_2eproto,
     file_level_service_descriptors_abacus_5fmetric_2eproto,
 };
+
+// This function exists to be marked as weak.
+// It can significantly speed up compilation by breaking up LLVM's SCC
+// in the .pb.cc translation units. Large translation units see a
+// reduction of more than 35% of walltime for optimized builds. Without
+// the weak attribute all the messages in the file, including all the
+// vtables and everything they use become part of the same SCC through
+// a cycle like:
+// GetMetadata -> descriptor table -> default instances ->
+//   vtables -> GetMetadata
+// By adding a weak function here we break the connection from the
+// individual vtables back into the descriptor table.
 PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable* descriptor_table_abacus_5fmetric_2eproto_getter() {
   return &descriptor_table_abacus_5fmetric_2eproto;
 }
-
 // Force running AddDescriptors() at dynamic initialization time.
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_abacus_5fmetric_2eproto(&descriptor_table_abacus_5fmetric_2eproto);
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY2
+static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_abacus_5fmetric_2eproto(&descriptor_table_abacus_5fmetric_2eproto);
 namespace abacus {
 namespace protobuf {
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Kind_descriptor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_abacus_5fmetric_2eproto);
+const ::google::protobuf::EnumDescriptor* Kind_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_abacus_5fmetric_2eproto);
   return file_level_enum_descriptors_abacus_5fmetric_2eproto[0];
 }
 bool Kind_IsValid(int value) {
@@ -186,9 +234,8 @@ bool Kind_IsValid(int value) {
       return false;
   }
 }
-
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Type_descriptor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_abacus_5fmetric_2eproto);
+const ::google::protobuf::EnumDescriptor* Type_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_abacus_5fmetric_2eproto);
   return file_level_enum_descriptors_abacus_5fmetric_2eproto[1];
 }
 bool Type_IsValid(int value) {
@@ -202,61 +249,58 @@ bool Type_IsValid(int value) {
       return false;
   }
 }
-
-
 // ===================================================================
 
 class Info::_Internal {
  public:
+  static constexpr ::int32_t kOneofCaseOffset =
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Info, _impl_._oneof_case_);
 };
 
-Info::Info(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor(arena, is_message_owned);
+Info::Info(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:abacus.protobuf.Info)
 }
-Info::Info(const Info& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  Info* const _this = this; (void)_this;
+Info::Info(const Info& from) : ::google::protobuf::Message() {
+  Info* const _this = this;
+  (void)_this;
   new (&_impl_) Impl_{
-      decltype(_impl_.name_){}
-    , decltype(_impl_.description_){}
-    , decltype(_impl_.unit_){}
-    , decltype(_impl_.type_){}
-    , decltype(_impl_.kind_){}
-    , decltype(_impl_.min_){}
-    , decltype(_impl_.max_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , /*decltype(_impl_._oneof_case_)*/{}};
-
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+      decltype(_impl_.name_){},
+      decltype(_impl_.description_){},
+      decltype(_impl_.unit_){},
+      decltype(_impl_.type_){},
+      decltype(_impl_.kind_){},
+      decltype(_impl_.min_){},
+      decltype(_impl_.max_){},
+      /*decltype(_impl_._cached_size_)*/ {},
+      /*decltype(_impl_._oneof_case_)*/ {},
+  };
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
   _impl_.name_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.name_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.name_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_name().empty()) {
-    _this->_impl_.name_.Set(from._internal_name(), 
-      _this->GetArenaForAllocation());
+    _this->_impl_.name_.Set(from._internal_name(), _this->GetArenaForAllocation());
   }
   _impl_.description_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.description_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.description_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_description().empty()) {
-    _this->_impl_.description_.Set(from._internal_description(), 
-      _this->GetArenaForAllocation());
+    _this->_impl_.description_.Set(from._internal_description(), _this->GetArenaForAllocation());
   }
   _impl_.unit_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.unit_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.unit_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_unit().empty()) {
-    _this->_impl_.unit_.Set(from._internal_unit(), 
-      _this->GetArenaForAllocation());
+    _this->_impl_.unit_.Set(from._internal_unit(), _this->GetArenaForAllocation());
   }
   ::memcpy(&_impl_.type_, &from._impl_.type_,
-    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.kind_) -
+    static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.kind_) -
     reinterpret_cast<char*>(&_impl_.type_)) + sizeof(_impl_.kind_));
   clear_has_min();
   switch (from.min_case()) {
@@ -294,51 +338,44 @@ Info::Info(const Info& from)
       break;
     }
   }
+
   // @@protoc_insertion_point(copy_constructor:abacus.protobuf.Info)
 }
-
-inline void Info::SharedCtor(
-    ::_pb::Arena* arena, bool is_message_owned) {
+inline void Info::SharedCtor(::_pb::Arena* arena) {
   (void)arena;
-  (void)is_message_owned;
   new (&_impl_) Impl_{
-      decltype(_impl_.name_){}
-    , decltype(_impl_.description_){}
-    , decltype(_impl_.unit_){}
-    , decltype(_impl_.type_){0}
-    , decltype(_impl_.kind_){0}
-    , decltype(_impl_.min_){}
-    , decltype(_impl_.max_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , /*decltype(_impl_._oneof_case_)*/{}
+      decltype(_impl_.name_){},
+      decltype(_impl_.description_){},
+      decltype(_impl_.unit_){},
+      decltype(_impl_.type_){0},
+      decltype(_impl_.kind_){0},
+      decltype(_impl_.min_){},
+      decltype(_impl_.max_){},
+      /*decltype(_impl_._cached_size_)*/ {},
+      /*decltype(_impl_._oneof_case_)*/ {},
   };
   _impl_.name_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.name_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.name_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   _impl_.description_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.description_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.description_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   _impl_.unit_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.unit_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.unit_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   clear_has_min();
   clear_has_max();
 }
-
 Info::~Info() {
   // @@protoc_insertion_point(destructor:abacus.protobuf.Info)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void Info::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.name_.Destroy();
   _impl_.description_.Destroy();
   _impl_.unit_.Destroy();
@@ -349,7 +386,6 @@ inline void Info::SharedDtor() {
     clear_max();
   }
 }
-
 void Info::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
@@ -399,297 +435,262 @@ void Info::clear_max() {
 }
 
 
-void Info::Clear() {
+PROTOBUF_NOINLINE void Info::Clear() {
 // @@protoc_insertion_point(message_clear_start:abacus.protobuf.Info)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   _impl_.name_.ClearToEmpty();
   _impl_.description_.ClearToEmpty();
   _impl_.unit_.ClearToEmpty();
-  ::memset(&_impl_.type_, 0, static_cast<size_t>(
+  ::memset(&_impl_.type_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.kind_) -
       reinterpret_cast<char*>(&_impl_.type_)) + sizeof(_impl_.kind_));
   clear_min();
   clear_max();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* Info::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // string name = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
-          auto str = _internal_mutable_name();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "abacus.protobuf.Info.name"));
-        } else
-          goto handle_unusual;
-        continue;
-      // string description = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
-          auto str = _internal_mutable_description();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "abacus.protobuf.Info.description"));
-        } else
-          goto handle_unusual;
-        continue;
-      // .abacus.protobuf.Type type = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
-          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-          _internal_set_type(static_cast<::abacus::protobuf::Type>(val));
-        } else
-          goto handle_unusual;
-        continue;
-      // .abacus.protobuf.Kind kind = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
-          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-          _internal_set_kind(static_cast<::abacus::protobuf::Kind>(val));
-        } else
-          goto handle_unusual;
-        continue;
-      // string unit = 5;
-      case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 42)) {
-          auto str = _internal_mutable_unit();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "abacus.protobuf.Info.unit"));
-        } else
-          goto handle_unusual;
-        continue;
-      // uint64 uint64_min = 6;
-      case 6:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 48)) {
-          _internal_set_uint64_min(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr));
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // int64 int64_min = 7;
-      case 7:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 56)) {
-          _internal_set_int64_min(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr));
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // double float64_min = 8;
-      case 8:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 65)) {
-          _internal_set_float64_min(::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr));
-          ptr += sizeof(double);
-        } else
-          goto handle_unusual;
-        continue;
-      // uint64 uint64_max = 9;
-      case 9:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 72)) {
-          _internal_set_uint64_max(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr));
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // int64 int64_max = 10;
-      case 10:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 80)) {
-          _internal_set_int64_max(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr));
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // double float64_max = 11;
-      case 11:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 89)) {
-          _internal_set_float64_max(::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr));
-          ptr += sizeof(double);
-        } else
-          goto handle_unusual;
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* Info::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
 
-uint8_t* Info::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<3, 11, 0, 56, 2> Info::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    11, 56,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294965248,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    11,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_Info_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // string name = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(Info, _impl_.name_)}},
+    // string description = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(Info, _impl_.description_)}},
+    // .abacus.protobuf.Type type = 3;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Info, _impl_.type_), 63>(),
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(Info, _impl_.type_)}},
+    // .abacus.protobuf.Kind kind = 4;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Info, _impl_.kind_), 63>(),
+     {32, 63, 0, PROTOBUF_FIELD_OFFSET(Info, _impl_.kind_)}},
+    // string unit = 5;
+    {::_pbi::TcParser::FastUS1,
+     {42, 63, 0, PROTOBUF_FIELD_OFFSET(Info, _impl_.unit_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string name = 1;
+    {PROTOBUF_FIELD_OFFSET(Info, _impl_.name_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string description = 2;
+    {PROTOBUF_FIELD_OFFSET(Info, _impl_.description_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // .abacus.protobuf.Type type = 3;
+    {PROTOBUF_FIELD_OFFSET(Info, _impl_.type_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+    // .abacus.protobuf.Kind kind = 4;
+    {PROTOBUF_FIELD_OFFSET(Info, _impl_.kind_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+    // string unit = 5;
+    {PROTOBUF_FIELD_OFFSET(Info, _impl_.unit_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // uint64 uint64_min = 6;
+    {PROTOBUF_FIELD_OFFSET(Info, _impl_.min_.uint64_min_), _Internal::kOneofCaseOffset + 0, 0,
+    (0 | ::_fl::kFcOneof | ::_fl::kUInt64)},
+    // int64 int64_min = 7;
+    {PROTOBUF_FIELD_OFFSET(Info, _impl_.min_.int64_min_), _Internal::kOneofCaseOffset + 0, 0,
+    (0 | ::_fl::kFcOneof | ::_fl::kInt64)},
+    // double float64_min = 8;
+    {PROTOBUF_FIELD_OFFSET(Info, _impl_.min_.float64_min_), _Internal::kOneofCaseOffset + 0, 0,
+    (0 | ::_fl::kFcOneof | ::_fl::kDouble)},
+    // uint64 uint64_max = 9;
+    {PROTOBUF_FIELD_OFFSET(Info, _impl_.max_.uint64_max_), _Internal::kOneofCaseOffset + 4, 0,
+    (0 | ::_fl::kFcOneof | ::_fl::kUInt64)},
+    // int64 int64_max = 10;
+    {PROTOBUF_FIELD_OFFSET(Info, _impl_.max_.int64_max_), _Internal::kOneofCaseOffset + 4, 0,
+    (0 | ::_fl::kFcOneof | ::_fl::kInt64)},
+    // double float64_max = 11;
+    {PROTOBUF_FIELD_OFFSET(Info, _impl_.max_.float64_max_), _Internal::kOneofCaseOffset + 4, 0,
+    (0 | ::_fl::kFcOneof | ::_fl::kDouble)},
+  }},
+  // no aux_entries
+  {{
+    "\24\4\13\0\0\4\0\0\0\0\0\0\0\0\0\0"
+    "abacus.protobuf.Info"
+    "name"
+    "description"
+    "unit"
+  }},
+};
+
+::uint8_t* Info::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:abacus.protobuf.Info)
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
 
   // string name = 1;
   if (!this->_internal_name().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_name().data(), static_cast<int>(this->_internal_name().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "abacus.protobuf.Info.name");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_name(), target);
+    const std::string& _s = this->_internal_name();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "abacus.protobuf.Info.name");
+    target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
   // string description = 2;
   if (!this->_internal_description().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_description().data(), static_cast<int>(this->_internal_description().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "abacus.protobuf.Info.description");
-    target = stream->WriteStringMaybeAliased(
-        2, this->_internal_description(), target);
+    const std::string& _s = this->_internal_description();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "abacus.protobuf.Info.description");
+    target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
   // .abacus.protobuf.Type type = 3;
   if (this->_internal_type() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteEnumToArray(
-      3, this->_internal_type(), target);
+        3, this->_internal_type(), target);
   }
 
   // .abacus.protobuf.Kind kind = 4;
   if (this->_internal_kind() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteEnumToArray(
-      4, this->_internal_kind(), target);
+        4, this->_internal_kind(), target);
   }
 
   // string unit = 5;
   if (!this->_internal_unit().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_unit().data(), static_cast<int>(this->_internal_unit().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "abacus.protobuf.Info.unit");
-    target = stream->WriteStringMaybeAliased(
-        5, this->_internal_unit(), target);
+    const std::string& _s = this->_internal_unit();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "abacus.protobuf.Info.unit");
+    target = stream->WriteStringMaybeAliased(5, _s, target);
   }
 
-  // uint64 uint64_min = 6;
-  if (_internal_has_uint64_min()) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(6, this->_internal_uint64_min(), target);
+  switch (min_case()) {
+    case kUint64Min: {
+      target = stream->EnsureSpace(target);
+      target = ::_pbi::WireFormatLite::WriteUInt64ToArray(
+          6, this->_internal_uint64_min(), target);
+      break;
+    }
+    case kInt64Min: {
+      target = ::google::protobuf::internal::WireFormatLite::
+          WriteInt64ToArrayWithField<7>(
+              stream, this->_internal_int64_min(), target);
+      break;
+    }
+    case kFloat64Min: {
+      target = stream->EnsureSpace(target);
+      target = ::_pbi::WireFormatLite::WriteDoubleToArray(
+          8, this->_internal_float64_min(), target);
+      break;
+    }
+    default:
+      break;
   }
-
-  // int64 int64_min = 7;
-  if (_internal_has_int64_min()) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt64ToArray(7, this->_internal_int64_min(), target);
+  switch (max_case()) {
+    case kUint64Max: {
+      target = stream->EnsureSpace(target);
+      target = ::_pbi::WireFormatLite::WriteUInt64ToArray(
+          9, this->_internal_uint64_max(), target);
+      break;
+    }
+    case kInt64Max: {
+      target = ::google::protobuf::internal::WireFormatLite::
+          WriteInt64ToArrayWithField<10>(
+              stream, this->_internal_int64_max(), target);
+      break;
+    }
+    case kFloat64Max: {
+      target = stream->EnsureSpace(target);
+      target = ::_pbi::WireFormatLite::WriteDoubleToArray(
+          11, this->_internal_float64_max(), target);
+      break;
+    }
+    default:
+      break;
   }
-
-  // double float64_min = 8;
-  if (_internal_has_float64_min()) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteDoubleToArray(8, this->_internal_float64_min(), target);
-  }
-
-  // uint64 uint64_max = 9;
-  if (_internal_has_uint64_max()) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(9, this->_internal_uint64_max(), target);
-  }
-
-  // int64 int64_max = 10;
-  if (_internal_has_int64_max()) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt64ToArray(10, this->_internal_int64_max(), target);
-  }
-
-  // double float64_max = 11;
-  if (_internal_has_float64_max()) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteDoubleToArray(11, this->_internal_float64_max(), target);
-  }
-
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:abacus.protobuf.Info)
   return target;
 }
 
-size_t Info::ByteSizeLong() const {
+::size_t Info::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:abacus.protobuf.Info)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string name = 1;
   if (!this->_internal_name().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_name());
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_name());
   }
 
   // string description = 2;
   if (!this->_internal_description().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_description());
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_description());
   }
 
   // string unit = 5;
   if (!this->_internal_unit().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_unit());
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_unit());
   }
 
   // .abacus.protobuf.Type type = 3;
   if (this->_internal_type() != 0) {
     total_size += 1 +
-      ::_pbi::WireFormatLite::EnumSize(this->_internal_type());
+                  ::_pbi::WireFormatLite::EnumSize(this->_internal_type());
   }
 
   // .abacus.protobuf.Kind kind = 4;
   if (this->_internal_kind() != 0) {
     total_size += 1 +
-      ::_pbi::WireFormatLite::EnumSize(this->_internal_kind());
+                  ::_pbi::WireFormatLite::EnumSize(this->_internal_kind());
   }
 
   switch (min_case()) {
     // uint64 uint64_min = 6;
     case kUint64Min: {
-      total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_uint64_min());
+      total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
+          this->_internal_uint64_min());
       break;
     }
     // int64 int64_min = 7;
     case kInt64Min: {
-      total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_int64_min());
+      total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
+          this->_internal_int64_min());
       break;
     }
     // double float64_min = 8;
     case kFloat64Min: {
-      total_size += 1 + 8;
+      total_size += 9;
       break;
     }
     case MIN_NOT_SET: {
@@ -699,17 +700,19 @@ size_t Info::ByteSizeLong() const {
   switch (max_case()) {
     // uint64 uint64_max = 9;
     case kUint64Max: {
-      total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_uint64_max());
+      total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
+          this->_internal_uint64_max());
       break;
     }
     // int64 int64_max = 10;
     case kInt64Max: {
-      total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_int64_max());
+      total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
+          this->_internal_int64_max());
       break;
     }
     // double float64_max = 11;
     case kFloat64Max: {
-      total_size += 1 + 8;
+      total_size += 9;
       break;
     }
     case MAX_NOT_SET: {
@@ -719,19 +722,19 @@ size_t Info::ByteSizeLong() const {
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Info::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+const ::google::protobuf::Message::ClassData Info::_class_data_ = {
+    ::google::protobuf::Message::CopyWithSourceCheck,
     Info::MergeImpl
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Info::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData*Info::GetClassData() const { return &_class_data_; }
 
 
-void Info::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void Info::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<Info*>(&to_msg);
   auto& from = static_cast<const Info&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:abacus.protobuf.Info)
-  GOOGLE_DCHECK_NE(&from, _this);
-  uint32_t cached_has_bits = 0;
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_name().empty()) {
@@ -783,7 +786,7 @@ void Info::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_
       break;
     }
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Info::CopyFrom(const Info& from) {
@@ -793,7 +796,7 @@ void Info::CopyFrom(const Info& from) {
   MergeFrom(from);
 }
 
-bool Info::IsInitialized() const {
+PROTOBUF_NOINLINE bool Info::IsInitialized() const {
   return true;
 }
 
@@ -802,19 +805,13 @@ void Info::InternalSwap(Info* other) {
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.name_, lhs_arena,
-      &other->_impl_.name_, rhs_arena
-  );
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.description_, lhs_arena,
-      &other->_impl_.description_, rhs_arena
-  );
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.unit_, lhs_arena,
-      &other->_impl_.unit_, rhs_arena
-  );
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.name_, lhs_arena,
+                                       &other->_impl_.name_, rhs_arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.description_, lhs_arena,
+                                       &other->_impl_.description_, rhs_arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.unit_, lhs_arena,
+                                       &other->_impl_.unit_, rhs_arena);
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Info, _impl_.kind_)
       + sizeof(Info::_impl_.kind_)
       - PROTOBUF_FIELD_OFFSET(Info, _impl_.type_)>(
@@ -826,45 +823,47 @@ void Info::InternalSwap(Info* other) {
   swap(_impl_._oneof_case_[1], other->_impl_._oneof_case_[1]);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata Info::GetMetadata() const {
+::google::protobuf::Metadata Info::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_abacus_5fmetric_2eproto_getter, &descriptor_table_abacus_5fmetric_2eproto_once,
       file_level_metadata_abacus_5fmetric_2eproto[0]);
 }
-
 // ===================================================================
 
 class Metric::_Internal {
  public:
   using HasBits = decltype(std::declval<Metric>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(Metric, _impl_._has_bits_);
+  static constexpr ::int32_t kOneofCaseOffset =
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Metric, _impl_._oneof_case_);
   static const ::abacus::protobuf::Info& info(const Metric* msg);
   static void set_has_info(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
 };
 
-const ::abacus::protobuf::Info&
-Metric::_Internal::info(const Metric* msg) {
+const ::abacus::protobuf::Info& Metric::_Internal::info(const Metric* msg) {
   return *msg->_impl_.info_;
 }
-Metric::Metric(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor(arena, is_message_owned);
+Metric::Metric(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:abacus.protobuf.Metric)
 }
-Metric::Metric(const Metric& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  Metric* const _this = this; (void)_this;
+Metric::Metric(const Metric& from) : ::google::protobuf::Message() {
+  Metric* const _this = this;
+  (void)_this;
   new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.info_){nullptr}
-    , decltype(_impl_.value_){}
-    , /*decltype(_impl_._oneof_case_)*/{}};
-
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if (from._internal_has_info()) {
+      decltype(_impl_._has_bits_){from._impl_._has_bits_},
+      /*decltype(_impl_._cached_size_)*/ {},
+      decltype(_impl_.info_){nullptr},
+      decltype(_impl_.value_){},
+      /*decltype(_impl_._oneof_case_)*/ {},
+  };
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
     _this->_impl_.info_ = new ::abacus::protobuf::Info(*from._impl_.info_);
   }
   clear_has_value();
@@ -889,40 +888,32 @@ Metric::Metric(const Metric& from)
       break;
     }
   }
+
   // @@protoc_insertion_point(copy_constructor:abacus.protobuf.Metric)
 }
-
-inline void Metric::SharedCtor(
-    ::_pb::Arena* arena, bool is_message_owned) {
+inline void Metric::SharedCtor(::_pb::Arena* arena) {
   (void)arena;
-  (void)is_message_owned;
   new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.info_){nullptr}
-    , decltype(_impl_.value_){}
-    , /*decltype(_impl_._oneof_case_)*/{}
+      decltype(_impl_._has_bits_){},
+      /*decltype(_impl_._cached_size_)*/ {},
+      decltype(_impl_.info_){nullptr},
+      decltype(_impl_.value_){},
+      /*decltype(_impl_._oneof_case_)*/ {},
   };
   clear_has_value();
 }
-
 Metric::~Metric() {
   // @@protoc_insertion_point(destructor:abacus.protobuf.Metric)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void Metric::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
   if (this != internal_default_instance()) delete _impl_.info_;
   if (has_value()) {
     clear_value();
   }
 }
-
 void Metric::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
@@ -954,143 +945,128 @@ void Metric::clear_value() {
 }
 
 
-void Metric::Clear() {
+PROTOBUF_NOINLINE void Metric::Clear() {
 // @@protoc_insertion_point(message_clear_start:abacus.protobuf.Metric)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    GOOGLE_DCHECK(_impl_.info_ != nullptr);
+    ABSL_DCHECK(_impl_.info_ != nullptr);
     _impl_.info_->Clear();
   }
   clear_value();
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* Metric::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // optional .abacus.protobuf.Info info = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_info(), ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // uint64 uint64_value = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
-          _internal_set_uint64_value(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr));
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // int64 int64_value = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
-          _internal_set_int64_value(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr));
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // double float64_value = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 33)) {
-          _internal_set_float64_value(::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr));
-          ptr += sizeof(double);
-        } else
-          goto handle_unusual;
-        continue;
-      // bool bool_value = 5;
-      case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
-          _internal_set_bool_value(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr));
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* Metric::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
 
-uint8_t* Metric::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:abacus.protobuf.Metric)
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
 
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 5, 1, 0, 2> Metric::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(Metric, _impl_._has_bits_),
+    0, // no _extensions_
+    5, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967264,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    5,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_Metric_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // optional .abacus.protobuf.Info info = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(Metric, _impl_.info_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // optional .abacus.protobuf.Info info = 1;
+    {PROTOBUF_FIELD_OFFSET(Metric, _impl_.info_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // uint64 uint64_value = 2;
+    {PROTOBUF_FIELD_OFFSET(Metric, _impl_.value_.uint64_value_), _Internal::kOneofCaseOffset + 0, 0,
+    (0 | ::_fl::kFcOneof | ::_fl::kUInt64)},
+    // int64 int64_value = 3;
+    {PROTOBUF_FIELD_OFFSET(Metric, _impl_.value_.int64_value_), _Internal::kOneofCaseOffset + 0, 0,
+    (0 | ::_fl::kFcOneof | ::_fl::kInt64)},
+    // double float64_value = 4;
+    {PROTOBUF_FIELD_OFFSET(Metric, _impl_.value_.float64_value_), _Internal::kOneofCaseOffset + 0, 0,
+    (0 | ::_fl::kFcOneof | ::_fl::kDouble)},
+    // bool bool_value = 5;
+    {PROTOBUF_FIELD_OFFSET(Metric, _impl_.value_.bool_value_), _Internal::kOneofCaseOffset + 0, 0,
+    (0 | ::_fl::kFcOneof | ::_fl::kBool)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::abacus::protobuf::Info>()},
+  }}, {{
+  }},
+};
+
+::uint8_t* Metric::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:abacus.protobuf.Metric)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
   // optional .abacus.protobuf.Info info = 1;
-  if (_internal_has_info()) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+  if (cached_has_bits & 0x00000001u) {
+    target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessage(1, _Internal::info(this),
         _Internal::info(this).GetCachedSize(), target, stream);
   }
 
-  // uint64 uint64_value = 2;
-  if (_internal_has_uint64_value()) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(2, this->_internal_uint64_value(), target);
+  switch (value_case()) {
+    case kUint64Value: {
+      target = stream->EnsureSpace(target);
+      target = ::_pbi::WireFormatLite::WriteUInt64ToArray(
+          2, this->_internal_uint64_value(), target);
+      break;
+    }
+    case kInt64Value: {
+      target = ::google::protobuf::internal::WireFormatLite::
+          WriteInt64ToArrayWithField<3>(
+              stream, this->_internal_int64_value(), target);
+      break;
+    }
+    case kFloat64Value: {
+      target = stream->EnsureSpace(target);
+      target = ::_pbi::WireFormatLite::WriteDoubleToArray(
+          4, this->_internal_float64_value(), target);
+      break;
+    }
+    case kBoolValue: {
+      target = stream->EnsureSpace(target);
+      target = ::_pbi::WireFormatLite::WriteBoolToArray(
+          5, this->_internal_bool_value(), target);
+      break;
+    }
+    default:
+      break;
   }
-
-  // int64 int64_value = 3;
-  if (_internal_has_int64_value()) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt64ToArray(3, this->_internal_int64_value(), target);
-  }
-
-  // double float64_value = 4;
-  if (_internal_has_float64_value()) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteDoubleToArray(4, this->_internal_float64_value(), target);
-  }
-
-  // bool bool_value = 5;
-  if (_internal_has_bool_value()) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(5, this->_internal_bool_value(), target);
-  }
-
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:abacus.protobuf.Metric)
   return target;
 }
 
-size_t Metric::ByteSizeLong() const {
+::size_t Metric::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:abacus.protobuf.Metric)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
@@ -1098,29 +1074,31 @@ size_t Metric::ByteSizeLong() const {
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
         *_impl_.info_);
   }
 
   switch (value_case()) {
     // uint64 uint64_value = 2;
     case kUint64Value: {
-      total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_uint64_value());
+      total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
+          this->_internal_uint64_value());
       break;
     }
     // int64 int64_value = 3;
     case kInt64Value: {
-      total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_int64_value());
+      total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
+          this->_internal_int64_value());
       break;
     }
     // double float64_value = 4;
     case kFloat64Value: {
-      total_size += 1 + 8;
+      total_size += 9;
       break;
     }
     // bool bool_value = 5;
     case kBoolValue: {
-      total_size += 1 + 1;
+      total_size += 2;
       break;
     }
     case VALUE_NOT_SET: {
@@ -1130,22 +1108,22 @@ size_t Metric::ByteSizeLong() const {
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Metric::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+const ::google::protobuf::Message::ClassData Metric::_class_data_ = {
+    ::google::protobuf::Message::CopyWithSourceCheck,
     Metric::MergeImpl
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Metric::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData*Metric::GetClassData() const { return &_class_data_; }
 
 
-void Metric::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void Metric::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<Metric*>(&to_msg);
   auto& from = static_cast<const Metric&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:abacus.protobuf.Metric)
-  GOOGLE_DCHECK_NE(&from, _this);
-  uint32_t cached_has_bits = 0;
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_has_info()) {
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
     _this->_internal_mutable_info()->::abacus::protobuf::Info::MergeFrom(
         from._internal_info());
   }
@@ -1170,7 +1148,7 @@ void Metric::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBU
       break;
     }
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Metric::CopyFrom(const Metric& from) {
@@ -1180,7 +1158,7 @@ void Metric::CopyFrom(const Metric& from) {
   MergeFrom(from);
 }
 
-bool Metric::IsInitialized() const {
+PROTOBUF_NOINLINE bool Metric::IsInitialized() const {
   return true;
 }
 
@@ -1193,198 +1171,185 @@ void Metric::InternalSwap(Metric* other) {
   swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata Metric::GetMetadata() const {
+::google::protobuf::Metadata Metric::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_abacus_5fmetric_2eproto_getter, &descriptor_table_abacus_5fmetric_2eproto_once,
       file_level_metadata_abacus_5fmetric_2eproto[1]);
 }
-
 // ===================================================================
 
 class Metrics::_Internal {
  public:
 };
 
-Metrics::Metrics(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor(arena, is_message_owned);
+Metrics::Metrics(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:abacus.protobuf.Metrics)
 }
-Metrics::Metrics(const Metrics& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  Metrics* const _this = this; (void)_this;
+Metrics::Metrics(const Metrics& from) : ::google::protobuf::Message() {
+  Metrics* const _this = this;
+  (void)_this;
   new (&_impl_) Impl_{
-      decltype(_impl_.metric_){from._impl_.metric_}
-    , decltype(_impl_.protocol_version_){}
-    , /*decltype(_impl_._cached_size_)*/{}};
-
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+      decltype(_impl_.metric_){from._impl_.metric_},
+      decltype(_impl_.protocol_version_){},
+      /*decltype(_impl_._cached_size_)*/ {},
+  };
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
   _this->_impl_.protocol_version_ = from._impl_.protocol_version_;
+
   // @@protoc_insertion_point(copy_constructor:abacus.protobuf.Metrics)
 }
-
-inline void Metrics::SharedCtor(
-    ::_pb::Arena* arena, bool is_message_owned) {
+inline void Metrics::SharedCtor(::_pb::Arena* arena) {
   (void)arena;
-  (void)is_message_owned;
   new (&_impl_) Impl_{
-      decltype(_impl_.metric_){arena}
-    , decltype(_impl_.protocol_version_){0u}
-    , /*decltype(_impl_._cached_size_)*/{}
+      decltype(_impl_.metric_){arena},
+      decltype(_impl_.protocol_version_){0u},
+      /*decltype(_impl_._cached_size_)*/ {},
   };
 }
-
 Metrics::~Metrics() {
   // @@protoc_insertion_point(destructor:abacus.protobuf.Metrics)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void Metrics::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.metric_.~RepeatedPtrField();
 }
-
 void Metrics::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
 
-void Metrics::Clear() {
+PROTOBUF_NOINLINE void Metrics::Clear() {
 // @@protoc_insertion_point(message_clear_start:abacus.protobuf.Metrics)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.metric_.Clear();
+  _internal_mutable_metric()->Clear();
   _impl_.protocol_version_ = 0u;
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* Metrics::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // uint32 protocol_version = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          _impl_.protocol_version_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // repeated .abacus.protobuf.Metric metric = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
-          ptr -= 1;
-          do {
-            ptr += 1;
-            ptr = ctx->ParseMessage(_internal_add_metric(), ptr);
-            CHK_(ptr);
-            if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<18>(ptr));
-        } else
-          goto handle_unusual;
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* Metrics::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
 
-uint8_t* Metrics::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 1, 0, 2> Metrics::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_Metrics_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // repeated .abacus.protobuf.Metric metric = 2;
+    {::_pbi::TcParser::FastMtR1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(Metrics, _impl_.metric_)}},
+    // uint32 protocol_version = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Metrics, _impl_.protocol_version_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(Metrics, _impl_.protocol_version_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // uint32 protocol_version = 1;
+    {PROTOBUF_FIELD_OFFSET(Metrics, _impl_.protocol_version_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+    // repeated .abacus.protobuf.Metric metric = 2;
+    {PROTOBUF_FIELD_OFFSET(Metrics, _impl_.metric_), 0, 0,
+    (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::abacus::protobuf::Metric>()},
+  }}, {{
+  }},
+};
+
+::uint8_t* Metrics::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:abacus.protobuf.Metrics)
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
 
   // uint32 protocol_version = 1;
   if (this->_internal_protocol_version() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(1, this->_internal_protocol_version(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+        1, this->_internal_protocol_version(), target);
   }
 
   // repeated .abacus.protobuf.Metric metric = 2;
   for (unsigned i = 0,
       n = static_cast<unsigned>(this->_internal_metric_size()); i < n; i++) {
-    const auto& repfield = this->_internal_metric(i);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+    const auto& repfield = this->_internal_metric().Get(i);
+    target = ::google::protobuf::internal::WireFormatLite::
         InternalWriteMessage(2, repfield, repfield.GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:abacus.protobuf.Metrics)
   return target;
 }
 
-size_t Metrics::ByteSizeLong() const {
+::size_t Metrics::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:abacus.protobuf.Metrics)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // repeated .abacus.protobuf.Metric metric = 2;
   total_size += 1UL * this->_internal_metric_size();
-  for (const auto& msg : this->_impl_.metric_) {
+  for (const auto& msg : this->_internal_metric()) {
     total_size +=
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+      ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
   }
-
   // uint32 protocol_version = 1;
   if (this->_internal_protocol_version() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_protocol_version());
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+        this->_internal_protocol_version());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Metrics::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+const ::google::protobuf::Message::ClassData Metrics::_class_data_ = {
+    ::google::protobuf::Message::CopyWithSourceCheck,
     Metrics::MergeImpl
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Metrics::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData*Metrics::GetClassData() const { return &_class_data_; }
 
 
-void Metrics::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void Metrics::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<Metrics*>(&to_msg);
   auto& from = static_cast<const Metrics&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:abacus.protobuf.Metrics)
-  GOOGLE_DCHECK_NE(&from, _this);
-  uint32_t cached_has_bits = 0;
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  _this->_impl_.metric_.MergeFrom(from._impl_.metric_);
+  _this->_internal_mutable_metric()->MergeFrom(from._internal_metric());
   if (from._internal_protocol_version() != 0) {
     _this->_internal_set_protocol_version(from._internal_protocol_version());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Metrics::CopyFrom(const Metrics& from) {
@@ -1394,7 +1359,7 @@ void Metrics::CopyFrom(const Metrics& from) {
   MergeFrom(from);
 }
 
-bool Metrics::IsInitialized() const {
+PROTOBUF_NOINLINE bool Metrics::IsInitialized() const {
   return true;
 }
 
@@ -1402,32 +1367,20 @@ void Metrics::InternalSwap(Metrics* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   _impl_.metric_.InternalSwap(&other->_impl_.metric_);
-  swap(_impl_.protocol_version_, other->_impl_.protocol_version_);
+        swap(_impl_.protocol_version_, other->_impl_.protocol_version_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata Metrics::GetMetadata() const {
+::google::protobuf::Metadata Metrics::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_abacus_5fmetric_2eproto_getter, &descriptor_table_abacus_5fmetric_2eproto_once,
       file_level_metadata_abacus_5fmetric_2eproto[2]);
 }
-
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace protobuf
 }  // namespace abacus
-PROTOBUF_NAMESPACE_OPEN
-template<> PROTOBUF_NOINLINE ::abacus::protobuf::Info*
-Arena::CreateMaybeMessage< ::abacus::protobuf::Info >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::abacus::protobuf::Info >(arena);
-}
-template<> PROTOBUF_NOINLINE ::abacus::protobuf::Metric*
-Arena::CreateMaybeMessage< ::abacus::protobuf::Metric >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::abacus::protobuf::Metric >(arena);
-}
-template<> PROTOBUF_NOINLINE ::abacus::protobuf::Metrics*
-Arena::CreateMaybeMessage< ::abacus::protobuf::Metrics >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::abacus::protobuf::Metrics >(arena);
-}
-PROTOBUF_NAMESPACE_CLOSE
-
+namespace google {
+namespace protobuf {
+}  // namespace protobuf
+}  // namespace google
 // @@protoc_insertion_point(global_scope)
-#include <google/protobuf/port_undef.inc>
+#include "google/protobuf/port_undef.inc"
