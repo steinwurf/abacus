@@ -28,6 +28,7 @@ endif()
 if(NOT TARGET steinwurf::endian)
   add_subdirectory("${STEINWURF_RESOLVE}/endian" endian EXCLUDE_FROM_ALL)
 endif()
+
 # protobuf
 if (NOT TARGET steinwurf::protobuf)
     add_subdirectory("${STEINWURF_RESOLVE}/protobuf" protobuf EXCLUDE_FROM_ALL)
@@ -61,7 +62,7 @@ else()
 endif()
 
 target_link_libraries(abacus PRIVATE steinwurf::endian)
-target_link_libraries(abacus PUBLIC protobuf::libprotobuf)
+target_link_libraries(abacus PUBLIC steinwurf::protobuf)
 
 target_include_directories(abacus INTERFACE src)
 target_compile_features(abacus PUBLIC cxx_std_14)
@@ -80,7 +81,7 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
   # Build executables
   add_executable(metrics_simple examples/metrics_simple.cpp)
   target_link_libraries(metrics_simple abacus)
-  target_link_libraries(metrics_simple protobuf::libprotobuf)
+  target_link_libraries(metrics_simple steinwurf::protobuf)
 
   enable_testing()
 
@@ -99,8 +100,11 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
   file(GLOB_RECURSE abacus_test_sources ./test/*.cpp)
   add_executable(abacus_test ${abacus_test_sources})
   target_link_libraries(abacus_test gtest_main)
-  target_link_libraries(abacus_test steinwurf::abacus steinwurf::endian steinwurf::bourne)
-  target_link_libraries(abacus_test protobuf::libprotobuf)
+  target_link_libraries(abacus_test
+          steinwurf::abacus
+          steinwurf::endian
+          steinwurf::bourne
+          steinwurf::protobuf)
 
   add_test(abacus_test abacus_test)
 endif()

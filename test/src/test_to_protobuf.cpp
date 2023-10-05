@@ -80,10 +80,14 @@ TEST(test_to_protobuf, api)
     metric2->set_bool_value(true);
 
     std::string expected_output;
-    google::protobuf::util::MessageToJsonString(expected, &expected_output);
+    auto msg1 =
+        google::protobuf::util::MessageToJsonString(expected, &expected_output);
+    EXPECT_TRUE(msg1.ok());
 
     std::string protobuf_json;
-    google::protobuf::util::MessageToJsonString(protobuf, &protobuf_json);
+    auto msg2 =
+        google::protobuf::util::MessageToJsonString(protobuf, &protobuf_json);
+    EXPECT_TRUE(msg1.ok());
 
     EXPECT_EQ(expected_output, protobuf_json);
 }
