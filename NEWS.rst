@@ -6,6 +6,10 @@ every change, see the Git log.
 
 Latest
 ------
+* tbd
+
+5.2.1
+-----
 * Patch: Bumped protobuf version to 2.0.4.
 
 5.2.0
