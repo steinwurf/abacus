@@ -31,7 +31,7 @@
         "name": "protobuf",
         "resolver": "git",
         "method": "semver",
-        "major": 1,
+        "major": 2,
         "sources": [
             "github.com/steinwurf/protobuf.git"
         ]
