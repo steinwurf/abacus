@@ -6,7 +6,7 @@ every change, see the Git log.
 
 Latest
 ------
-* Patch: Bumped protobuf version.
+* Patch: Bumped protobuf version to 2.0.4.
 
 5.2.0
 -----
