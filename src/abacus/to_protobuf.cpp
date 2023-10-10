@@ -6,7 +6,7 @@
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
 #include "detail/to_protobuf.hpp"
-#include "protobuf/abacus_metric.pb.h"
+#include "protobuf/metrics.pb.h"
 #include "to_protobuf.hpp"
 #include "view.hpp"
 

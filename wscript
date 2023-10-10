@@ -33,6 +33,7 @@ def build(bld):
         use=["protobuf", "endian_includes", "bourne"],
         install_path="${PREFIX}/lib",
         cxxflags=cxxflags,
+        includes=["src"],
         export_includes=["src"],
     )
 
@@ -78,7 +79,7 @@ def protogen(ctx):
     os.mkdir("src/abacus/protobuf")
 
     ctx.exec_command(
-        f"./{protoc_location} --cpp_out ./src/abacus/protobuf --proto_path ./protobuf protobuf/*.proto"
+        f"(./{protoc_location} --cpp_out ./src --proto_path .. ../abacus/protobuf/*.proto)"
     )
 
     ctx.exec_command(

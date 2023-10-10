@@ -8,7 +8,7 @@
 
 #include <vector>
 
-#include "protobuf/abacus_metric.pb.h"
+#include "protobuf/metrics.pb.h"
 #include "version.hpp"
 #include "view.hpp"
 
