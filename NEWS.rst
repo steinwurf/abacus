@@ -6,6 +6,10 @@ every change, see the Git log.
 
 Latest
 ------
+* tbd
+
+5.2.2
+-----
 * Patch: Reorganized protobuf.
 
 5.2.1
