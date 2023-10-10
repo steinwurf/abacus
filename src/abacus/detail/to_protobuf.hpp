@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "../protobuf/abacus_metric.pb.h"
+#include "../protobuf/metrics.pb.h"
 #include "../view.hpp"
 
 #include "../version.hpp"

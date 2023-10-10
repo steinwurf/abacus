@@ -64,7 +64,7 @@ endif()
 target_link_libraries(abacus PRIVATE steinwurf::endian)
 target_link_libraries(abacus PUBLIC steinwurf::protobuf)
 
-target_include_directories(abacus INTERFACE src)
+target_include_directories(abacus PUBLIC src)
 target_compile_features(abacus PUBLIC cxx_std_14)
 add_library(steinwurf::abacus ALIAS abacus)
 
