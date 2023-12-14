@@ -86,10 +86,10 @@ public:
     /// Destructor
     ~metrics();
 
-    /// @returns the pointer to the meta data of the metrics.
+    /// @returns the pointer to the metadata of the metrics.
     auto meta_data() const -> const uint8_t*;
 
-    /// @return the size of the meta data of the metrics.
+    /// @return the size of the metadata of the metrics.
     auto meta_bytes() const -> std::size_t;
 
     /// @returns the pointer to the value data of the metrics.
@@ -185,62 +185,6 @@ public:
 
         return metric<MetricType>{value_ptr};
     }
-
-    /// This function registers a callback that will be called when the metric
-    /// data is sampled, i.e when value_data() or value() is called. The
-    /// callback must return the value of the metric.
-    ///
-    /// The passed callback will give the value of the metric and this value
-    /// will then be written into memory behind the scenes.
-    ///
-    /// @param name The name of the metric. This is used for a check to ensure
-    /// that the name matches the one at the given index.
-    /// @param callback The callback that will be called when the metric data
-    /// is sampled.
-    void observe_metric(const std::string& name,
-                        delegate<uint64_t()> callback) const;
-
-    /// This function registers a callback that will be called when the metric
-    /// data is sampled, i.e when value_data() or value() is called. The
-    /// callback must return the value of the metric.
-    ///
-    /// The passed callback will give the value of the metric and this value
-    /// will then be written into memory behind the scenes.
-    ///
-    /// @param name The name of the metric. This is used for a check to ensure
-    /// that the name matches the one at the given index.
-    /// @param callback The callback that will be called when the metric data
-    /// is sampled.
-    void observe_metric(const std::string& name,
-                        delegate<int64_t()> callback) const;
-
-    /// This function registers a callback that will be called when the metric
-    /// data is sampled, i.e when value_data() or value() is called. The
-    /// callback must return the value of the metric.
-    ///
-    /// The passed callback will give the value of the metric and this value
-    /// will then be written into memory behind the scenes.
-    ///
-    /// @param name The name of the metric. This is used for a check to ensure
-    /// that the name matches the one at the given index.
-    /// @param callback The callback that will be called when the metric data
-    /// is sampled.
-    void observe_metric(const std::string& name,
-                        delegate<double()> callback) const;
-
-    /// This function registers a callback that will be called when the metric
-    /// data is sampled, i.e when value_data() or value() is called. The
-    /// callback must return the value of the metric.
-    ///
-    /// The passed callback will give the value of the metric and this value
-    /// will then be written into memory behind the scenes.
-    ///
-    /// @param name The name of the metric. This is used for a check to ensure
-    /// that the name matches the one at the given index.
-    /// @param callback The callback that will be called when the metric data
-    /// is sampled.
-    void observe_metric(const std::string& name,
-                        delegate<bool()> callback) const;
 
     /// Initialize a constant uint64_t metric at the given index.
     ///
@@ -393,15 +337,11 @@ private:
     /// Map to get index from names
     std::map<std::string, std::size_t> m_name_to_index;
 
-    /// The raw memory for the meta data
+    /// The raw memory for the metadata
     uint8_t* m_meta_data = nullptr;
 
     /// The raw memory for the value data
     uint8_t* m_value_data = nullptr;
-
-    /// Map of the observed metrics and the callbacks that are called on
-    /// value_data() and value()
-    mutable std::map<std::string, std::function<void()>> m_observer_map;
 };
 }
 }
