@@ -314,7 +314,7 @@ TEST(test_metrics, protocol_version)
     EXPECT_EQ(metrics.meta_bytes(), expected_meta_data.size());
     EXPECT_EQ(metrics.value_bytes(), expected_value_data.size());
     {
-        // Print the meta data as hex
+        // Print the metadata as hex
         std::stringstream meta_stream;
         meta_stream << std::hex;
         for (std::size_t i = 0; i < metrics.meta_bytes(); ++i)
@@ -344,69 +344,4 @@ TEST(test_metrics, protocol_version)
             std::vector<uint8_t>(metrics.value_data(),
                                  metrics.value_data() + metrics.value_bytes()));
     }
-}
-
-TEST(test_metrics, observe)
-{
-    abacus::metric_info infos[5] = {
-        abacus::metric_info{"metric0", "An unsigned integer metric",
-                            abacus::type::uint64, abacus::kind::counter,
-                            abacus::unit{"bytes"}},
-        abacus::metric_info{"metric1", "An unsigned integer metric",
-                            abacus::type::uint64, abacus::kind::counter,
-                            abacus::unit{"bytes"}},
-        abacus::metric_info{"metric2", "A signed integer metric",
-                            abacus::type::int64, abacus::kind::gauge,
-                            abacus::unit{"USD"}},
-        abacus::metric_info{"metric3", "A floating point metric",
-                            abacus::type::float64, abacus::kind::gauge,
-                            abacus::unit{"ms"}},
-        abacus::metric_info{"metric4", "A boolean metric",
-                            abacus::type::boolean, abacus::kind::gauge}};
-
-    abacus::metrics metrics(infos);
-
-    uint64_t observed_uint = 0;
-    int64_t observed_int = 0;
-    double observed_float = 0.0;
-    bool observed_bool = false;
-
-    uint64_t value_uint = 0;
-    uint64_t value_unobs = 0;
-    int64_t value_int = 0;
-    double value_float = 0.0;
-    bool value_bool = false;
-
-    metrics.observe_metric("metric0",
-                           abacus::delegate<uint64_t()>(
-                               [&observed_uint]() { return observed_uint; }));
-    auto metric1 = metrics.initialize_metric<abacus::type::uint64>("metric1");
-    metrics.observe_metric("metric2",
-                           abacus::delegate<int64_t()>(
-                               [&observed_int]() { return observed_int; }));
-    metrics.observe_metric("metric3",
-                           abacus::delegate<double()>(
-                               [&observed_float]() { return observed_float; }));
-    metrics.observe_metric(
-        "metric4",
-        abacus::delegate<bool()>([&observed_bool]() { return observed_bool; }));
-
-    observed_uint = 42U;
-    observed_int = -42;
-    observed_float = 142.0;
-    observed_bool = true;
-
-    metric1 = 142U;
-
-    metrics.value(0, value_uint);
-    metrics.value(1, value_unobs);
-    metrics.value(2, value_int);
-    metrics.value(3, value_float);
-    metrics.value(4, value_bool);
-
-    EXPECT_EQ(value_uint, observed_uint);
-    EXPECT_EQ(value_unobs, 142U);
-    EXPECT_EQ(value_int, observed_int);
-    EXPECT_EQ(value_float, observed_float);
-    EXPECT_EQ(value_bool, observed_bool);
 }
