@@ -6,6 +6,10 @@ every change, see the Git log.
 
 Latest
 ------
+* tbd
+
+6.0.0
+-----
 * Major: Removed `metrics::observe_metric()` as this functionality should be
   handled elsewhere and differently.
 
