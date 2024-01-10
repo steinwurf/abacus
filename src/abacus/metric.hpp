@@ -221,6 +221,7 @@ public:
     auto operator=(double value) -> metric<abacus::type::float64>&
     {
         assert(is_initialized());
+        // We don't allow assignment to NaN or Inf/-Inf
         assert(!std::isnan(value) && !std::isinf(value) && "Cannot assign a "
                                                              "NaN or Inf/-Inf "
                                                              "value to a "
@@ -235,6 +236,7 @@ public:
     auto operator+=(double value) -> metric<abacus::type::float64>&
     {
         assert(is_initialized());
+        // We don't allow assignment to NaN or Inf/-Inf
         assert(!std::isnan(value) && !std::isinf(value) && "Cannot assign a "
                                                            "NaN or Inf/-Inf "
                                                            "value to a "
@@ -248,11 +250,13 @@ public:
     /// @return The result of the arithmetic
     auto operator-=(double value) -> metric<abacus::type::float64>&
     {
+        assert(is_initialized());
+        // We don't allow assignment to NaN or Inf/-Inf
         assert(!std::isnan(value) && !std::isinf(value) && "Cannot assign a "
                                                            "NaN or Inf/-Inf "
                                                            "value to a "
                                                            "float metric");
-        assert(is_initialized());
+
         *m_memory -= value;
         return *this;
     }
