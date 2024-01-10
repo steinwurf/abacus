@@ -222,11 +222,14 @@ public:
     {
         assert(is_initialized());
         // We don't allow assignment to NaN or Inf/-Inf
-        assert(!std::isnan(value) && !std::isinf(value) &&
-               "Cannot assign a "
-               "NaN or Inf/-Inf "
-               "value to a "
-               "float metric");
+        assert(!std::isnan(value) && "Cannot assign a "
+                                     "NaN "
+                                     "value to a "
+                                     "float metric");
+        assert(!std::isinf(value) && "Cannot assign an "
+                                     "Inf/-Inf "
+                                     "value to a "
+                                     "float metric");
         *m_memory = value;
         return *this;
     }
@@ -238,11 +241,14 @@ public:
     {
         assert(is_initialized());
         // We don't allow assignment to NaN or Inf/-Inf
-        assert(!std::isnan(value) && !std::isinf(value) &&
-               "Cannot assign a "
-               "NaN or Inf/-Inf "
-               "value to a "
-               "float metric");
+        assert(!std::isnan(value) && "Cannot assign a "
+                                     "NaN "
+                                     "value to a "
+                                     "float metric");
+        assert(!std::isinf(value) && "Cannot assign an "
+                                     "Inf/-Inf "
+                                     "value to a "
+                                     "float metric");
         *m_memory += value;
         return *this;
     }
@@ -254,11 +260,14 @@ public:
     {
         assert(is_initialized());
         // We don't allow assignment to NaN or Inf/-Inf
-        assert(!std::isnan(value) && !std::isinf(value) &&
-               "Cannot assign a "
-               "NaN or Inf/-Inf "
-               "value to a "
-               "float metric");
+        assert(!std::isnan(value) && "Cannot assign a "
+                                     "NaN "
+                                     "value to a "
+                                     "float metric");
+        assert(!std::isinf(value) && "Cannot assign an "
+                                     "Inf/-Inf "
+                                     "value to a "
+                                     "float metric");
 
         *m_memory -= value;
         return *this;
