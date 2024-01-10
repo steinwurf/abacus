@@ -2,7 +2,7 @@
 // All Rights Reserved
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
-#pragma fenv_access on
+#pragma fenv_access(on)
 
 #include <cmath>
 #include <cstdint>
