@@ -7,6 +7,7 @@
 
 #include <cassert>
 #include <cstdint>
+#include <cmath>
 
 #include "type.hpp"
 #include "version.hpp"
@@ -220,6 +221,10 @@ public:
     auto operator=(double value) -> metric<abacus::type::float64>&
     {
         assert(is_initialized());
+        assert(!std::isnan(value) && !std::isinf(value) && "Cannot assign a "
+                                                             "NaN or Inf/-Inf "
+                                                             "value to a "
+                                                             "float metric");
         *m_memory = value;
         return *this;
     }
@@ -230,6 +235,10 @@ public:
     auto operator+=(double value) -> metric<abacus::type::float64>&
     {
         assert(is_initialized());
+        assert(!std::isnan(value) && !std::isinf(value) && "Cannot assign a "
+                                                           "NaN or Inf/-Inf "
+                                                           "value to a "
+                                                           "float metric");
         *m_memory += value;
         return *this;
     }
@@ -239,6 +248,10 @@ public:
     /// @return The result of the arithmetic
     auto operator-=(double value) -> metric<abacus::type::float64>&
     {
+        assert(!std::isnan(value) && !std::isinf(value) && "Cannot assign a "
+                                                           "NaN or Inf/-Inf "
+                                                           "value to a "
+                                                           "float metric");
         assert(is_initialized());
         *m_memory -= value;
         return *this;

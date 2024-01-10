@@ -5,6 +5,7 @@
 
 #include <cstdint>
 #include <cstring>
+#include <cmath>
 #include <gtest/gtest.h>
 
 #include <abacus/metric.hpp>
@@ -23,6 +24,10 @@ TEST(test_metric, constructor)
     double double_count = 1123.12;
     abacus::metric<abacus::type::float64> double_metric(&double_count);
     EXPECT_TRUE(double_metric.is_initialized());
+    EXPECT_DEATH(double_metric = std::nan("0"), "");
+    EXPECT_DEATH(double_metric = std::numeric_limits<double>::infinity(), "");
+    EXPECT_DEATH(double_metric = -std::numeric_limits<double>::infinity(), "");
+
 
     bool bool_count = true;
     abacus::metric<abacus::type::boolean> bool_metric(&bool_count);
