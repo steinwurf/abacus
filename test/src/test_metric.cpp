@@ -3,9 +3,9 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
+#include <cmath>
 #include <cstdint>
 #include <cstring>
-#include <cmath>
 #include <gtest/gtest.h>
 
 #include <abacus/metric.hpp>
@@ -30,7 +30,8 @@ TEST(test_metric, constructor)
     EXPECT_TRUE(bool_metric.is_initialized());
 }
 
-TEST(test_metric, float_assignment){
+TEST(test_metric, float_assignment)
+{
     double double_count = 1123.12;
     abacus::metric<abacus::type::float64> double_metric(&double_count);
     EXPECT_TRUE(double_metric.is_initialized());
@@ -65,5 +66,4 @@ TEST(test_metric, float_assignment){
     EXPECT_DEATH(double_metric -= 1 / 0.0, "");
     // Check that that assignment to -Inf is not allowed
     EXPECT_DEATH(double_metric -= 1 / -0.0, "");
-
 }
