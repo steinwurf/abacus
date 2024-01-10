@@ -2,6 +2,9 @@
 // All Rights Reserved
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
+
+// Pragma needed to be able to compile code, that divides by literal zero with
+// MSVC
 #pragma fenv_access(on)
 
 #include <cmath>
