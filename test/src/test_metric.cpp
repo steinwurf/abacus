@@ -2,6 +2,7 @@
 // All Rights Reserved
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
+#pragma STDC FENV_ACCESS ON
 
 #include <cmath>
 #include <cstdint>
