@@ -6,6 +6,10 @@ every change, see the Git log.
 
 Latest
 ------
+* tbd
+
+6.0.1
+-----
 * Patch: Fix a bug where one could assign Nan, Inf or -Inf to a float64 metric.
 
 6.0.0
