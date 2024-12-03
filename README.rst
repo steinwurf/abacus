@@ -82,36 +82,36 @@ Memory Layout Specification
 The class preallocates memory at construction with the following layout:
 
 +-------------------------+-------------------+-------------------------------------------+
-| **Field**               | **Size (bytes)** | **Description**                           |
+| **Field**               | **Size (bytes)**  | **Description**                           |
 +=========================+===================+===========================================+
-| **Header**              | 10               | Static metadata written once.             |
-|                         |                  |                                           |
-| - Endianness            | 1                | Indicates big-endian or little-endian.    |
-| - Protocol version      | 1                | Protocol version identifier.              |
-| - Total name bytes      | 2                | Total bytes allocated for names.          |
-| - Total description     | 2                | Total bytes allocated for descriptions.   |
-| - # of 8-byte metrics   | 2                | Number of 8-byte-value metrics.           |
-| - # of 1-byte metrics   | 2                | Number of 1-byte-value metrics.           |
+| **Header**              | 10                | Static metadata written once.             |
+|                         |                   |                                           |
+| - Endianness            | 1                 | Indicates big-endian or little-endian.    |
+| - Protocol version      | 1                 | Protocol version identifier.              |
+| - Total name bytes      | 2                 | Total bytes allocated for names.          |
+| - Total description     | 2                 | Total bytes allocated for descriptions.   |
+| - # of 8-byte metrics   | 2                 | Number of 8-byte-value metrics.           |
+| - # of 1-byte metrics   | 2                 | Number of 1-byte-value metrics.           |
 +-------------------------+-------------------+-------------------------------------------+
-| **Name Sizes**          | 2 per metric     | Byte size of each metric name.            |
+| **Name Sizes**          | 2 per metric      | Byte size of each metric name.            |
 +-------------------------+-------------------+-------------------------------------------+
-| **Description Sizes**   | 2 per metric     | Byte size of each metric description.     |
+| **Description Sizes**   | 2 per metric      | Byte size of each metric description.     |
 +-------------------------+-------------------+-------------------------------------------+
-| **Metric Names**        | Variable         | Names of the metrics.                     |
+| **Metric Names**        | Variable          | Names of the metrics.                     |
 +-------------------------+-------------------+-------------------------------------------+
-| **Descriptions**        | Variable         | Descriptions of the metrics.              |
+| **Descriptions**        | Variable          | Descriptions of the metrics.              |
 +-------------------------+-------------------+-------------------------------------------+
-| **Metric Types**        | 1 per metric     | Specifies the type of each metric.        |
+| **Metric Types**        | 1 per metric      | Specifies the type of each metric.        |
 +-------------------------+-------------------+-------------------------------------------+
-| **Metric Flags**        | 1 per metric     | Initialization and constant flags.        |
+| **Metric Flags**        | 1 per metric      | Initialization and constant flags.        |
 +-------------------------+-------------------+-------------------------------------------+
-| **Padding**             | Up to 7          | Alignment padding for memory boundaries.  |
+| **Padding**             | Up to 7           | Alignment padding for memory boundaries.  |
 +-------------------------+-------------------+-------------------------------------------+
-| **8-Byte Values**       | 8 per metric     | Values for 8-byte metrics.                |
+| **8-Byte Values**       | 8 per metric      | Values for 8-byte metrics.                |
 +-------------------------+-------------------+-------------------------------------------+
-| **1-Byte Values**       | 1 per metric     | Values for 1-byte metrics.                |
+| **1-Byte Values**       | 1 per metric      | Values for 1-byte metrics.                |
 +-------------------------+-------------------+-------------------------------------------+
-| **Bitmap**              | 1 per 8 metrics  | Bitmap indicating initialized metrics.    |
+| **Bitmap**              | 1 per 8 metrics   | Bitmap indicating initialized metrics.    |
 +-------------------------+-------------------+-------------------------------------------+
 
 Notes
