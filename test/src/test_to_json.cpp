@@ -66,7 +66,7 @@ TEST(test_to_json, api)
 
     auto m0 = metrics.initialize_metric<abacus::type::uint64>(name0);
     auto m1 = metrics.initialize_metric<abacus::type::int64>(name1);
-    metrics.initialize_constant(name2, true);
+    metrics.initialize_constant<abacus::type::boolean>(name2, true);
 
     m0 = 42;
     m1 = -42;

@@ -82,11 +82,11 @@ TEST(test_metrics, default_constructor)
     EXPECT_TRUE(metrics.is_initialized(4));
 
     EXPECT_FALSE(metrics.is_initialized(5));
-    metrics.initialize_constant(name4, true);
+    metrics.initialize_constant<abacus::type::boolean>(name4, true);
     EXPECT_TRUE(metrics.is_initialized(5));
 
     EXPECT_FALSE(metrics.is_initialized(3));
-    metrics.initialize_constant(name5, 42.42);
+    metrics.initialize_constant<abacus::type::float64>(name5, 42.42);
     EXPECT_TRUE(metrics.is_initialized(3));
 
     EXPECT_EQ(metrics.name(0), name1);

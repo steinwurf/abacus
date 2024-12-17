@@ -321,42 +321,6 @@ auto metrics::kind(std::size_t index) const -> abacus::kind
     return m_info[index].kind;
 }
 
-void metrics::initialize_constant(const std::string& name, uint64_t value) const
-{
-    assert(m_meta_data != nullptr);
-    auto index = metrics::index(name);
-    assert(kind(index) == abacus::kind::constant);
-    assert(is_uint64(index));
-    *static_cast<uint64_t*>(initialize(index)) = value;
-}
-
-void metrics::initialize_constant(const std::string& name, int64_t value) const
-{
-    assert(m_meta_data != nullptr);
-    auto index = metrics::index(name);
-    assert(kind(index) == abacus::kind::constant);
-    assert(is_int64(index));
-    *static_cast<int64_t*>(initialize(index)) = value;
-}
-
-void metrics::initialize_constant(const std::string& name, double value) const
-{
-    assert(m_meta_data != nullptr);
-    auto index = metrics::index(name);
-    assert(kind(index) == abacus::kind::constant);
-    assert(is_float64(index));
-    *static_cast<double*>(initialize(index)) = value;
-}
-
-void metrics::initialize_constant(const std::string& name, bool value) const
-{
-    assert(m_meta_data != nullptr);
-    auto index = metrics::index(name);
-    assert(kind(index) == abacus::kind::constant);
-    assert(is_boolean(index));
-    *static_cast<bool*>(initialize(index)) = value;
-}
-
 void metrics::value(std::size_t index, uint64_t& value) const
 {
     assert(m_meta_data != nullptr);

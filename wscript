@@ -8,10 +8,10 @@ from waflib.Build import BuildContext
 
 APPNAME = "abacus"
 VERSION = "6.0.1"
-
+NO_RECURSE = False
 
 def configure(conf):
-    conf.set_cxx_std(14)
+    conf.set_cxx_std(17)
 
 
 def build(bld):

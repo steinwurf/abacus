@@ -10,7 +10,6 @@
 #include <map>
 #include <string>
 
-#include "delegate.hpp"
 #include "detail/value_size_info.hpp"
 #include "metric.hpp"
 #include "type.hpp"
@@ -200,55 +199,17 @@ public:
     /// @param value The value of the constant. A uint64_t value.
     /// @param name The name of the metric. This is used for a check to ensure
     /// that the name matches the one at the given index.
-    void initialize_constant(const std::string& name, uint64_t value) const;
-
-    /// Initialize a constant int64_t metric at the given index.
-    ///
-    /// A constant metric that is initialized with a value and never reset.
-    /// The value is written into memory at the time of initialization and
-    /// cannot be altered within the same runtime-environment.
-    ///
-    /// The indices of the metrics do not
-    /// match the ones in the info, so use index() to get the correct
-    /// index. Please do not hard-code this, as this may break with changes to
-    /// yours or our code.
-    ///
-    /// @param value The value of the constant. A int64_t value.
-    /// @param name The name of the metric. This is used for a check to ensure
-    /// that the name matches the one at the given index.
-    void initialize_constant(const std::string& name, int64_t value) const;
-
-    /// Initialize a constant double metric at the given index.
-    ///
-    /// A constant metric that is initialized with a value and never reset.
-    /// The value is written into memory at the time of initialization and
-    /// cannot be altered within the same runtime-environment.
-    ///
-    /// The indices of the metrics do not
-    /// match the ones in the info, so use index() to get the correct
-    /// index. Please do not hard-code this, as this may break with changes to
-    /// yours or our code.
-    ///
-    /// @param value The value of the constant. A double value.
-    /// @param name The name of the metric. This is used for a check to ensure
-    /// that the name matches the one at the given index.
-    void initialize_constant(const std::string& name, double value) const;
-
-    /// Initialize a constant bool metric at the given index.
-    ///
-    /// A constant metric that is initialized with a value and never reset.
-    /// The value is written into memory at the time of initialization and
-    /// cannot be altered within the same runtime-environment.
-    ///
-    /// The indices of the metrics do not
-    /// match the ones in the info, so use index() to get the correct
-    /// index. Please do not hard-code this, as this may break with changes to
-    /// yours or our code.
-    ///
-    /// @param value The value of the constant. A bool value.
-    /// @param name The name of the metric. This is used for a check to ensure
-    /// that the name matches the one at the given index.
-    void initialize_constant(const std::string& name, bool value) const;
+    template <abacus::type MetricType>
+    void
+    initialize_constant(const std::string& name,
+                        typename metric<MetricType>::value_type value) const
+    {
+        assert(m_meta_data != nullptr);
+        auto index = metrics::index(name);
+        assert(kind(index) == abacus::kind::constant);
+        *static_cast<typename metric<MetricType>::value_type*>(
+            initialize(index)) = value;
+    }
 
     /// Copy the value of the uint64_t metric into a passed reference. This is
     /// used to extract the values during runtime.

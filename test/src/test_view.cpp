@@ -33,7 +33,7 @@ TEST(test_view, api)
 
     metrics.initialize_metric<abacus::type::int64>(name1);
 
-    metrics.initialize_constant(name2, 3.14);
+    metrics.initialize_constant<abacus::type::float64>(name2, 3.14);
 
     std::vector<uint8_t> meta_data(metrics.meta_bytes());
     std::vector<uint8_t> value_data(metrics.value_bytes());

@@ -36,8 +36,8 @@ int main()
 
     abacus::metrics car(infos);
 
-    car.initialize_constant("fuel_consumption", (double)22.3);
-    car.initialize_constant("wheels", (uint64_t)4);
+    car.initialize_constant<abacus::type::float64>("fuel_consumption", 22.3);
+    car.initialize_constant<abacus::type::uint64>("wheels", 4);
     auto days_until_maintenance =
         car.initialize_metric<abacus::type::int64>("days_until_maintenance");
     auto registered =

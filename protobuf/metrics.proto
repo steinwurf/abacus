@@ -2,56 +2,120 @@ syntax = "proto3";
 package abacus.protobuf;
 option go_package = "abacus/protobuf";
 
-enum Kind
-{
-    COUNTER = 0;
-    CONSTANT = 1;
-    GAUGE = 2;
+// Specifies the kind of metric
+enum Kind {
+    COUNTER = 0;   // Counter metric
+    CONSTANT = 1;  // Constant metric
+    GAUGE = 2;     // Gauge metric
 }
 
-enum Type
-{
-    UINT64 = 0;
-    INT64 = 1;
-    FLOAT64 = 2;
-    BOOL = 3;
+// Specifies the endianness for multi-byte values
+enum Endianness {
+    LITTLE = 0;  // Little-endian byte order
+    BIG = 1;     // Big-endian byte order
 }
 
-message Info
-{
-    string name = 1;
-    string description = 2;
-    Type type = 3;
-    Kind kind = 4;
-    string unit = 5;
-    oneof min
-    {
-        uint64 uint64_min = 6;
-        int64 int64_min = 7;
-        double float64_min = 8;
-    }
-    oneof max
-    {
-        uint64 uint64_max = 9;
-        int64 int64_max = 10;
-        double float64_max = 11;
+// A unified metric container supporting multiple types
+message Metric {
+    string description = 1;       // Metric description
+    Kind kind = 2;                // Kind of metric
+    uint32 value_offset = 2;      // Offset into packed memory for the value
+    uint32 valid_offset = 3;      // Offset into packed memory for validity
+
+    oneof type {
+        UInt64Type uint64_type = 4;   // Unsigned 64-bit metric
+        Int64Type int64_type = 5;     // Signed 64-bit metric
+        UInt32Type uint32_type = 6;   // Unsigned 32-bit metric
+        Int32Type int32_type = 7;     // Signed 32-bit metric
+        Float64Type float64_type = 8; // 64-bit floating-point metric
+        Float32Type float32_type = 9;// 32-bit floating-point metric
+        BoolType bool_type = 10;      // Boolean metric
+        EnumType enum_type = 11;      // Enumerated metric
     }
 }
 
-message Metric
-{
-    optional Info info = 1;
-    oneof value
-    {
-        uint64 uint64_value = 2;
-        int64 int64_value = 3;
-        double float64_value = 4;
-        bool bool_value = 5;
+// Metadata for unsigned 64-bit metrics
+message UInt64Type {
+    string unit = 1;              // Unit of measurement
+    uint64 min = 2;               // Minimum allowable value
+    uint64 max = 3;               // Maximum allowable value
+}
+
+// Metadata for signed 64-bit metrics
+message Int64Type {
+    string unit = 1;              // Unit of measurement
+    int64 min = 2;                // Minimum allowable value
+    int64 max = 3;                // Maximum allowable value
+}
+
+// Metadata for unsigned 32-bit metrics
+message UInt32Type {
+    string unit = 1;              // Unit of measurement
+    uint32 min = 2;               // Minimum allowable value
+    uint32 max = 3;               // Maximum allowable value
+}
+
+// Metadata for signed 32-bit metrics
+message Int32Type {
+    string unit = 1;              // Unit of measurement
+    int32 min = 2;                // Minimum allowable value
+    int32 max = 3;                // Maximum allowable value
+}
+
+// Metadata for 64-bit floating-point metrics
+message Float64Type {
+    string unit = 1;              // Unit of measurement
+    double min = 2;               // Minimum allowable value
+    double max = 3;               // Maximum allowable value
+}
+
+// Metadata for 32-bit floating-point metrics
+message Float32Type {
+    string unit = 1;              // Unit of measurement
+    float min = 2;                // Minimum allowable value
+    float max = 3;                // Maximum allowable value
+}
+
+// Metadata for boolean metrics
+message BoolType {
+    string unit = 1;              // Unit of measurement
+}
+
+message EnumInfo {
+    string name = 1;                   // Enum name
+    optional string description = 2;   // Enum description
+}
+
+// Metadata for enumerated metrics
+message EnumType {
+    map<uint32, EnumInfo> enum_map = 1;      // Mapping from packed index to enum info
+}
+
+// Metadata collection for all metrics
+message MetricsMetadata {
+    uint32 protocol_version = 1;        // Protocol version for compatibility
+    Endianness endianness = 2;          // Endianness of packed memory
+    uint32 sync_value = 3;              // Synchronization value
+    map<string, Metric> metrics = 4;    // Mapping from metric name to metadata
+}
+
+// Value container for a single metric
+message MetricValue {
+    bool valid = 1;                    // Validity of the metric
+    oneof value {
+        uint64 uint64_value = 2;       // Unsigned 64-bit value
+        int64 int64_value = 3;         // Signed 64-bit value
+        uint32 uint32_value = 4;       // Unsigned 32-bit value
+        int32 int32_value = 5;         // Signed 32-bit value
+        float float32_value = 6;       // 32-bit floating-point value
+        double float64_value = 7;      // 64-bit floating-point value
+        bool bool_value = 8;           // Boolean value
+        uint32 enum_value = 9;         // Enumerated value index
     }
 }
 
-message Metrics
-{
-    uint32 protocol_version = 1;
-    repeated Metric metric = 2;
+// Value container for all metrics
+message MetricValues {
+    uint32 sync_value = 1;              // Synchronization value
+    repeated MetricValue values = 2; // List of metric values
 }
