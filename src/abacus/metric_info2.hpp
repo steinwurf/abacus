@@ -5,42 +5,94 @@
 
 #pragma once
 
-#include "kind.hpp"
-#include "max.hpp"
-#include "min.hpp"
-#include "type.hpp"
-#include "unit.hpp"
-
+#include <cstdint>
+#include <map>
+#include <optional>
 #include <string>
+#include <variant>
+
+#include "kind.hpp"
+#include "unit.hpp"
 
 namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-
-/// Object used to describe a metric. Used in the metrics() constructor.
-struct metric_info
+struct uint64
 {
-    /// Name of the metric
-    std::string name;
-
-    /// Description of the metric
+    using type = uint64_t;
     std::string description;
-
-    /// Type of the metric. A metric_type enum.
-    abacus::type type;
-
-    /// enum describing the flags of a metric.
     abacus::kind kind;
-
-    /// The unit of the metric
-    abacus::unit unit = abacus::unit{""};
-
-    /// The minimum value of the metric
-    abacus::min min = abacus::min{uint64_t{0U}};
-
-    /// The maximum value of the metric
-    abacus::max max = abacus::max{uint64_t{0U}};
+    std::string unit;
+    std::optional<uint64_t> min;
+    std::optional<uint64_t> max;
 };
+struct int64
+{
+    using type = int64_t;
+    std::string description;
+    abacus::kind kind;
+    std::string unit;
+    std::optional<int64_t> min;
+    std::optional<int64_t> max;
+};
+struct uint32
+{
+    using type = uint32_t;
+    std::string description;
+    abacus::kind kind;
+    std::string unit;
+    std::optional<uint32_t> min;
+    std::optional<uint32_t> max;
+};
+struct int32
+{
+    using type = int32_t;
+    std::string description;
+    abacus::kind kind;
+    std::string unit;
+    std::optional<int32_t> min;
+    std::optional<int32_t> max;
+};
+struct float64
+{
+    using type = double;
+    std::string description;
+    abacus::kind kind;
+    std::string unit;
+    std::optional<double> min;
+    std::optional<double> max;
+};
+struct float32
+{
+    using type = float;
+    std::string description;
+    abacus::kind kind;
+    std::string unit;
+    std::optional<float> min;
+    std::optional<float> max;
+};
+struct boolean
+{
+    using type = bool;
+    std::string description;
+    abacus::kind kind;
+};
+
+struct enum8
+{
+    using type = uint8_t;
+    struct value
+    {
+        std::string name;
+        std::string description;
+    };
+    std::string description;
+    std::string unit;
+    std::map<uint32_t, value> values;
+};
+using metric_info2 =
+    std::map<std::string, std::variant<uint64, int64, uint32, int32, float64,
+                                       float32, boolean, enum8>>;
 }
 }

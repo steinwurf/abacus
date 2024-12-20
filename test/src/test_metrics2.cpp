@@ -7,4 +7,4 @@
 #include <cstring>
 #include <gtest/gtest.h>
 
-// #include <abacus/metrics2.hpp>
+#include <abacus/metrics2.hpp>
