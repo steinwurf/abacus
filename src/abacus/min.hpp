@@ -5,15 +5,29 @@
 
 #pragma once
 
+#include <optional>
+
 #include "version.hpp"
 
 namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
+
+template <typename T>
+struct min2
+{
+    min2() = default;
+
+    explicit min2(T value) : value(value)
+    {
+    }
+
+    std::optional<T> value;
+};
+
 union min
 {
-
     min(uint64_t value) : m_uint(value)
     {
     }

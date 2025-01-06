@@ -15,6 +15,9 @@ inline namespace STEINWURF_ABACUS_VERSION
 /// Wrapper for a unit string for more explicit code
 struct unit
 {
+    /// Default constructor
+    unit() = default;
+
     /// Explicit constructor
     explicit unit(const std::string& name) : value(name)
     {

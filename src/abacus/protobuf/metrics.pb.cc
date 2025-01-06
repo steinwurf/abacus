@@ -611,7 +611,7 @@ const char descriptor_table_protodef_abacus_2fprotobuf_2fmetrics_2eproto[] PROTO
     "\000B\006\n\004type\"\371\001\n\017MetricsMetadata\022\030\n\020protoco"
     "l_version\030\001 \001(\r\022/\n\nendianness\030\002 \001(\0162\033.ab"
     "acus.protobuf.Endianness\022\022\n\nsync_value\030\003"
-    " \001(\r\022>\n\007metrics\030\004 \003(\0132-.abacus.protobuf."
+    " \001(\007\022>\n\007metrics\030\004 \003(\0132-.abacus.protobuf."
     "MetricsMetadata.MetricsEntry\032G\n\014MetricsE"
     "ntry\022\013\n\003key\030\001 \001(\t\022&\n\005value\030\002 \001(\0132\027.abacu"
     "s.protobuf.Metric:\0028\001*,\n\004Kind\022\013\n\007COUNTER"
@@ -4331,9 +4331,9 @@ const ::_pbi::TcParseTable<2, 4, 2, 47, 2> MetricsMetadata::_table_ = {
     // .abacus.protobuf.Endianness endianness = 2;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(MetricsMetadata, _impl_.endianness_), 63>(),
      {16, 63, 0, PROTOBUF_FIELD_OFFSET(MetricsMetadata, _impl_.endianness_)}},
-    // uint32 sync_value = 3;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(MetricsMetadata, _impl_.sync_value_), 63>(),
-     {24, 63, 0, PROTOBUF_FIELD_OFFSET(MetricsMetadata, _impl_.sync_value_)}},
+    // fixed32 sync_value = 3;
+    {::_pbi::TcParser::FastF32S1,
+     {29, 63, 0, PROTOBUF_FIELD_OFFSET(MetricsMetadata, _impl_.sync_value_)}},
   }}, {{
     65535, 65535
   }}, {{
@@ -4343,9 +4343,9 @@ const ::_pbi::TcParseTable<2, 4, 2, 47, 2> MetricsMetadata::_table_ = {
     // .abacus.protobuf.Endianness endianness = 2;
     {PROTOBUF_FIELD_OFFSET(MetricsMetadata, _impl_.endianness_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-    // uint32 sync_value = 3;
+    // fixed32 sync_value = 3;
     {PROTOBUF_FIELD_OFFSET(MetricsMetadata, _impl_.sync_value_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+    (0 | ::_fl::kFcSingular | ::_fl::kFixed32)},
     // map<string, .abacus.protobuf.Metric> metrics = 4;
     {PROTOBUF_FIELD_OFFSET(MetricsMetadata, _impl_.metrics_), 0, 0,
     (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
@@ -4380,10 +4380,10 @@ const ::_pbi::TcParseTable<2, 4, 2, 47, 2> MetricsMetadata::_table_ = {
         2, this->_internal_endianness(), target);
   }
 
-  // uint32 sync_value = 3;
+  // fixed32 sync_value = 3;
   if (this->_internal_sync_value() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+    target = ::_pbi::WireFormatLite::WriteFixed32ToArray(
         3, this->_internal_sync_value(), target);
   }
 
@@ -4446,10 +4446,9 @@ const ::_pbi::TcParseTable<2, 4, 2, 47, 2> MetricsMetadata::_table_ = {
                   ::_pbi::WireFormatLite::EnumSize(this->_internal_endianness());
   }
 
-  // uint32 sync_value = 3;
+  // fixed32 sync_value = 3;
   if (this->_internal_sync_value() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
-        this->_internal_sync_value());
+    total_size += 5;
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);

@@ -5,12 +5,25 @@
 
 #pragma once
 
+#include <optional>
+
 #include "version.hpp"
 
 namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
+template <typename T>
+struct max2
+{
+    max2() = default;
+
+    explicit max2(T value) : value(value)
+    {
+    }
+
+    std::optional<T> value;
+};
 union max
 {
 

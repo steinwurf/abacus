@@ -107,6 +107,6 @@ message Metric
 message MetricsMetadata {
     uint32 protocol_version = 1;        // Protocol version for compatibility
     Endianness endianness = 2;          // Endianness of packed memory
-    uint32 sync_value = 3;              // Synchronization value
+    fixed32 sync_value = 3;             // Synchronization value
     map<string, Metric> metrics = 4;    // Mapping from metric name to metadata
 }

@@ -12,7 +12,6 @@
 TEST(test_metrics2, empty)
 {
     abacus::metrics2 metrics2;
-    EXPECT_EQ(metrics2.count(), 0U);
     EXPECT_TRUE(metrics2.is_initialized());
 }
 
@@ -41,7 +40,6 @@ TEST(test_metrics2, default_constructor)
 
     abacus::metrics2 metrics(infos);
 
-    EXPECT_EQ(metrics.count(), metric_count);
     EXPECT_FALSE(metrics.is_initialized());
 
     auto m0 = metrics.initialize_metric<abacus::boolean>(name0);

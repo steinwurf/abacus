@@ -7,6 +7,7 @@
 
 #include <cassert>
 #include <functional>
+#include <limits>
 #include <map>
 #include <string>
 #include <variant>
@@ -77,6 +78,22 @@ public:
     /// No metrics will be contained within this object.
     metrics2() = default;
 
+    /// Move constructor
+    /// @param other The metrics to move from.
+    metrics2(metrics2&& other) noexcept :
+        m_data(other.m_data), m_metadata(std::move(other.m_metadata)),
+        m_hash(other.m_hash), m_meta_bytes(other.m_meta_bytes),
+        m_value_bytes(other.m_value_bytes),
+        m_initialized(std::move(other.m_initialized))
+    {
+        other.m_data = nullptr;
+        other.m_metadata = protobuf::MetricsMetadata();
+        other.m_hash = 0;
+        other.m_meta_bytes = 0;
+        other.m_value_bytes = 0;
+        other.m_initialized.clear();
+    }
+
     /// Constructor
     /// @param info The info of the metrics in a pointer.
     /// @param count The number of infos.
@@ -94,24 +111,28 @@ public:
         {
             protobuf::Metric metric;
             metric.set_offset(m_value_bytes);
-            // The offset is incremented by the size of the type plus one byte
-            // which represents whether the metric is set or not.
-            m_value_bytes += 1 + sizeof(size_of_type<decltype(value)>());
+
+            // The offset is incremented by one byte which represents whether
+            // the metric is set or not.
+            m_value_bytes += 1;
+
+            // The offset is incremented by the size of the type
+            m_value_bytes += sizeof(size_of_type<decltype(value)>());
             if (auto* m = std::get_if<uint64>(&value))
             {
                 metric.mutable_uint64()->set_description(m->description);
                 metric.mutable_uint64()->set_kind(to_protobuf_kind(m->kind));
                 if (!m->unit.empty())
                 {
-                    metric.mutable_uint64()->set_unit(m->unit);
+                    metric.mutable_uint64()->set_unit(m->unit.value);
                 }
-                if (m->min.has_value())
+                if (m->min.value.has_value())
                 {
-                    metric.mutable_uint64()->set_min(m->min.value());
+                    metric.mutable_uint64()->set_min(m->min.value.value());
                 }
-                if (m->max.has_value())
+                if (m->max.value.has_value())
                 {
-                    metric.mutable_uint64()->set_max(m->max.value());
+                    metric.mutable_uint64()->set_max(m->max.value.value());
                 }
             }
             else if (auto* m = std::get_if<int64>(&value))
@@ -120,15 +141,15 @@ public:
                 metric.mutable_int64()->set_kind(to_protobuf_kind(m->kind));
                 if (!m->unit.empty())
                 {
-                    metric.mutable_int64()->set_unit(m->unit);
+                    metric.mutable_int64()->set_unit(m->unit.value);
                 }
-                if (m->min.has_value())
+                if (m->min.value.has_value())
                 {
-                    metric.mutable_int64()->set_min(m->min.value());
+                    metric.mutable_int64()->set_min(m->min.value.value());
                 }
-                if (m->max.has_value())
+                if (m->max.value.has_value())
                 {
-                    metric.mutable_int64()->set_max(m->max.value());
+                    metric.mutable_int64()->set_max(m->max.value.value());
                 }
             }
             else if (auto* m = std::get_if<uint32>(&value))
@@ -137,15 +158,15 @@ public:
                 metric.mutable_uint32()->set_kind(to_protobuf_kind(m->kind));
                 if (!m->unit.empty())
                 {
-                    metric.mutable_uint32()->set_unit(m->unit);
+                    metric.mutable_uint32()->set_unit(m->unit.value);
                 }
-                if (m->min.has_value())
+                if (m->min.value.has_value())
                 {
-                    metric.mutable_uint32()->set_min(m->min.value());
+                    metric.mutable_uint32()->set_min(m->min.value.value());
                 }
-                if (m->max.has_value())
+                if (m->max.value.has_value())
                 {
-                    metric.mutable_uint32()->set_max(m->max.value());
+                    metric.mutable_uint32()->set_max(m->max.value.value());
                 }
             }
             else if (auto* m = std::get_if<int32>(&value))
@@ -154,15 +175,15 @@ public:
                 metric.mutable_int32()->set_kind(to_protobuf_kind(m->kind));
                 if (!m->unit.empty())
                 {
-                    metric.mutable_int32()->set_unit(m->unit);
+                    metric.mutable_int32()->set_unit(m->unit.value);
                 }
-                if (m->min.has_value())
+                if (m->min.value.has_value())
                 {
-                    metric.mutable_int32()->set_min(m->min.value());
+                    metric.mutable_int32()->set_min(m->min.value.value());
                 }
-                if (m->max.has_value())
+                if (m->max.value.has_value())
                 {
-                    metric.mutable_int32()->set_max(m->max.value());
+                    metric.mutable_int32()->set_max(m->max.value.value());
                 }
             }
             else if (auto* m = std::get_if<float64>(&value))
@@ -171,15 +192,15 @@ public:
                 metric.mutable_float64()->set_kind(to_protobuf_kind(m->kind));
                 if (!m->unit.empty())
                 {
-                    metric.mutable_float64()->set_unit(m->unit);
+                    metric.mutable_float64()->set_unit(m->unit.value);
                 }
-                if (m->min.has_value())
+                if (m->min.value.has_value())
                 {
-                    metric.mutable_float64()->set_min(m->min.value());
+                    metric.mutable_float64()->set_min(m->min.value.value());
                 }
-                if (m->max.has_value())
+                if (m->max.value.has_value())
                 {
-                    metric.mutable_float64()->set_max(m->max.value());
+                    metric.mutable_float64()->set_max(m->max.value.value());
                 }
             }
             else if (auto* m = std::get_if<float32>(&value))
@@ -188,15 +209,15 @@ public:
                 metric.mutable_float32()->set_kind(to_protobuf_kind(m->kind));
                 if (!m->unit.empty())
                 {
-                    metric.mutable_float32()->set_unit(m->unit);
+                    metric.mutable_float32()->set_unit(m->unit.value);
                 }
-                if (m->min.has_value())
+                if (m->min.value.has_value())
                 {
-                    metric.mutable_float32()->set_min(m->min.value());
+                    metric.mutable_float32()->set_min(m->min.value.value());
                 }
-                if (m->max.has_value())
+                if (m->max.value.has_value())
                 {
-                    metric.mutable_float32()->set_max(m->max.value());
+                    metric.mutable_float32()->set_max(m->max.value.value());
                 }
             }
             else if (auto* m = std::get_if<boolean>(&value))
@@ -209,7 +230,6 @@ public:
                 metric.mutable_enum8()->set_description(m->description);
                 for (auto [key, value] : m->values)
                 {
-
                     auto enum_value = protobuf::EnumValue();
                     enum_value.set_name(value.name);
                     if (!value.description.empty())
@@ -226,6 +246,10 @@ public:
             m_initialized[name] = false;
         }
 
+        // Set the sync value to 1 so that the size of the metadata is
+        // calculated correctly
+        m_metadata.set_sync_value(1);
+
         m_meta_bytes = m_metadata.ByteSizeLong();
         m_data = new uint8_t[m_meta_bytes + m_value_bytes];
 
@@ -240,6 +264,9 @@ public:
 
         // Serialize the metadata again to include the sync value
         m_metadata.SerializeToArray(m_data, m_meta_bytes);
+
+        // Make sure the metadata didn't change unexpectedly
+        assert(m_metadata.ByteSizeLong() == m_meta_bytes);
 
         // Write the sync value to the first byte of the value data (this will
         // be written as the endianess of the system)
@@ -267,9 +294,14 @@ public:
         return m_value_bytes;
     }
 
-    auto meta_data() const -> const uint8_t*
+    auto metadata_ptr() const -> const uint8_t*
     {
         return m_data;
+    }
+
+    auto metadata() const -> const protobuf::MetricsMetadata&
+    {
+        return m_metadata;
     }
 
     auto meta_bytes() const -> std::size_t
@@ -316,14 +348,8 @@ public:
         const protobuf::Metric& proto_metric = m_metadata.metrics().at(name);
         auto offset = proto_metric.offset();
         auto kind = get_kind(proto_metric);
-        assert(kind.has_value() && kind.value() != protobuf::Kind::CONSTANT);
+        assert(kind.has_value() && kind.value() == protobuf::Kind::CONSTANT);
         typename Metric::metric(m_data + m_meta_bytes + offset, value);
-    }
-
-    /// @return the number of metrics
-    auto count() const -> std::size_t
-    {
-        return m_metadata.metrics().size();
     }
 
     /// @return true if all metrics have been initialized

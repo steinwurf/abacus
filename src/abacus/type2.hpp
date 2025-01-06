@@ -13,6 +13,8 @@
 #include <variant>
 
 #include "kind.hpp"
+#include "max.hpp"
+#include "min.hpp"
 #include "unit.hpp"
 
 namespace abacus
@@ -142,9 +144,9 @@ struct uint64
 
     abacus::kind kind;
     std::string description;
-    std::string unit;
-    std::optional<uint64_t> min;
-    std::optional<uint64_t> max;
+    abacus::unit unit;
+    abacus::min2<type> min;
+    abacus::max2<type> max;
 };
 struct int64
 {
@@ -156,9 +158,9 @@ struct int64
     };
     abacus::kind kind;
     std::string description;
-    std::string unit;
-    std::optional<int64_t> min;
-    std::optional<int64_t> max;
+    abacus::unit unit;
+    abacus::min2<type> min;
+    abacus::max2<type> max;
 };
 struct uint32
 {
@@ -170,9 +172,9 @@ struct uint32
     };
     abacus::kind kind;
     std::string description;
-    std::string unit;
-    std::optional<uint32_t> min;
-    std::optional<uint32_t> max;
+    abacus::unit unit;
+    abacus::min2<type> min;
+    abacus::max2<type> max;
 };
 struct int32
 {
@@ -184,9 +186,9 @@ struct int32
     };
     abacus::kind kind;
     std::string description;
-    std::string unit;
-    std::optional<int32_t> min;
-    std::optional<int32_t> max;
+    abacus::unit unit;
+    abacus::min2<type> min;
+    abacus::max2<type> max;
 };
 struct float64
 {
@@ -198,9 +200,9 @@ struct float64
     };
     abacus::kind kind;
     std::string description;
-    std::string unit;
-    std::optional<double> min;
-    std::optional<double> max;
+    abacus::unit unit;
+    abacus::min2<type> min;
+    abacus::max2<type> max;
 };
 struct float32
 {
@@ -212,9 +214,9 @@ struct float32
     };
     abacus::kind kind;
     std::string description;
-    std::string unit;
-    std::optional<float> min;
-    std::optional<float> max;
+    abacus::unit unit;
+    abacus::min2<type> min;
+    abacus::max2<type> max;
 };
 struct boolean
 {
@@ -354,7 +356,7 @@ struct enum8
     };
     std::string description;
     std::map<uint32_t, value> values;
-    std::string unit;
+    abacus::unit unit;
 };
 using type2 = std::variant<uint64, int64, uint32, int32, float64, float32,
                            boolean, enum8>;

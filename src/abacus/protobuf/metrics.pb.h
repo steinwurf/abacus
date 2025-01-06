@@ -2671,7 +2671,7 @@ class MetricsMetadata final :
   void _internal_set_endianness(::abacus::protobuf::Endianness value);
 
   public:
-  // uint32 sync_value = 3;
+  // fixed32 sync_value = 3;
   void clear_sync_value() ;
   ::uint32_t sync_value() const;
   void set_sync_value(::uint32_t value);
@@ -5017,7 +5017,7 @@ inline void MetricsMetadata::_internal_set_endianness(::abacus::protobuf::Endian
   _impl_.endianness_ = value;
 }
 
-// uint32 sync_value = 3;
+// fixed32 sync_value = 3;
 inline void MetricsMetadata::clear_sync_value() {
   _impl_.sync_value_ = 0u;
 }
