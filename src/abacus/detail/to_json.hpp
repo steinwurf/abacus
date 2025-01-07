@@ -7,7 +7,7 @@
 
 #include <bourne/json.hpp>
 
-#include "../view.hpp"
+#include "../view2.hpp"
 
 #include "../version.hpp"
 
@@ -17,7 +17,7 @@ inline namespace STEINWURF_ABACUS_VERSION
 {
 namespace detail
 {
-auto to_json(const view& view, bool slim) -> bourne::json;
+auto to_json(const view2& view, bool slim) -> bourne::json;
 }
 }
 }

@@ -322,7 +322,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 }  // namespace protobuf
 }  // namespace abacus
 static ::_pb::Metadata file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[13];
-static const ::_pb::EnumDescriptor* file_level_enum_descriptors_abacus_2fprotobuf_2fmetrics_2eproto[2];
+static const ::_pb::EnumDescriptor* file_level_enum_descriptors_abacus_2fprotobuf_2fmetrics_2eproto[1];
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_abacus_2fprotobuf_2fmetrics_2eproto = nullptr;
 const ::uint32_t TableStruct_abacus_2fprotobuf_2fmetrics_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
@@ -565,70 +565,73 @@ static const ::_pb::Message* const file_default_instances[] = {
 };
 const char descriptor_table_protodef_abacus_2fprotobuf_2fmetrics_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
     "\n\035abacus/protobuf/metrics.proto\022\017abacus."
-    "protobuf\"\230\001\n\014UInt64Metric\022\023\n\013description"
-    "\030\001 \001(\t\022#\n\004kind\030\002 \001(\0162\025.abacus.protobuf.K"
-    "ind\022\021\n\004unit\030\003 \001(\tH\000\210\001\001\022\020\n\003min\030\004 \001(\004H\001\210\001\001"
-    "\022\020\n\003max\030\005 \001(\004H\002\210\001\001B\007\n\005_unitB\006\n\004_minB\006\n\004_"
-    "max\"\227\001\n\013Int64Metric\022\023\n\013description\030\001 \001(\t"
-    "\022#\n\004kind\030\002 \001(\0162\025.abacus.protobuf.Kind\022\021\n"
-    "\004unit\030\003 \001(\tH\000\210\001\001\022\020\n\003min\030\004 \001(\003H\001\210\001\001\022\020\n\003ma"
-    "x\030\005 \001(\003H\002\210\001\001B\007\n\005_unitB\006\n\004_minB\006\n\004_max\"\230\001"
-    "\n\014UInt32Metric\022\023\n\013description\030\001 \001(\t\022#\n\004k"
-    "ind\030\002 \001(\0162\025.abacus.protobuf.Kind\022\021\n\004unit"
-    "\030\003 \001(\tH\000\210\001\001\022\020\n\003min\030\004 \001(\rH\001\210\001\001\022\020\n\003max\030\005 \001"
-    "(\rH\002\210\001\001B\007\n\005_unitB\006\n\004_minB\006\n\004_max\"\227\001\n\013Int"
-    "32Metric\022\023\n\013description\030\001 \001(\t\022#\n\004kind\030\002 "
-    "\001(\0162\025.abacus.protobuf.Kind\022\021\n\004unit\030\003 \001(\t"
-    "H\000\210\001\001\022\020\n\003min\030\004 \001(\005H\001\210\001\001\022\020\n\003max\030\005 \001(\005H\002\210\001"
-    "\001B\007\n\005_unitB\006\n\004_minB\006\n\004_max\"\231\001\n\rFloat64Me"
-    "tric\022\023\n\013description\030\001 \001(\t\022#\n\004kind\030\002 \001(\0162"
-    "\025.abacus.protobuf.Kind\022\021\n\004unit\030\003 \001(\tH\000\210\001"
-    "\001\022\020\n\003min\030\004 \001(\001H\001\210\001\001\022\020\n\003max\030\005 \001(\001H\002\210\001\001B\007\n"
-    "\005_unitB\006\n\004_minB\006\n\004_max\"\231\001\n\rFloat32Metric"
-    "\022\023\n\013description\030\001 \001(\t\022#\n\004kind\030\002 \001(\0162\025.ab"
-    "acus.protobuf.Kind\022\021\n\004unit\030\003 \001(\tH\000\210\001\001\022\020\n"
-    "\003min\030\004 \001(\002H\001\210\001\001\022\020\n\003max\030\005 \001(\002H\002\210\001\001B\007\n\005_un"
-    "itB\006\n\004_minB\006\n\004_max\"b\n\nBoolMetric\022\023\n\013desc"
+    "protobuf\032\032abacus/protobuf/kind.proto\"\230\001\n"
+    "\014UInt64Metric\022\023\n\013description\030\001 \001(\t\022#\n\004ki"
+    "nd\030\002 \001(\0162\025.abacus.protobuf.Kind\022\021\n\004unit\030"
+    "\003 \001(\tH\000\210\001\001\022\020\n\003min\030\004 \001(\004H\001\210\001\001\022\020\n\003max\030\005 \001("
+    "\004H\002\210\001\001B\007\n\005_unitB\006\n\004_minB\006\n\004_max\"\227\001\n\013Int6"
+    "4Metric\022\023\n\013description\030\001 \001(\t\022#\n\004kind\030\002 \001"
+    "(\0162\025.abacus.protobuf.Kind\022\021\n\004unit\030\003 \001(\tH"
+    "\000\210\001\001\022\020\n\003min\030\004 \001(\003H\001\210\001\001\022\020\n\003max\030\005 \001(\003H\002\210\001\001"
+    "B\007\n\005_unitB\006\n\004_minB\006\n\004_max\"\230\001\n\014UInt32Metr"
+    "ic\022\023\n\013description\030\001 \001(\t\022#\n\004kind\030\002 \001(\0162\025."
+    "abacus.protobuf.Kind\022\021\n\004unit\030\003 \001(\tH\000\210\001\001\022"
+    "\020\n\003min\030\004 \001(\rH\001\210\001\001\022\020\n\003max\030\005 \001(\rH\002\210\001\001B\007\n\005_"
+    "unitB\006\n\004_minB\006\n\004_max\"\227\001\n\013Int32Metric\022\023\n\013"
+    "description\030\001 \001(\t\022#\n\004kind\030\002 \001(\0162\025.abacus"
+    ".protobuf.Kind\022\021\n\004unit\030\003 \001(\tH\000\210\001\001\022\020\n\003min"
+    "\030\004 \001(\005H\001\210\001\001\022\020\n\003max\030\005 \001(\005H\002\210\001\001B\007\n\005_unitB\006"
+    "\n\004_minB\006\n\004_max\"\231\001\n\rFloat64Metric\022\023\n\013desc"
     "ription\030\001 \001(\t\022#\n\004kind\030\002 \001(\0162\025.abacus.pro"
-    "tobuf.Kind\022\021\n\004unit\030\003 \001(\tH\000\210\001\001B\007\n\005_unit\"C"
-    "\n\tEnumValue\022\014\n\004name\030\001 \001(\t\022\030\n\013description"
-    "\030\002 \001(\tH\000\210\001\001B\016\n\014_description\"\303\001\n\013Enum8Met"
-    "ric\022\023\n\013description\030\001 \001(\t\022\021\n\004unit\030\002 \001(\tH\000"
-    "\210\001\001\0228\n\006values\030\003 \003(\0132(.abacus.protobuf.En"
-    "um8Metric.ValuesEntry\032I\n\013ValuesEntry\022\013\n\003"
-    "key\030\001 \001(\r\022)\n\005value\030\002 \001(\0132\032.abacus.protob"
-    "uf.EnumValue:\0028\001B\007\n\005_unit\"\245\003\n\006Metric\022\016\n\006"
-    "offset\030\001 \001(\r\022/\n\006uint64\030\002 \001(\0132\035.abacus.pr"
-    "otobuf.UInt64MetricH\000\022-\n\005int64\030\003 \001(\0132\034.a"
-    "bacus.protobuf.Int64MetricH\000\022/\n\006uint32\030\004"
-    " \001(\0132\035.abacus.protobuf.UInt32MetricH\000\022-\n"
-    "\005int32\030\005 \001(\0132\034.abacus.protobuf.Int32Metr"
-    "icH\000\0221\n\007float64\030\006 \001(\0132\036.abacus.protobuf."
-    "Float64MetricH\000\0221\n\007float32\030\007 \001(\0132\036.abacu"
-    "s.protobuf.Float32MetricH\000\022.\n\007boolean\030\010 "
-    "\001(\0132\033.abacus.protobuf.BoolMetricH\000\022-\n\005en"
-    "um8\030\t \001(\0132\034.abacus.protobuf.Enum8MetricH"
-    "\000B\006\n\004type\"\371\001\n\017MetricsMetadata\022\030\n\020protoco"
-    "l_version\030\001 \001(\r\022/\n\nendianness\030\002 \001(\0162\033.ab"
-    "acus.protobuf.Endianness\022\022\n\nsync_value\030\003"
-    " \001(\007\022>\n\007metrics\030\004 \003(\0132-.abacus.protobuf."
-    "MetricsMetadata.MetricsEntry\032G\n\014MetricsE"
-    "ntry\022\013\n\003key\030\001 \001(\t\022&\n\005value\030\002 \001(\0132\027.abacu"
-    "s.protobuf.Metric:\0028\001*,\n\004Kind\022\013\n\007COUNTER"
-    "\020\000\022\014\n\010CONSTANT\020\001\022\t\n\005GAUGE\020\002*!\n\nEndiannes"
-    "s\022\n\n\006LITTLE\020\000\022\007\n\003BIG\020\001B\021Z\017abacus/protobu"
-    "fb\006proto3"
+    "tobuf.Kind\022\021\n\004unit\030\003 \001(\tH\000\210\001\001\022\020\n\003min\030\004 \001"
+    "(\001H\001\210\001\001\022\020\n\003max\030\005 \001(\001H\002\210\001\001B\007\n\005_unitB\006\n\004_m"
+    "inB\006\n\004_max\"\231\001\n\rFloat32Metric\022\023\n\013descript"
+    "ion\030\001 \001(\t\022#\n\004kind\030\002 \001(\0162\025.abacus.protobu"
+    "f.Kind\022\021\n\004unit\030\003 \001(\tH\000\210\001\001\022\020\n\003min\030\004 \001(\002H\001"
+    "\210\001\001\022\020\n\003max\030\005 \001(\002H\002\210\001\001B\007\n\005_unitB\006\n\004_minB\006"
+    "\n\004_max\"b\n\nBoolMetric\022\023\n\013description\030\001 \001("
+    "\t\022#\n\004kind\030\002 \001(\0162\025.abacus.protobuf.Kind\022\021"
+    "\n\004unit\030\003 \001(\tH\000\210\001\001B\007\n\005_unit\"C\n\tEnumValue\022"
+    "\014\n\004name\030\001 \001(\t\022\030\n\013description\030\002 \001(\tH\000\210\001\001B"
+    "\016\n\014_description\"\303\001\n\013Enum8Metric\022\023\n\013descr"
+    "iption\030\001 \001(\t\022\021\n\004unit\030\002 \001(\tH\000\210\001\001\0228\n\006value"
+    "s\030\003 \003(\0132(.abacus.protobuf.Enum8Metric.Va"
+    "luesEntry\032I\n\013ValuesEntry\022\013\n\003key\030\001 \001(\r\022)\n"
+    "\005value\030\002 \001(\0132\032.abacus.protobuf.EnumValue"
+    ":\0028\001B\007\n\005_unit\"\245\003\n\006Metric\022\016\n\006offset\030\001 \001(\r"
+    "\022/\n\006uint64\030\002 \001(\0132\035.abacus.protobuf.UInt6"
+    "4MetricH\000\022-\n\005int64\030\003 \001(\0132\034.abacus.protob"
+    "uf.Int64MetricH\000\022/\n\006uint32\030\004 \001(\0132\035.abacu"
+    "s.protobuf.UInt32MetricH\000\022-\n\005int32\030\005 \001(\013"
+    "2\034.abacus.protobuf.Int32MetricH\000\0221\n\007floa"
+    "t64\030\006 \001(\0132\036.abacus.protobuf.Float64Metri"
+    "cH\000\0221\n\007float32\030\007 \001(\0132\036.abacus.protobuf.F"
+    "loat32MetricH\000\022.\n\007boolean\030\010 \001(\0132\033.abacus"
+    ".protobuf.BoolMetricH\000\022-\n\005enum8\030\t \001(\0132\034."
+    "abacus.protobuf.Enum8MetricH\000B\006\n\004type\"\371\001"
+    "\n\017MetricsMetadata\022\030\n\020protocol_version\030\001 "
+    "\001(\r\022/\n\nendianness\030\002 \001(\0162\033.abacus.protobu"
+    "f.Endianness\022\022\n\nsync_value\030\003 \001(\007\022>\n\007metr"
+    "ics\030\004 \003(\0132-.abacus.protobuf.MetricsMetad"
+    "ata.MetricsEntry\032G\n\014MetricsEntry\022\013\n\003key\030"
+    "\001 \001(\t\022&\n\005value\030\002 \001(\0132\027.abacus.protobuf.M"
+    "etric:\0028\001*!\n\nEndianness\022\n\n\006LITTLE\020\000\022\007\n\003B"
+    "IG\020\001B\021Z\017abacus/protobufb\006proto3"
+};
+static const ::_pbi::DescriptorTable* const descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_deps[1] =
+    {
+        &::descriptor_table_abacus_2fprotobuf_2fkind_2eproto,
 };
 static ::absl::once_flag descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto = {
     false,
     false,
-    2129,
+    2111,
     descriptor_table_protodef_abacus_2fprotobuf_2fmetrics_2eproto,
     "abacus/protobuf/metrics.proto",
     &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once,
-    nullptr,
-    0,
+    descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_deps,
+    1,
     13,
     schemas,
     file_default_instances,
@@ -657,23 +660,9 @@ PROTOBUF_ATTRIBUTE_INIT_PRIORITY2
 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_abacus_2fprotobuf_2fmetrics_2eproto(&descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto);
 namespace abacus {
 namespace protobuf {
-const ::google::protobuf::EnumDescriptor* Kind_descriptor() {
-  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto);
-  return file_level_enum_descriptors_abacus_2fprotobuf_2fmetrics_2eproto[0];
-}
-bool Kind_IsValid(int value) {
-  switch (value) {
-    case 0:
-    case 1:
-    case 2:
-      return true;
-    default:
-      return false;
-  }
-}
 const ::google::protobuf::EnumDescriptor* Endianness_descriptor() {
   ::google::protobuf::internal::AssignDescriptors(&descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto);
-  return file_level_enum_descriptors_abacus_2fprotobuf_2fmetrics_2eproto[1];
+  return file_level_enum_descriptors_abacus_2fprotobuf_2fmetrics_2eproto[0];
 }
 bool Endianness_IsValid(int value) {
   switch (value) {

@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "version.hpp"
-#include "view.hpp"
+#include "view2.hpp"
 
 namespace abacus
 {
@@ -20,13 +20,14 @@ inline namespace STEINWURF_ABACUS_VERSION
 /// @param value_data The value data of the metrics view.
 /// @param minimal If true, the JSON will be slimmed down to only contain the
 ///        the value data.
-auto to_json(const uint8_t* meta_data, const uint8_t* value_data,
+auto to_json(const uint8_t* metadata_data, std::size_t metadata_bytes,
+             const uint8_t* value_data, std::size_t value_bytes,
              bool minimal = false) -> std::string;
 
 /// @return a JSON-formatted string of a single views data.
 /// @param view A view with access to metrics-data.
 /// @param minimal If true, the JSON will be slimmed down to only contain the
 ///        the value data.
-auto to_json(const view& view, bool minimal = false) -> std::string;
+auto to_json(const view2& view, bool minimal = false) -> std::string;
 }
 }

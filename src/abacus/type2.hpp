@@ -12,16 +12,16 @@
 #include <string>
 #include <variant>
 
-#include "kind.hpp"
 #include "max.hpp"
 #include "min.hpp"
+#include "protobuf/kind.pb.h"
 #include "unit.hpp"
 
 namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-namespace
+namespace detail
 {
 template <typename T>
 struct common
@@ -72,6 +72,8 @@ struct common
     auto set_value(type value) -> void
     {
         assert(is_initialized());
+        assert(!std::isnan(value) && "Cannot assign a NaN");
+        assert(!std::isinf(value) && "Cannot assign an Inf/-Inf value");
         m_memory[0] = 1;
         std::memcpy(m_memory + 1, &value, sizeof(value));
     }
@@ -93,6 +95,8 @@ struct common
     {
         assert(has_value());
         auto new_value = this->value() + value;
+        assert(!std::isnan(new_value) && "Cannot assign a NaN");
+        assert(!std::isinf(new_value) && "Cannot assign an Inf/-Inf value");
         std::memcpy(m_memory + 1, &new_value, sizeof(new_value));
         return (metric&)*this;
     }
@@ -104,6 +108,8 @@ struct common
     {
         assert(has_value());
         auto new_value = this->value() - value;
+        assert(!std::isnan(new_value) && "Cannot assign a NaN");
+        assert(!std::isinf(new_value) && "Cannot assign an Inf/-Inf value");
         std::memcpy(m_memory + 1, &new_value, sizeof(new_value));
         return (metric&)*this;
     }
@@ -133,90 +139,92 @@ protected:
 };
 }
 
+using kind = protobuf::Kind;
+
 struct uint64
 {
     using type = uint64_t;
-    struct metric : public common<uint64>
+    struct metric : public detail::common<uint64>
     {
-        using common<uint64>::common;
-        using common<uint64>::operator=;
+        using detail::common<uint64>::common;
+        using detail::common<uint64>::operator=;
     };
 
     abacus::kind kind;
     std::string description;
-    abacus::unit unit;
-    abacus::min2<type> min;
-    abacus::max2<type> max;
+    abacus::unit unit{};
+    abacus::min2<type> min{};
+    abacus::max2<type> max{};
 };
 struct int64
 {
     using type = int64_t;
-    struct metric : public common<int64>
+    struct metric : public detail::common<int64>
     {
-        using common<int64>::common;
-        using common<int64>::operator=;
+        using detail::common<int64>::common;
+        using detail::common<int64>::operator=;
     };
     abacus::kind kind;
     std::string description;
-    abacus::unit unit;
-    abacus::min2<type> min;
-    abacus::max2<type> max;
+    abacus::unit unit{};
+    abacus::min2<type> min{};
+    abacus::max2<type> max{};
 };
 struct uint32
 {
     using type = uint32_t;
-    struct metric : public common<uint32>
+    struct metric : public detail::common<uint32>
     {
-        using common<uint32>::common;
-        using common<uint32>::operator=;
+        using detail::common<uint32>::common;
+        using detail::common<uint32>::operator=;
     };
     abacus::kind kind;
     std::string description;
-    abacus::unit unit;
-    abacus::min2<type> min;
-    abacus::max2<type> max;
+    abacus::unit unit{};
+    abacus::min2<type> min{};
+    abacus::max2<type> max{};
 };
 struct int32
 {
     using type = int32_t;
-    struct metric : public common<int32>
+    struct metric : public detail::common<int32>
     {
-        using common<int32>::common;
-        using common<int32>::operator=;
+        using detail::common<int32>::common;
+        using detail::common<int32>::operator=;
     };
     abacus::kind kind;
     std::string description;
-    abacus::unit unit;
-    abacus::min2<type> min;
-    abacus::max2<type> max;
+    abacus::unit unit{};
+    abacus::min2<type> min{};
+    abacus::max2<type> max{};
 };
 struct float64
 {
     using type = double;
-    struct metric : public common<float64>
+    struct metric : public detail::common<float64>
     {
-        using common<float64>::common;
-        using common<float64>::operator=;
+        using detail::common<float64>::common;
+        using detail::common<float64>::operator=;
     };
     abacus::kind kind;
     std::string description;
-    abacus::unit unit;
-    abacus::min2<type> min;
-    abacus::max2<type> max;
+    abacus::unit unit{};
+    abacus::min2<type> min{};
+    abacus::max2<type> max{};
 };
 struct float32
 {
     using type = float;
-    struct metric : public common<float32>
+    struct metric : public detail::common<float32>
     {
-        using common<float32>::common;
-        using common<float32>::operator=;
+        using detail::common<float32>::common;
+        using detail::common<float32>::operator=;
     };
     abacus::kind kind;
     std::string description;
-    abacus::unit unit;
-    abacus::min2<type> min;
-    abacus::max2<type> max;
+    abacus::unit unit{};
+    abacus::min2<type> min{};
+    abacus::max2<type> max{};
 };
 struct boolean
 {
@@ -356,7 +364,7 @@ struct enum8
     };
     std::string description;
     std::map<uint32_t, value> values;
-    abacus::unit unit;
+    abacus::unit unit{};
 };
 using type2 = std::variant<uint64, int64, uint32, int32, float64, float32,
                            boolean, enum8>;

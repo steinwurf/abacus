@@ -36,6 +36,7 @@
 #include "google/protobuf/map_field_inl.h"
 #include "google/protobuf/generated_enum_reflection.h"
 #include "google/protobuf/unknown_field_set.h"
+#include "abacus/protobuf/kind.pb.h"
 // @@protoc_insertion_point(includes)
 
 // Must be included last.
@@ -107,39 +108,6 @@ namespace protobuf {
 
 namespace abacus {
 namespace protobuf {
-enum Kind : int {
-  COUNTER = 0,
-  CONSTANT = 1,
-  GAUGE = 2,
-  Kind_INT_MIN_SENTINEL_DO_NOT_USE_ =
-      std::numeric_limits<::int32_t>::min(),
-  Kind_INT_MAX_SENTINEL_DO_NOT_USE_ =
-      std::numeric_limits<::int32_t>::max(),
-};
-
-bool Kind_IsValid(int value);
-constexpr Kind Kind_MIN = static_cast<Kind>(0);
-constexpr Kind Kind_MAX = static_cast<Kind>(2);
-constexpr int Kind_ARRAYSIZE = 2 + 1;
-const ::google::protobuf::EnumDescriptor*
-Kind_descriptor();
-template <typename T>
-const std::string& Kind_Name(T value) {
-  static_assert(std::is_same<T, Kind>::value ||
-                    std::is_integral<T>::value,
-                "Incorrect type passed to Kind_Name().");
-  return Kind_Name(static_cast<Kind>(value));
-}
-template <>
-inline const std::string& Kind_Name(Kind value) {
-  return ::google::protobuf::internal::NameOfDenseEnum<Kind_descriptor,
-                                                 0, 2>(
-      static_cast<int>(value));
-}
-inline bool Kind_Parse(absl::string_view name, Kind* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<Kind>(
-      Kind_descriptor(), name, value);
-}
 enum Endianness : int {
   LITTLE = 0,
   BIG = 1,
@@ -5078,12 +5046,6 @@ inline ::google::protobuf::Map<std::string, ::abacus::protobuf::Metric>* Metrics
 namespace google {
 namespace protobuf {
 
-template <>
-struct is_proto_enum<::abacus::protobuf::Kind> : std::true_type {};
-template <>
-inline const EnumDescriptor* GetEnumDescriptor<::abacus::protobuf::Kind>() {
-  return ::abacus::protobuf::Kind_descriptor();
-}
 template <>
 struct is_proto_enum<::abacus::protobuf::Endianness> : std::true_type {};
 template <>

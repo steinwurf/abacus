@@ -6,8 +6,8 @@
 #include "to_json.hpp"
 
 #include <bourne/json.hpp>
+#include <google/protobuf/util/json_util.h>
 
-#include "../to_string.hpp"
 #include "../version.hpp"
 
 namespace abacus
@@ -16,82 +16,103 @@ inline namespace STEINWURF_ABACUS_VERSION
 {
 namespace detail
 {
-auto to_json(const view& view, bool slim) -> bourne::json
+auto to_json(const view2& view, bool slim) -> bourne::json
 {
     auto json = bourne::json::object();
-    uint64_t uint_value = 0U;
-    int64_t int_value = 0;
-    bool bool_value = false;
-    double float_value = 0.0;
-    if (!slim)
+    if (slim)
     {
-        json["protocol_version"] = view.protocol_version();
-    }
-
-    for (std::size_t i = 0; i < view.count(); ++i)
-    {
-        auto value = bourne::json::null();
-        auto max = bourne::json::null();
-        auto min = bourne::json::null();
-        // If metric is not initialized we set it to null
-        if ((view.is_initialized(i)))
+        for (const auto& [name, metric] : view.metadata().metrics())
         {
-            switch (view.type(i))
+            switch (metric.type_case())
             {
-            case abacus::type::uint64:
-                view.value(i, uint_value);
-                value = uint_value;
-                max = view.max(i).m_uint;
-                min = view.min(i).m_uint;
+            case protobuf::Metric::kUint64:
+            {
+                auto v = view.value<abacus::uint64>(name);
+                if (v.has_value())
+                {
+                    json[name] = v.value();
+                }
                 break;
-            case abacus::type::int64:
-                view.value(i, int_value);
-                value = int_value;
-                max = view.max(i).m_int;
-                min = view.min(i).m_int;
+            }
+            case protobuf::Metric::kInt64:
+            {
+                auto v = view.value<abacus::int64>(name);
+                if (v.has_value())
+                {
+                    json[name] = v.value();
+                }
                 break;
-            case abacus::type::boolean:
-                view.value(i, bool_value);
-                value = bool_value;
-                max = view.max(i).m_uint;
-                min = view.min(i).m_uint;
+            }
+            case protobuf::Metric::kUint32:
+            {
+                auto v = view.value<abacus::uint32>(name);
+                if (v.has_value())
+                {
+                    json[name] = v.value();
+                }
                 break;
-            case abacus::type::float64:
-                view.value(i, float_value);
-                value = float_value;
-                max = view.max(i).m_double;
-                min = view.min(i).m_double;
+            }
+            case protobuf::Metric::kInt32:
+            {
+                auto v = view.value<abacus::int32>(name);
+                if (v.has_value())
+                {
+                    json[name] = v.value();
+                }
                 break;
+            }
+            case protobuf::Metric::kFloat64:
+            {
+                auto v = view.value<abacus::float64>(name);
+                if (v.has_value())
+                {
+                    json[name] = v.value();
+                }
+                break;
+            }
+            case protobuf::Metric::kFloat32:
+            {
+                auto v = view.value<abacus::float32>(name);
+                if (v.has_value())
+                {
+                    json[name] = v.value();
+                }
+                break;
+            }
+            case protobuf::Metric::kBoolean:
+            {
+                auto v = view.value<abacus::boolean>(name);
+                if (v.has_value())
+                {
+                    json[name] = v.value();
+                }
+                break;
+            }
+            case protobuf::Metric::kEnum8:
+            {
+                auto v = view.value<abacus::enum8>(name);
+                if (v.has_value())
+                {
+                    json[name] = v.value();
+                }
+                break;
+            }
             default:
-                assert(false);
                 break;
             }
         }
-        if (slim)
+    }
+    else
+    {
+        std::string metadata_json;
+        auto status = google::protobuf::util::MessageToJsonString(
+            view.metadata(), &metadata_json);
+        if (status.ok())
         {
-            json[view.name(i)] = value;
-        }
-        else
-        {
-            std::string kind = to_string(view.kind(i));
-
-            json[view.name(i)] = {
-                "description", view.description(i), "kind", kind, "value",
-                value,
-            };
-
-            if (min != 0 || max != 0)
-            {
-                json[view.name(i)]["min"] = min;
-                json[view.name(i)]["max"] = max;
-            }
-
-            if (!view.unit(i).empty())
-            {
-                json[view.name(i)]["unit"] = view.unit(i);
-            }
+            json = bourne::json::parse(metadata_json);
         }
     }
+
     return json;
 }
 }

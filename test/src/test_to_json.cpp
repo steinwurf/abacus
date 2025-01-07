@@ -7,9 +7,9 @@
 #include <cstring>
 #include <gtest/gtest.h>
 
-#include <abacus/metrics.hpp>
+#include <abacus/metrics2.hpp>
 #include <abacus/to_json.hpp>
-#include <abacus/view.hpp>
+#include <abacus/view2.hpp>
 
 #include <bourne/json.hpp>
 
@@ -35,7 +35,7 @@ static const char* expected_json = R"({
     "kind" : "constant",
     "value" : true
   },
-  "protocol_version" : 1
+  "protocol_version" : 2
 })";
 
 static const char* expected_json_slim = R"({
@@ -50,30 +50,25 @@ TEST(test_to_json, api)
     std::string name1 = "metric1";
     std::string name2 = "metric2";
 
-    abacus::metric_info infos[3] = {
-        abacus::metric_info{name0, "An unsigned integer metric",
-                            abacus::type::uint64, abacus::kind::counter,
-                            abacus::unit{"bytes"}, abacus::min{uint64_t{0U}},
-                            abacus::max{uint64_t{100U}}},
-        abacus::metric_info{name1, "A signed integer metric",
-                            abacus::type::int64, abacus::kind::gauge,
-                            abacus::unit{"USD"}, abacus::min{int64_t{-100}},
-                            abacus::max{int64_t{100}}},
-        abacus::metric_info{name2, "A boolean constant", abacus::type::boolean,
-                            abacus::kind::constant}};
+    std::map<std::string, abacus::type2> infos = {
+        {name0,
+         abacus::uint64{abacus::kind::COUNTER, "An unsigned integer metric",
+                        abacus::unit{"bytes"}, abacus::min2{uint64_t{0U}},
+                        abacus::max2{uint64_t{100U}}}},
+        {name1, abacus::int64{abacus::kind::GAUGE, "A signed integer metric",
+                              abacus::unit{"USD"}, abacus::min2{int64_t{-100}},
+                              abacus::max2{int64_t{100}}}},
+        {name2, abacus::boolean{abacus::kind::CONSTANT, "A boolean constant"}}};
 
-    abacus::metrics metrics(infos);
+    abacus::metrics2 metrics(infos);
 
-    auto m0 = metrics.initialize_metric<abacus::type::uint64>(name0);
-    auto m1 = metrics.initialize_metric<abacus::type::int64>(name1);
-    metrics.initialize_constant<abacus::type::boolean>(name2, true);
+    auto m0 = metrics.initialize_metric<abacus::uint64>(name0, 42);
+    auto m1 = metrics.initialize_metric<abacus::int64>(name1, -42);
+    metrics.initialize_constant<abacus::boolean>(name2, true);
 
-    m0 = 42;
-    m1 = -42;
-
-    abacus::view view;
-    view.set_meta_data(metrics.meta_data());
-    view.set_value_data(metrics.value_data());
+    abacus::view2 view;
+    view.set_meta_data(metrics.metadata_data(), metrics.metadata_bytes());
+    view.set_value_data(metrics.value_data(), metrics.value_bytes());
 
     auto json_from_view = abacus::to_json(view);
 
@@ -82,7 +77,8 @@ TEST(test_to_json, api)
     EXPECT_FALSE(error);
 
     auto json_from_data =
-        abacus::to_json(metrics.meta_data(), metrics.value_data());
+        abacus::to_json(metrics.metadata_data(), metrics.metadata_bytes(),
+                        metrics.value_data(), metrics.value_bytes());
 
     EXPECT_EQ(json_from_view, json_from_data);
     EXPECT_EQ(json_from_view, expected_json);
