@@ -16,7 +16,8 @@
 static const char* expected_json_minimal = R"({
   "metric0" : 42,
   "metric1" : -42,
-  "metric2" : true
+  "metric2" : true,
+  "metric3" : 2
 })";
 
 TEST(test_to_json, to_json_minimal)
@@ -24,6 +25,7 @@ TEST(test_to_json, to_json_minimal)
     std::string name0 = "metric0";
     std::string name1 = "metric1";
     std::string name2 = "metric2";
+    std::string name3 = "metric3";
 
     std::map<std::string, abacus::type> infos = {
         {name0,
@@ -33,17 +35,25 @@ TEST(test_to_json, to_json_minimal)
         {name1, abacus::int64{abacus::kind::GAUGE, "A signed integer metric",
                               abacus::unit{"USD"}, abacus::min{int64_t{-100}},
                               abacus::max{int64_t{100}}}},
-        {name2, abacus::boolean{abacus::kind::CONSTANT, "A boolean constant"}}};
+        {name2, abacus::boolean{abacus::kind::CONSTANT, "A boolean constant"}},
+        {name3, abacus::enum8{"An enum metric",
+                              {{0, {"value0", "The value for 0"}},
+                               {1, {"value1", "The value for 1"}},
+                               {2, {"value2", "The value for 2"}},
+                               {3, {"value3", "The value for 3"}}}}}};
 
     abacus::metrics metrics(infos);
 
     auto m0 = metrics.initialize_metric<abacus::uint64>(name0, 42);
     auto m1 = metrics.initialize_metric<abacus::int64>(name1, -42);
     metrics.initialize_constant<abacus::boolean>(name2, true);
+    auto m3 = metrics.initialize_metric<abacus::enum8>(name3, 2);
 
     abacus::view view;
     view.set_meta_data(metrics.metadata_data(), metrics.metadata_bytes());
-    view.set_value_data(metrics.value_data(), metrics.value_bytes());
+    auto success =
+        view.set_value_data(metrics.value_data(), metrics.value_bytes());
+    ASSERT_TRUE(success);
 
     auto json_from_view_minimal = abacus::to_json(view, true);
     EXPECT_EQ(json_from_view_minimal, expected_json_minimal);
@@ -75,6 +85,30 @@ static const char* expected_json = R"({
       "kind" : "CONSTANT"
     },
     "value" : true
+  },
+  "metric3" : {
+    "enum8" : {
+      "description" : "An enum metric",
+      "values" : {
+        "0" : {
+          "description" : "The value for 0",
+          "name" : "value0"
+        },
+        "1" : {
+          "description" : "The value for 1",
+          "name" : "value1"
+        },
+        "2" : {
+          "description" : "The value for 2",
+          "name" : "value2"
+        },
+        "3" : {
+          "description" : "The value for 3",
+          "name" : "value3"
+        }
+      }
+    },
+    "value" : 2
   }
 })";
 
@@ -83,6 +117,7 @@ TEST(test_to_json, to_json)
     std::string name0 = "metric0";
     std::string name1 = "metric1";
     std::string name2 = "metric2";
+    std::string name3 = "metric3";
 
     std::map<std::string, abacus::type> infos = {
         {name0,
@@ -92,7 +127,12 @@ TEST(test_to_json, to_json)
         {name1, abacus::int64{abacus::kind::GAUGE, "A signed integer metric",
                               abacus::unit{"USD"}, abacus::min{int64_t{-100}},
                               abacus::max{int64_t{100}}}},
-        {name2, abacus::boolean{abacus::kind::CONSTANT, "A boolean constant"}}};
+        {name2, abacus::boolean{abacus::kind::CONSTANT, "A boolean constant"}},
+        {name3, abacus::enum8{"An enum metric",
+                              {{0, {"value0", "The value for 0"}},
+                               {1, {"value1", "The value for 1"}},
+                               {2, {"value2", "The value for 2"}},
+                               {3, {"value3", "The value for 3"}}}}}};
 
     abacus::metrics metrics(infos);
 
@@ -102,7 +142,9 @@ TEST(test_to_json, to_json)
 
     abacus::view view;
     view.set_meta_data(metrics.metadata_data(), metrics.metadata_bytes());
-    view.set_value_data(metrics.value_data(), metrics.value_bytes());
+    auto success =
+        view.set_value_data(metrics.value_data(), metrics.value_bytes());
+    ASSERT_TRUE(success);
 
     auto json_from_view = abacus::to_json(view);
 

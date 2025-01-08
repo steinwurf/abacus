@@ -9,6 +9,16 @@
         "resolver_info": "13.0.0",
         "sha1": "de39fa280dabb242134e095a1473495341165b70"
     },
+    "gbenchmark": {
+        "commit_id": "a01cf3aaa4e3f6ebd90d95ab6ba168d351b3ab3c",
+        "resolver_info": "2.1.2",
+        "sha1": "eba056f72a8a4ddf957ced45237720337b7c2215"
+    },
+    "gbenchmark-source": {
+        "commit_id": "344117638c8ff7e239044fd0fa7085839fc03021",
+        "resolver_info": "v1.8.3",
+        "sha1": "2f70f76f52ae610b201e6738e0e76260de2a7405"
+    },
     "gtest": {
         "commit_id": "da24468d2c5deb601d0f67196abe83d78a00f972",
         "resolver_info": "5.0.0",

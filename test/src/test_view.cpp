@@ -17,7 +17,8 @@ TEST(test_view, api)
 {
     std::string name0 = "metric0";
     std::string name1 = "metric1";
-    std::string name2 = "metric3";
+    std::string name2 = "metric2";
+    std::string name3 = "metric3";
 
     std::map<std::string, abacus::type> infos = {
         {name0,
@@ -27,7 +28,12 @@ TEST(test_view, api)
                               abacus::unit{"USD"}}},
         {name2, abacus::float64{abacus::kind::CONSTANT,
                                 "A constant floating point metric",
-                                abacus::unit{"ms"}}}};
+                                abacus::unit{"ms"}}},
+        {name3, abacus::enum8{"An enum metric",
+                              {{0, {"value0", "The value for 0"}},
+                               {1, {"value1", "The value for 1"}},
+                               {2, {"value2", "The value for 2"}},
+                               {3, {"value3", "The value for 3"}}}}}};
 
     abacus::metrics metrics(infos);
 
@@ -36,6 +42,8 @@ TEST(test_view, api)
     auto metric1 = metrics.initialize_metric<abacus::int64>(name1);
 
     metrics.initialize_constant<abacus::float64>(name2, 3.14);
+
+    auto metric3 = metrics.initialize_metric<abacus::enum8>(name3);
 
     std::vector<uint8_t> meta_data(metrics.metadata_bytes());
     std::vector<uint8_t> value_data(metrics.value_bytes());
@@ -57,16 +65,37 @@ TEST(test_view, api)
     auto success = view.set_value_data(value_data.data(), value_data.size());
     ASSERT_TRUE(success);
 
-    std::optional<uint64_t> view_value = view.value<abacus::uint64>(name0);
+    std::optional<uint64_t> view_value0 = view.value<abacus::uint64>(name0);
+    std::optional<int64_t> view_value1 = view.value<abacus::int64>(name1);
+    std::optional<double> view_value2 = view.value<abacus::float64>(name2);
+    std::optional<uint8_t> view_value3 = view.value<abacus::enum8>(name3);
 
-    EXPECT_FALSE(view_value.has_value());
+    EXPECT_FALSE(view_value0.has_value());
+    EXPECT_FALSE(view_value1.has_value());
+    EXPECT_TRUE(view_value2.has_value());
+    EXPECT_EQ(3.14, view_value2.value());
+    EXPECT_FALSE(view_value3.has_value());
 
-    // Update metric
+    // Update metrics
     metric0 = 9000U;
-    // and provide new value data to the view
-    view.set_value_data(metrics.value_data(), metrics.value_bytes());
-    view_value = view.value<abacus::uint64>(name0);
+    metric1 = -1000;
+    metric3 = 2;
 
-    EXPECT_TRUE(view_value.has_value());
-    EXPECT_EQ(9000U, view_value.value());
+    // and provide new value data to the view
+    success = view.set_value_data(metrics.value_data(), metrics.value_bytes());
+    ASSERT_TRUE(success);
+    view_value0 = view.value<abacus::uint64>(name0);
+
+    EXPECT_TRUE(view_value0.has_value());
+    EXPECT_EQ(9000U, view_value0.value());
+
+    view_value1 = view.value<abacus::int64>(name1);
+
+    EXPECT_TRUE(view_value1.has_value());
+    EXPECT_EQ(-1000, view_value1.value());
+
+    view_value3 = view.value<abacus::enum8>(name3);
+
+    EXPECT_TRUE(view_value3.has_value());
+    EXPECT_EQ(2, view_value3.value());
 }

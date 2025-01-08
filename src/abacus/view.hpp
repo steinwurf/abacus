@@ -59,8 +59,8 @@ public:
     /// @param value_data The value data pointer
     /// @param value_bytes The value data size in bytes
     /// @return true if the hash is correct otherwise false
-    auto set_value_data(const uint8_t* value_data,
-                        std::size_t value_bytes) -> bool
+    [[nodiscard]] auto set_value_data(const uint8_t* value_data,
+                                      std::size_t value_bytes) -> bool
     {
         assert(m_metadata_data != nullptr);
         assert(value_data != nullptr);
@@ -133,8 +133,6 @@ public:
     {
         assert(m_value_data != nullptr);
         assert(m_metadata_data != nullptr);
-
-        auto endianness = m_metadata.endianness();
 
         auto offset = metric(name).offset();
         assert(offset < m_value_bytes);

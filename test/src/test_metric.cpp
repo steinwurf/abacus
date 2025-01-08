@@ -22,7 +22,7 @@ TEST(test_metric, constructor)
     EXPECT_TRUE(uint_metric.has_value());
     EXPECT_EQ(uint_metric.value(), 42U);
 }
-/*
+
 TEST(test_metric, float_assignment)
 {
     uint8_t data[9] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
@@ -63,4 +63,3 @@ TEST(test_metric, float_assignment)
     // Check that that assignment to -Inf is not allowed
     EXPECT_DEATH(double_metric -= 1 / -0.0, "");
 }
-*/

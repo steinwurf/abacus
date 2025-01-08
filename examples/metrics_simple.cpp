@@ -36,13 +36,19 @@ int main()
     car.initialize_constant<abacus::float64>("fuel_consumption", 22.3);
     car.initialize_constant<abacus::uint64>("wheels", 4);
 
-    // The car is overdue maintenance.
+    // The car still has some time before maintenance.
     auto days_until_maintenance =
-        car.initialize_metric<abacus::int64>("days_until_maintenance", -10);
+        car.initialize_metric<abacus::int64>("days_until_maintenance", 10);
 
     // The car should be registered.
     auto registered =
-        car.initialize_metric<abacus::boolean>("registered", true);
+        car.initialize_metric<abacus::boolean>("registered", false);
+
+    // The car has been registered.
+    registered = true;
+
+    // The car has been driven for a while, and now maintenance is overdue.
+    days_until_maintenance = -1;
 
     /// We want to export the metrics memory, so we need a new storage
     std::vector<uint8_t> meta_data(car.metadata_bytes());

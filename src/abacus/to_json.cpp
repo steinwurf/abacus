@@ -24,8 +24,11 @@ auto to_json(const uint8_t* metadata_data, std::size_t metadata_bytes,
 {
     view v;
     v.set_meta_data(metadata_data, metadata_bytes);
-    v.set_value_data(value_data, value_bytes);
-    return to_json(v, minimal);
+    if (v.set_value_data(value_data, value_bytes))
+    {
+        return to_json(v, minimal);
+    }
+    return "";
 }
 }
 }

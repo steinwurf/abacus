@@ -24,7 +24,7 @@ TEST(test_metrics, empty)
     EXPECT_EQ(0U, metrics2.metadata().metrics().size());
 }
 
-TEST(test_metrics, default_constructor)
+TEST(test_metrics, api)
 {
     std::string name0 = "metric0";
     std::string name1 = "metric1";
@@ -32,6 +32,7 @@ TEST(test_metrics, default_constructor)
     std::string name3 = "metric3";
     std::string name4 = "metric4";
     std::string name5 = "metric5";
+    std::string name6 = "metric6";
 
     std::map<std::string, abacus::type> infos = {
         {name0, abacus::boolean{abacus::kind::COUNTER, "A boolean metric"}},
@@ -46,11 +47,16 @@ TEST(test_metrics, default_constructor)
          abacus::boolean{abacus::kind::CONSTANT, "A constant boolean metric"}},
         {name5, abacus::float64{abacus::kind::CONSTANT,
                                 "A constant floating point metric",
-                                abacus::unit{"ms"}}}};
+                                abacus::unit{"ms"}}},
+        {name6, abacus::enum8{"An enum metric",
+                              {{0, {"value0", "The value for 0"}},
+                               {1, {"value1", "The value for 1"}},
+                               {2, {"value2", "The value for 2"}},
+                               {3, {"value3", "The value for 3"}}}}}};
 
     abacus::metrics from_metrics(infos);
     abacus::metrics metrics(std::move(from_metrics));
-    EXPECT_EQ(metrics.metadata().metrics().size(), 6U);
+    EXPECT_EQ(metrics.metadata().metrics().size(), 7U);
     EXPECT_EQ(metrics.metadata().protocol_version(),
               abacus::protocol_version());
 
@@ -92,6 +98,22 @@ TEST(test_metrics, default_constructor)
               "A constant floating point metric");
     EXPECT_EQ(metrics.metadata().metrics().at(name5).float64().unit(), "ms");
 
+    EXPECT_EQ(metrics.metadata().metrics().at(name6).enum8().description(),
+              "An enum metric");
+    EXPECT_EQ(metrics.metadata().metrics().at(name6).enum8().values().size(),
+              4U);
+    EXPECT_EQ(
+        metrics.metadata().metrics().at(name6).enum8().values().at(0).name(),
+        "value0");
+    EXPECT_EQ(metrics.metadata()
+                  .metrics()
+                  .at(name6)
+                  .enum8()
+                  .values()
+                  .at(0)
+                  .description(),
+              "The value for 0");
+
     EXPECT_FALSE(metrics.is_initialized());
     EXPECT_FALSE(metrics.is_initialized(name1));
     auto metric0 = metrics.initialize_metric<abacus::uint64>(name1, 9000U);
@@ -122,6 +144,11 @@ TEST(test_metrics, default_constructor)
     metrics.initialize_constant<abacus::float64>(name5, 42.42);
     EXPECT_TRUE(metrics.is_initialized(name5));
 
+    EXPECT_FALSE(metrics.is_initialized());
+    EXPECT_FALSE(metrics.is_initialized(name6));
+    auto metric6 = metrics.initialize_metric<abacus::enum8>(name6);
+    EXPECT_TRUE(metrics.is_initialized(name6));
+
     EXPECT_TRUE(metrics.is_initialized());
 
     EXPECT_TRUE(metric0.has_value());
@@ -144,6 +171,11 @@ TEST(test_metrics, default_constructor)
     metric3 = true;
     EXPECT_TRUE(metric3.has_value());
     EXPECT_EQ(metric3.value(), true);
+
+    EXPECT_FALSE(metric6.has_value());
+    metric6 = 2;
+    EXPECT_TRUE(metric6.has_value());
+    EXPECT_EQ(metric6.value(), 2);
 }
 
 TEST(test_metrics, value_and_metadata_bytes)
@@ -160,8 +192,10 @@ TEST(test_metrics, value_and_metadata_bytes)
 
     abacus::metrics metrics{infos};
 
-    metrics.initialize_metric<abacus::uint64>(name0);
-    metrics.initialize_metric<abacus::int64>(name1);
+    auto m0 = metrics.initialize_metric<abacus::uint64>(name0);
+    auto m1 = metrics.initialize_metric<abacus::int64>(name1);
+    (void)m0;
+    (void)m1;
 
     EXPECT_EQ(metrics.metadata_bytes(), 108U);
     EXPECT_EQ(metrics.value_bytes(),

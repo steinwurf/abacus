@@ -97,7 +97,7 @@ public:
         // The first byte is reserved for the sync value
         m_value_bytes = sizeof(uint32_t);
 
-        for (auto [name, value] : infos)
+        for (auto [name, value] : info)
         {
             protobuf::Metric metric;
             metric.set_offset(m_value_bytes);
@@ -329,9 +329,10 @@ public:
     /// @param value Optional initial value of the metric
     /// @return The metric object
     template <class Metric>
-    auto initialize_metric(const std::string& name,
-                           std::optional<typename Metric::type> value =
-                               std::nullopt) -> typename Metric::metric
+    [[nodiscard]] auto initialize_metric(
+        const std::string& name,
+        std::optional<typename Metric::type> value = std::nullopt) ->
+        typename Metric::metric
     {
         assert(m_initialized.find(name) != m_initialized.end());
         assert(!m_initialized.at(name));

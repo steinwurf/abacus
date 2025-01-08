@@ -23,17 +23,25 @@ void integer_test()
     EXPECT_FALSE(m.has_value());
     m = 10U;
     EXPECT_TRUE(m.has_value());
-    EXPECT_EQ(m.value(), 10U);
+    EXPECT_EQ(m.value(), type{10});
     m += 12;
     m -= 2;
     ++m;
     --m;
 
-    EXPECT_EQ(m.value(), 20U);
+    EXPECT_EQ(m.value(), type{20});
+}
+
+TEST(test_metrics, integer)
+{
+    integer_test<abacus::uint64>();
+    integer_test<abacus::int64>();
+    integer_test<abacus::uint32>();
+    integer_test<abacus::int32>();
 }
 
 template <typename T>
-void float_test()
+void floating_point_test()
 {
     using metric = typename T::metric;
     using type = typename T::type;
@@ -55,7 +63,14 @@ void float_test()
     EXPECT_EQ(m.value(), 20.0);
 }
 
-void boolean_test()
+TEST(test_metrics, floating_point)
+{
+
+    floating_point_test<abacus::float64>();
+    floating_point_test<abacus::float32>();
+}
+
+TEST(test_metrics, boolean)
 {
     uint8_t data[sizeof(bool) + 1];
     abacus::boolean::metric m;
@@ -70,7 +85,7 @@ void boolean_test()
     EXPECT_EQ(m.value(), false);
 }
 
-void enum8_test()
+TEST(test_metrics, enum8)
 {
     uint8_t data[sizeof(uint8_t) + 1];
     abacus::enum8::metric m;
@@ -83,19 +98,4 @@ void enum8_test()
     EXPECT_EQ(m.value(), 10U);
     m = 20U;
     EXPECT_EQ(m.value(), 20U);
-}
-
-TEST(test_metrics, api)
-{
-    integer_test<abacus::uint64>();
-    integer_test<abacus::int64>();
-    integer_test<abacus::uint32>();
-    integer_test<abacus::int32>();
-
-    float_test<abacus::float64>();
-    float_test<abacus::float32>();
-
-    boolean_test();
-
-    enum8_test();
 }
