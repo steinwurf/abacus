@@ -1,2 +1,2 @@
 .. wurfapi:: class_synopsis.rst
-    :selector: abacus::metric
+    :selector: abacus::enum8
