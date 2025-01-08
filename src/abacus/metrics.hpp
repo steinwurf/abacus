@@ -85,9 +85,8 @@ public:
     }
 
     /// Constructor
-    /// @param info The info of the metrics in a pointer.
-    /// @param count The number of infos.
-    metrics(const std::map<std::string, type>& infos)
+    /// @param info The info of the metrics to create.
+    metrics(const std::map<std::string, type>& info)
     {
         m_metadata = protobuf::MetricsMetadata();
         m_metadata.set_protocol_version(protocol_version());
