@@ -107,7 +107,10 @@ struct enum8
     /// The enumeration value type
     struct value
     {
+        /// The name of the value
         std::string name;
+
+        /// The description of the value
         std::string description;
     };
 

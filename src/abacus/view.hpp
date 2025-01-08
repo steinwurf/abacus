@@ -42,7 +42,8 @@ class view
 {
 public:
     /// Sets the meta data pointer
-    /// @param meta_data The meta data pointer
+    /// @param metadata_data The meta data pointer
+    /// @param metadata_bytes The meta data size in bytes
     void set_meta_data(const uint8_t* metadata_data, std::size_t metadata_bytes)
     {
         assert(metadata_data != nullptr);
@@ -56,6 +57,7 @@ public:
 
     /// Sets the value data pointer
     /// @param value_data The value data pointer
+    /// @param value_bytes The value data size in bytes
     /// @return true if the hash is correct otherwise false
     auto set_value_data(const uint8_t* value_data,
                         std::size_t value_bytes) -> bool

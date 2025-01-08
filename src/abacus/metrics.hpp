@@ -307,21 +307,28 @@ public:
         return m_value_bytes;
     }
 
+    /// @return the pointer to the metadata data of the metrics.
     auto metadata_data() const -> const uint8_t*
     {
         return m_data;
     }
 
-    auto metadata() const -> const protobuf::MetricsMetadata&
-    {
-        return m_metadata;
-    }
-
+    /// @return the size of the metadata data of the metrics.
     auto metadata_bytes() const -> std::size_t
     {
         return m_metadata_bytes;
     }
 
+    /// @return the metadata of the metrics.
+    auto metadata() const -> const protobuf::MetricsMetadata&
+    {
+        return m_metadata;
+    }
+
+    /// Initialize a metric
+    /// @param name The name of the metric
+    /// @param value Optional initial value of the metric
+    /// @return The metric object
     template <class Metric>
     auto initialize_metric(const std::string& name,
                            std::optional<typename Metric::type> value =
@@ -350,6 +357,9 @@ public:
         }
     }
 
+    /// Initialize a constant metric
+    /// @param name The name of the metric
+    /// @param value The value of the metric
     template <class Metric>
     void initialize_constant(const std::string& name,
                              typename Metric::type value)
@@ -365,6 +375,9 @@ public:
         typename Metric::metric(m_data + m_metadata_bytes + offset, value);
     }
 
+    /// Check if a metric has been initialized
+    /// @param name The name of the metric
+    /// @return true if the metric has been initialized
     auto is_initialized(const std::string& name) const -> bool
     {
         assert(m_initialized.find(name) != m_initialized.end());
@@ -384,6 +397,8 @@ public:
         return true;
     }
 
+    /// Reset all metrics
+    /// This will set all metrics has_value() to false.
     void reset_metrics()
     {
         // Reset the value data
@@ -405,11 +420,16 @@ private:
     /// The info of the metrics separated by byte-sizes
     protobuf::MetricsMetadata m_metadata;
 
+    /// The hash of the metadata
     uint32_t m_hash;
 
+    /// The size of the metadata in bytes
     std::size_t m_metadata_bytes;
-    std::size_t m_value_bytes = 1337;
 
+    /// The size of the value data in bytes
+    std::size_t m_value_bytes;
+
+    /// A map of the metrics and whether they have been initialized
     std::map<std::string, bool> m_initialized;
 };
 }
