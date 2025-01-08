@@ -14,39 +14,22 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
+/// Stronly typed min value for a metric
 template <typename T>
-struct min2
+struct min
 {
-    min2() = default;
 
-    explicit min2(T value) : value(value)
+    /// Default constructor
+    min() = default;
+
+    /// Constructor
+    /// @param value The minimum value
+    explicit min(T value) : value(value)
     {
     }
 
+    /// The minimum value
     std::optional<T> value;
-};
-
-union min
-{
-    min(uint64_t value) : m_uint(value)
-    {
-    }
-
-    min(double value) : m_double(value)
-    {
-    }
-
-    min(int64_t value) : m_int(value)
-    {
-    }
-
-    min() : m_uint(0)
-    {
-    }
-
-    uint64_t m_uint;
-    double m_double;
-    int64_t m_int;
 };
 }
 }

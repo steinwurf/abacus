@@ -9,19 +9,19 @@
 
 #include <google/protobuf/message.h>
 
-#include <abacus/metrics2.hpp>
+#include <abacus/metrics.hpp>
 #include <abacus/protocol_version.hpp>
 
 TEST(test_metrics, empty)
 {
-    abacus::metrics2 metrics;
+    abacus::metrics metrics;
 
     EXPECT_EQ(0U, metrics.metadata().metrics().size());
 
-    std::map<std::string, abacus::type2> infos;
-    abacus::metrics2 metrics2(infos);
+    std::map<std::string, abacus::type> infos;
+    abacus::metrics metrics2(infos);
 
-    EXPECT_EQ(0U, metrics.metadata().metrics().size());
+    EXPECT_EQ(0U, metrics2.metadata().metrics().size());
 }
 
 TEST(test_metrics, default_constructor)
@@ -33,7 +33,7 @@ TEST(test_metrics, default_constructor)
     std::string name4 = "metric4";
     std::string name5 = "metric5";
 
-    std::map<std::string, abacus::type2> infos = {
+    std::map<std::string, abacus::type> infos = {
         {name0, abacus::boolean{abacus::kind::COUNTER, "A boolean metric"}},
         {name1,
          abacus::uint64{abacus::kind::COUNTER, "An unsigned integer metric",
@@ -48,8 +48,8 @@ TEST(test_metrics, default_constructor)
                                 "A constant floating point metric",
                                 abacus::unit{"ms"}}}};
 
-    abacus::metrics2 from_metrics(infos);
-    abacus::metrics2 metrics(std::move(from_metrics));
+    abacus::metrics from_metrics(infos);
+    abacus::metrics metrics(std::move(from_metrics));
     EXPECT_EQ(metrics.metadata().metrics().size(), 6U);
     EXPECT_EQ(metrics.metadata().protocol_version(),
               abacus::protocol_version());
@@ -151,14 +151,14 @@ TEST(test_metrics, value_and_metadata_bytes)
     std::string name0 = "metric0";
     std::string name1 = "metric1";
 
-    std::map<std::string, abacus::type2> infos = {
+    std::map<std::string, abacus::type> infos = {
         {name0,
          abacus::uint64{abacus::kind::COUNTER, "An unsigned integer metric",
                         abacus::unit{"bytes"}}},
         {name1, abacus::int64{abacus::kind::GAUGE, "A signed integer metric",
                               abacus::unit{"USD"}}}};
 
-    abacus::metrics2 metrics{infos};
+    abacus::metrics metrics{infos};
 
     metrics.initialize_metric<abacus::uint64>(name0);
     metrics.initialize_metric<abacus::int64>(name1);
@@ -175,14 +175,14 @@ TEST(test_metrics, reset_counters)
     std::string name0 = "metric0";
     std::string name1 = "metric1";
 
-    std::map<std::string, abacus::type2> infos = {
+    std::map<std::string, abacus::type> infos = {
         {name0,
          abacus::uint64{abacus::kind::COUNTER, "An unsigned integer metric",
                         abacus::unit{"bytes"}}},
         {name1, abacus::int64{abacus::kind::GAUGE, "A signed integer metric",
                               abacus::unit{"USD"}}}};
 
-    abacus::metrics2 metrics{infos};
+    abacus::metrics metrics{infos};
 
     auto uint_metric = metrics.initialize_metric<abacus::uint64>(name0);
     auto int_metric = metrics.initialize_metric<abacus::int64>(name1);
@@ -261,7 +261,7 @@ TEST(test_metrics, protocol_version)
     SCOPED_TRACE(
         ::testing::Message()
         << "If this test fails, you need to update the protocol version");
-    std::map<std::string, abacus::type2> infos = {
+    std::map<std::string, abacus::type> infos = {
         {"metric0",
          abacus::uint64{abacus::kind::COUNTER, "An unsigned integer metric",
                         abacus::unit{"bytes"}}},
@@ -273,7 +273,7 @@ TEST(test_metrics, protocol_version)
                          abacus::unit{"ms"}}},
         {"metric3", abacus::boolean{abacus::kind::GAUGE, "A boolean metric"}}};
 
-    abacus::metrics2 metrics(infos);
+    abacus::metrics metrics(infos);
 
     auto uint_metric =
         metrics.initialize_metric<abacus::uint64>("metric0", 42U);

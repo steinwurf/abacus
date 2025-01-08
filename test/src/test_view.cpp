@@ -7,9 +7,9 @@
 #include <cstring>
 #include <gtest/gtest.h>
 
-#include <abacus/metrics2.hpp>
+#include <abacus/metrics.hpp>
 #include <abacus/protocol_version.hpp>
-#include <abacus/view2.hpp>
+#include <abacus/view.hpp>
 
 #include <google/protobuf/util/message_differencer.h>
 
@@ -19,7 +19,7 @@ TEST(test_view, api)
     std::string name1 = "metric1";
     std::string name2 = "metric3";
 
-    std::map<std::string, abacus::type2> infos = {
+    std::map<std::string, abacus::type> infos = {
         {name0,
          abacus::uint64{abacus::kind::COUNTER, "An unsigned integer metric",
                         abacus::unit{"bytes"}}},
@@ -29,7 +29,7 @@ TEST(test_view, api)
                                 "A constant floating point metric",
                                 abacus::unit{"ms"}}}};
 
-    abacus::metrics2 metrics(infos);
+    abacus::metrics metrics(infos);
 
     auto metric0 = metrics.initialize_metric<abacus::uint64>(name0);
 
@@ -43,7 +43,7 @@ TEST(test_view, api)
                 metrics.metadata_bytes());
     std::memcpy(value_data.data(), metrics.value_data(), metrics.value_bytes());
 
-    abacus::view2 view;
+    abacus::view view;
 
     view.set_meta_data(meta_data.data(), meta_data.size());
     EXPECT_EQ(view.metadata().protocol_version(), abacus::protocol_version());

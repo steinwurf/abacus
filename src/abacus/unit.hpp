@@ -12,7 +12,7 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-/// Wrapper for a unit string for more explicit code
+/// Strongly typed unit for a metric
 struct unit
 {
     /// Default constructor
@@ -23,7 +23,6 @@ struct unit
     {
     }
 
-    /// @brief  Check if the unit is empty
     /// @return True if the unit is empty otherwise false
     bool empty() const
     {

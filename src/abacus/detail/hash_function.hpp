@@ -16,6 +16,9 @@ inline namespace STEINWURF_ABACUS_VERSION
 namespace detail
 {
 /// Converts a string to a 32-bit FNV-1a hash used for identifying actions
+/// @param data The data to hash
+/// @param bytes The number of bytes to hash
+/// @return The 32-bit hash
 constexpr auto hash_function(const uint8_t* data, std::size_t bytes) -> uint32_t
 {
     uint32_t hash = 0x811c9dc5;            // FNV-1a 32-bit offset basis

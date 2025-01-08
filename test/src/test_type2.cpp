@@ -7,7 +7,7 @@
 #include <cstring>
 #include <gtest/gtest.h>
 
-#include <abacus/type2.hpp>
+#include <abacus/type.hpp>
 
 template <typename T>
 void integer_test()
@@ -85,7 +85,7 @@ void enum8_test()
     EXPECT_EQ(m.value(), 20U);
 }
 
-TEST(test_metrics2, api)
+TEST(test_metrics, api)
 {
     integer_test<abacus::uint64>();
     integer_test<abacus::int64>();

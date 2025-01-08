@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "version.hpp"
-#include "view2.hpp"
+#include "view.hpp"
 
 namespace abacus
 {
@@ -28,6 +28,6 @@ auto to_json(const uint8_t* metadata_data, std::size_t metadata_bytes,
 /// @param view A view with access to metrics-data.
 /// @param minimal If true, the JSON will be slimmed down to only contain the
 ///        the value data.
-auto to_json(const view2& view, bool minimal = false) -> std::string;
+auto to_json(const view& view, bool minimal = false) -> std::string;
 }
 }

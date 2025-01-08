@@ -9,9 +9,14 @@
 #include <map>
 #include <vector>
 
-#include "kind.hpp"
+#include <endian/big_endian.hpp>
+#include <endian/is_big_endian.hpp>
+#include <endian/little_endian.hpp>
+
+#include "detail/hash_function.hpp"
 #include "max.hpp"
 #include "min.hpp"
+#include "protobuf/metrics.pb.h"
 #include "type.hpp"
 #include "version.hpp"
 
@@ -26,8 +31,7 @@ inline namespace STEINWURF_ABACUS_VERSION
 /// copied to a data buffer. abacus::view can then be used to extract the
 /// information from the metrics-data.
 ///
-/// The class cannot manipulate the memory, only access the
-/// pointed to values
+/// The class cannot manipulate the memory, only access the values.
 ///
 /// Note that this class has no constructor, so it can only be declared and
 /// then view.set_meta_data() can be called to initialize the view with the
@@ -36,152 +40,147 @@ inline namespace STEINWURF_ABACUS_VERSION
 /// view.set_value_data() can be called again.
 class view
 {
-
 public:
     /// Sets the meta data pointer
     /// @param meta_data The meta data pointer
-    void set_meta_data(const uint8_t* meta_data);
+    void set_meta_data(const uint8_t* metadata_data, std::size_t metadata_bytes)
+    {
+        assert(metadata_data != nullptr);
+        m_metadata_data = metadata_data;
+        m_metadata_bytes = metadata_bytes;
+        m_value_data = nullptr;
+        m_value_bytes = 0;
+
+        m_metadata.ParseFromArray(metadata_data, metadata_bytes);
+    }
 
     /// Sets the value data pointer
     /// @param value_data The value data pointer
-    void set_value_data(const uint8_t* value_data);
+    /// @return true if the hash is correct otherwise false
+    auto set_value_data(const uint8_t* value_data,
+                        std::size_t value_bytes) -> bool
+    {
+        assert(m_metadata_data != nullptr);
+        assert(value_data != nullptr);
+
+        // Check that the hash is correct
+        uint32_t value_data_hash = 0;
+        switch (m_metadata.endianness())
+        {
+        case protobuf::Endianness::BIG:
+            endian::big_endian::get(value_data_hash, value_data);
+            break;
+        case protobuf::Endianness::LITTLE:
+            endian::little_endian::get(value_data_hash, value_data);
+            break;
+        default:
+            assert(false);
+        }
+
+        if (m_metadata.sync_value() != value_data_hash)
+        {
+            return false;
+        }
+        m_value_data = value_data;
+        m_value_bytes = value_bytes;
+        return true;
+    }
 
     /// Gets the meta data pointer
     /// @return The meta data pointer
-    const uint8_t* meta_data() const;
+    auto metadata_data() const -> const uint8_t*
+    {
+        return m_metadata_data;
+    }
 
     /// Gets the value data pointer
     /// @return The value data pointer
-    const uint8_t* value_data() const;
+    const uint8_t* value_data() const
+    {
+        return m_value_data;
+    }
 
     /// Gets the meta data size in bytes
     /// @return The meta data size in bytes
-    std::size_t meta_bytes() const;
+    std::size_t metadata_bytes() const
+    {
+        return m_metadata_bytes;
+    }
 
     /// Gets the value data size in bytes
     /// @return The value data size in bytes
-    std::size_t value_bytes() const;
+    std::size_t value_bytes() const
+    {
+        return m_value_bytes;
+    }
 
-    /// @return the number of metrics from in a metrics data pointer
-    auto count() const -> uint16_t;
+    /// Gets the meta data
+    /// @return The meta data
+    auto metadata() const -> const protobuf::MetricsMetadata&
+    {
+        return m_metadata;
+    }
 
-    /// Gets the protocol version of the metrics
-    /// @return The protocol version of the metrics
-    auto protocol_version() const -> uint8_t;
+    /// Gets the value of a metric
+    /// @param name The name of the metric
+    /// @return The value of the metric or std::nullopt if the metric has no
+    /// value
+    template <class Metric>
+    auto
+    value(const std::string& name) const -> std::optional<typename Metric::type>
+    {
+        assert(m_value_data != nullptr);
+        assert(m_metadata_data != nullptr);
 
-    /// @returns true if the metric is initialized, that is if
-    /// initialize_metric() has been called for the given index.
-    /// @param index The index of the metric to check. Must be less than
-    /// count().
-    auto is_initialized(std::size_t index) const -> bool;
+        auto endianness = m_metadata.endianness();
 
-    /// @returns the name of the metric at the given index.
-    /// The name is not written into memory until the metric is initialized with
-    /// either initialize_metric<>() or initialize_constant().
-    /// @param index The index of the metric to check. Must be less than
-    /// count().
-    auto name(std::size_t index) const -> std::string;
+        auto offset = metric(name).offset();
+        assert(offset < m_value_bytes);
 
-    /// @returns the description of the metric at the given index.
-    /// @param index The index of the metric to check. Must be less than
-    /// count() and initialized with initialize_metric<>() or
-    /// initialize_constant().
-    auto description(std::size_t index) const -> std::string;
+        if (m_value_data[offset] == 0)
+        {
+            return std::nullopt;
+        }
 
-    /// @returns the unit of the metric at the given index.
-    /// @param index The index of the metric to check. Must be less than
-    /// count() and initialized with initialize_metric<>() or
-    /// initialize_constant().
-    auto unit(std::size_t index) const -> std::string;
+        typename Metric::type value;
 
-    /// @returns the type of the metric at the given index.
-    /// @param index The index of the metric to check. Must be less than
-    /// count().
-    auto type(std::size_t index) const -> abacus::type;
+        switch (m_metadata.endianness())
+        {
+        case protobuf::Endianness::BIG:
+            endian::big_endian::get(value, m_value_data + offset + 1);
+            break;
+        case protobuf::Endianness::LITTLE:
+            endian::little_endian::get(value, m_value_data + offset + 1);
+            break;
+        default:
+            assert(false);
+        }
+        return value;
+    }
 
-    /// @returns true if the metric at the given index is a constant, otherwise
-    /// false.
-    /// @param index The index of the metric to check. Must be less than
-    /// count().
-    auto kind(std::size_t index) const -> abacus::kind;
-
-    /// @returns the minimum value of the metric at the given index.
-    /// @param index The index of the metric to check. Must be less than
-    /// count() and initialized with initialize_metric<>() or
-    /// initialize_constant().
-    auto min(std::size_t index) const -> abacus::min;
-
-    /// @returns the maximum value of the metric at the given index.
-    /// @param index The index of the metric to check. Must be less than
-    /// count() and initialized with initialize_metric<>() or
-    /// initialize_constant().
-    auto max(std::size_t index) const -> abacus::max;
-
-    /// Copy the value of the uint64_t metric into a passed reference. This is
-    /// used to extract the values during runtime.
-    ///
-    /// Make sure that the type and index are correct using type()
-    /// and index() to get the correct index and
-    /// type. Please do not hard-code these values, as this may break with
-    /// changes to your code.
-    ///
-    /// @param index The index of the metric to copy. Must be less than
-    /// count().
-    /// @param value The variable to copy the value into. A uint64_t reference.
-    void value(std::size_t index, uint64_t& value) const;
-
-    /// Copy the value of the int64_t metric into a passed reference. This is
-    /// used to extract the values during runtime.
-    ///
-    /// Make sure that the type and index are correct using type()
-    /// and index() to get the correct index and
-    /// type. Please do not hard-code these values, as this may break with
-    /// changes to your code.
-    ///
-    /// @param index The index of the metric to copy. Must be less than
-    /// count().
-    /// @param value The variable to copy the value into. A int64_t reference.
-    void value(std::size_t index, int64_t& value) const;
-
-    /// Copy the value of the double metric into a passed reference. This is
-    /// used to extract the values during runtime.
-    ///
-    /// Make sure that the type and index are correct using type()
-    /// and index() to get the correct index and
-    /// type. Please do not hard-code these values, as this may break with
-    /// changes to your code.
-    ///
-    /// @param index The index of the metric to copy. Must be less than
-    /// count().
-    /// @param value The variable to copy the value into. A double reference.
-    void value(std::size_t index, double& value) const;
-
-    /// Copy the value of the bool metric into a passed reference. This is used
-    /// to extract the values during runtime.
-    ///
-    /// Make sure that the type and index are correct using type()
-    /// and index() to get the correct index and
-    /// type. Please do not hard-code these values, as this may break with
-    /// changes to your code.
-    ///
-    /// @param index The index of the metric to copy. Must be less than
-    /// count().
-    /// @param value The variable to copy the value into. A bool reference.
-    void value(std::size_t index, bool& value) const;
-
-    /// @param name The name of the counter to get the index of
-    /// @return The index of the counter with the given name
-    auto index(const std::string& name) const -> std::size_t;
+    /// Gets the metric
+    /// @param name The name of the metric
+    /// @return The metric
+    const protobuf::Metric& metric(const std::string& name) const
+    {
+        return m_metadata.metrics().at(name);
+    }
 
 private:
     /// The meta data pointer
-    const uint8_t* m_meta_data;
+    const uint8_t* m_metadata_data;
+
+    /// The meta data size in bytes
+    std::size_t m_metadata_bytes;
+
+    /// The meta data
+    protobuf::MetricsMetadata m_metadata;
 
     /// The value data pointer
     const uint8_t* m_value_data;
 
-    /// Map to get index from names
-    std::map<std::string, std::size_t> m_name_to_index;
+    /// The value data size in bytes
+    std::size_t m_value_bytes;
 };
 }
 }

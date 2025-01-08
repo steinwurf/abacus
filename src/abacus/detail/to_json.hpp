@@ -7,7 +7,7 @@
 
 #include <bourne/json.hpp>
 
-#include "../view2.hpp"
+#include "../view.hpp"
 
 #include "../version.hpp"
 
@@ -17,7 +17,11 @@ inline namespace STEINWURF_ABACUS_VERSION
 {
 namespace detail
 {
-auto to_json(const view2& view, bool slim) -> bourne::json;
+/// @param view A view with access to metrics-data.
+/// @param minimal If true, the JSON will a simple map between metric names and
+/// values.
+/// @return a JSON-formatted string of a metrics views data.
+auto to_json(const view& view, bool minimal) -> bourne::json;
 }
 }
 }

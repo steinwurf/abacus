@@ -8,7 +8,7 @@
 #include <cstring>
 #include <gtest/gtest.h>
 
-#include <abacus/type2.hpp>
+#include <abacus/type.hpp>
 
 TEST(test_metric, constructor)
 {

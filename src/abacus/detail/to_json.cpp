@@ -16,10 +16,10 @@ inline namespace STEINWURF_ABACUS_VERSION
 {
 namespace detail
 {
-auto to_json(const view2& view, bool slim) -> bourne::json
+auto to_json(const view& view, bool minimal) -> bourne::json
 {
     auto json = bourne::json::object();
-    if (slim)
+    if (minimal)
     {
         for (const auto& [name, metric] : view.metadata().metrics())
         {
@@ -105,11 +105,29 @@ auto to_json(const view2& view, bool slim) -> bourne::json
     else
     {
         std::string metadata_json;
-        auto status = google::protobuf::util::MessageToJsonString(
-            view.metadata(), &metadata_json);
-        if (status.ok())
+        auto metadata = view.metadata();
+        // Go through each metric and remove the offset
+        for (auto& [name, metric] : *metadata.mutable_metrics())
         {
-            json = bourne::json::parse(metadata_json);
+            metric.clear_offset();
+        }
+
+        auto status = google::protobuf::util::MessageToJsonString(
+            metadata, &metadata_json);
+        if (!status.ok())
+        {
+            return json;
+        }
+        json = bourne::json::parse(metadata_json);
+        if (json.has_key("metrics"))
+        {
+            json = json["metrics"];
+        }
+        // Call the minimal version recursively to get the values
+        auto values = to_json(view, true);
+        for (const auto& [key, value] : values.object_range())
+        {
+            json[key]["value"] = value;
         }
     }
 

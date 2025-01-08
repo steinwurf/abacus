@@ -5,28 +5,33 @@
 
 #pragma once
 
-#include "version.hpp"
+#include <cassert>
 #include <cstdint>
+#include <cstring>
+#include <optional>
+#include <string>
+#include <variant>
 
+#include "detail/common.hpp"
+#include "kind.hpp"
+#include "max.hpp"
+#include "min.hpp"
+#include "unit.hpp"
+
+#include "boolean.hpp"
+#include "enum8.hpp"
+#include "float32.hpp"
+#include "float64.hpp"
+#include "int32.hpp"
+#include "int64.hpp"
+#include "uint32.hpp"
+#include "uint64.hpp"
 namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-
-/// Enum used to declare and identify the types of the metric objects.
-enum class type : uint8_t
-{
-    /// uint64_t type
-    uint64 = 0U,
-
-    /// int64_t type
-    int64,
-
-    /// double type
-    float64,
-
-    /// bool type
-    boolean
-};
+/// A variant type for all the supported metric types
+using type = std::variant<uint64, int64, uint32, int32, float64, float32,
+                          boolean, enum8>;
 }
 }
