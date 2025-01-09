@@ -4,7 +4,7 @@ option go_package = "abacus/protobuf";
 
 // Specifies the kind of metric
 enum Kind {
-    COUNTER = 0;   // Counter metric
-    CONSTANT = 1;  // Constant metric
-    GAUGE = 2;     // Gauge metric
+    GAUGE = 0;     // Gauge metric
+    COUNTER = 1;   // Counter metric
+    CONSTANT = 2;  // Constant metric
 }

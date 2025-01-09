@@ -49,6 +49,10 @@ TEST(test_to_json, to_json_minimal)
     metrics.initialize_constant<abacus::boolean>(name2, true);
     auto m3 = metrics.initialize_metric<abacus::enum8>(name3, 2);
 
+    (void)m0;
+    (void)m1;
+    (void)m3;
+
     abacus::view view;
     view.set_meta_data(metrics.metadata_data(), metrics.metadata_bytes());
     auto success =
@@ -61,8 +65,10 @@ TEST(test_to_json, to_json_minimal)
 
 static const char* expected_json = R"({
   "metric0" : {
+    "offset" : 4,
     "uint64" : {
       "description" : "An unsigned integer metric",
+      "kind" : "COUNTER",
       "max" : "100",
       "min" : "0",
       "unit" : "bytes"
@@ -77,6 +83,7 @@ static const char* expected_json = R"({
       "min" : "-100",
       "unit" : "USD"
     },
+    "offset" : 13,
     "value" : -42
   },
   "metric2" : {
@@ -84,6 +91,7 @@ static const char* expected_json = R"({
       "description" : "A boolean constant",
       "kind" : "CONSTANT"
     },
+    "offset" : 22,
     "value" : true
   },
   "metric3" : {
@@ -108,6 +116,7 @@ static const char* expected_json = R"({
         }
       }
     },
+    "offset" : 24,
     "value" : 2
   }
 })";
@@ -139,6 +148,9 @@ TEST(test_to_json, to_json)
     auto m0 = metrics.initialize_metric<abacus::uint64>(name0, 42);
     auto m1 = metrics.initialize_metric<abacus::int64>(name1, -42);
     metrics.initialize_constant<abacus::boolean>(name2, true);
+
+    (void)m0;
+    (void)m1;
 
     abacus::view view;
     view.set_meta_data(metrics.metadata_data(), metrics.metadata_bytes());

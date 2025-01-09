@@ -108,4 +108,17 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
     steinwurf::protobuf)
 
   add_test(abacus_test abacus_test)
+
+  # Google Benchmark dependency
+  add_subdirectory("${STEINWURF_RESOLVE}/gbenchmark-source")
+
+  # Build benchmark executable
+  file(GLOB_RECURSE abacus_benchmark_sources ./benchmark/main.cpp)
+  add_executable(abacus_benchmark ${abacus_benchmark_sources})
+  target_link_libraries(abacus_benchmark benchmark)
+  target_link_libraries(abacus_benchmark
+    steinwurf::abacus
+    steinwurf::endian
+    steinwurf::bourne
+    steinwurf::protobuf)
 endif()

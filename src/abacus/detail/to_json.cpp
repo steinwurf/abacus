@@ -105,15 +105,10 @@ auto to_json(const view& view, bool minimal) -> bourne::json
     else
     {
         std::string metadata_json;
-        auto metadata = view.metadata();
-        // Go through each metric and remove the offset
-        for (auto& [name, metric] : *metadata.mutable_metrics())
-        {
-            metric.clear_offset();
-        }
-
+        google::protobuf::util::JsonPrintOptions options;
+        options.always_print_primitive_fields = true;
         auto status = google::protobuf::util::MessageToJsonString(
-            metadata, &metadata_json);
+            view.metadata(), &metadata_json, options);
         if (!status.ok())
         {
             return json;

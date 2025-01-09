@@ -60,9 +60,9 @@ namespace protobuf {
 namespace abacus {
 namespace protobuf {
 enum Kind : int {
-  COUNTER = 0,
-  CONSTANT = 1,
-  GAUGE = 2,
+  GAUGE = 0,
+  COUNTER = 1,
+  CONSTANT = 2,
   Kind_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
   Kind_INT_MAX_SENTINEL_DO_NOT_USE_ =

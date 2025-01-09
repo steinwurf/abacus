@@ -32,8 +32,8 @@ static constexpr ::_pbi::MigrationSchema* schemas = nullptr;
 static constexpr ::_pb::Message* const* file_default_instances = nullptr;
 const char descriptor_table_protodef_abacus_2fprotobuf_2fkind_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
     "\n\032abacus/protobuf/kind.proto\022\017abacus.pro"
-    "tobuf*,\n\004Kind\022\013\n\007COUNTER\020\000\022\014\n\010CONSTANT\020\001"
-    "\022\t\n\005GAUGE\020\002B\021Z\017abacus/protobufb\006proto3"
+    "tobuf*,\n\004Kind\022\t\n\005GAUGE\020\000\022\013\n\007COUNTER\020\001\022\014\n"
+    "\010CONSTANT\020\002B\021Z\017abacus/protobufb\006proto3"
 };
 static ::absl::once_flag descriptor_table_abacus_2fprotobuf_2fkind_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_abacus_2fprotobuf_2fkind_2eproto = {

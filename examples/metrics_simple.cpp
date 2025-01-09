@@ -61,7 +61,10 @@ int main()
     abacus::view car_view;
 
     car_view.set_meta_data(meta_data.data(), meta_data.size());
-    car_view.set_value_data(value_data.data(), value_data.size());
+    auto success =
+        car_view.set_value_data(value_data.data(), value_data.size());
+    (void)success;
+    assert(success);
 
     std::cout << abacus::to_json(car_view) << std::endl;
 
