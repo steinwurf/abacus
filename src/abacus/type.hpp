@@ -5,18 +5,7 @@
 
 #pragma once
 
-#include <cassert>
-#include <cstdint>
-#include <cstring>
-#include <optional>
-#include <string>
 #include <variant>
-
-#include "detail/common.hpp"
-#include "kind.hpp"
-#include "max.hpp"
-#include "min.hpp"
-#include "unit.hpp"
 
 #include "boolean.hpp"
 #include "enum8.hpp"

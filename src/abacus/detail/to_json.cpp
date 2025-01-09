@@ -5,6 +5,17 @@
 
 #include "to_json.hpp"
 
+#include "../boolean.hpp"
+#include "../enum8.hpp"
+#include "../float32.hpp"
+#include "../float64.hpp"
+#include "../int32.hpp"
+#include "../int64.hpp"
+#include "../uint32.hpp"
+#include "../uint64.hpp"
+
+#include "../view.hpp"
+
 #include <bourne/json.hpp>
 #include <google/protobuf/util/json_util.h>
 

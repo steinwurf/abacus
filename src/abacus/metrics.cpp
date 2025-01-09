@@ -21,6 +21,31 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
+static inline auto
+get_kind(const protobuf::Metric& metric) -> std::optional<protobuf::Kind>
+{
+    switch (metric.type_case())
+    {
+    case protobuf::Metric::kUint64:
+        return metric.uint64().kind();
+    case protobuf::Metric::kInt64:
+        return metric.int64().kind();
+    case protobuf::Metric::kUint32:
+        return metric.uint32().kind();
+    case protobuf::Metric::kInt32:
+        return metric.int32().kind();
+    case protobuf::Metric::kFloat64:
+        return metric.float64().kind();
+    case protobuf::Metric::kFloat32:
+        return metric.float32().kind();
+    case protobuf::Metric::kBoolean:
+        return metric.boolean().kind();
+    case protobuf::Metric::kEnum8:
+    default:
+        return std::nullopt;
+    }
+}
+
 metrics::metrics(metrics&& other) noexcept :
     m_data(other.m_data), m_metadata(std::move(other.m_metadata)),
     m_hash(other.m_hash), m_metadata_bytes(other.m_metadata_bytes),
@@ -235,6 +260,92 @@ metrics::metrics(const std::map<std::string, type>& info)
     // read the sync value
     std::memcpy(m_data + m_metadata_bytes, &m_hash, sizeof(uint32_t));
 }
+
+template <class Metric>
+[[nodiscard]] auto
+metrics::initialize_metric(const std::string& name,
+                           std::optional<typename Metric::type> value) ->
+    typename Metric::metric
+{
+    assert(m_initialized.find(name) != m_initialized.end());
+    assert(!m_initialized.at(name));
+    m_initialized[name] = true;
+    const protobuf::Metric& proto_metric = m_metadata.metrics().at(name);
+    auto kind = get_kind(proto_metric);
+    if (kind.has_value())
+    {
+        assert(kind.value() != protobuf::Kind::CONSTANT);
+    }
+
+    auto offset = proto_metric.offset();
+
+    if (value.has_value())
+    {
+        return typename Metric::metric(m_data + m_metadata_bytes + offset,
+                                       value.value());
+    }
+    else
+    {
+        return typename Metric::metric(m_data + m_metadata_bytes + offset);
+    }
+}
+
+// Explicit instantiations for the expected types
+
+template auto metrics::initialize_metric<uint64>(
+    const std::string& name,
+    std::optional<uint64::type> value) -> uint64::metric;
+template auto metrics::initialize_metric<int64>(
+    const std::string& name, std::optional<int64::type> value) -> int64::metric;
+template auto metrics::initialize_metric<uint32>(
+    const std::string& name,
+    std::optional<uint32::type> value) -> uint32::metric;
+template auto metrics::initialize_metric<int32>(
+    const std::string& name, std::optional<int32::type> value) -> int32::metric;
+template auto metrics::initialize_metric<float64>(
+    const std::string& name,
+    std::optional<float64::type> value) -> float64::metric;
+template auto metrics::initialize_metric<float32>(
+    const std::string& name,
+    std::optional<float32::type> value) -> float32::metric;
+template auto metrics::initialize_metric<boolean>(
+    const std::string& name,
+    std::optional<boolean::type> value) -> boolean::metric;
+template auto metrics::initialize_metric<enum8>(
+    const std::string& name, std::optional<enum8::type> value) -> enum8::metric;
+
+template <class Metric>
+void metrics::initialize_constant(const std::string& name,
+                                  typename Metric::type value)
+{
+    assert(m_initialized.find(name) != m_initialized.end());
+    assert(!m_initialized.at(name));
+    m_initialized[name] = true;
+
+    const protobuf::Metric& proto_metric = m_metadata.metrics().at(name);
+    auto offset = proto_metric.offset();
+    auto kind = get_kind(proto_metric);
+    assert(kind.has_value() && kind.value() == protobuf::Kind::CONSTANT);
+    typename Metric::metric(m_data + m_metadata_bytes + offset, value);
+}
+
+// Explicit instantiations for the expected types
+template void metrics::initialize_constant<uint64>(const std::string& name,
+                                                   uint64::type value);
+template void metrics::initialize_constant<int64>(const std::string& name,
+                                                  int64::type value);
+template void metrics::initialize_constant<uint32>(const std::string& name,
+                                                   uint32::type value);
+template void metrics::initialize_constant<int32>(const std::string& name,
+                                                  int32::type value);
+template void metrics::initialize_constant<float64>(const std::string& name,
+                                                    float64::type value);
+template void metrics::initialize_constant<float32>(const std::string& name,
+                                                    float32::type value);
+template void metrics::initialize_constant<boolean>(const std::string& name,
+                                                    boolean::type value);
+template void metrics::initialize_constant<enum8>(const std::string& name,
+                                                  enum8::type value);
 
 metrics::~metrics()
 {

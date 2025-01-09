@@ -5,19 +5,11 @@
 
 #pragma once
 
-#include <cassert>
-#include <map>
-#include <vector>
+#include <cstdint>
+#include <optional>
+#include <string>
 
-#include <endian/big_endian.hpp>
-#include <endian/is_big_endian.hpp>
-#include <endian/little_endian.hpp>
-
-#include "detail/hash_function.hpp"
-#include "max.hpp"
-#include "min.hpp"
 #include "protobuf/metrics.pb.h"
-#include "type.hpp"
 #include "version.hpp"
 
 namespace abacus
@@ -44,127 +36,48 @@ public:
     /// Sets the meta data pointer
     /// @param metadata_data The meta data pointer
     /// @param metadata_bytes The meta data size in bytes
-    void set_meta_data(const uint8_t* metadata_data, std::size_t metadata_bytes)
-    {
-        assert(metadata_data != nullptr);
-        m_metadata_data = metadata_data;
-        m_metadata_bytes = metadata_bytes;
-        m_value_data = nullptr;
-        m_value_bytes = 0;
-
-        m_metadata.ParseFromArray(metadata_data, metadata_bytes);
-    }
+    void set_meta_data(const uint8_t* metadata_data,
+                       std::size_t metadata_bytes);
 
     /// Sets the value data pointer
     /// @param value_data The value data pointer
     /// @param value_bytes The value data size in bytes
     /// @return true if the hash is correct otherwise false
     [[nodiscard]] auto set_value_data(const uint8_t* value_data,
-                                      std::size_t value_bytes) -> bool
-    {
-        assert(m_metadata_data != nullptr);
-        assert(value_data != nullptr);
-
-        // Check that the hash is correct
-        uint32_t value_data_hash = 0;
-        switch (m_metadata.endianness())
-        {
-        case protobuf::Endianness::BIG:
-            endian::big_endian::get(value_data_hash, value_data);
-            break;
-        case protobuf::Endianness::LITTLE:
-            endian::little_endian::get(value_data_hash, value_data);
-            break;
-        default:
-            assert(false);
-        }
-
-        if (m_metadata.sync_value() != value_data_hash)
-        {
-            return false;
-        }
-        m_value_data = value_data;
-        m_value_bytes = value_bytes;
-        return true;
-    }
+                                      std::size_t value_bytes) -> bool;
 
     /// Gets the meta data pointer
     /// @return The meta data pointer
-    auto metadata_data() const -> const uint8_t*
-    {
-        return m_metadata_data;
-    }
+    auto metadata_data() const -> const uint8_t*;
 
     /// Gets the value data pointer
     /// @return The value data pointer
-    const uint8_t* value_data() const
-    {
-        return m_value_data;
-    }
+    const uint8_t* value_data() const;
 
     /// Gets the meta data size in bytes
     /// @return The meta data size in bytes
-    std::size_t metadata_bytes() const
-    {
-        return m_metadata_bytes;
-    }
+    std::size_t metadata_bytes() const;
 
     /// Gets the value data size in bytes
     /// @return The value data size in bytes
-    std::size_t value_bytes() const
-    {
-        return m_value_bytes;
-    }
+    std::size_t value_bytes() const;
 
     /// Gets the meta data
     /// @return The meta data
-    auto metadata() const -> const protobuf::MetricsMetadata&
-    {
-        return m_metadata;
-    }
+    auto metadata() const -> const protobuf::MetricsMetadata&;
 
     /// Gets the value of a metric
     /// @param name The name of the metric
     /// @return The value of the metric or std::nullopt if the metric has no
     /// value
     template <class Metric>
-    auto
-    value(const std::string& name) const -> std::optional<typename Metric::type>
-    {
-        assert(m_value_data != nullptr);
-        assert(m_metadata_data != nullptr);
-
-        auto offset = metric(name).offset();
-        assert(offset < m_value_bytes);
-
-        if (m_value_data[offset] == 0)
-        {
-            return std::nullopt;
-        }
-
-        typename Metric::type value;
-
-        switch (m_metadata.endianness())
-        {
-        case protobuf::Endianness::BIG:
-            endian::big_endian::get(value, m_value_data + offset + 1);
-            break;
-        case protobuf::Endianness::LITTLE:
-            endian::little_endian::get(value, m_value_data + offset + 1);
-            break;
-        default:
-            assert(false);
-        }
-        return value;
-    }
+    auto value(const std::string& name) const
+        -> std::optional<typename Metric::type>;
 
     /// Gets the metric
     /// @param name The name of the metric
     /// @return The metric
-    const protobuf::Metric& metric(const std::string& name) const
-    {
-        return m_metadata.metrics().at(name);
-    }
+    const protobuf::Metric& metric(const std::string& name) const;
 
 private:
     /// The meta data pointer

@@ -18,33 +18,6 @@ namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-namespace
-{
-static inline auto
-get_kind(const protobuf::Metric& metric) -> std::optional<protobuf::Kind>
-{
-    switch (metric.type_case())
-    {
-    case protobuf::Metric::kUint64:
-        return metric.uint64().kind();
-    case protobuf::Metric::kInt64:
-        return metric.int64().kind();
-    case protobuf::Metric::kUint32:
-        return metric.uint32().kind();
-    case protobuf::Metric::kInt32:
-        return metric.int32().kind();
-    case protobuf::Metric::kFloat64:
-        return metric.float64().kind();
-    case protobuf::Metric::kFloat32:
-        return metric.float32().kind();
-    case protobuf::Metric::kBoolean:
-        return metric.boolean().kind();
-    case protobuf::Metric::kEnum8:
-    default:
-        return std::nullopt;
-    }
-}
-}
 /// This class is used for creating descriptive counters that are contiguous in
 /// memory, to allow for fast access and arithmetic operations.
 class metrics
@@ -88,48 +61,14 @@ public:
     [[nodiscard]] auto initialize_metric(
         const std::string& name,
         std::optional<typename Metric::type> value = std::nullopt) ->
-        typename Metric::metric
-    {
-        assert(m_initialized.find(name) != m_initialized.end());
-        assert(!m_initialized.at(name));
-        m_initialized[name] = true;
-        const protobuf::Metric& proto_metric = m_metadata.metrics().at(name);
-        auto kind = get_kind(proto_metric);
-        if (kind.has_value())
-        {
-            assert(kind.value() != protobuf::Kind::CONSTANT);
-        }
-
-        auto offset = proto_metric.offset();
-
-        if (value.has_value())
-        {
-            return typename Metric::metric(m_data + m_metadata_bytes + offset,
-                                           value.value());
-        }
-        else
-        {
-            return typename Metric::metric(m_data + m_metadata_bytes + offset);
-        }
-    }
+        typename Metric::metric;
 
     /// Initialize a constant metric
     /// @param name The name of the metric
     /// @param value The value of the metric
     template <class Metric>
     void initialize_constant(const std::string& name,
-                             typename Metric::type value)
-    {
-        assert(m_initialized.find(name) != m_initialized.end());
-        assert(!m_initialized.at(name));
-        m_initialized[name] = true;
-
-        const protobuf::Metric& proto_metric = m_metadata.metrics().at(name);
-        auto offset = proto_metric.offset();
-        auto kind = get_kind(proto_metric);
-        assert(kind.has_value() && kind.value() == protobuf::Kind::CONSTANT);
-        typename Metric::metric(m_data + m_metadata_bytes + offset, value);
-    }
+                             typename Metric::type value);
 
     /// Check if a metric has been initialized
     /// @param name The name of the metric
