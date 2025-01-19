@@ -55,8 +55,8 @@ public:
     auto metadata() const -> const protobuf::MetricsMetadata&;
 
     template <class Metric>
-    void initialize_metric2(const std::string& name,
-                            detail::optional_metric<Metric>& metric);
+    void initialize_optional(const std::string& name,
+                             detail::optional_metric<Metric>& metric);
 
     /// Initialize a metric
     /// @param name The name of the metric
