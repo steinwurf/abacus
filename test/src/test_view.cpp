@@ -20,20 +20,23 @@ TEST(test_view, api)
     std::string name2 = "metric2";
     std::string name3 = "metric3";
 
-    std::map<std::string, abacus::type> infos = {
-        {name0,
+    std::map<abacus::name, abacus::type> infos = {
+        {abacus::name{name0},
          abacus::uint64{abacus::kind::COUNTER, "An unsigned integer metric",
                         abacus::unit{"bytes"}}},
-        {name1, abacus::int64{abacus::kind::GAUGE, "A signed integer metric",
-                              abacus::unit{"USD"}}},
-        {name2, abacus::float64{abacus::kind::CONSTANT,
-                                "A constant floating point metric",
-                                abacus::unit{"ms"}}},
-        {name3, abacus::enum8{"An enum metric",
-                              {{0, {"value0", "The value for 0"}},
-                               {1, {"value1", "The value for 1"}},
-                               {2, {"value2", "The value for 2"}},
-                               {3, {"value3", "The value for 3"}}}}}};
+        {abacus::name{name1},
+         abacus::int64{abacus::kind::GAUGE, "A signed integer metric",
+                       abacus::unit{"USD"}}},
+        {abacus::name{name2},
+         abacus::float64{abacus::kind::CONSTANT,
+                         "A constant floating point metric",
+                         abacus::unit{"ms"}}},
+        {abacus::name{name3},
+         abacus::enum8{"An enum metric",
+                       {{0, {"value0", "The value for 0"}},
+                        {1, {"value1", "The value for 1"}},
+                        {2, {"value2", "The value for 2"}},
+                        {3, {"value3", "The value for 3"}}}}}};
 
     abacus::metrics metrics(infos);
 

@@ -9,6 +9,7 @@
 #include <map>
 #include <string>
 
+#include "name.hpp"
 #include "type.hpp"
 #include "version.hpp"
 
@@ -33,7 +34,7 @@ public:
 
     /// Constructor
     /// @param info The info of the metrics to create.
-    metrics(const std::map<std::string, type>& info);
+    metrics(const std::map<name, type>& info);
 
     /// Destructor
     ~metrics();
@@ -53,6 +54,10 @@ public:
     /// @return the metadata of the metrics.
     auto metadata() const -> const protobuf::MetricsMetadata&;
 
+    template <class Metric>
+    void initialize_metric2(const std::string& name,
+                            detail::optional_metric<Metric>& metric);
+
     /// Initialize a metric
     /// @param name The name of the metric
     /// @param value Optional initial value of the metric
@@ -62,6 +67,15 @@ public:
         const std::string& name,
         std::optional<typename Metric::type> value = std::nullopt) ->
         typename Metric::metric;
+
+    /// Initialize a metric
+    /// @param name The name of the metric
+    /// @param value Optional initial value of the metric
+    /// @return The metric object
+    template <class Metric>
+    [[nodiscard]] auto initialize_required(const std::string& name,
+                                           typename Metric::type) ->
+        typename Metric::required_metric;
 
     /// Initialize a constant metric
     /// @param name The name of the metric

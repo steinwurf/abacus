@@ -23,14 +23,9 @@ struct float64
     using type = double;
 
     /// The metric type
-    struct metric : public detail::common<float64>
-    {
-        /// Inherit the constructors and various operators from the common class
-        using detail::common<float64>::common;
+    using metric = detail::optional_metric<float64>;
 
-        /// Inherit the assignment operator from the common class
-        using detail::common<float64>::operator=;
-    };
+    using required_metric = detail::required_metric<float64>;
 
     /// The metric kind
     abacus::kind kind;
