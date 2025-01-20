@@ -23,14 +23,9 @@ struct uint32
     using type = uint32_t;
 
     /// The metric type
-    struct metric : public detail::common<uint32>
-    {
-        /// Inherit the constructors and various operators from the common class
-        using detail::common<uint32>::common;
+    using metric = detail::optional_metric<uint32>;
 
-        /// Inherit the assignment operator from the common class
-        using detail::common<uint32>::operator=;
-    };
+    using required_metric = detail::required_metric<uint32>;
 
     /// The metric kind
     abacus::kind kind;

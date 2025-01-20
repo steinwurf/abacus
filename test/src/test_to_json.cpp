@@ -27,20 +27,23 @@ TEST(test_to_json, to_json_minimal)
     std::string name2 = "metric2";
     std::string name3 = "metric3";
 
-    std::map<std::string, abacus::type> infos = {
-        {name0,
+    std::map<abacus::name, abacus::type> infos = {
+        {abacus::name{name0},
          abacus::uint64{abacus::kind::COUNTER, "An unsigned integer metric",
                         abacus::unit{"bytes"}, abacus::min{uint64_t{0U}},
                         abacus::max{uint64_t{100U}}}},
-        {name1, abacus::int64{abacus::kind::GAUGE, "A signed integer metric",
-                              abacus::unit{"USD"}, abacus::min{int64_t{-100}},
-                              abacus::max{int64_t{100}}}},
-        {name2, abacus::boolean{abacus::kind::CONSTANT, "A boolean constant"}},
-        {name3, abacus::enum8{"An enum metric",
-                              {{0, {"value0", "The value for 0"}},
-                               {1, {"value1", "The value for 1"}},
-                               {2, {"value2", "The value for 2"}},
-                               {3, {"value3", "The value for 3"}}}}}};
+        {abacus::name{name1},
+         abacus::int64{abacus::kind::GAUGE, "A signed integer metric",
+                       abacus::unit{"USD"}, abacus::min{int64_t{-100}},
+                       abacus::max{int64_t{100}}}},
+        {abacus::name{name2},
+         abacus::boolean{abacus::kind::CONSTANT, "A boolean constant"}},
+        {abacus::name{name3},
+         abacus::enum8{"An enum metric",
+                       {{0, {"value0", "The value for 0"}},
+                        {1, {"value1", "The value for 1"}},
+                        {2, {"value2", "The value for 2"}},
+                        {3, {"value3", "The value for 3"}}}}}};
 
     abacus::metrics metrics(infos);
 
@@ -128,20 +131,23 @@ TEST(test_to_json, to_json)
     std::string name2 = "metric2";
     std::string name3 = "metric3";
 
-    std::map<std::string, abacus::type> infos = {
-        {name0,
+    std::map<abacus::name, abacus::type> infos = {
+        {abacus::name{name0},
          abacus::uint64{abacus::kind::COUNTER, "An unsigned integer metric",
                         abacus::unit{"bytes"}, abacus::min{uint64_t{0U}},
                         abacus::max{uint64_t{100U}}}},
-        {name1, abacus::int64{abacus::kind::GAUGE, "A signed integer metric",
-                              abacus::unit{"USD"}, abacus::min{int64_t{-100}},
-                              abacus::max{int64_t{100}}}},
-        {name2, abacus::boolean{abacus::kind::CONSTANT, "A boolean constant"}},
-        {name3, abacus::enum8{"An enum metric",
-                              {{0, {"value0", "The value for 0"}},
-                               {1, {"value1", "The value for 1"}},
-                               {2, {"value2", "The value for 2"}},
-                               {3, {"value3", "The value for 3"}}}}}};
+        {abacus::name{name1},
+         abacus::int64{abacus::kind::GAUGE, "A signed integer metric",
+                       abacus::unit{"USD"}, abacus::min{int64_t{-100}},
+                       abacus::max{int64_t{100}}}},
+        {abacus::name{name2},
+         abacus::boolean{abacus::kind::CONSTANT, "A boolean constant"}},
+        {abacus::name{name3},
+         abacus::enum8{"An enum metric",
+                       {{0, {"value0", "The value for 0"}},
+                        {1, {"value1", "The value for 1"}},
+                        {2, {"value2", "The value for 2"}},
+                        {3, {"value3", "The value for 3"}}}}}};
 
     abacus::metrics metrics(infos);
 

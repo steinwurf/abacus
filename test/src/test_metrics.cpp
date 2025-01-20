@@ -18,7 +18,7 @@ TEST(test_metrics, empty)
 
     EXPECT_EQ(0U, metrics.metadata().metrics().size());
 
-    std::map<std::string, abacus::type> infos;
+    std::map<abacus::name, abacus::type> infos;
     abacus::metrics metrics2(infos);
 
     EXPECT_EQ(0U, metrics2.metadata().metrics().size());
@@ -34,25 +34,30 @@ TEST(test_metrics, api)
     std::string name5 = "metric5";
     std::string name6 = "metric6";
 
-    std::map<std::string, abacus::type> infos = {
-        {name0, abacus::boolean{abacus::kind::COUNTER, "A boolean metric"}},
-        {name1,
+    std::map<abacus::name, abacus::type> infos = {
+        {abacus::name{name0},
+         abacus::boolean{abacus::kind::COUNTER, "A boolean metric"}},
+        {abacus::name{name1},
          abacus::uint64{abacus::kind::COUNTER, "An unsigned integer metric",
                         abacus::unit{"bytes"}}},
-        {name2, abacus::int64{abacus::kind::GAUGE, "A signed integer metric",
-                              abacus::unit{"USD"}}},
-        {name3, abacus::float64{abacus::kind::GAUGE, "A floating point metric",
-                                abacus::unit{"ms"}}},
-        {name4,
+        {abacus::name{name2},
+         abacus::int64{abacus::kind::GAUGE, "A signed integer metric",
+                       abacus::unit{"USD"}}},
+        {abacus::name{name3},
+         abacus::float64{abacus::kind::GAUGE, "A floating point metric",
+                         abacus::unit{"ms"}}},
+        {abacus::name{name4},
          abacus::boolean{abacus::kind::CONSTANT, "A constant boolean metric"}},
-        {name5, abacus::float64{abacus::kind::CONSTANT,
-                                "A constant floating point metric",
-                                abacus::unit{"ms"}}},
-        {name6, abacus::enum8{"An enum metric",
-                              {{0, {"value0", "The value for 0"}},
-                               {1, {"value1", "The value for 1"}},
-                               {2, {"value2", "The value for 2"}},
-                               {3, {"value3", "The value for 3"}}}}}};
+        {abacus::name{name5},
+         abacus::float64{abacus::kind::CONSTANT,
+                         "A constant floating point metric",
+                         abacus::unit{"ms"}}},
+        {abacus::name{name6},
+         abacus::enum8{"An enum metric",
+                       {{0, {"value0", "The value for 0"}},
+                        {1, {"value1", "The value for 1"}},
+                        {2, {"value2", "The value for 2"}},
+                        {3, {"value3", "The value for 3"}}}}}};
 
     abacus::metrics from_metrics(infos);
     abacus::metrics metrics(std::move(from_metrics));
@@ -183,12 +188,13 @@ TEST(test_metrics, value_and_metadata_bytes)
     std::string name0 = "metric0";
     std::string name1 = "metric1";
 
-    std::map<std::string, abacus::type> infos = {
-        {name0,
+    std::map<abacus::name, abacus::type> infos = {
+        {abacus::name{name0},
          abacus::uint64{abacus::kind::COUNTER, "An unsigned integer metric",
                         abacus::unit{"bytes"}}},
-        {name1, abacus::int64{abacus::kind::GAUGE, "A signed integer metric",
-                              abacus::unit{"USD"}}}};
+        {abacus::name{name1},
+         abacus::int64{abacus::kind::GAUGE, "A signed integer metric",
+                       abacus::unit{"USD"}}}};
 
     abacus::metrics metrics{infos};
 
@@ -209,12 +215,13 @@ TEST(test_metrics, reset_counters)
     std::string name0 = "metric0";
     std::string name1 = "metric1";
 
-    std::map<std::string, abacus::type> infos = {
-        {name0,
+    std::map<abacus::name, abacus::type> infos = {
+        {abacus::name{name0},
          abacus::uint64{abacus::kind::COUNTER, "An unsigned integer metric",
                         abacus::unit{"bytes"}}},
-        {name1, abacus::int64{abacus::kind::GAUGE, "A signed integer metric",
-                              abacus::unit{"USD"}}}};
+        {abacus::name{name1},
+         abacus::int64{abacus::kind::GAUGE, "A signed integer metric",
+                       abacus::unit{"USD"}}}};
 
     abacus::metrics metrics{infos};
 
@@ -294,17 +301,18 @@ TEST(test_metrics, protocol_version)
     SCOPED_TRACE(
         ::testing::Message()
         << "If this test fails, you need to update the protocol version");
-    std::map<std::string, abacus::type> infos = {
-        {"metric0",
+    std::map<abacus::name, abacus::type> infos = {
+        {abacus::name{"metric0"},
          abacus::uint64{abacus::kind::COUNTER, "An unsigned integer metric",
                         abacus::unit{"bytes"}}},
-        {"metric1",
+        {abacus::name{"metric1"},
          abacus::int64{abacus::kind::GAUGE, "A signed integer metric",
                        abacus::unit{"USD"}}},
-        {"metric2",
+        {abacus::name{"metric2"},
          abacus::float64{abacus::kind::GAUGE, "A floating point metric",
                          abacus::unit{"ms"}}},
-        {"metric3", abacus::boolean{abacus::kind::GAUGE, "A boolean metric"}}};
+        {abacus::name{"metric3"},
+         abacus::boolean{abacus::kind::GAUGE, "A boolean metric"}}};
 
     abacus::metrics metrics(infos);
 

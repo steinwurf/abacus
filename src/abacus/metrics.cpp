@@ -60,7 +60,7 @@ metrics::metrics(metrics&& other) noexcept :
     other.m_initialized.clear();
 }
 
-metrics::metrics(const std::map<std::string, type>& info)
+metrics::metrics(const std::map<name, type>& info)
 {
     m_metadata = protobuf::MetricsMetadata();
     m_metadata.set_protocol_version(protocol_version());
@@ -228,8 +228,8 @@ metrics::metrics(const std::map<std::string, type>& info)
             }
         }
 
-        m_metadata.mutable_metrics()->insert({name, metric});
-        m_initialized[name] = false;
+        m_metadata.mutable_metrics()->insert({name.value, metric});
+        m_initialized[name.value] = false;
     }
 
     // Set the sync value to 1 so that the size of the metadata is
@@ -290,6 +290,27 @@ metrics::initialize_metric(const std::string& name,
     }
 }
 
+template <class Metric>
+[[nodiscard]] auto metrics::initialize_required(const std::string& name,
+                                                typename Metric::type value) ->
+    typename Metric::required_metric
+{
+    assert(m_initialized.find(name) != m_initialized.end());
+    assert(!m_initialized.at(name));
+    m_initialized[name] = true;
+    const protobuf::Metric& proto_metric = m_metadata.metrics().at(name);
+    auto kind = get_kind(proto_metric);
+    if (kind.has_value())
+    {
+        assert(kind.value() != protobuf::Kind::CONSTANT);
+    }
+
+    auto offset = proto_metric.offset();
+
+    return typename Metric::required_metric(m_data + m_metadata_bytes + offset,
+                                            value);
+}
+
 // Explicit instantiations for the expected types
 
 template auto metrics::initialize_metric<uint64>(
@@ -313,6 +334,24 @@ template auto metrics::initialize_metric<boolean>(
     std::optional<boolean::type> value) -> boolean::metric;
 template auto metrics::initialize_metric<enum8>(
     const std::string& name, std::optional<enum8::type> value) -> enum8::metric;
+
+template auto metrics::initialize_required<uint64>(
+    const std::string& name, uint64::type value) -> uint64::required_metric;
+template auto metrics::initialize_required<int64>(
+    const std::string& name, int64::type value) -> int64::required_metric;
+template auto metrics::initialize_required<uint32>(
+    const std::string& name, uint32::type value) -> uint32::required_metric;
+template auto metrics::initialize_required<int32>(
+    const std::string& name, int32::type value) -> int32::required_metric;
+template auto metrics::initialize_required<float64>(
+    const std::string& name, float64::type value) -> float64::required_metric;
+template auto metrics::initialize_required<float32>(
+    const std::string& name, float32::type value) -> float32::required_metric;
+// template auto metrics::initialize_required<boolean>(
+//     const std::string& name, boolean::type value) ->
+//     boolean::required_metric;
+// template auto metrics::initialize_required<enum8>(
+//     const std::string& name, enum8::type value) -> enum8::required_metric;
 
 template <class Metric>
 void metrics::initialize_constant(const std::string& name,

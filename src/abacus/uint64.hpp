@@ -23,14 +23,9 @@ struct uint64
     using type = uint64_t;
 
     /// The metric type
-    struct metric : public detail::common<uint64>
-    {
-        /// Inherit the constructors and various operators from the common class
-        using detail::common<uint64>::common;
+    using metric = detail::optional_metric<uint64>;
 
-        /// Inherit the assignment operator from the common class
-        using detail::common<uint64>::operator=;
-    };
+    using required_metric = detail::required_metric<uint64>;
 
     /// The metric kind
     abacus::kind kind;

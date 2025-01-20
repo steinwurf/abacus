@@ -19,17 +19,21 @@ int main()
     std::string name2 = "days_until_maintenance";
     std::string name3 = "registered";
 
-    std::map<std::string, abacus::type> infos = {
-        {name0, abacus::float64{abacus::kind::CONSTANT,
-                                "Fuel consumption in kilometers per liter ",
-                                abacus::unit{"km/l"}}},
-        {name1, abacus::uint64{abacus::kind::CONSTANT, "Wheels on the car",
-                               abacus::unit{"wheels"}}},
-        {name2, abacus::int64{abacus::kind::GAUGE,
-                              "Days until next maintenance, if less than 0, "
-                              "maintenance is overdue",
-                              abacus::unit{"days"}}},
-        {name3, abacus::boolean{abacus::kind::GAUGE, "Is the car registered"}}};
+    std::map<abacus::name, abacus::type> infos = {
+        {abacus::name{name0},
+         abacus::float64{abacus::kind::CONSTANT,
+                         "Fuel consumption in kilometers per liter ",
+                         abacus::unit{"km/l"}}},
+        {abacus::name{name1},
+         abacus::uint64{abacus::kind::CONSTANT, "Wheels on the car",
+                        abacus::unit{"wheels"}}},
+        {abacus::name{name2},
+         abacus::int64{abacus::kind::GAUGE,
+                       "Days until next maintenance, if less than 0, "
+                       "maintenance is overdue",
+                       abacus::unit{"days"}}},
+        {abacus::name{name3},
+         abacus::boolean{abacus::kind::GAUGE, "Is the car registered"}}};
 
     abacus::metrics car(infos);
 

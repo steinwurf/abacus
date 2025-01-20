@@ -4,16 +4,16 @@
 #include <string>
 
 // Helper function to create metric definitions
-std::map<std::string, abacus::type> create_metric_infos()
+std::map<abacus::name, abacus::type> create_metric_infos()
 {
     return {
-        {"0", abacus::boolean{abacus::kind::GAUGE, ""}},
-        {"1", abacus::uint64{abacus::kind::GAUGE, ""}},
-        {"2", abacus::int64{abacus::kind::GAUGE, ""}},
-        {"3", abacus::float64{abacus::kind::GAUGE, ""}},
-        {"4", abacus::boolean{abacus::kind::GAUGE, ""}},
-        {"5", abacus::float64{abacus::kind::GAUGE, ""}},
-        {"6",
+        {abacus::name{"0"}, abacus::boolean{abacus::kind::GAUGE, ""}},
+        {abacus::name{"1"}, abacus::uint64{abacus::kind::GAUGE, ""}},
+        {abacus::name{"2"}, abacus::int64{abacus::kind::GAUGE, ""}},
+        {abacus::name{"3"}, abacus::float64{abacus::kind::GAUGE, ""}},
+        {abacus::name{"4"}, abacus::boolean{abacus::kind::GAUGE, ""}},
+        {abacus::name{"5"}, abacus::float64{abacus::kind::GAUGE, ""}},
+        {abacus::name{"6"},
          abacus::enum8{
              "",
              {{0, {"", ""}}, {1, {"", ""}}, {2, {"", ""}}, {3, {"", ""}}}}}};
