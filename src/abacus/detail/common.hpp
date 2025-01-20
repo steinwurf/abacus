@@ -167,6 +167,192 @@ protected:
     uint8_t* m_memory = nullptr;
 };
 
+template <>
+struct optional_metric<boolean>
+{
+
+    using value_type = boolean::type;
+
+    /// Default constructor
+    optional_metric() = default;
+
+    /// Constructor
+    /// @param memory The memory to use for the metric, note that the memory
+    ///        must be at least sizeof(type) + 1 bytes long.
+    optional_metric(uint8_t* memory) : m_memory(memory)
+    {
+        assert(m_memory != nullptr);
+        memset(m_memory, 0, sizeof(value_type) + 1);
+    }
+
+    /// Constructor
+    /// @param memory The memory to use for the metric, note that the memory
+    ///        must be at least sizeof(type) + 1 bytes long.
+    /// @param value The initial value of the metric
+    optional_metric(uint8_t* memory, value_type value) : optional_metric(memory)
+    {
+        set_value(value);
+    }
+
+    /// Check if the metric is initialized
+    /// @return true if the metric is initialized
+    auto is_initialized() const -> bool
+    {
+        return m_memory != nullptr;
+    }
+
+    /// Check if the metric has a value
+    /// @return true if the metric has a value
+    auto has_value() const -> bool
+    {
+        assert(is_initialized());
+        return m_memory[0] == 1U;
+    }
+
+    /// Reset the metric
+    /// This will set the metric to an uninitialized state causing
+    /// has_value() to return false.
+    auto reset() -> void
+    {
+        assert(is_initialized());
+        m_memory[0] = 0;
+    }
+
+    /// Get the value of the metric
+    /// @return The value of the metric
+    auto value() const -> value_type
+    {
+        assert(is_initialized());
+        assert(has_value());
+        value_type value;
+        std::memcpy(&value, m_memory + 1, sizeof(value_type));
+        return value;
+    }
+
+    /// Assign a new value to the metric
+    /// @param value The value to assign
+    auto set_value(value_type value) -> void
+    {
+        assert(is_initialized());
+
+        m_memory[0] = 1;
+        std::memcpy(m_memory + 1, &value, sizeof(value));
+    }
+
+    /// Assign the metric a new value
+    /// @param value The value to assign
+    /// @return the metric with the new value
+    auto operator=(value_type value) -> optional_metric&
+    {
+        assert(is_initialized());
+        set_value(value);
+        return *this;
+    }
+
+protected:
+    /// The metric memory
+    uint8_t* m_memory = nullptr;
+};
+
+template <>
+struct optional_metric<enum8>
+{
+
+    using value_type = enum8::type;
+
+    /// Default constructor
+    optional_metric() = default;
+
+    /// Constructor
+    /// @param memory The memory to use for the metric, note that the memory
+    ///        must be at least sizeof(type) + 1 bytes long.
+    optional_metric(uint8_t* memory) : m_memory(memory)
+    {
+        assert(m_memory != nullptr);
+        memset(m_memory, 0, sizeof(value_type) + 1);
+    }
+
+    /// Constructor
+    /// @param memory The memory to use for the metric, note that the memory
+    ///        must be at least sizeof(type) + 1 bytes long.
+    /// @param value The initial value of the metric
+    optional_metric(uint8_t* memory, value_type value) : optional_metric(memory)
+    {
+        set_value(value);
+    }
+
+    /// Check if the metric is initialized
+    /// @return true if the metric is initialized
+    auto is_initialized() const -> bool
+    {
+        return m_memory != nullptr;
+    }
+
+    /// Check if the metric has a value
+    /// @return true if the metric has a value
+    auto has_value() const -> bool
+    {
+        assert(is_initialized());
+        return m_memory[0] == 1U;
+    }
+
+    /// Reset the metric
+    /// This will set the metric to an uninitialized state causing
+    /// has_value() to return false.
+    auto reset() -> void
+    {
+        assert(is_initialized());
+        m_memory[0] = 0;
+    }
+
+    /// Get the value of the metric
+    /// @return The value of the metric
+    auto value() const -> value_type
+    {
+        assert(is_initialized());
+        assert(has_value());
+        value_type value;
+        std::memcpy(&value, m_memory + 1, sizeof(value_type));
+        return value;
+    }
+
+    auto set_value(value_type value) -> void
+    {
+        assert(is_initialized());
+
+        m_memory[0] = 1;
+        std::memcpy(m_memory + 1, &value, sizeof(value));
+    }
+
+    /// Assign a new value to the metric
+    /// @param value The value to assign
+    template <class T>
+    auto set_value(T value) -> void
+    {
+        assert(is_initialized());
+        static_assert(std::is_enum_v<T>, "T must be an enum type");
+
+        assert(value <= std::numeric_limits<value_type>::max());
+
+        m_memory[0] = 1;
+        std::memcpy(m_memory + 1, &value, sizeof(value));
+    }
+
+    /// Assign the metric a new value
+    /// @param value The value to assign
+    /// @return the metric with the new value
+    auto operator=(value_type value) -> optional_metric&
+    {
+        assert(is_initialized());
+        set_value(value);
+        return *this;
+    }
+
+protected:
+    /// The metric memory
+    uint8_t* m_memory = nullptr;
+};
+
 /// A required_metric class for most metrics
 template <typename Metric>
 struct required_metric
