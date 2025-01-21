@@ -14,7 +14,7 @@ TEST(test_metric, constructor)
 {
     uint8_t data[9] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
-    abacus::uint64::metric uint_metric(data);
+    abacus::uint64::optional uint_metric(data);
 
     EXPECT_TRUE(uint_metric.is_initialized());
     EXPECT_FALSE(uint_metric.has_value());
@@ -27,7 +27,7 @@ TEST(test_metric, float_assignment)
 {
     uint8_t data[9] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
-    abacus::float64::metric double_metric(data);
+    abacus::float64::optional double_metric(data);
     EXPECT_TRUE(double_metric.is_initialized());
     EXPECT_FALSE(double_metric.has_value());
     double_metric = 1123.12;

@@ -5,11 +5,12 @@
 
 #pragma once
 
-#include "detail/common.hpp"
-
+#include "availability.hpp"
 #include "kind.hpp"
 #include "max.hpp"
 #include "min.hpp"
+#include "optional_metric.hpp"
+#include "required_metric.hpp"
 #include "unit.hpp"
 
 namespace abacus
@@ -22,16 +23,20 @@ struct float64
     /// The primitive type of the metric
     using type = double;
 
-    /// The metric type
-    using metric = detail::optional_metric<float64>;
+    /// The optional metric type
+    using optional = optional_metric<float64>;
 
-    using required_metric = detail::required_metric<float64>;
+    /// The required metric type
+    using required = required_metric<float64>;
 
     /// The metric kind
     abacus::kind kind;
 
     /// The metric description
     std::string description;
+
+    /// The availability of the metric
+    abacus::availability availability;
 
     /// The unit of the metric
     abacus::unit unit{};

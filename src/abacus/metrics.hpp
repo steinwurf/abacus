@@ -8,6 +8,7 @@
 #include <cassert>
 #include <map>
 #include <string>
+#include <vector>
 
 #include "name.hpp"
 #include "type.hpp"
@@ -54,28 +55,24 @@ public:
     /// @return the metadata of the metrics.
     auto metadata() const -> const protobuf::MetricsMetadata&;
 
-    template <class Metric>
-    void initialize_optional(const std::string& name,
-                             detail::optional_metric<Metric>& metric);
-
-    /// Initialize a metric
-    /// @param name The name of the metric
-    /// @param value Optional initial value of the metric
-    /// @return The metric object
-    template <class Metric>
-    [[nodiscard]] auto initialize_metric(
-        const std::string& name,
-        std::optional<typename Metric::type> value = std::nullopt) ->
-        typename Metric::metric;
-
-    /// Initialize a metric
+    /// Initialize a required metric
     /// @param name The name of the metric
     /// @param value Optional initial value of the metric
     /// @return The metric object
     template <class Metric>
     [[nodiscard]] auto initialize_required(const std::string& name,
-                                           typename Metric::type) ->
-        typename Metric::required_metric;
+                                           typename Metric::type value) ->
+        typename Metric::required;
+
+    /// Initialize a metric
+    /// @param name The name of the metric
+    /// @param value Optional initial value of the metric
+    /// @return The metric object
+    template <class Metric>
+    [[nodiscard]] auto initialize_optional(
+        const std::string& name,
+        std::optional<typename Metric::type> value = std::nullopt) ->
+        typename Metric::optional;
 
     /// Initialize a constant metric
     /// @param name The name of the metric
@@ -105,7 +102,7 @@ private:
 
 private:
     /// The raw memory for the metadata and value data
-    uint8_t* m_data = nullptr;
+    std::vector<uint8_t> m_data;
 
     /// The info of the metrics separated by byte-sizes
     protobuf::MetricsMetadata m_metadata;

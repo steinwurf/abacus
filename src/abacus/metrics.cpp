@@ -47,12 +47,12 @@ get_kind(const protobuf::Metric& metric) -> std::optional<protobuf::Kind>
 }
 
 metrics::metrics(metrics&& other) noexcept :
-    m_data(other.m_data), m_metadata(std::move(other.m_metadata)),
+    m_data(std::move(other.m_data)), m_metadata(std::move(other.m_metadata)),
     m_hash(other.m_hash), m_metadata_bytes(other.m_metadata_bytes),
     m_value_bytes(other.m_value_bytes),
     m_initialized(std::move(other.m_initialized))
 {
-    other.m_data = nullptr;
+    other.m_data = std::vector<uint8_t>();
     other.m_metadata = protobuf::MetricsMetadata();
     other.m_hash = 0;
     other.m_metadata_bytes = 0;
@@ -84,6 +84,7 @@ metrics::metrics(const std::map<name, type>& info)
         {
             // The offset is incremented by the size of the type
             m_value_bytes += detail::size_of_type<decltype(m)>();
+            metric.set_optional(is_optional(m->availability));
 
             metric.mutable_uint64()->set_description(m->description);
             metric.mutable_uint64()->set_kind(m->kind);
@@ -104,6 +105,7 @@ metrics::metrics(const std::map<name, type>& info)
         {
             // The offset is incremented by the size of the type
             m_value_bytes += detail::size_of_type<decltype(m)>();
+            metric.set_optional(is_optional(m->availability));
 
             metric.mutable_int64()->set_description(m->description);
             metric.mutable_int64()->set_kind(m->kind);
@@ -124,6 +126,7 @@ metrics::metrics(const std::map<name, type>& info)
         {
             // The offset is incremented by the size of the type
             m_value_bytes += detail::size_of_type<decltype(m)>();
+            metric.set_optional(is_optional(m->availability));
 
             metric.mutable_uint32()->set_description(m->description);
             metric.mutable_uint32()->set_kind(m->kind);
@@ -144,6 +147,7 @@ metrics::metrics(const std::map<name, type>& info)
         {
             // The offset is incremented by the size of the type
             m_value_bytes += detail::size_of_type<decltype(m)>();
+            metric.set_optional(is_optional(m->availability));
 
             metric.mutable_int32()->set_description(m->description);
             metric.mutable_int32()->set_kind(m->kind);
@@ -164,6 +168,7 @@ metrics::metrics(const std::map<name, type>& info)
         {
             // The offset is incremented by the size of the type
             m_value_bytes += detail::size_of_type<decltype(m)>();
+            metric.set_optional(is_optional(m->availability));
 
             metric.mutable_float64()->set_description(m->description);
             metric.mutable_float64()->set_kind(m->kind);
@@ -184,6 +189,7 @@ metrics::metrics(const std::map<name, type>& info)
         {
             // The offset is incremented by the size of the type
             m_value_bytes += detail::size_of_type<decltype(m)>();
+            metric.set_optional(is_optional(m->availability));
 
             metric.mutable_float32()->set_description(m->description);
             metric.mutable_float32()->set_kind(m->kind);
@@ -204,6 +210,7 @@ metrics::metrics(const std::map<name, type>& info)
         {
             // The offset is incremented by the size of the type
             m_value_bytes += detail::size_of_type<decltype(m)>();
+            metric.set_optional(is_optional(m->availability));
 
             metric.mutable_boolean()->set_description(m->description);
             metric.mutable_boolean()->set_kind(m->kind);
@@ -212,6 +219,7 @@ metrics::metrics(const std::map<name, type>& info)
         {
             // The offset is incremented by the size of the type
             m_value_bytes += detail::size_of_type<decltype(m)>();
+            metric.set_optional(is_optional(m->availability));
 
             metric.mutable_enum8()->set_description(m->description);
             for (auto [key, value] : m->values)
@@ -237,19 +245,20 @@ metrics::metrics(const std::map<name, type>& info)
     m_metadata.set_sync_value(1);
 
     m_metadata_bytes = m_metadata.ByteSizeLong();
-    m_data = new uint8_t[m_metadata_bytes + m_value_bytes];
+    m_data.reserve(m_metadata_bytes + m_value_bytes);
+    m_data.resize(m_metadata_bytes);
 
     // Serialize the metadata
-    m_metadata.SerializeToArray(m_data, m_metadata_bytes);
+    m_metadata.SerializeToArray(m_data.data(), m_data.size());
 
     // Calculate the hash of the metadata
-    m_hash = detail::hash_function(m_data, m_metadata_bytes);
+    m_hash = detail::hash_function(m_data.data(), m_data.size());
 
     // Update the sync value
     m_metadata.set_sync_value(m_hash);
 
     // Serialize the metadata again to include the sync value
-    m_metadata.SerializeToArray(m_data, m_metadata_bytes);
+    m_metadata.SerializeToArray(m_data.data(), m_data.size());
 
     // Make sure the metadata didn't change unexpectedly
     assert(m_metadata.ByteSizeLong() == m_metadata_bytes);
@@ -258,19 +267,21 @@ metrics::metrics(const std::map<name, type>& info)
     // be written as the endianess of the system)
     // Consuming code can use the endianness field in the metadata to
     // read the sync value
-    std::memcpy(m_data + m_metadata_bytes, &m_hash, sizeof(uint32_t));
+    m_data.resize(m_metadata_bytes + m_value_bytes);
+    std::memcpy(m_data.data() + m_metadata_bytes, &m_hash, sizeof(uint32_t));
 }
 
 template <class Metric>
 [[nodiscard]] auto
-metrics::initialize_metric(const std::string& name,
-                           std::optional<typename Metric::type> value) ->
-    typename Metric::metric
+metrics::initialize_optional(const std::string& name,
+                             std::optional<typename Metric::type> value) ->
+    typename Metric::optional
 {
     assert(m_initialized.find(name) != m_initialized.end());
     assert(!m_initialized.at(name));
     m_initialized[name] = true;
     const protobuf::Metric& proto_metric = m_metadata.metrics().at(name);
+    assert(proto_metric.optional() == true);
     auto kind = get_kind(proto_metric);
     if (kind.has_value())
     {
@@ -281,19 +292,20 @@ metrics::initialize_metric(const std::string& name,
 
     if (value.has_value())
     {
-        return typename Metric::metric(m_data + m_metadata_bytes + offset,
-                                       value.value());
+        return typename Metric::optional(
+            m_data.data() + m_metadata_bytes + offset, value.value());
     }
     else
     {
-        return typename Metric::metric(m_data + m_metadata_bytes + offset);
+        return typename Metric::optional(m_data.data() + m_metadata_bytes +
+                                         offset);
     }
 }
 
 template <class Metric>
 [[nodiscard]] auto metrics::initialize_required(const std::string& name,
                                                 typename Metric::type value) ->
-    typename Metric::required_metric
+    typename Metric::required
 {
     assert(m_initialized.find(name) != m_initialized.end());
     assert(!m_initialized.at(name));
@@ -307,51 +319,61 @@ template <class Metric>
 
     auto offset = proto_metric.offset();
 
-    return typename Metric::required_metric(m_data + m_metadata_bytes + offset,
-                                            value);
+    return typename Metric::required(m_data.data() + m_metadata_bytes + offset,
+                                     value);
 }
 
 // Explicit instantiations for the expected types
 
-template auto metrics::initialize_metric<uint64>(
+template auto metrics::initialize_optional<uint64>(
     const std::string& name,
-    std::optional<uint64::type> value) -> uint64::metric;
-template auto metrics::initialize_metric<int64>(
-    const std::string& name, std::optional<int64::type> value) -> int64::metric;
-template auto metrics::initialize_metric<uint32>(
+    std::optional<uint64::type> value) -> uint64::optional;
+template auto metrics::initialize_optional<int64>(
     const std::string& name,
-    std::optional<uint32::type> value) -> uint32::metric;
-template auto metrics::initialize_metric<int32>(
-    const std::string& name, std::optional<int32::type> value) -> int32::metric;
-template auto metrics::initialize_metric<float64>(
+    std::optional<int64::type> value) -> int64::optional;
+template auto metrics::initialize_optional<uint32>(
     const std::string& name,
-    std::optional<float64::type> value) -> float64::metric;
-template auto metrics::initialize_metric<float32>(
+    std::optional<uint32::type> value) -> uint32::optional;
+template auto metrics::initialize_optional<int32>(
     const std::string& name,
-    std::optional<float32::type> value) -> float32::metric;
-template auto metrics::initialize_metric<boolean>(
+    std::optional<int32::type> value) -> int32::optional;
+template auto metrics::initialize_optional<float64>(
     const std::string& name,
-    std::optional<boolean::type> value) -> boolean::metric;
-template auto metrics::initialize_metric<enum8>(
-    const std::string& name, std::optional<enum8::type> value) -> enum8::metric;
+    std::optional<float64::type> value) -> float64::optional;
+template auto metrics::initialize_optional<float32>(
+    const std::string& name,
+    std::optional<float32::type> value) -> float32::optional;
+template auto metrics::initialize_optional<boolean>(
+    const std::string& name,
+    std::optional<boolean::type> value) -> boolean::optional;
+template auto metrics::initialize_optional<enum8>(
+    const std::string& name,
+    std::optional<enum8::type> value) -> enum8::optional;
 
-template auto metrics::initialize_required<uint64>(
-    const std::string& name, uint64::type value) -> uint64::required_metric;
-template auto metrics::initialize_required<int64>(
-    const std::string& name, int64::type value) -> int64::required_metric;
-template auto metrics::initialize_required<uint32>(
-    const std::string& name, uint32::type value) -> uint32::required_metric;
-template auto metrics::initialize_required<int32>(
-    const std::string& name, int32::type value) -> int32::required_metric;
-template auto metrics::initialize_required<float64>(
-    const std::string& name, float64::type value) -> float64::required_metric;
-template auto metrics::initialize_required<float32>(
-    const std::string& name, float32::type value) -> float32::required_metric;
-// template auto metrics::initialize_required<boolean>(
-//     const std::string& name, boolean::type value) ->
-//     boolean::required_metric;
-// template auto metrics::initialize_required<enum8>(
-//     const std::string& name, enum8::type value) -> enum8::required_metric;
+template auto
+metrics::initialize_required<uint64>(const std::string& name,
+                                     uint64::type value) -> uint64::required;
+template auto
+metrics::initialize_required<int64>(const std::string& name,
+                                    int64::type value) -> int64::required;
+template auto
+metrics::initialize_required<uint32>(const std::string& name,
+                                     uint32::type value) -> uint32::required;
+template auto
+metrics::initialize_required<int32>(const std::string& name,
+                                    int32::type value) -> int32::required;
+template auto
+metrics::initialize_required<float64>(const std::string& name,
+                                      float64::type value) -> float64::required;
+template auto
+metrics::initialize_required<float32>(const std::string& name,
+                                      float32::type value) -> float32::required;
+template auto
+metrics::initialize_required<boolean>(const std::string& name,
+                                      boolean::type value) -> boolean::required;
+template auto
+metrics::initialize_required<enum8>(const std::string& name,
+                                    enum8::type value) -> enum8::required;
 
 template <class Metric>
 void metrics::initialize_constant(const std::string& name,
@@ -365,7 +387,7 @@ void metrics::initialize_constant(const std::string& name,
     auto offset = proto_metric.offset();
     auto kind = get_kind(proto_metric);
     assert(kind.has_value() && kind.value() == protobuf::Kind::CONSTANT);
-    typename Metric::metric(m_data + m_metadata_bytes + offset, value);
+    typename Metric::required(m_data.data() + m_metadata_bytes + offset, value);
 }
 
 // Explicit instantiations for the expected types
@@ -388,13 +410,11 @@ template void metrics::initialize_constant<enum8>(const std::string& name,
 
 metrics::~metrics()
 {
-    if (m_data != nullptr)
-        delete[] m_data;
 }
 
 auto metrics::value_data() const -> const uint8_t*
 {
-    return m_data + m_metadata_bytes;
+    return m_data.data() + m_metadata_bytes;
 }
 
 auto metrics::value_bytes() const -> std::size_t
@@ -404,7 +424,7 @@ auto metrics::value_bytes() const -> std::size_t
 
 auto metrics::metadata_data() const -> const uint8_t*
 {
-    return m_data;
+    return m_data.data();
 }
 
 auto metrics::metadata_bytes() const -> std::size_t
@@ -438,7 +458,7 @@ auto metrics::is_initialized() const -> bool
 void metrics::reset_metrics()
 {
     // Reset the value data
-    std::memset(m_data + m_metadata_bytes + sizeof(uint32_t), 0,
+    std::memset(m_data.data() + m_metadata_bytes + sizeof(uint32_t), 0,
                 m_value_bytes - sizeof(uint32_t));
 }
 

@@ -88,15 +88,16 @@ message Enum8Metric {
 message Metric
 {
     uint32 offset = 1;              // Offset into packed memory for the value
+    bool optional = 2;              // Whether the metric is optional
     oneof type {
-        UInt64Metric uint64 = 2;    // Metadata for unsigned 64-bit metrics
-        Int64Metric int64 = 3;      // Metadata for signed 64-bit metrics
-        UInt32Metric uint32 = 4;    // Metadata for unsigned 32-bit metrics
-        Int32Metric int32 = 5;      // Metadata for signed 32-bit metrics
-        Float64Metric float64 = 6;  // Metadata for 64-bit floating-point metrics
-        Float32Metric float32 = 7;  // Metadata for 32-bit floating-point metrics
-        BoolMetric boolean = 8;        // Metadata for boolean metrics
-        Enum8Metric enum8 = 9;      // Metadata for enumerated metrics
+        UInt64Metric uint64 = 3;    // Metadata for unsigned 64-bit metrics
+        Int64Metric int64 = 4;      // Metadata for signed 64-bit metrics
+        UInt32Metric uint32 = 5;    // Metadata for unsigned 32-bit metrics
+        Int32Metric int32 = 6;      // Metadata for signed 32-bit metrics
+        Float64Metric float64 = 7;  // Metadata for 64-bit floating-point metrics
+        Float32Metric float32 = 8;  // Metadata for 32-bit floating-point metrics
+        BoolMetric boolean = 9;     // Metadata for boolean metrics
+        Enum8Metric enum8 = 10;     // Metadata for enumerated metrics
     }
 }
 

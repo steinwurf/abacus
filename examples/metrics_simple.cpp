@@ -22,18 +22,19 @@ int main()
     std::map<abacus::name, abacus::type> infos = {
         {abacus::name{name0},
          abacus::float64{abacus::kind::CONSTANT,
-                         "Fuel consumption in kilometers per liter ",
-                         abacus::unit{"km/l"}}},
+                         "Fuel consumption in kilometers per liter",
+                         abacus::required, abacus::unit{"km/l"}}},
         {abacus::name{name1},
          abacus::uint64{abacus::kind::CONSTANT, "Wheels on the car",
-                        abacus::unit{"wheels"}}},
+                        abacus::required, abacus::unit{"wheels"}}},
         {abacus::name{name2},
          abacus::int64{abacus::kind::GAUGE,
                        "Days until next maintenance, if less than 0, "
                        "maintenance is overdue",
-                       abacus::unit{"days"}}},
+                       abacus::required, abacus::unit{"days"}}},
         {abacus::name{name3},
-         abacus::boolean{abacus::kind::GAUGE, "Is the car registered"}}};
+         abacus::boolean{abacus::kind::GAUGE, "Is the car registered",
+                         abacus::required}}};
 
     abacus::metrics car(infos);
 
@@ -42,11 +43,11 @@ int main()
 
     // The car still has some time before maintenance.
     auto days_until_maintenance =
-        car.initialize_metric<abacus::int64>("days_until_maintenance", 10);
+        car.initialize_required<abacus::int64>("days_until_maintenance", 10);
 
     // The car should be registered.
     auto registered =
-        car.initialize_metric<abacus::boolean>("registered", false);
+        car.initialize_required<abacus::boolean>("registered", false);
 
     // The car has been registered.
     registered = true;

@@ -12,10 +12,11 @@
 template <typename T>
 void integer_test()
 {
-    using metric = typename T::metric;
+    using metric = typename T::optional;
     using type = typename T::type;
 
     uint8_t data[sizeof(type) + 1];
+    std::memset(data, 0, sizeof(data));
     metric m;
     EXPECT_FALSE(m.is_initialized());
     m = metric(data);
@@ -43,10 +44,11 @@ TEST(test_metrics, integer)
 template <typename T>
 void floating_point_test()
 {
-    using metric = typename T::metric;
+    using metric = typename T::optional;
     using type = typename T::type;
 
     uint8_t data[sizeof(type) + 1];
+    std::memset(data, 0, sizeof(data));
     metric m;
     EXPECT_FALSE(m.is_initialized());
     m = metric(data);
@@ -73,9 +75,10 @@ TEST(test_metrics, floating_point)
 TEST(test_metrics, boolean)
 {
     uint8_t data[sizeof(bool) + 1];
-    abacus::boolean::metric m;
+    std::memset(data, 0, sizeof(data));
+    abacus::boolean::optional m;
     EXPECT_FALSE(m.is_initialized());
-    m = abacus::boolean::metric(data);
+    m = abacus::boolean::optional(data);
     EXPECT_TRUE(m.is_initialized());
     EXPECT_FALSE(m.has_value());
     m = true;
@@ -88,9 +91,10 @@ TEST(test_metrics, boolean)
 TEST(test_metrics, enum8)
 {
     uint8_t data[sizeof(uint8_t) + 1];
-    abacus::enum8::metric m;
+    std::memset(data, 0, sizeof(data));
+    abacus::enum8::optional m;
     EXPECT_FALSE(m.is_initialized());
-    m = abacus::enum8::metric(data);
+    m = abacus::enum8::optional(data);
     EXPECT_TRUE(m.is_initialized());
     EXPECT_FALSE(m.has_value());
     m = 10U;

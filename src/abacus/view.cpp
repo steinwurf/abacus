@@ -103,17 +103,17 @@ auto view::value(const std::string& name) const
 {
     assert(m_value_data != nullptr);
     assert(m_metadata_data != nullptr);
-
-    auto offset = metric(name).offset();
+    auto m = metric(name);
+    auto offset = m.offset();
     assert(offset < m_value_bytes);
 
     if (m_value_data[offset] == 0)
     {
+        // Either the metric is unintialized or it's optional and has no value
         return std::nullopt;
     }
 
     typename Metric::type value;
-
     switch (m_metadata.endianness())
     {
     case protobuf::Endianness::BIG:

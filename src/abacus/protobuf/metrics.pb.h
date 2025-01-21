@@ -2139,14 +2139,14 @@ class Metric final :
     return *internal_default_instance();
   }
   enum TypeCase {
-    kUint64 = 2,
-    kInt64 = 3,
-    kUint32 = 4,
-    kInt32 = 5,
-    kFloat64 = 6,
-    kFloat32 = 7,
-    kBoolean = 8,
-    kEnum8 = 9,
+    kUint64 = 3,
+    kInt64 = 4,
+    kUint32 = 5,
+    kInt32 = 6,
+    kFloat64 = 7,
+    kFloat32 = 8,
+    kBoolean = 9,
+    kEnum8 = 10,
     TYPE_NOT_SET = 0,
   };
 
@@ -2228,14 +2228,15 @@ class Metric final :
 
   enum : int {
     kOffsetFieldNumber = 1,
-    kUint64FieldNumber = 2,
-    kInt64FieldNumber = 3,
-    kUint32FieldNumber = 4,
-    kInt32FieldNumber = 5,
-    kFloat64FieldNumber = 6,
-    kFloat32FieldNumber = 7,
-    kBooleanFieldNumber = 8,
-    kEnum8FieldNumber = 9,
+    kOptionalFieldNumber = 2,
+    kUint64FieldNumber = 3,
+    kInt64FieldNumber = 4,
+    kUint32FieldNumber = 5,
+    kInt32FieldNumber = 6,
+    kFloat64FieldNumber = 7,
+    kFloat32FieldNumber = 8,
+    kBooleanFieldNumber = 9,
+    kEnum8FieldNumber = 10,
   };
   // uint32 offset = 1;
   void clear_offset() ;
@@ -2247,7 +2248,17 @@ class Metric final :
   void _internal_set_offset(::uint32_t value);
 
   public:
-  // .abacus.protobuf.UInt64Metric uint64 = 2;
+  // bool optional = 2;
+  void clear_optional() ;
+  bool optional() const;
+  void set_optional(bool value);
+
+  private:
+  bool _internal_optional() const;
+  void _internal_set_optional(bool value);
+
+  public:
+  // .abacus.protobuf.UInt64Metric uint64 = 3;
   bool has_uint64() const;
   private:
   bool _internal_has_uint64() const;
@@ -2266,7 +2277,7 @@ class Metric final :
   ::abacus::protobuf::UInt64Metric* _internal_mutable_uint64();
 
   public:
-  // .abacus.protobuf.Int64Metric int64 = 3;
+  // .abacus.protobuf.Int64Metric int64 = 4;
   bool has_int64() const;
   private:
   bool _internal_has_int64() const;
@@ -2285,7 +2296,7 @@ class Metric final :
   ::abacus::protobuf::Int64Metric* _internal_mutable_int64();
 
   public:
-  // .abacus.protobuf.UInt32Metric uint32 = 4;
+  // .abacus.protobuf.UInt32Metric uint32 = 5;
   bool has_uint32() const;
   private:
   bool _internal_has_uint32() const;
@@ -2304,7 +2315,7 @@ class Metric final :
   ::abacus::protobuf::UInt32Metric* _internal_mutable_uint32();
 
   public:
-  // .abacus.protobuf.Int32Metric int32 = 5;
+  // .abacus.protobuf.Int32Metric int32 = 6;
   bool has_int32() const;
   private:
   bool _internal_has_int32() const;
@@ -2323,7 +2334,7 @@ class Metric final :
   ::abacus::protobuf::Int32Metric* _internal_mutable_int32();
 
   public:
-  // .abacus.protobuf.Float64Metric float64 = 6;
+  // .abacus.protobuf.Float64Metric float64 = 7;
   bool has_float64() const;
   private:
   bool _internal_has_float64() const;
@@ -2342,7 +2353,7 @@ class Metric final :
   ::abacus::protobuf::Float64Metric* _internal_mutable_float64();
 
   public:
-  // .abacus.protobuf.Float32Metric float32 = 7;
+  // .abacus.protobuf.Float32Metric float32 = 8;
   bool has_float32() const;
   private:
   bool _internal_has_float32() const;
@@ -2361,7 +2372,7 @@ class Metric final :
   ::abacus::protobuf::Float32Metric* _internal_mutable_float32();
 
   public:
-  // .abacus.protobuf.BoolMetric boolean = 8;
+  // .abacus.protobuf.BoolMetric boolean = 9;
   bool has_boolean() const;
   private:
   bool _internal_has_boolean() const;
@@ -2380,7 +2391,7 @@ class Metric final :
   ::abacus::protobuf::BoolMetric* _internal_mutable_boolean();
 
   public:
-  // .abacus.protobuf.Enum8Metric enum8 = 9;
+  // .abacus.protobuf.Enum8Metric enum8 = 10;
   bool has_enum8() const;
   private:
   bool _internal_has_enum8() const;
@@ -2417,12 +2428,13 @@ class Metric final :
   inline void clear_has_type();
 
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 9, 8, 0, 2> _table_;
+  static const ::google::protobuf::internal::TcParseTable<1, 10, 8, 0, 2> _table_;
   template <typename T> friend class ::google::protobuf::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
     ::uint32_t offset_;
+    bool optional_;
     union TypeUnion {
       constexpr TypeUnion() : _constinit_{} {}
         ::google::protobuf::internal::ConstantInitialized _constinit_;
@@ -4334,7 +4346,29 @@ inline void Metric::_internal_set_offset(::uint32_t value) {
   _impl_.offset_ = value;
 }
 
-// .abacus.protobuf.UInt64Metric uint64 = 2;
+// bool optional = 2;
+inline void Metric::clear_optional() {
+  _impl_.optional_ = false;
+}
+inline bool Metric::optional() const {
+  // @@protoc_insertion_point(field_get:abacus.protobuf.Metric.optional)
+  return _internal_optional();
+}
+inline void Metric::set_optional(bool value) {
+  _internal_set_optional(value);
+  // @@protoc_insertion_point(field_set:abacus.protobuf.Metric.optional)
+}
+inline bool Metric::_internal_optional() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.optional_;
+}
+inline void Metric::_internal_set_optional(bool value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.optional_ = value;
+}
+
+// .abacus.protobuf.UInt64Metric uint64 = 3;
 inline bool Metric::has_uint64() const {
   return type_case() == kUint64;
 }
@@ -4408,7 +4442,7 @@ inline ::abacus::protobuf::UInt64Metric* Metric::mutable_uint64() {
   return _msg;
 }
 
-// .abacus.protobuf.Int64Metric int64 = 3;
+// .abacus.protobuf.Int64Metric int64 = 4;
 inline bool Metric::has_int64() const {
   return type_case() == kInt64;
 }
@@ -4482,7 +4516,7 @@ inline ::abacus::protobuf::Int64Metric* Metric::mutable_int64() {
   return _msg;
 }
 
-// .abacus.protobuf.UInt32Metric uint32 = 4;
+// .abacus.protobuf.UInt32Metric uint32 = 5;
 inline bool Metric::has_uint32() const {
   return type_case() == kUint32;
 }
@@ -4556,7 +4590,7 @@ inline ::abacus::protobuf::UInt32Metric* Metric::mutable_uint32() {
   return _msg;
 }
 
-// .abacus.protobuf.Int32Metric int32 = 5;
+// .abacus.protobuf.Int32Metric int32 = 6;
 inline bool Metric::has_int32() const {
   return type_case() == kInt32;
 }
@@ -4630,7 +4664,7 @@ inline ::abacus::protobuf::Int32Metric* Metric::mutable_int32() {
   return _msg;
 }
 
-// .abacus.protobuf.Float64Metric float64 = 6;
+// .abacus.protobuf.Float64Metric float64 = 7;
 inline bool Metric::has_float64() const {
   return type_case() == kFloat64;
 }
@@ -4704,7 +4738,7 @@ inline ::abacus::protobuf::Float64Metric* Metric::mutable_float64() {
   return _msg;
 }
 
-// .abacus.protobuf.Float32Metric float32 = 7;
+// .abacus.protobuf.Float32Metric float32 = 8;
 inline bool Metric::has_float32() const {
   return type_case() == kFloat32;
 }
@@ -4778,7 +4812,7 @@ inline ::abacus::protobuf::Float32Metric* Metric::mutable_float32() {
   return _msg;
 }
 
-// .abacus.protobuf.BoolMetric boolean = 8;
+// .abacus.protobuf.BoolMetric boolean = 9;
 inline bool Metric::has_boolean() const {
   return type_case() == kBoolean;
 }
@@ -4852,7 +4886,7 @@ inline ::abacus::protobuf::BoolMetric* Metric::mutable_boolean() {
   return _msg;
 }
 
-// .abacus.protobuf.Enum8Metric enum8 = 9;
+// .abacus.protobuf.Enum8Metric enum8 = 10;
 inline bool Metric::has_enum8() const {
   return type_case() == kEnum8;
 }

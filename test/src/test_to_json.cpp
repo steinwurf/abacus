@@ -30,27 +30,30 @@ TEST(test_to_json, to_json_minimal)
     std::map<abacus::name, abacus::type> infos = {
         {abacus::name{name0},
          abacus::uint64{abacus::kind::COUNTER, "An unsigned integer metric",
-                        abacus::unit{"bytes"}, abacus::min{uint64_t{0U}},
+                        abacus::required, abacus::unit{"bytes"},
+                        abacus::min{uint64_t{0U}},
                         abacus::max{uint64_t{100U}}}},
         {abacus::name{name1},
          abacus::int64{abacus::kind::GAUGE, "A signed integer metric",
-                       abacus::unit{"USD"}, abacus::min{int64_t{-100}},
-                       abacus::max{int64_t{100}}}},
+                       abacus::required, abacus::unit{"USD"},
+                       abacus::min{int64_t{-100}}, abacus::max{int64_t{100}}}},
         {abacus::name{name2},
-         abacus::boolean{abacus::kind::CONSTANT, "A boolean constant"}},
+         abacus::boolean{abacus::kind::CONSTANT, "A boolean constant",
+                         abacus::required}},
         {abacus::name{name3},
          abacus::enum8{"An enum metric",
                        {{0, {"value0", "The value for 0"}},
                         {1, {"value1", "The value for 1"}},
                         {2, {"value2", "The value for 2"}},
-                        {3, {"value3", "The value for 3"}}}}}};
+                        {3, {"value3", "The value for 3"}}},
+                       abacus::required}}};
 
     abacus::metrics metrics(infos);
 
-    auto m0 = metrics.initialize_metric<abacus::uint64>(name0, 42);
-    auto m1 = metrics.initialize_metric<abacus::int64>(name1, -42);
+    auto m0 = metrics.initialize_required<abacus::uint64>(name0, 42);
+    auto m1 = metrics.initialize_required<abacus::int64>(name1, -42);
     metrics.initialize_constant<abacus::boolean>(name2, true);
-    auto m3 = metrics.initialize_metric<abacus::enum8>(name3, 2);
+    auto m3 = metrics.initialize_required<abacus::enum8>(name3, 2);
 
     (void)m0;
     (void)m1;
@@ -69,6 +72,7 @@ TEST(test_to_json, to_json_minimal)
 static const char* expected_json = R"({
   "metric0" : {
     "offset" : 4,
+    "optional" : false,
     "uint64" : {
       "description" : "An unsigned integer metric",
       "kind" : "COUNTER",
@@ -87,6 +91,7 @@ static const char* expected_json = R"({
       "unit" : "USD"
     },
     "offset" : 13,
+    "optional" : false,
     "value" : -42
   },
   "metric2" : {
@@ -95,6 +100,7 @@ static const char* expected_json = R"({
       "kind" : "CONSTANT"
     },
     "offset" : 22,
+    "optional" : false,
     "value" : true
   },
   "metric3" : {
@@ -120,9 +126,18 @@ static const char* expected_json = R"({
       }
     },
     "offset" : 24,
+    "optional" : false,
     "value" : 2
   }
 })";
+
+enum class test_enum
+{
+    value0 = 0,
+    value1 = 1,
+    value2 = 2,
+    value3 = 3
+};
 
 TEST(test_to_json, to_json)
 {
@@ -134,26 +149,33 @@ TEST(test_to_json, to_json)
     std::map<abacus::name, abacus::type> infos = {
         {abacus::name{name0},
          abacus::uint64{abacus::kind::COUNTER, "An unsigned integer metric",
-                        abacus::unit{"bytes"}, abacus::min{uint64_t{0U}},
+                        abacus::required, abacus::unit{"bytes"},
+                        abacus::min{uint64_t{0U}},
                         abacus::max{uint64_t{100U}}}},
         {abacus::name{name1},
          abacus::int64{abacus::kind::GAUGE, "A signed integer metric",
-                       abacus::unit{"USD"}, abacus::min{int64_t{-100}},
-                       abacus::max{int64_t{100}}}},
+                       abacus::required, abacus::unit{"USD"},
+                       abacus::min{int64_t{-100}}, abacus::max{int64_t{100}}}},
         {abacus::name{name2},
-         abacus::boolean{abacus::kind::CONSTANT, "A boolean constant"}},
+         abacus::boolean{abacus::kind::CONSTANT, "A boolean constant",
+                         abacus::required}},
         {abacus::name{name3},
          abacus::enum8{"An enum metric",
                        {{0, {"value0", "The value for 0"}},
                         {1, {"value1", "The value for 1"}},
                         {2, {"value2", "The value for 2"}},
-                        {3, {"value3", "The value for 3"}}}}}};
+                        {3, {"value3", "The value for 3"}}},
+                       abacus::required}}};
 
     abacus::metrics metrics(infos);
 
-    auto m0 = metrics.initialize_metric<abacus::uint64>(name0, 42);
-    auto m1 = metrics.initialize_metric<abacus::int64>(name1, -42);
+    auto m0 = metrics.initialize_required<abacus::uint64>(name0, 42);
+    auto m1 = metrics.initialize_required<abacus::int64>(name1, -42);
     metrics.initialize_constant<abacus::boolean>(name2, true);
+    auto m3 = metrics.initialize_required<abacus::enum8>(
+        name3, (uint8_t)test_enum::value1);
+
+    m3 = test_enum::value2;
 
     (void)m0;
     (void)m1;

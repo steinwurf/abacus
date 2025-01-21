@@ -12,33 +12,33 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-/// Strongly typed name for a metric
-struct name
+/// Strongly typed description for a metric
+struct description
 {
     /// Default constructor
-    name() = default;
+    description() = default;
 
     /// Explicit constructor
-    explicit name(const std::string& v) : value(v)
+    explicit description(const std::string& v) : value(v)
     {
     }
 
-    /// @return True if the name is empty otherwise false
+    /// @return True if the description is empty otherwise false
     bool empty() const
     {
         return value.empty();
     }
 
-    /// The name string
+    /// The description string
     std::string value;
 };
 
-inline bool operator==(const name& lhs, const name& rhs)
+inline bool operator==(const description& lhs, const description& rhs)
 {
     return lhs.value == rhs.value;
 }
 
-inline bool operator<(const name& lhs, const name& rhs)
+inline bool operator<(const description& lhs, const description& rhs)
 {
     return lhs.value < rhs.value;
 }
