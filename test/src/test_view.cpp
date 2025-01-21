@@ -33,7 +33,7 @@ TEST(test_view, api)
          abacus::float64{
              abacus::constant,
              abacus::description{"A constant floating point metric"},
-             abacus::optional, abacus::unit{"ms"}}},
+             abacus::required, abacus::unit{"ms"}}},
         {abacus::name{name3},
          abacus::enum8{abacus::description{"An enum metric"},
                        {{0, {"value0", "The value for 0"}},

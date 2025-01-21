@@ -302,29 +302,7 @@ metrics::initialize_optional(const std::string& name,
     }
 }
 
-template <class Metric>
-[[nodiscard]] auto metrics::initialize_required(const std::string& name,
-                                                typename Metric::type value) ->
-    typename Metric::required
-{
-    assert(m_initialized.find(name) != m_initialized.end());
-    assert(!m_initialized.at(name));
-    m_initialized[name] = true;
-    const protobuf::Metric& proto_metric = m_metadata.metrics().at(name);
-    auto kind = get_kind(proto_metric);
-    if (kind.has_value())
-    {
-        assert(kind.value() != protobuf::Kind::CONSTANT);
-    }
-
-    auto offset = proto_metric.offset();
-
-    return typename Metric::required(m_data.data() + m_metadata_bytes + offset,
-                                     value);
-}
-
 // Explicit instantiations for the expected types
-
 template auto metrics::initialize_optional<uint64>(
     const std::string& name,
     std::optional<uint64::type> value) -> uint64::optional;
@@ -350,6 +328,29 @@ template auto metrics::initialize_optional<enum8>(
     const std::string& name,
     std::optional<enum8::type> value) -> enum8::optional;
 
+template <class Metric>
+[[nodiscard]] auto metrics::initialize_required(const std::string& name,
+                                                typename Metric::type value) ->
+    typename Metric::required
+{
+    assert(m_initialized.find(name) != m_initialized.end());
+    assert(!m_initialized.at(name));
+    m_initialized[name] = true;
+    const protobuf::Metric& proto_metric = m_metadata.metrics().at(name);
+    assert(proto_metric.optional() == false);
+    auto kind = get_kind(proto_metric);
+    if (kind.has_value())
+    {
+        assert(kind.value() != protobuf::Kind::CONSTANT);
+    }
+
+    auto offset = proto_metric.offset();
+
+    return typename Metric::required(m_data.data() + m_metadata_bytes + offset,
+                                     value);
+}
+
+// Explicit instantiations for the expected types
 template auto
 metrics::initialize_required<uint64>(const std::string& name,
                                      uint64::type value) -> uint64::required;
@@ -384,6 +385,8 @@ void metrics::initialize_constant(const std::string& name,
     m_initialized[name] = true;
 
     const protobuf::Metric& proto_metric = m_metadata.metrics().at(name);
+    assert(proto_metric.optional() == false &&
+           "Constant metrics cannot be optional");
     auto offset = proto_metric.offset();
     auto kind = get_kind(proto_metric);
     assert(kind.has_value() && kind.value() == protobuf::Kind::CONSTANT);
