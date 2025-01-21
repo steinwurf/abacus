@@ -210,7 +210,8 @@ public:
     auto set_value(T value) -> void
     {
         assert(is_initialized());
-        assert(value <= std::numeric_limits<value_type>::max());
+        assert((std::underlying_type_t<T>)value <=
+               std::numeric_limits<value_type>::max());
 
         set_value(static_cast<value_type>(value));
     }

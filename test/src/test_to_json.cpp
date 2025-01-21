@@ -133,6 +133,8 @@ static const char* expected_json = R"({
   }
 })";
 
+namespace
+{
 enum class test_enum
 {
     value0 = 0,
@@ -140,6 +142,7 @@ enum class test_enum
     value2 = 2,
     value3 = 3
 };
+}
 
 TEST(test_to_json, to_json)
 {
