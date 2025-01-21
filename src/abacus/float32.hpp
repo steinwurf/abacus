@@ -8,6 +8,7 @@
 #include <string>
 
 #include "availability.hpp"
+#include "description.hpp"
 #include "kind.hpp"
 #include "max.hpp"
 #include "min.hpp"
@@ -35,7 +36,7 @@ struct float32
     abacus::kind kind;
 
     /// The metric description
-    std::string description;
+    abacus::description description;
 
     /// The availability of the metric
     abacus::availability availability;

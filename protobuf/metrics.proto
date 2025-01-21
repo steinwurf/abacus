@@ -2,9 +2,7 @@ syntax = "proto3";
 package abacus.protobuf;
 option go_package = "abacus/protobuf";
 
-
 import "abacus/protobuf/kind.proto";
-
 
 // Specifies the endianness for multi-byte values
 enum Endianness {

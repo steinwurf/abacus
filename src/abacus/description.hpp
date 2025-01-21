@@ -23,12 +23,6 @@ struct description
     {
     }
 
-    /// @return True if the description is empty otherwise false
-    bool empty() const
-    {
-        return value.empty();
-    }
-
     /// The description string
     std::string value;
 };

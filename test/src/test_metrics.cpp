@@ -37,26 +37,32 @@ TEST(test_metrics, api)
 
     std::map<abacus::name, abacus::type> infos = {
         {abacus::name{name0},
-         abacus::boolean{abacus::kind::COUNTER, "A boolean metric",
+         abacus::boolean{abacus::counter,
+                         abacus::description{"A boolean metric"},
                          abacus::optional}},
         {abacus::name{name1},
-         abacus::uint64{abacus::kind::COUNTER, "An unsigned integer metric",
+         abacus::uint64{abacus::counter,
+                        abacus::description{"An unsigned integer metric"},
                         abacus::required, abacus::unit{"bytes"}}},
         {abacus::name{name2},
-         abacus::int64{abacus::kind::GAUGE, "A signed integer metric",
+         abacus::int64{abacus::gauge,
+                       abacus::description{"A signed integer metric"},
                        abacus::optional, abacus::unit{"USD"}}},
         {abacus::name{name3},
-         abacus::float64{abacus::kind::GAUGE, "A floating point metric",
+         abacus::float64{abacus::gauge,
+                         abacus::description{"A floating point metric"},
                          abacus::optional, abacus::unit{"ms"}}},
         {abacus::name{name4},
-         abacus::boolean{abacus::kind::CONSTANT, "A constant boolean metric",
+         abacus::boolean{abacus::constant,
+                         abacus::description{"A constant boolean metric"},
                          abacus::required}},
         {abacus::name{name5},
-         abacus::float64{abacus::kind::CONSTANT,
-                         "A constant floating point metric", abacus::required,
-                         abacus::unit{"ms"}}},
+         abacus::float64{
+             abacus::constant,
+             abacus::description{"A constant floating point metric"},
+             abacus::required, abacus::unit{"ms"}}},
         {abacus::name{name6},
-         abacus::enum8{"An enum metric",
+         abacus::enum8{abacus::description{"An enum metric"},
                        {{0, {"value0", "The value for 0"}},
                         {1, {"value1", "The value for 1"}},
                         {2, {"value2", "The value for 2"}},
@@ -70,39 +76,39 @@ TEST(test_metrics, api)
               abacus::protocol_version());
 
     EXPECT_EQ(metrics.metadata().metrics().at(name0).boolean().kind(),
-              abacus::kind::COUNTER);
+              abacus::counter.value);
     EXPECT_EQ(metrics.metadata().metrics().at(name0).boolean().description(),
               "A boolean metric");
     EXPECT_EQ(metrics.metadata().metrics().at(name0).boolean().unit(),
               ""); // empty unit
 
     EXPECT_EQ(metrics.metadata().metrics().at(name1).uint64().kind(),
-              abacus::kind::COUNTER);
+              abacus::counter.value);
     EXPECT_EQ(metrics.metadata().metrics().at(name1).uint64().description(),
               "An unsigned integer metric");
     EXPECT_EQ(metrics.metadata().metrics().at(name1).uint64().unit(), "bytes");
 
     EXPECT_EQ(metrics.metadata().metrics().at(name2).int64().kind(),
-              abacus::kind::GAUGE);
+              abacus::gauge.value);
     EXPECT_EQ(metrics.metadata().metrics().at(name2).int64().description(),
               "A signed integer metric");
     EXPECT_EQ(metrics.metadata().metrics().at(name2).int64().unit(), "USD");
 
     EXPECT_EQ(metrics.metadata().metrics().at(name3).float64().kind(),
-              abacus::kind::GAUGE);
+              abacus::gauge.value);
     EXPECT_EQ(metrics.metadata().metrics().at(name3).float64().description(),
               "A floating point metric");
     EXPECT_EQ(metrics.metadata().metrics().at(name3).float64().unit(), "ms");
 
     EXPECT_EQ(metrics.metadata().metrics().at(name4).boolean().kind(),
-              abacus::kind::CONSTANT);
+              abacus::constant.value);
     EXPECT_EQ(metrics.metadata().metrics().at(name4).boolean().description(),
               "A constant boolean metric");
     EXPECT_EQ(metrics.metadata().metrics().at(name4).boolean().unit(),
               ""); // empty unit
 
     EXPECT_EQ(metrics.metadata().metrics().at(name5).float64().kind(),
-              abacus::kind::CONSTANT);
+              abacus::constant.value);
     EXPECT_EQ(metrics.metadata().metrics().at(name5).float64().description(),
               "A constant floating point metric");
     EXPECT_EQ(metrics.metadata().metrics().at(name5).float64().unit(), "ms");
@@ -192,10 +198,12 @@ TEST(test_metrics, value_and_metadata_bytes)
 
     std::map<abacus::name, abacus::type> infos = {
         {abacus::name{name0},
-         abacus::uint64{abacus::kind::COUNTER, "An unsigned integer metric",
+         abacus::uint64{abacus::counter,
+                        abacus::description{"An unsigned integer metric"},
                         abacus::optional, abacus::unit{"bytes"}}},
         {abacus::name{name1},
-         abacus::int64{abacus::kind::GAUGE, "A signed integer metric",
+         abacus::int64{abacus::gauge,
+                       abacus::description{"A signed integer metric"},
                        abacus::optional, abacus::unit{"USD"}}}};
 
     abacus::metrics metrics{infos};
@@ -219,10 +227,12 @@ TEST(test_metrics, reset_counters)
 
     std::map<abacus::name, abacus::type> infos = {
         {abacus::name{name0},
-         abacus::uint64{abacus::kind::COUNTER, "An unsigned integer metric",
+         abacus::uint64{abacus::counter,
+                        abacus::description{"An unsigned integer metric"},
                         abacus::optional, abacus::unit{"bytes"}}},
         {abacus::name{name1},
-         abacus::int64{abacus::kind::GAUGE, "A signed integer metric",
+         abacus::int64{abacus::gauge,
+                       abacus::description{"A signed integer metric"},
                        abacus::optional, abacus::unit{"USD"}}}};
 
     abacus::metrics metrics{infos};
@@ -240,7 +250,8 @@ TEST(test_metrics, reset_counters)
     EXPECT_EQ(uint_metric.value(), 4U);
     EXPECT_EQ(int_metric.value(), -4);
 
-    metrics.reset_metrics();
+    uint_metric.reset();
+    int_metric.reset();
 
     EXPECT_FALSE(uint_metric.has_value());
     EXPECT_FALSE(int_metric.has_value());
@@ -277,27 +288,9 @@ static const std::vector<uint8_t> expected_value_data = {
     0xd6, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x01, 0x00,
     0x00, 0x00, 0x00, 0x00, 0xc0, 0x61, 0x40, 0x01, 0x01,
 };
-// namespace google::protobuf::internal
-// {
-// // Note: This method must be named exactly MapTestForceDeterministic to be
-// able
-// // to call the SetDefaultSerializationDeterministic method as a friend
-// function. void MapTestForceDeterministic()
-// {
-//     // This function is used to force deterministic serialization for the
-//     // map. This is used to make the test more stable and we can compare
-//     // the serialized metadata.
-//     io::CodedOutputStream::SetDefaultSerializationDeterministic();
-// }
-// }
 
 TEST(test_metrics, protocol_version)
 {
-    // Force deterministic serialization
-    // google::protobuf::internal::MapTestForceDeterministic();
-    // ASSERT_TRUE(google::protobuf::io::CodedOutputStream::
-    //                 IsDefaultSerializationDeterministic());
-
     SCOPED_TRACE(::testing::Message()
                  << "protocol version: " << abacus::protocol_version());
     SCOPED_TRACE(
@@ -305,16 +298,19 @@ TEST(test_metrics, protocol_version)
         << "If this test fails, you need to update the protocol version");
     std::map<abacus::name, abacus::type> infos = {
         {abacus::name{"metric0"},
-         abacus::uint64{abacus::kind::COUNTER, "An unsigned integer metric",
+         abacus::uint64{abacus::counter,
+                        abacus::description{"An unsigned integer metric"},
                         abacus::required, abacus::unit{"bytes"}}},
         {abacus::name{"metric1"},
-         abacus::int64{abacus::kind::GAUGE, "A signed integer metric",
+         abacus::int64{abacus::gauge,
+                       abacus::description{"A signed integer metric"},
                        abacus::required, abacus::unit{"USD"}}},
         {abacus::name{"metric2"},
-         abacus::float64{abacus::kind::GAUGE, "A floating point metric",
+         abacus::float64{abacus::gauge,
+                         abacus::description{"A floating point metric"},
                          abacus::required, abacus::unit{"ms"}}},
         {abacus::name{"metric3"},
-         abacus::boolean{abacus::kind::GAUGE, "A boolean metric",
+         abacus::boolean{abacus::gauge, abacus::description{"A boolean metric"},
                          abacus::required}}};
 
     abacus::metrics metrics(infos);

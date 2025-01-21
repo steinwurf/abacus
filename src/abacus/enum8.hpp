@@ -12,6 +12,7 @@
 #include <string>
 
 #include "availability.hpp"
+#include "description.hpp"
 #include "optional_metric.hpp"
 #include "required_metric.hpp"
 #include "unit.hpp"
@@ -43,7 +44,7 @@ struct enum8
     };
 
     /// The metric description
-    std::string description;
+    abacus::description description;
 
     /// The enumeration values
     std::map<uint32_t, value> values;

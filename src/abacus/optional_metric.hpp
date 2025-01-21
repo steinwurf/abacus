@@ -97,6 +97,13 @@ struct optional_metric
         return *this;
     }
 
+    /// Reset the metric. This will cause the metric to not have a value
+    auto reset() -> void
+    {
+        assert(is_initialized());
+        m_memory[0] = 0;
+    }
+
 public:
     /// Arithmetic operators
 

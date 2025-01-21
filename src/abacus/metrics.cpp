@@ -86,8 +86,8 @@ metrics::metrics(const std::map<name, type>& info)
             m_value_bytes += detail::size_of_type<decltype(m)>();
             metric.set_optional(is_optional(m->availability));
 
-            metric.mutable_uint64()->set_description(m->description);
-            metric.mutable_uint64()->set_kind(m->kind);
+            metric.mutable_uint64()->set_description(m->description.value);
+            metric.mutable_uint64()->set_kind(to_protobuf(m->kind));
             if (!m->unit.empty())
             {
                 metric.mutable_uint64()->set_unit(m->unit.value);
@@ -107,8 +107,8 @@ metrics::metrics(const std::map<name, type>& info)
             m_value_bytes += detail::size_of_type<decltype(m)>();
             metric.set_optional(is_optional(m->availability));
 
-            metric.mutable_int64()->set_description(m->description);
-            metric.mutable_int64()->set_kind(m->kind);
+            metric.mutable_int64()->set_description(m->description.value);
+            metric.mutable_int64()->set_kind(to_protobuf(m->kind));
             if (!m->unit.empty())
             {
                 metric.mutable_int64()->set_unit(m->unit.value);
@@ -128,8 +128,8 @@ metrics::metrics(const std::map<name, type>& info)
             m_value_bytes += detail::size_of_type<decltype(m)>();
             metric.set_optional(is_optional(m->availability));
 
-            metric.mutable_uint32()->set_description(m->description);
-            metric.mutable_uint32()->set_kind(m->kind);
+            metric.mutable_uint32()->set_description(m->description.value);
+            metric.mutable_uint32()->set_kind(to_protobuf(m->kind));
             if (!m->unit.empty())
             {
                 metric.mutable_uint32()->set_unit(m->unit.value);
@@ -149,8 +149,8 @@ metrics::metrics(const std::map<name, type>& info)
             m_value_bytes += detail::size_of_type<decltype(m)>();
             metric.set_optional(is_optional(m->availability));
 
-            metric.mutable_int32()->set_description(m->description);
-            metric.mutable_int32()->set_kind(m->kind);
+            metric.mutable_int32()->set_description(m->description.value);
+            metric.mutable_int32()->set_kind(to_protobuf(m->kind));
             if (!m->unit.empty())
             {
                 metric.mutable_int32()->set_unit(m->unit.value);
@@ -170,8 +170,8 @@ metrics::metrics(const std::map<name, type>& info)
             m_value_bytes += detail::size_of_type<decltype(m)>();
             metric.set_optional(is_optional(m->availability));
 
-            metric.mutable_float64()->set_description(m->description);
-            metric.mutable_float64()->set_kind(m->kind);
+            metric.mutable_float64()->set_description(m->description.value);
+            metric.mutable_float64()->set_kind(to_protobuf(m->kind));
             if (!m->unit.empty())
             {
                 metric.mutable_float64()->set_unit(m->unit.value);
@@ -191,8 +191,8 @@ metrics::metrics(const std::map<name, type>& info)
             m_value_bytes += detail::size_of_type<decltype(m)>();
             metric.set_optional(is_optional(m->availability));
 
-            metric.mutable_float32()->set_description(m->description);
-            metric.mutable_float32()->set_kind(m->kind);
+            metric.mutable_float32()->set_description(m->description.value);
+            metric.mutable_float32()->set_kind(to_protobuf(m->kind));
             if (!m->unit.empty())
             {
                 metric.mutable_float32()->set_unit(m->unit.value);
@@ -212,8 +212,8 @@ metrics::metrics(const std::map<name, type>& info)
             m_value_bytes += detail::size_of_type<decltype(m)>();
             metric.set_optional(is_optional(m->availability));
 
-            metric.mutable_boolean()->set_description(m->description);
-            metric.mutable_boolean()->set_kind(m->kind);
+            metric.mutable_boolean()->set_description(m->description.value);
+            metric.mutable_boolean()->set_kind(to_protobuf(m->kind));
         }
         else if (auto* m = std::get_if<enum8>(&value))
         {
@@ -221,7 +221,7 @@ metrics::metrics(const std::map<name, type>& info)
             m_value_bytes += detail::size_of_type<decltype(m)>();
             metric.set_optional(is_optional(m->availability));
 
-            metric.mutable_enum8()->set_description(m->description);
+            metric.mutable_enum8()->set_description(m->description.value);
             for (auto [key, value] : m->values)
             {
                 auto enum_value = protobuf::EnumValue();
@@ -454,13 +454,5 @@ auto metrics::is_initialized() const -> bool
     }
     return true;
 }
-
-void metrics::reset_metrics()
-{
-    // Reset the value data
-    std::memset(m_data.data() + m_metadata_bytes + sizeof(uint32_t), 0,
-                m_value_bytes - sizeof(uint32_t));
-}
-
 }
 }

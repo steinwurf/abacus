@@ -6,6 +6,7 @@
 #pragma once
 
 #include "availability.hpp"
+#include "description.hpp"
 #include "kind.hpp"
 #include "max.hpp"
 #include "min.hpp"
@@ -33,7 +34,7 @@ struct int64
     abacus::kind kind;
 
     /// The metric description
-    std::string description;
+    abacus::description description;
 
     /// The availability of the metric
     abacus::availability availability;

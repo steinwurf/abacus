@@ -11,6 +11,7 @@
 #include <string>
 
 #include "availability.hpp"
+#include "description.hpp"
 #include "kind.hpp"
 #include "optional_metric.hpp"
 #include "required_metric.hpp"
@@ -34,7 +35,7 @@ struct boolean
     abacus::kind kind;
 
     /// The description of the metric
-    std::string description;
+    abacus::description description;
 
     /// The availability of the metric
     abacus::availability availability;

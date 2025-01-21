@@ -7,20 +7,26 @@
 std::map<abacus::name, abacus::type> create_metric_infos()
 {
     return {{abacus::name{"0"},
-             abacus::boolean{abacus::kind::GAUGE, "", abacus::required}},
+             abacus::boolean{abacus::gauge, abacus::description{""},
+                             abacus::required}},
             {abacus::name{"1"},
-             abacus::uint64{abacus::kind::GAUGE, "", abacus::required}},
+             abacus::uint64{abacus::gauge, abacus::description{""},
+                            abacus::required}},
             {abacus::name{"2"},
-             abacus::int64{abacus::kind::GAUGE, "", abacus::required}},
+             abacus::int64{abacus::gauge, abacus::description{""},
+                           abacus::required}},
             {abacus::name{"3"},
-             abacus::float64{abacus::kind::GAUGE, "", abacus::required}},
+             abacus::float64{abacus::gauge, abacus::description{""},
+                             abacus::required}},
             {abacus::name{"4"},
-             abacus::boolean{abacus::kind::GAUGE, "", abacus::required}},
+             abacus::boolean{abacus::gauge, abacus::description{""},
+                             abacus::required}},
             {abacus::name{"5"},
-             abacus::float64{abacus::kind::GAUGE, "", abacus::required}},
+             abacus::float64{abacus::gauge, abacus::description{""},
+                             abacus::required}},
             {abacus::name{"6"},
              abacus::enum8{
-                 "",
+                 abacus::description{""},
                  {{0, {"", ""}}, {1, {"", ""}}, {2, {"", ""}}, {3, {"", ""}}},
                  abacus::required}}};
 }

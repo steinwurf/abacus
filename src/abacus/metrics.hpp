@@ -89,10 +89,6 @@ public:
     /// @return true if all metrics have been initialized
     auto is_initialized() const -> bool;
 
-    /// Reset all metrics
-    /// This will set all metrics has_value() to false.
-    void reset_metrics();
-
 private:
     /// No copy
     metrics(metrics&) = delete;
