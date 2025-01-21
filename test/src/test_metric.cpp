@@ -8,11 +8,12 @@
 #include <cstring>
 #include <gtest/gtest.h>
 
-#include <abacus/type.hpp>
+#include <abacus/info.hpp>
 
 TEST(test_metric, constructor)
 {
-    uint8_t data[9] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    uint8_t data[9];
+    std::memset(data, 0, sizeof(data));
 
     abacus::uint64::optional uint_metric(data);
 
@@ -25,7 +26,8 @@ TEST(test_metric, constructor)
 
 TEST(test_metric, float_assignment)
 {
-    uint8_t data[9] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    uint8_t data[9];
+    std::memset(data, 0, sizeof(data));
 
     abacus::float64::optional double_metric(data);
     EXPECT_TRUE(double_metric.is_initialized());

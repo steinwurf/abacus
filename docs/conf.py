@@ -33,7 +33,7 @@ wurfapi = {
         "../src/abacus/metrics.hpp",
         "../src/abacus/min.hpp",
         "../src/abacus/to_json.hpp",
-        "../src/abacus/type.hpp",
+        "../src/abacus/info.hpp",
         "../src/abacus/uint32.hpp",
         "../src/abacus/uint64.hpp",
         "../src/abacus/unit.hpp",

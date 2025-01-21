@@ -27,7 +27,7 @@ TEST(test_to_json, to_json_minimal)
     std::string name2 = "metric2";
     std::string name3 = "metric3";
 
-    std::map<abacus::name, abacus::type> infos = {
+    std::map<abacus::name, abacus::info> infos = {
         {abacus::name{name0},
          abacus::uint64{
              abacus::counter, abacus::description{"An unsigned integer metric"},
@@ -148,7 +148,7 @@ TEST(test_to_json, to_json)
     std::string name2 = "metric2";
     std::string name3 = "metric3";
 
-    std::map<abacus::name, abacus::type> infos = {
+    std::map<abacus::name, abacus::info> infos = {
         {abacus::name{name0},
          abacus::uint64{
              abacus::counter, abacus::description{"An unsigned integer metric"},

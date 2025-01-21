@@ -7,7 +7,7 @@
 #include <cstring>
 #include <gtest/gtest.h>
 
-#include <abacus/type.hpp>
+#include <abacus/info.hpp>
 
 template <typename T>
 void integer_test()

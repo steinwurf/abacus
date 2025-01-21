@@ -8,8 +8,8 @@
 #include "detail/hash_function.hpp"
 #include "detail/size_of_type.hpp"
 
+#include "info.hpp"
 #include "protocol_version.hpp"
-#include "type.hpp"
 #include "version.hpp"
 
 #include "protobuf/metrics.pb.h"
@@ -60,7 +60,7 @@ metrics::metrics(metrics&& other) noexcept :
     other.m_initialized.clear();
 }
 
-metrics::metrics(const std::map<name, type>& info)
+metrics::metrics(const std::map<name, abacus::info>& info)
 {
     m_metadata = protobuf::MetricsMetadata();
     m_metadata.set_protocol_version(protocol_version());

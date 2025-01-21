@@ -4,7 +4,7 @@
 #include <string>
 
 // Helper function to create metric definitions
-std::map<abacus::name, abacus::type> create_metric_infos()
+std::map<abacus::name, abacus::info> create_metric_infos()
 {
     return {{abacus::name{"0"},
              abacus::boolean{abacus::gauge, abacus::description{""},

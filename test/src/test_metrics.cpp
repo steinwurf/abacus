@@ -19,7 +19,7 @@ TEST(test_metrics, empty)
 
     EXPECT_EQ(0U, metrics.metadata().metrics().size());
 
-    std::map<abacus::name, abacus::type> infos;
+    std::map<abacus::name, abacus::info> infos;
     abacus::metrics metrics2(infos);
 
     EXPECT_EQ(0U, metrics2.metadata().metrics().size());
@@ -35,7 +35,7 @@ TEST(test_metrics, api)
     std::string name5 = "metric5";
     std::string name6 = "metric6";
 
-    std::map<abacus::name, abacus::type> infos = {
+    std::map<abacus::name, abacus::info> infos = {
         {abacus::name{name0},
          abacus::boolean{abacus::counter,
                          abacus::description{"A boolean metric"},
@@ -196,7 +196,7 @@ TEST(test_metrics, value_and_metadata_bytes)
     std::string name0 = "metric0";
     std::string name1 = "metric1";
 
-    std::map<abacus::name, abacus::type> infos = {
+    std::map<abacus::name, abacus::info> infos = {
         {abacus::name{name0},
          abacus::uint64{abacus::counter,
                         abacus::description{"An unsigned integer metric"},
@@ -225,7 +225,7 @@ TEST(test_metrics, reset_counters)
     std::string name0 = "metric0";
     std::string name1 = "metric1";
 
-    std::map<abacus::name, abacus::type> infos = {
+    std::map<abacus::name, abacus::info> infos = {
         {abacus::name{name0},
          abacus::uint64{abacus::counter,
                         abacus::description{"An unsigned integer metric"},
@@ -296,7 +296,7 @@ TEST(test_metrics, protocol_version)
     SCOPED_TRACE(
         ::testing::Message()
         << "If this test fails, you need to update the protocol version");
-    std::map<abacus::name, abacus::type> infos = {
+    std::map<abacus::name, abacus::info> infos = {
         {abacus::name{"metric0"},
          abacus::uint64{abacus::counter,
                         abacus::description{"An unsigned integer metric"},

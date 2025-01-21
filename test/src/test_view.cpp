@@ -20,7 +20,7 @@ TEST(test_view, api)
     std::string name2 = "metric2";
     std::string name3 = "metric3";
 
-    std::map<abacus::name, abacus::type> infos = {
+    std::map<abacus::name, abacus::info> infos = {
         {abacus::name{name0},
          abacus::uint64{abacus::counter,
                         abacus::description{"An unsigned integer metric"},

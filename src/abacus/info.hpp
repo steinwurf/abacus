@@ -19,8 +19,8 @@ namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-/// A variant type for all the supported metric types
-using type = std::variant<uint64, int64, uint32, int32, float64, float32,
+/// A variant for all the supported metrics
+using info = std::variant<uint64, int64, uint32, int32, float64, float32,
                           boolean, enum8>;
 }
 }

@@ -10,8 +10,8 @@
 #include <string>
 #include <vector>
 
+#include "info.hpp"
 #include "name.hpp"
-#include "type.hpp"
 #include "version.hpp"
 
 #include "protobuf/metrics.pb.h"
@@ -35,7 +35,7 @@ public:
 
     /// Constructor
     /// @param info The info of the metrics to create.
-    metrics(const std::map<name, type>& info);
+    metrics(const std::map<name, abacus::info>& info);
 
     /// Destructor
     ~metrics();

@@ -19,7 +19,7 @@ int main()
     std::string name2 = "days_until_maintenance";
     std::string name3 = "registered";
 
-    std::map<abacus::name, abacus::type> infos = {
+    std::map<abacus::name, abacus::info> infos = {
         {abacus::name{name0},
          abacus::float64{
              abacus::constant,
