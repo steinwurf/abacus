@@ -110,7 +110,13 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
   add_test(abacus_test abacus_test)
 
   # Google Benchmark dependency
-  add_subdirectory("${STEINWURF_RESOLVE}/gbenchmark-source")
+  set(BENCHMARK_ENABLE_TESTING
+    OFF
+    CACHE INTERNAL "Disable gbenchmark test" FORCE)
+
+  if(NOT TARGET benchmark)
+    add_subdirectory("${STEINWURF_RESOLVE}/gbenchmark-source")
+  endif()
 
   # Build benchmark executable
   file(GLOB_RECURSE abacus_benchmark_sources ./benchmark/main.cpp)

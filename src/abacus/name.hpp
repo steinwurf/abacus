@@ -23,12 +23,6 @@ struct name
     {
     }
 
-    /// @return True if the name is empty otherwise false
-    bool empty() const
-    {
-        return value.empty();
-    }
-
     /// The name string
     std::string value;
 };

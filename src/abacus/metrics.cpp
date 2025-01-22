@@ -272,9 +272,7 @@ metrics::metrics(const std::map<name, abacus::info>& info)
 }
 
 template <class Metric>
-[[nodiscard]] auto
-metrics::initialize_optional(const std::string& name,
-                             std::optional<typename Metric::type> value) ->
+[[nodiscard]] auto metrics::initialize_optional(const std::string& name) ->
     typename Metric::optional
 {
     assert(m_initialized.find(name) != m_initialized.end());
@@ -290,44 +288,26 @@ metrics::initialize_optional(const std::string& name,
 
     auto offset = proto_metric.offset();
 
-    if (value.has_value())
-    {
-        m_initial_values[name] = value.value();
-        return typename Metric::optional(
-            m_data.data() + m_metadata_bytes + offset, value.value());
-    }
-    else
-    {
-        return typename Metric::optional(m_data.data() + m_metadata_bytes +
-                                         offset);
-    }
+    return typename Metric::optional(m_data.data() + m_metadata_bytes + offset);
 }
 
 // Explicit instantiations for the expected types
-template auto metrics::initialize_optional<uint64>(
-    const std::string& name,
-    std::optional<uint64::type> value) -> uint64::optional;
-template auto metrics::initialize_optional<int64>(
-    const std::string& name,
-    std::optional<int64::type> value) -> int64::optional;
-template auto metrics::initialize_optional<uint32>(
-    const std::string& name,
-    std::optional<uint32::type> value) -> uint32::optional;
-template auto metrics::initialize_optional<int32>(
-    const std::string& name,
-    std::optional<int32::type> value) -> int32::optional;
-template auto metrics::initialize_optional<float64>(
-    const std::string& name,
-    std::optional<float64::type> value) -> float64::optional;
-template auto metrics::initialize_optional<float32>(
-    const std::string& name,
-    std::optional<float32::type> value) -> float32::optional;
-template auto metrics::initialize_optional<boolean>(
-    const std::string& name,
-    std::optional<boolean::type> value) -> boolean::optional;
-template auto metrics::initialize_optional<enum8>(
-    const std::string& name,
-    std::optional<enum8::type> value) -> enum8::optional;
+template auto metrics::initialize_optional<uint64>(const std::string& name)
+    -> uint64::optional;
+template auto
+metrics::initialize_optional<int64>(const std::string& name) -> int64::optional;
+template auto metrics::initialize_optional<uint32>(const std::string& name)
+    -> uint32::optional;
+template auto
+metrics::initialize_optional<int32>(const std::string& name) -> int32::optional;
+template auto metrics::initialize_optional<float64>(const std::string& name)
+    -> float64::optional;
+template auto metrics::initialize_optional<float32>(const std::string& name)
+    -> float32::optional;
+template auto metrics::initialize_optional<boolean>(const std::string& name)
+    -> boolean::optional;
+template auto
+metrics::initialize_optional<enum8>(const std::string& name) -> enum8::optional;
 
 template <class Metric>
 [[nodiscard]] auto metrics::initialize_required(const std::string& name,
@@ -393,7 +373,6 @@ void metrics::initialize_constant(const std::string& name,
     auto kind = get_kind(proto_metric);
     assert(kind.has_value() && kind.value() == protobuf::Kind::CONSTANT);
 
-    m_initial_values[name] = value;
     typename Metric::required(m_data.data() + m_metadata_bytes + offset, value);
 }
 
@@ -463,47 +442,77 @@ auto metrics::is_initialized() const -> bool
 }
 auto metrics::reset() -> void
 {
-    for (auto [name, value] : m_initial_values)
+    for (const auto& [name, metric] : m_metadata.metrics())
     {
-        const protobuf::Metric& metric = m_metadata.metrics().at(name);
-        auto kind = get_kind(metric);
-        if (!kind.has_value() || kind.value() == protobuf::Kind::CONSTANT)
+        if (!is_initialized(name))
         {
+            // Skip metrics that have not been initialized
+            continue;
+        }
+
+        if (get_kind(metric) == protobuf::Kind::CONSTANT)
+        {
+            // Skip constant metrics
             continue;
         }
 
         auto offset = metric.offset();
-        if (metric.has_boolean())
+        if (metric.optional())
         {
-            auto v = std::any_cast<boolean::type>(value);
+            // Set the has value byte to 0
+            m_data[m_metadata_bytes + offset] = 0;
         }
-        else if (metric.has_enum8())
+        else
         {
-            auto v = std::any_cast<enum8::type>(value);
-        }
-        else if (metric.has_float32())
-        {
-            auto v = std::any_cast<float32::type>(value);
-        }
-        else if (metric.has_float64())
-        {
-            auto v = std::any_cast<float64::type>(value);
-        }
-        else if (metric.has_int32())
-        {
-            auto v = std::any_cast<int32::type>(value);
-        }
-        else if (metric.has_int64())
-        {
-            auto v = std::any_cast<int64::type>(value);
-        }
-        else if (metric.has_uint32())
-        {
-            auto v = std::any_cast<uint32::type>(value);
-        }
-        else if (metric.has_uint64())
-        {
-            auto v = std::any_cast<uint64::type>(value);
+            // Set the value to what it was initialized to
+            if (metric.has_uint64())
+            {
+                uint64::set_value(
+                    m_data.data() + m_metadata_bytes + offset,
+                    std::any_cast<uint64::type>(m_initial_values.at(name)));
+            }
+            else if (metric.has_int64())
+            {
+                int64::set_value(
+                    m_data.data() + m_metadata_bytes + offset,
+                    std::any_cast<int64::type>(m_initial_values.at(name)));
+            }
+            else if (metric.has_uint32())
+            {
+                uint32::set_value(
+                    m_data.data() + m_metadata_bytes + offset,
+                    std::any_cast<uint32::type>(m_initial_values.at(name)));
+            }
+            else if (metric.has_int32())
+            {
+                int32::set_value(
+                    m_data.data() + m_metadata_bytes + offset,
+                    std::any_cast<int32::type>(m_initial_values.at(name)));
+            }
+            else if (metric.has_float64())
+            {
+                float64::set_value(
+                    m_data.data() + m_metadata_bytes + offset,
+                    std::any_cast<float64::type>(m_initial_values.at(name)));
+            }
+            else if (metric.has_float32())
+            {
+                float32::set_value(
+                    m_data.data() + m_metadata_bytes + offset,
+                    std::any_cast<float32::type>(m_initial_values.at(name)));
+            }
+            else if (metric.has_boolean())
+            {
+                boolean::set_value(
+                    m_data.data() + m_metadata_bytes + offset,
+                    std::any_cast<boolean::type>(m_initial_values.at(name)));
+            }
+            else if (metric.has_enum8())
+            {
+                enum8::set_value(
+                    m_data.data() + m_metadata_bytes + offset,
+                    std::any_cast<enum8::type>(m_initial_values.at(name)));
+            }
         }
     }
 }

@@ -1,11 +1,11 @@
 
 .. _metric_specializations:
 
-============
-Metric Types
-============
+===========
+Metric Info
+===========
 
-Overview of the metric types public API.
+Overview of the metric info types.
 
 .. toctree::
    :maxdepth: 2

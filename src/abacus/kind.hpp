@@ -12,26 +12,40 @@ namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
+/// Tag type representing a gauge kind.
 struct gauge_
 {
     static constexpr protobuf::Kind value = protobuf::Kind::GAUGE;
 };
+
+/// Constant instance of the gauge_ tag type.
 static const gauge_ gauge;
 
+/// Tag type representing a counter kind.
 struct counter_
 {
     static constexpr protobuf::Kind value = protobuf::Kind::COUNTER;
 };
+
+/// Constant instance of the counter_ tag type.
 static const counter_ counter;
 
+/// Tag type representing a constant kind.
 struct constant_
 {
     static constexpr protobuf::Kind value = protobuf::Kind::CONSTANT;
 };
+
+/// Constant instance of the constant_ tag type.
 static const constant_ constant;
 
+/// Variant type that can hold either a gauge_, counter_, or constant_.
 using kind = std::variant<gauge_, counter_, constant_>;
 
+/// Converts the given kind to its corresponding protobuf::Kind value.
+/// @param k The kind to convert.
+/// @return The corresponding protobuf::Kind value.
+/// @throws std::runtime_error if the kind is unknown.
 static inline auto to_protobuf(const kind& k) -> protobuf::Kind
 {
     if (std::holds_alternative<gauge_>(k))

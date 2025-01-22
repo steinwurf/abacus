@@ -62,9 +62,10 @@ TEST(test_to_json, to_json_minimal)
     (void)m3;
 
     abacus::view view;
-    view.set_meta_data(metrics.metadata_data(), metrics.metadata_bytes());
-    auto success =
-        view.set_value_data(metrics.value_data(), metrics.value_bytes());
+    bool success =
+        view.set_meta_data(metrics.metadata_data(), metrics.metadata_bytes());
+    ASSERT_TRUE(success);
+    success = view.set_value_data(metrics.value_data(), metrics.value_bytes());
     ASSERT_TRUE(success);
 
     auto json_from_view_minimal = abacus::to_json(view, true);
@@ -188,9 +189,10 @@ TEST(test_to_json, to_json)
     (void)m1;
 
     abacus::view view;
-    view.set_meta_data(metrics.metadata_data(), metrics.metadata_bytes());
-    auto success =
-        view.set_value_data(metrics.value_data(), metrics.value_bytes());
+    bool success =
+        view.set_meta_data(metrics.metadata_data(), metrics.metadata_bytes());
+    ASSERT_TRUE(success);
+    success = view.set_value_data(metrics.value_data(), metrics.value_bytes());
     ASSERT_TRUE(success);
 
     auto json_from_view = abacus::to_json(view);

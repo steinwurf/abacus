@@ -70,9 +70,7 @@ public:
     /// @param value Optional initial value of the metric
     /// @return The metric object
     template <class Metric>
-    [[nodiscard]] auto initialize_optional(
-        const std::string& name,
-        std::optional<typename Metric::type> value = std::nullopt) ->
+    [[nodiscard]] auto initialize_optional(const std::string& name) ->
         typename Metric::optional;
 
     /// Initialize a constant metric

@@ -371,3 +371,9 @@ TEST(test_metrics, protocol_version)
                                  metrics.value_data() + metrics.value_bytes()));
     }
 }
+
+TEST(test_metrics, reset)
+{
+    ///@todo add test
+    ASSERT_TRUE(false);
+}

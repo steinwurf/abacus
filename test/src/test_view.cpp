@@ -60,7 +60,8 @@ TEST(test_view, api)
 
     abacus::view view;
 
-    view.set_meta_data(meta_data.data(), meta_data.size());
+    bool success = view.set_meta_data(meta_data.data(), meta_data.size());
+    ASSERT_TRUE(success);
     EXPECT_EQ(view.metadata().protocol_version(), abacus::protocol_version());
 
     EXPECT_EQ(metrics.metadata().metrics().size(),
@@ -69,7 +70,7 @@ TEST(test_view, api)
     EXPECT_TRUE(google::protobuf::util::MessageDifferencer::Equals(
         metrics.metadata(), view.metadata()));
 
-    auto success = view.set_value_data(value_data.data(), value_data.size());
+    success = view.set_value_data(value_data.data(), value_data.size());
     ASSERT_TRUE(success);
 
     std::optional<uint64_t> view_value0 = view.value<abacus::uint64>(name0);

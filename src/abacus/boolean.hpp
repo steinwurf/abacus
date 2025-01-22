@@ -12,9 +12,9 @@
 
 #include "availability.hpp"
 #include "description.hpp"
+#include "detail/optional_metric.hpp"
+#include "detail/required_metric.hpp"
 #include "kind.hpp"
-#include "optional_metric.hpp"
-#include "required_metric.hpp"
 
 namespace abacus
 {
@@ -27,9 +27,9 @@ struct boolean
     using type = bool;
 
     /// The optional metric type
-    using optional = optional_metric<boolean>;
+    using optional = detail::optional_metric<boolean>;
     /// The required metric type
-    using required = required_metric<boolean>;
+    using required = detail::required_metric<boolean>;
 
     /// Set the value of the metric
     /// @param memory The memory to use for the metric, note that the memory

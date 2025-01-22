@@ -7,11 +7,11 @@
 
 #include "availability.hpp"
 #include "description.hpp"
+#include "detail/optional_metric.hpp"
+#include "detail/required_metric.hpp"
 #include "kind.hpp"
 #include "max.hpp"
 #include "min.hpp"
-#include "optional_metric.hpp"
-#include "required_metric.hpp"
 #include "unit.hpp"
 
 namespace abacus
@@ -25,10 +25,10 @@ struct int64
     using type = int64_t;
 
     /// The optional metric type
-    using optional = optional_metric<int64>;
+    using optional = detail::optional_metric<int64>;
 
     /// The required metric type
-    using required = required_metric<int64>;
+    using required = detail::required_metric<int64>;
 
     /// Set the value of the metric
     /// @param memory The memory to use for the metric, note that the memory

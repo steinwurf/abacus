@@ -13,8 +13,8 @@
 
 #include "availability.hpp"
 #include "description.hpp"
-#include "optional_metric.hpp"
-#include "required_metric.hpp"
+#include "detail/optional_metric.hpp"
+#include "detail/required_metric.hpp"
 #include "unit.hpp"
 
 namespace abacus
@@ -28,10 +28,10 @@ struct enum8
     using type = uint8_t;
 
     /// The optional metric type
-    using optional = optional_metric<enum8>;
+    using optional = detail::optional_metric<enum8>;
 
     /// The required metric type
-    using required = required_metric<enum8>;
+    using required = detail::required_metric<enum8>;
 
     /// Set the value of the metric
     /// @param memory The memory to use for the metric, note that the memory
@@ -67,6 +67,22 @@ struct enum8
         assert(memory[0] == 1);
         return memory[1];
     }
+
+    /// Get the enumeration value of the metric
+    /// @param memory The memory to use for the metric, note that the memory
+    ///        must be at least sizeof(type) + 1 bytes long.
+    /// @return The enumeration value of the metric
+    template <typename T>
+    static inline auto value(const uint8_t* memory) -> T
+    {
+        static_assert(std::is_enum_v<T>, "T must be an enum");
+        static_assert(sizeof(std::underlying_type_t<T>) == sizeof(type),
+                      "The underlying type of the enum must match the type");
+        assert(memory != nullptr);
+        assert(memory[0] == 1);
+        return (T)memory[1];
+    }
+
     /// The enumeration value type
     struct value_info
     {

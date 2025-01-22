@@ -11,6 +11,7 @@
 #include "float64.hpp"
 #include "int32.hpp"
 #include "int64.hpp"
+#include "protocol_version.hpp"
 #include "uint32.hpp"
 #include "uint64.hpp"
 
@@ -26,8 +27,8 @@ namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-void view::set_meta_data(const uint8_t* metadata_data,
-                         std::size_t metadata_bytes)
+[[nodiscard]] auto view::set_meta_data(const uint8_t* metadata_data,
+                                       std::size_t metadata_bytes) -> bool
 {
     assert(metadata_data != nullptr);
     m_metadata_data = metadata_data;
@@ -35,7 +36,18 @@ void view::set_meta_data(const uint8_t* metadata_data,
     m_value_data = nullptr;
     m_value_bytes = 0;
 
-    m_metadata.ParseFromArray(metadata_data, metadata_bytes);
+    auto result = m_metadata.ParseFromArray(metadata_data, metadata_bytes);
+    if (!result)
+    {
+        return false;
+    }
+
+    if (m_metadata.protocol_version() != protocol_version())
+    {
+        return false;
+    }
+
+    return true;
 }
 
 [[nodiscard]] auto view::set_value_data(const uint8_t* value_data,

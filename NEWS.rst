@@ -6,7 +6,13 @@ every change, see the Git log.
 
 Latest
 ------
-* tbd
+* Minor: Added benchmark.
+* Major: Changed the metadata to be specified using protobuf 3.
+* Major: Changed callbacks to now use std::function rather than the custom
+  delegate previously used.
+* Major: Changed API of how metrics are specified. All attributes are now
+  strongly typed, and specified using a std::map of strings to abacus::info.
+* Minor: Added support for enums.
 
 6.0.1
 -----

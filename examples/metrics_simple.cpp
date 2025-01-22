@@ -71,23 +71,23 @@ int main()
     registered = true;
 
     // The car has been driven for a while, and now maintenance is overdue.
-    days_until_maintenance = -1;
+    days_until_maintenance = -10;
 
-    /// We want to export the metrics memory, so we need a new storage
+    // We want to export the metrics memory, so we need a new storage
     std::vector<uint8_t> meta_data(car.metadata_bytes());
     std::vector<uint8_t> value_data(car.value_bytes());
 
-    /// Copy the memory into the new storage
+    // Copy the memory into the new storage
     std::memcpy(meta_data.data(), car.metadata_data(), car.metadata_bytes());
     std::memcpy(value_data.data(), car.value_data(), car.value_bytes());
 
     abacus::view car_view;
 
-    car_view.set_meta_data(meta_data.data(), meta_data.size());
-    bool success =
-        car_view.set_value_data(value_data.data(), value_data.size());
-    (void)success;
+    auto success = car_view.set_meta_data(meta_data.data(), meta_data.size());
     assert(success);
+    success = car_view.set_value_data(value_data.data(), value_data.size());
+    assert(success);
+    (void)success;
 
     std::cout << abacus::to_json(car_view) << std::endl;
 
