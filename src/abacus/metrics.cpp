@@ -292,6 +292,7 @@ metrics::initialize_optional(const std::string& name,
 
     if (value.has_value())
     {
+        m_initial_values[name] = value.value();
         return typename Metric::optional(
             m_data.data() + m_metadata_bytes + offset, value.value());
     }
@@ -346,6 +347,7 @@ template <class Metric>
 
     auto offset = proto_metric.offset();
 
+    m_initial_values[name] = value;
     return typename Metric::required(m_data.data() + m_metadata_bytes + offset,
                                      value);
 }
@@ -390,6 +392,8 @@ void metrics::initialize_constant(const std::string& name,
     auto offset = proto_metric.offset();
     auto kind = get_kind(proto_metric);
     assert(kind.has_value() && kind.value() == protobuf::Kind::CONSTANT);
+
+    m_initial_values[name] = value;
     typename Metric::required(m_data.data() + m_metadata_bytes + offset, value);
 }
 
@@ -457,5 +461,52 @@ auto metrics::is_initialized() const -> bool
     }
     return true;
 }
+auto metrics::reset() -> void
+{
+    for (auto [name, value] : m_initial_values)
+    {
+        const protobuf::Metric& metric = m_metadata.metrics().at(name);
+        auto kind = get_kind(metric);
+        if (!kind.has_value() || kind.value() == protobuf::Kind::CONSTANT)
+        {
+            continue;
+        }
+
+        auto offset = metric.offset();
+        if (metric.has_boolean())
+        {
+            auto v = std::any_cast<boolean::type>(value);
+        }
+        else if (metric.has_enum8())
+        {
+            auto v = std::any_cast<enum8::type>(value);
+        }
+        else if (metric.has_float32())
+        {
+            auto v = std::any_cast<float32::type>(value);
+        }
+        else if (metric.has_float64())
+        {
+            auto v = std::any_cast<float64::type>(value);
+        }
+        else if (metric.has_int32())
+        {
+            auto v = std::any_cast<int32::type>(value);
+        }
+        else if (metric.has_int64())
+        {
+            auto v = std::any_cast<int64::type>(value);
+        }
+        else if (metric.has_uint32())
+        {
+            auto v = std::any_cast<uint32::type>(value);
+        }
+        else if (metric.has_uint64())
+        {
+            auto v = std::any_cast<uint64::type>(value);
+        }
+    }
+}
+
 }
 }

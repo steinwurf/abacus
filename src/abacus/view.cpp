@@ -113,19 +113,17 @@ auto view::value(const std::string& name) const
         return std::nullopt;
     }
 
-    typename Metric::type value;
-    switch (m_metadata.endianness())
+    if (m_metadata.endianness() == protobuf::Endianness::BIG)
     {
-    case protobuf::Endianness::BIG:
-        endian::big_endian::get(value, m_value_data + offset + 1);
-        break;
-    case protobuf::Endianness::LITTLE:
-        endian::little_endian::get(value, m_value_data + offset + 1);
-        break;
-    default:
-        assert(false);
+        return endian::big_endian::get<typename Metric::type>(m_value_data +
+                                                              offset + 1);
     }
-    return value;
+    else
+    {
+        assert(m_metadata.endianness() == protobuf::Endianness::LITTLE);
+        return endian::little_endian::get<typename Metric::type>(m_value_data +
+                                                                 offset + 1);
+    }
 }
 
 // Explicit instantiations for the expected types

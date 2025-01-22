@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include <any>
 #include <cassert>
 #include <map>
 #include <string>
@@ -89,6 +90,11 @@ public:
     /// @return true if all metrics have been initialized
     auto is_initialized() const -> bool;
 
+    /// Reset all metrics to their initial values
+    /// Optional values will be reset to std::nullopt unless they were set
+    /// during initialization.
+    auto reset() -> void;
+
 private:
     /// No copy
     metrics(metrics&) = delete;
@@ -114,6 +120,9 @@ private:
 
     /// A map of the metrics and whether they have been initialized
     std::map<std::string, bool> m_initialized;
+
+    /// The initial values of the metrics
+    std::map<std::string, std::any> m_initial_values;
 };
 }
 }

@@ -67,10 +67,7 @@ struct optional_metric
     auto value() const -> value_type
     {
         assert(has_value());
-
-        value_type value;
-        std::memcpy(&value, m_memory + 1, sizeof(value_type));
-        return value;
+        return Metric::value(m_memory);
     }
 
     /// Assign a new value to the metric
@@ -78,14 +75,8 @@ struct optional_metric
     auto set_value(value_type value) -> void
     {
         assert(is_initialized());
-
-        if constexpr (std::is_floating_point_v<value_type>)
-        {
-            assert(!std::isnan(value) && "Cannot assign a NaN");
-            assert(!std::isinf(value) && "Cannot assign an Inf/-Inf value");
-        }
         m_memory[0] = 1;
-        std::memcpy(m_memory + 1, &value, sizeof(value_type));
+        Metric::set_value(m_memory, value);
     }
 
     /// Assign the metric a new value
@@ -108,44 +99,28 @@ public:
     /// Arithmetic operators
 
     /// Increment the metric
-    /// @param value The value to add
+    /// @param increment The value to add
     /// @return The result of the arithmetic
     template <
         typename U = Metric,
         typename = std::enable_if_t<detail::has_arithmetic_operators<U>::value>>
-    auto operator+=(value_type value) -> optional_metric&
+    auto operator+=(value_type increment) -> optional_metric&
     {
         assert(has_value());
-        value_type new_value = this->value() + value;
-
-        if constexpr (std::is_floating_point_v<value_type>)
-        {
-            assert(!std::isnan(new_value) && "Cannot assign a NaN");
-            assert(!std::isinf(new_value) && "Cannot assign an Inf/-Inf value");
-        }
-
-        std::memcpy(m_memory + 1, &new_value, sizeof(value_type));
+        Metric::set_value(m_memory, value() + increment);
         return *this;
     }
 
     /// Decrement the metric
-    /// @param value The value to subtract
+    /// @param decrement The value to subtract
     /// @return The result of the arithmetic
     template <
         typename U = Metric,
         typename = std::enable_if_t<detail::has_arithmetic_operators<U>::value>>
-    auto operator-=(value_type value) -> optional_metric&
+    auto operator-=(value_type decrement) -> optional_metric&
     {
         assert(has_value());
-        value_type new_value = this->value() - value;
-
-        if constexpr (std::is_floating_point_v<value_type>)
-        {
-            assert(!std::isnan(new_value) && "Cannot assign a NaN");
-            assert(!std::isinf(new_value) && "Cannot assign an Inf/-Inf value");
-        }
-
-        std::memcpy(m_memory + 1, &new_value, sizeof(value_type));
+        Metric::set_value(m_memory, value() - decrement);
         return *this;
     }
 
@@ -157,8 +132,7 @@ public:
     auto operator++() -> optional_metric&
     {
         assert(has_value());
-        value_type new_value = this->value() + 1;
-        std::memcpy(m_memory + 1, &new_value, sizeof(value_type));
+        Metric::set_value(m_memory, value() + 1);
         return *this;
     }
 
@@ -170,8 +144,7 @@ public:
     auto operator--() -> optional_metric&
     {
         assert(has_value());
-        value_type new_value = this->value() - 1;
-        std::memcpy(m_memory + 1, &new_value, sizeof(value_type));
+        Metric::set_value(m_memory, value() - 1);
         return *this;
     }
 

@@ -64,7 +64,6 @@ TEST(test_info, integer)
 template <typename T>
 void floating_point_test()
 {
-    using optional = typename T::optional;
     using type = typename T::type;
 
     {

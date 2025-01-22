@@ -33,8 +33,42 @@ struct enum8
     /// The required metric type
     using required = required_metric<enum8>;
 
+    /// Set the value of the metric
+    /// @param memory The memory to use for the metric, note that the memory
+    ///        must be at least sizeof(type) + 1 bytes long.
+    /// @param value The value to set
+    template <typename T>
+    static inline auto set_value(uint8_t* memory, T value) -> void
+    {
+        static_assert(std::is_enum_v<T>, "T must be an enum");
+        static_assert(sizeof(std::underlying_type_t<T>) == sizeof(type),
+                      "The underlying type of the enum must match the type");
+        assert(memory != nullptr);
+        memory[1] = (std::underlying_type_t<T>)value;
+    }
+
+    /// Set the value of the metric
+    /// @param memory The memory to use for the metric, note that the memory
+    ///        must be at least sizeof(type) + 1 bytes long.
+    /// @param value The value to set
+    static inline auto set_value(uint8_t* memory, type value) -> void
+    {
+        assert(memory != nullptr);
+        memory[1] = value;
+    }
+
+    /// Get the value of the metric
+    /// @param memory The memory to use for the metric, note that the memory
+    ///        must be at least sizeof(type) + 1 bytes long.
+    /// @return The value of the metric
+    static inline auto value(const uint8_t* memory) -> type
+    {
+        assert(memory != nullptr);
+        assert(memory[0] == 1);
+        return memory[1];
+    }
     /// The enumeration value type
-    struct value
+    struct value_info
     {
         /// The name of the value
         std::string name;
@@ -46,8 +80,8 @@ struct enum8
     /// The metric description
     abacus::description description;
 
-    /// The enumeration values
-    std::map<uint32_t, value> values;
+    /// The enumeration value information
+    std::map<uint32_t, value_info> values;
 
     /// The availability of the metric
     abacus::availability availability;
