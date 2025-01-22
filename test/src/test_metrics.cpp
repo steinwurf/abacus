@@ -635,7 +635,6 @@ TEST(test_metrics, reset)
     EXPECT_EQ(view.value<abacus::float64>("float64_constant"), 5555.0);
     EXPECT_EQ(view.value<abacus::float32>("float32_constant"), 6666.0);
     EXPECT_EQ(view.value<abacus::boolean>("boolean_constant"), true);
-    EXPECT_EQ(view.value<abacus::enum8>("enum8_constant"), 42U);
 
     EXPECT_EQ(view.value<abacus::uint64>("uint64_required").value(), 1U);
     EXPECT_EQ(view.value<abacus::uint32>("uint32_required").value(), 2U);

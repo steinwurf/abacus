@@ -106,6 +106,7 @@ auto view::metadata() const -> const protobuf::MetricsMetadata&
 
 const protobuf::Metric& view::metric(const std::string& name) const
 {
+    assert(m_metadata.metrics().count(name) != 0);
     return m_metadata.metrics().at(name);
 }
 
