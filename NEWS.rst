@@ -13,6 +13,7 @@ Latest
 * Major: Changed API of how metrics are specified. All attributes are now
   strongly typed, and specified using a std::map of strings to abacus::info.
 * Minor: Added support for enums.
+* Minor: Added support for more metric types: int32, uint32, float32, and enum8.
 
 6.0.1
 -----

@@ -62,10 +62,10 @@ TEST(test_to_json, to_json_minimal)
     (void)m3;
 
     abacus::view view;
-    bool success =
-        view.set_meta_data(metrics.metadata_data(), metrics.metadata_bytes());
+    bool success = view.set_meta_data(metrics.metadata());
     ASSERT_TRUE(success);
-    success = view.set_value_data(metrics.value_data(), metrics.value_bytes());
+    success = view.set_value_data(
+        ((const abacus::metrics&)metrics).value_data(), metrics.value_bytes());
     ASSERT_TRUE(success);
 
     auto json_from_view_minimal = abacus::to_json(view, true);
@@ -189,10 +189,10 @@ TEST(test_to_json, to_json)
     (void)m1;
 
     abacus::view view;
-    bool success =
-        view.set_meta_data(metrics.metadata_data(), metrics.metadata_bytes());
+    bool success = view.set_meta_data(metrics.metadata());
     ASSERT_TRUE(success);
-    success = view.set_value_data(metrics.value_data(), metrics.value_bytes());
+    success = view.set_value_data(
+        ((const abacus::metrics&)metrics).value_data(), metrics.value_bytes());
     ASSERT_TRUE(success);
 
     auto json_from_view = abacus::to_json(view);
@@ -201,9 +201,9 @@ TEST(test_to_json, to_json)
     bourne::json::parse(json_from_view, error);
     EXPECT_FALSE(error);
 
-    auto json_from_data =
-        abacus::to_json(metrics.metadata_data(), metrics.metadata_bytes(),
-                        metrics.value_data(), metrics.value_bytes());
+    auto json_from_data = abacus::to_json(
+        metrics.metadata(), ((const abacus::metrics&)metrics).value_data(),
+        metrics.value_bytes());
 
     EXPECT_EQ(json_from_view, json_from_data);
     EXPECT_EQ(json_from_view, expected_json) << json_from_view;

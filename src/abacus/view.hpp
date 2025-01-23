@@ -40,6 +40,12 @@ public:
     [[nodiscard]] auto set_meta_data(const uint8_t* metadata_data,
                                      std::size_t metadata_bytes) -> bool;
 
+    /// Sets the meta data
+    /// @param metadata The meta data
+    /// @return true if the meta data was unpacked correctly otherwise false
+    [[nodiscard]]
+    auto set_meta_data(const protobuf::MetricsMetadata& metadata) -> bool;
+
     /// Sets the value data pointer
     /// @param value_data The value data pointer
     /// @param value_bytes The value data size in bytes
@@ -47,21 +53,18 @@ public:
     [[nodiscard]] auto set_value_data(const uint8_t* value_data,
                                       std::size_t value_bytes) -> bool;
 
-    /// Gets the meta data pointer
-    /// @return The meta data pointer
-    auto metadata_data() const -> const uint8_t*;
-
     /// Gets the value data pointer
     /// @return The value data pointer
     const uint8_t* value_data() const;
 
-    /// Gets the meta data size in bytes
-    /// @return The meta data size in bytes
-    std::size_t metadata_bytes() const;
-
     /// Gets the value data size in bytes
     /// @return The value data size in bytes
     std::size_t value_bytes() const;
+
+    /// Gets the metric
+    /// @param name The name of the metric
+    /// @return The metric
+    const protobuf::Metric& metric(const std::string& name) const;
 
     /// Gets the meta data
     /// @return The meta data
@@ -74,11 +77,6 @@ public:
     template <class Metric>
     auto value(const std::string& name) const
         -> std::optional<typename Metric::type>;
-
-    /// Gets the metric
-    /// @param name The name of the metric
-    /// @return The metric
-    const protobuf::Metric& metric(const std::string& name) const;
 
 private:
     /// The meta data pointer

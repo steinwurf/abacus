@@ -41,17 +41,11 @@ public:
     /// Destructor
     ~metrics();
 
-    /// @return the pointer to the value data of the metrics.
-    auto value_data() const -> const uint8_t*;
+    /// @return the const pointer to the value data of the metrics.
+    auto value_data(std::size_t offset = 0) const -> const uint8_t*;
 
     /// @return the size of the value data of the metrics.
     auto value_bytes() const -> std::size_t;
-
-    /// @return the pointer to the metadata data of the metrics.
-    auto metadata_data() const -> const uint8_t*;
-
-    /// @return the size of the metadata data of the metrics.
-    auto metadata_bytes() const -> std::size_t;
 
     /// @return the metadata of the metrics.
     auto metadata() const -> const protobuf::MetricsMetadata&;
@@ -93,7 +87,15 @@ public:
     /// during initialization.
     auto reset() -> void;
 
+    /// Get the protobuf representation of the metrics
+    /// @return The protobuf representation of the metrics
+    auto protobuf() const -> const protobuf::Metrics&;
+
 private:
+    /// @param offset The offset of the value data
+    /// @return the pointer to the value data of the metrics.
+    auto value_data(std::size_t offset = 0) -> uint8_t*;
+
     /// No copy
     metrics(metrics&) = delete;
 
@@ -101,11 +103,8 @@ private:
     metrics& operator=(metrics&) = delete;
 
 private:
-    /// The raw memory for the metadata and value data
-    std::vector<uint8_t> m_data;
-
     /// The info of the metrics separated by byte-sizes
-    protobuf::MetricsMetadata m_metadata;
+    protobuf::Metrics m_proto_metrics;
 
     /// The hash of the metadata
     uint32_t m_hash;

@@ -18,6 +18,21 @@ auto to_json(const view& view, bool minimal) -> std::string
     return json.dump();
 }
 
+auto to_json(const protobuf::MetricsMetadata& metadata,
+             const uint8_t* value_data, std::size_t value_bytes,
+             bool minimal) -> std::string
+{
+    view v;
+    if (v.set_meta_data(metadata))
+    {
+        if (v.set_value_data(value_data, value_bytes))
+        {
+            return to_json(v, minimal);
+        }
+    }
+    return "";
+}
+
 auto to_json(const uint8_t* metadata_data, std::size_t metadata_bytes,
              const uint8_t* value_data, std::size_t value_bytes,
              bool minimal) -> std::string

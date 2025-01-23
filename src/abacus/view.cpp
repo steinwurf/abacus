@@ -44,9 +44,21 @@ inline namespace STEINWURF_ABACUS_VERSION
 
     if (m_metadata.protocol_version() != protocol_version())
     {
+        m_metadata.Clear();
         return false;
     }
 
+    return true;
+}
+
+auto view::set_meta_data(const protobuf::MetricsMetadata& metadata) -> bool
+{
+    m_metadata = metadata;
+    if (m_metadata.protocol_version() != protocol_version())
+    {
+        m_metadata.Clear();
+        return false;
+    }
     return true;
 }
 
@@ -79,19 +91,9 @@ inline namespace STEINWURF_ABACUS_VERSION
     return true;
 }
 
-auto view::metadata_data() const -> const uint8_t*
-{
-    return m_metadata_data;
-}
-
 const uint8_t* view::value_data() const
 {
     return m_value_data;
-}
-
-std::size_t view::metadata_bytes() const
-{
-    return m_metadata_bytes;
 }
 
 std::size_t view::value_bytes() const

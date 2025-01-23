@@ -74,16 +74,16 @@ int main()
     days_until_maintenance = -10;
 
     // We want to export the metrics memory, so we need a new storage
-    std::vector<uint8_t> meta_data(car.metadata_bytes());
+    auto metadata = car.metadata();
     std::vector<uint8_t> value_data(car.value_bytes());
 
     // Copy the memory into the new storage
-    std::memcpy(meta_data.data(), car.metadata_data(), car.metadata_bytes());
-    std::memcpy(value_data.data(), car.value_data(), car.value_bytes());
+    std::memcpy(value_data.data(), ((const abacus::metrics&)car).value_data(),
+                car.value_bytes());
 
     abacus::view car_view;
 
-    auto success = car_view.set_meta_data(meta_data.data(), meta_data.size());
+    auto success = car_view.set_meta_data(metadata);
     assert(success);
     success = car_view.set_value_data(value_data.data(), value_data.size());
     assert(success);
