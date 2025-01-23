@@ -1,7 +1,7 @@
 {
     "bourne": {
-        "commit_id": "97a913859ef89817f97ab5fb59d82989319cd33f",
-        "resolver_info": "10.0.1",
+        "commit_id": "1288fa220b92e6910d9e09643b92ccf8f7f99b4e",
+        "resolver_info": "10.1.0",
         "sha1": "9c4ea9c707dda31fbd3e0c7b326ab97263e06ca3"
     },
     "endian": {
