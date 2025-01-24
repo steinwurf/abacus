@@ -52,7 +52,6 @@ public:
 
     /// Initialize a metric
     /// @param name The name of the metric
-    /// @param value Optional initial value of the metric
     /// @return The metric object
     template <class Metric>
     [[nodiscard]] auto initialize_optional(const std::string& name) ->
