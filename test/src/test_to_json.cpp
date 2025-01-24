@@ -43,7 +43,8 @@ TEST(test_to_json, to_json_minimal)
                          abacus::description{"A boolean constant"},
                          abacus::required}},
         {abacus::name{name3},
-         abacus::enum8{abacus::description{"An enum metric"},
+         abacus::enum8{abacus::gauge,
+                       abacus::description{"An enum metric"},
                        {{0, {"value0", "The value for 0"}},
                         {1, {"value1", "The value for 1"}},
                         {2, {"value2", "The value for 2"}},
@@ -62,8 +63,7 @@ TEST(test_to_json, to_json_minimal)
     (void)m3;
 
     abacus::view view;
-    bool success =
-        view.set_meta_data(metrics.metadata_data(), metrics.metadata_bytes());
+    bool success = view.set_metadata(metrics.metadata());
     ASSERT_TRUE(success);
     success = view.set_value_data(metrics.value_data(), metrics.value_bytes());
     ASSERT_TRUE(success);
@@ -109,6 +109,7 @@ static const char* expected_json = R"({
   "metric3" : {
     "enum8" : {
       "description" : "An enum metric",
+      "kind" : "GAUGE",
       "values" : {
         "0" : {
           "description" : "The value for 0",
@@ -168,7 +169,8 @@ TEST(test_to_json, to_json)
                          abacus::description{"A boolean constant"},
                          abacus::required}},
         {abacus::name{name3},
-         abacus::enum8{abacus::description{"An enum metric"},
+         abacus::enum8{abacus::gauge,
+                       abacus::description{"An enum metric"},
                        {{0, {"value0", "The value for 0"}},
                         {1, {"value1", "The value for 1"}},
                         {2, {"value2", "The value for 2"}},
@@ -189,8 +191,7 @@ TEST(test_to_json, to_json)
     (void)m1;
 
     abacus::view view;
-    bool success =
-        view.set_meta_data(metrics.metadata_data(), metrics.metadata_bytes());
+    bool success = view.set_metadata(metrics.metadata());
     ASSERT_TRUE(success);
     success = view.set_value_data(metrics.value_data(), metrics.value_bytes());
     ASSERT_TRUE(success);
@@ -201,10 +202,13 @@ TEST(test_to_json, to_json)
     bourne::json::parse(json_from_view, error);
     EXPECT_FALSE(error);
 
-    auto json_from_data =
-        abacus::to_json(metrics.metadata_data(), metrics.metadata_bytes(),
-                        metrics.value_data(), metrics.value_bytes());
+    auto json_from_data = abacus::to_json(
+        metrics.metadata(), metrics.value_data(), metrics.value_bytes());
 
     EXPECT_EQ(json_from_view, json_from_data);
     EXPECT_EQ(json_from_view, expected_json) << json_from_view;
+
+    auto to_json_from_metrics = abacus::to_json(metrics.protobuf());
+    EXPECT_EQ(to_json_from_metrics, json_from_data);
+    EXPECT_EQ(to_json_from_metrics, expected_json) << json_from_view;
 }

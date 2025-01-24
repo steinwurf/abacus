@@ -21,9 +21,9 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-static inline auto
-get_kind(const protobuf::Metric& metric) -> std::optional<protobuf::Kind>
+static inline auto get_kind(const protobuf::Metric& metric) -> protobuf::Kind
 {
+    assert(metric.type_case() != protobuf::Metric::TYPE_NOT_SET);
     switch (metric.type_case())
     {
     case protobuf::Metric::kUint64:
@@ -41,32 +41,33 @@ get_kind(const protobuf::Metric& metric) -> std::optional<protobuf::Kind>
     case protobuf::Metric::kBoolean:
         return metric.boolean().kind();
     case protobuf::Metric::kEnum8:
+        return metric.enum8().kind();
     default:
-        return std::nullopt;
+        // This should never be reached
+        assert(false);
+        return protobuf::Kind::CONSTANT;
     }
 }
 
 metrics::metrics(metrics&& other) noexcept :
-    m_data(std::move(other.m_data)), m_metadata(std::move(other.m_metadata)),
-    m_hash(other.m_hash), m_metadata_bytes(other.m_metadata_bytes),
+    m_proto_metrics(std::move(other.m_proto_metrics)), m_hash(other.m_hash),
     m_value_bytes(other.m_value_bytes),
     m_initialized(std::move(other.m_initialized))
 {
-    other.m_data = std::vector<uint8_t>();
-    other.m_metadata = protobuf::MetricsMetadata();
+    other.m_proto_metrics = protobuf::Metrics();
     other.m_hash = 0;
-    other.m_metadata_bytes = 0;
     other.m_value_bytes = 0;
     other.m_initialized.clear();
 }
 
 metrics::metrics(const std::map<name, abacus::info>& info)
 {
-    m_metadata = protobuf::MetricsMetadata();
-    m_metadata.set_protocol_version(protocol_version());
-    m_metadata.set_endianness(endian::is_big_endian()
-                                  ? protobuf::Endianness::BIG
-                                  : protobuf::Endianness::LITTLE);
+    m_proto_metrics = protobuf::Metrics();
+    m_proto_metrics.mutable_metadata()->set_protocol_version(
+        protocol_version());
+    m_proto_metrics.mutable_metadata()->set_endianness(
+        endian::is_big_endian() ? protobuf::Endianness::BIG
+                                : protobuf::Endianness::LITTLE);
 
     // The first byte is reserved for the sync value
     m_value_bytes = sizeof(uint32_t);
@@ -87,7 +88,7 @@ metrics::metrics(const std::map<name, abacus::info>& info)
             metric.set_optional(is_optional(m->availability));
 
             metric.mutable_uint64()->set_description(m->description.value);
-            metric.mutable_uint64()->set_kind(to_protobuf(m->kind));
+            metric.mutable_uint64()->set_kind(abacus::to_protobuf(m->kind));
             if (!m->unit.empty())
             {
                 metric.mutable_uint64()->set_unit(m->unit.value);
@@ -222,9 +223,10 @@ metrics::metrics(const std::map<name, abacus::info>& info)
             metric.set_optional(is_optional(m->availability));
 
             metric.mutable_enum8()->set_description(m->description.value);
+            metric.mutable_enum8()->set_kind(abacus::to_protobuf(m->kind));
             for (auto [key, value] : m->values)
             {
-                auto enum_value = protobuf::EnumValue();
+                auto enum_value = protobuf::Enum8Metric::EnumValue();
                 enum_value.set_name(value.name);
                 if (!value.description.empty())
                 {
@@ -236,39 +238,43 @@ metrics::metrics(const std::map<name, abacus::info>& info)
             }
         }
 
-        m_metadata.mutable_metrics()->insert({name.value, metric});
+        m_proto_metrics.mutable_metadata()->mutable_metrics()->insert(
+            {name.value, metric});
         m_initialized[name.value] = false;
     }
 
     // Set the sync value to 1 so that the size of the metadata is
     // calculated correctly
-    m_metadata.set_sync_value(1);
+    m_proto_metrics.mutable_metadata()->set_sync_value(1);
 
-    m_metadata_bytes = m_metadata.ByteSizeLong();
-    m_data.reserve(m_metadata_bytes + m_value_bytes);
-    m_data.resize(m_metadata_bytes);
+    auto metadata_bytes = metadata().ByteSizeLong();
+
+    std::vector<uint8_t> data(metadata_bytes);
 
     // Serialize the metadata
-    m_metadata.SerializeToArray(m_data.data(), m_data.size());
+    metadata().SerializeToArray(data.data(), data.size());
 
     // Calculate the hash of the metadata
-    m_hash = detail::hash_function(m_data.data(), m_data.size());
+    m_hash = detail::hash_function(data.data(), data.size());
 
     // Update the sync value
-    m_metadata.set_sync_value(m_hash);
+    m_proto_metrics.mutable_metadata()->set_sync_value(m_hash);
 
-    // Serialize the metadata again to include the sync value
-    m_metadata.SerializeToArray(m_data.data(), m_data.size());
+    // // Serialize the metadata again to include the sync value
+    // metadata().SerializeToArray(data.data(), data.size());
 
     // Make sure the metadata didn't change unexpectedly
-    assert(m_metadata.ByteSizeLong() == m_metadata_bytes);
+    assert(metadata().ByteSizeLong() == metadata_bytes);
 
     // Write the sync value to the first byte of the value data (this will
     // be written as the endianess of the system)
     // Consuming code can use the endianness field in the metadata to
     // read the sync value
-    m_data.resize(m_metadata_bytes + m_value_bytes);
-    std::memcpy(m_data.data() + m_metadata_bytes, &m_hash, sizeof(uint32_t));
+
+    m_proto_metrics.mutable_values()->resize(m_value_bytes);
+
+    std::memcpy(m_proto_metrics.mutable_values()->data(), &m_hash,
+                sizeof(uint32_t));
 }
 
 template <class Metric>
@@ -278,17 +284,13 @@ template <class Metric>
     assert(m_initialized.find(name) != m_initialized.end());
     assert(!m_initialized.at(name));
     m_initialized[name] = true;
-    const protobuf::Metric& proto_metric = m_metadata.metrics().at(name);
+    const protobuf::Metric& proto_metric = metadata().metrics().at(name);
     assert(proto_metric.optional() == true);
-    auto kind = get_kind(proto_metric);
-    if (kind.has_value())
-    {
-        assert(kind.value() != protobuf::Kind::CONSTANT);
-    }
+    assert(get_kind(proto_metric) != protobuf::Kind::CONSTANT);
 
     auto offset = proto_metric.offset();
 
-    return typename Metric::optional(m_data.data() + m_metadata_bytes + offset);
+    return typename Metric::optional(value_data(offset));
 }
 
 // Explicit instantiations for the expected types
@@ -317,19 +319,14 @@ template <class Metric>
     assert(m_initialized.find(name) != m_initialized.end());
     assert(!m_initialized.at(name));
     m_initialized[name] = true;
-    const protobuf::Metric& proto_metric = m_metadata.metrics().at(name);
+    const protobuf::Metric& proto_metric = metadata().metrics().at(name);
     assert(proto_metric.optional() == false);
-    auto kind = get_kind(proto_metric);
-    if (kind.has_value())
-    {
-        assert(kind.value() != protobuf::Kind::CONSTANT);
-    }
+    assert(get_kind(proto_metric) != protobuf::Kind::CONSTANT);
 
     auto offset = proto_metric.offset();
 
     m_initial_values[name] = value;
-    return typename Metric::required(m_data.data() + m_metadata_bytes + offset,
-                                     value);
+    return typename Metric::required(value_data(offset), value);
 }
 
 // Explicit instantiations for the expected types
@@ -366,14 +363,13 @@ void metrics::initialize_constant(const std::string& name,
     assert(!m_initialized.at(name));
     m_initialized[name] = true;
 
-    const protobuf::Metric& proto_metric = m_metadata.metrics().at(name);
+    const protobuf::Metric& proto_metric = metadata().metrics().at(name);
     assert(proto_metric.optional() == false &&
            "Constant metrics cannot be optional");
     auto offset = proto_metric.offset();
-    auto kind = get_kind(proto_metric);
-    assert(kind.has_value() && kind.value() == protobuf::Kind::CONSTANT);
+    assert(get_kind(proto_metric) == protobuf::Kind::CONSTANT);
 
-    typename Metric::required(m_data.data() + m_metadata_bytes + offset, value);
+    typename Metric::required(value_data(offset), value);
 }
 
 // Explicit instantiations for the expected types
@@ -400,7 +396,12 @@ metrics::~metrics()
 
 auto metrics::value_data() const -> const uint8_t*
 {
-    return m_data.data() + m_metadata_bytes;
+    return (const uint8_t*)m_proto_metrics.values().data();
+}
+
+auto metrics::value_data(std::size_t offset) -> uint8_t*
+{
+    return (uint8_t*)m_proto_metrics.mutable_values()->data() + offset;
 }
 
 auto metrics::value_bytes() const -> std::size_t
@@ -408,19 +409,9 @@ auto metrics::value_bytes() const -> std::size_t
     return m_value_bytes;
 }
 
-auto metrics::metadata_data() const -> const uint8_t*
-{
-    return m_data.data();
-}
-
-auto metrics::metadata_bytes() const -> std::size_t
-{
-    return m_metadata_bytes;
-}
-
 auto metrics::metadata() const -> const protobuf::MetricsMetadata&
 {
-    return m_metadata;
+    return m_proto_metrics.metadata();
 }
 
 auto metrics::is_initialized(const std::string& name) const -> bool
@@ -442,7 +433,7 @@ auto metrics::is_initialized() const -> bool
 }
 auto metrics::reset() -> void
 {
-    for (const auto& [name, metric] : m_metadata.metrics())
+    for (const auto& [name, metric] : metadata().metrics())
     {
         if (!is_initialized(name))
         {
@@ -460,7 +451,7 @@ auto metrics::reset() -> void
         if (metric.optional())
         {
             // Set the has value byte to 0
-            m_data[m_metadata_bytes + offset] = 0;
+            value_data(offset)[0] = 0;
         }
         else
         {
@@ -468,54 +459,58 @@ auto metrics::reset() -> void
             if (metric.has_uint64())
             {
                 uint64::set_value(
-                    m_data.data() + m_metadata_bytes + offset,
+                    value_data(offset),
                     std::any_cast<uint64::type>(m_initial_values.at(name)));
             }
             else if (metric.has_int64())
             {
                 int64::set_value(
-                    m_data.data() + m_metadata_bytes + offset,
+                    value_data(offset),
                     std::any_cast<int64::type>(m_initial_values.at(name)));
             }
             else if (metric.has_uint32())
             {
                 uint32::set_value(
-                    m_data.data() + m_metadata_bytes + offset,
+                    value_data(offset),
                     std::any_cast<uint32::type>(m_initial_values.at(name)));
             }
             else if (metric.has_int32())
             {
                 int32::set_value(
-                    m_data.data() + m_metadata_bytes + offset,
+                    value_data(offset),
                     std::any_cast<int32::type>(m_initial_values.at(name)));
             }
             else if (metric.has_float64())
             {
                 float64::set_value(
-                    m_data.data() + m_metadata_bytes + offset,
+                    value_data(offset),
                     std::any_cast<float64::type>(m_initial_values.at(name)));
             }
             else if (metric.has_float32())
             {
                 float32::set_value(
-                    m_data.data() + m_metadata_bytes + offset,
+                    value_data(offset),
                     std::any_cast<float32::type>(m_initial_values.at(name)));
             }
             else if (metric.has_boolean())
             {
                 boolean::set_value(
-                    m_data.data() + m_metadata_bytes + offset,
+                    value_data(offset),
                     std::any_cast<boolean::type>(m_initial_values.at(name)));
             }
             else if (metric.has_enum8())
             {
                 enum8::set_value(
-                    m_data.data() + m_metadata_bytes + offset,
+                    value_data(offset),
                     std::any_cast<enum8::type>(m_initial_values.at(name)));
             }
         }
     }
 }
 
+auto metrics::protobuf() const -> const protobuf::Metrics&
+{
+    return m_proto_metrics;
+}
 }
 }

@@ -63,7 +63,8 @@ TEST(test_metrics, api)
              abacus::description{"A constant floating point metric"},
              abacus::required, abacus::unit{"ms"}}},
         {abacus::name{name6},
-         abacus::enum8{abacus::description{"An enum metric"},
+         abacus::enum8{abacus::gauge,
+                       abacus::description{"An enum metric"},
                        {{0, {"value0", "The value for 0"}},
                         {1, {"value1", "The value for 1"}},
                         {2, {"value2", "The value for 2"}},
@@ -114,6 +115,8 @@ TEST(test_metrics, api)
               "A constant floating point metric");
     EXPECT_EQ(metrics.metadata().metrics().at(name5).float64().unit(), "ms");
 
+    EXPECT_EQ(metrics.metadata().metrics().at(name6).enum8().kind(),
+              abacus::gauge.value);
     EXPECT_EQ(metrics.metadata().metrics().at(name6).enum8().description(),
               "An enum metric");
     EXPECT_EQ(metrics.metadata().metrics().at(name6).enum8().values().size(),
@@ -214,7 +217,7 @@ TEST(test_metrics, value_and_metadata_bytes)
     (void)m0;
     (void)m1;
 
-    EXPECT_EQ(metrics.metadata_bytes(), 112U);
+    EXPECT_EQ(metrics.metadata().ByteSizeLong(), 112U);
     EXPECT_EQ(metrics.value_bytes(),
               sizeof(uint32_t) +         // hash
                   1 + sizeof(uint64_t) + // metric0 has_value + value
@@ -266,7 +269,7 @@ TEST(test_metrics, reset_counters)
     EXPECT_EQ(int_metric.value(), -4);
 }
 
-static const std::vector<uint8_t> expected_meta_data = {
+static const std::vector<uint8_t> expected_metadata = {
     0x08, 0x02, 0x1d, 0x26, 0x65, 0xd9, 0x06, 0x22, 0x34, 0x0a, 0x07, 0x6d,
     0x65, 0x74, 0x72, 0x69, 0x63, 0x30, 0x12, 0x29, 0x08, 0x04, 0x1a, 0x25,
     0x0a, 0x1a, 0x41, 0x6e, 0x20, 0x75, 0x6e, 0x73, 0x69, 0x67, 0x6e, 0x65,
@@ -330,21 +333,26 @@ TEST(test_metrics, protocol_version)
     (void)float_metric;
     (void)bool_metric;
 
-    EXPECT_EQ(metrics.metadata_bytes(), expected_meta_data.size());
+    EXPECT_EQ(metrics.metadata().ByteSizeLong(), expected_metadata.size());
     {
         // Print the metadata as hex
         std::stringstream meta_stream;
         meta_stream << std::hex;
-        for (std::size_t i = 0; i < metrics.metadata_bytes(); ++i)
+
+        auto metadata = metrics.metadata();
+        std::vector<uint8_t> metadata_data(metadata.ByteSizeLong());
+        metadata.SerializeToArray(metadata_data.data(), metadata_data.size());
+
+        for (auto byte : metadata_data)
         {
             meta_stream << "0x" << std::setw(2) << std::setfill('0')
-                        << static_cast<int>(metrics.metadata_data()[i]) << ", ";
+                        << static_cast<int>(byte) << ", ";
         }
         SCOPED_TRACE(::testing::Message() << "Meta data:\n"
                                           << meta_stream.str());
 
-        auto expected = abacus::parse_metadata(expected_meta_data.data(),
-                                               expected_meta_data.size());
+        auto expected = abacus::parse_metadata(expected_metadata.data(),
+                                               expected_metadata.size());
         auto actual = metrics.metadata();
 
         expected.set_sync_value(1);
@@ -419,10 +427,12 @@ TEST(test_metrics, reset)
         {abacus::name{"boolean_optional"},
          abacus::boolean{abacus::gauge, abacus::description{""},
                          abacus::optional}},
-        {abacus::name{"enum8_required"}, abacus::enum8{abacus::description{""},
+        {abacus::name{"enum8_required"}, abacus::enum8{abacus::gauge,
+                                                       abacus::description{""},
                                                        {{0, {"", ""}}},
                                                        abacus::required}},
-        {abacus::name{"enum8_optional"}, abacus::enum8{abacus::description{""},
+        {abacus::name{"enum8_optional"}, abacus::enum8{abacus::gauge,
+                                                       abacus::description{""},
                                                        {{0, {"", ""}}},
                                                        abacus::optional}},
         {abacus::name{"uint64_constant"},
@@ -446,6 +456,10 @@ TEST(test_metrics, reset)
         {abacus::name{"boolean_constant"},
          abacus::boolean{abacus::constant, abacus::description{""},
                          abacus::required}},
+        {abacus::name{"enum8_constant"}, abacus::enum8{abacus::constant,
+                                                       abacus::description{""},
+                                                       {{0, {"", ""}}},
+                                                       abacus::required}},
 
         // Finally a metric that we do not initialize
         {abacus::name{"not_initialized_required"},
@@ -499,6 +513,7 @@ TEST(test_metrics, reset)
     metrics.initialize_constant<abacus::float64>("float64_constant", 5555.0);
     metrics.initialize_constant<abacus::float32>("float32_constant", 6666.0);
     metrics.initialize_constant<abacus::boolean>("boolean_constant", true);
+    metrics.initialize_constant<abacus::enum8>("enum8_constant", 77U);
 
     // Check all required values
     EXPECT_EQ(uint64_required.value(), 1U);
@@ -561,8 +576,7 @@ TEST(test_metrics, reset)
 
     // Create a view to see the constants
     abacus::view view;
-    ASSERT_TRUE(
-        view.set_meta_data(metrics.metadata_data(), metrics.metadata_bytes()));
+    ASSERT_TRUE(view.set_metadata(metrics.metadata()));
     ASSERT_TRUE(
         view.set_value_data(metrics.value_data(), metrics.value_bytes()));
 
@@ -574,6 +588,7 @@ TEST(test_metrics, reset)
     EXPECT_EQ(view.value<abacus::float64>("float64_constant").value(), 5555.0);
     EXPECT_EQ(view.value<abacus::float32>("float32_constant").value(), 6666.0);
     EXPECT_EQ(view.value<abacus::boolean>("boolean_constant").value(), true);
+    EXPECT_EQ(view.value<abacus::enum8>("enum8_constant").value(), 77U);
 
     // While we are at it, let's check the other values as well
     EXPECT_EQ(view.value<abacus::uint64>("uint64_required").value(), 111U);

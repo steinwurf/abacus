@@ -41,21 +41,6 @@ public:
     /// Destructor
     ~metrics();
 
-    /// @return the pointer to the value data of the metrics.
-    auto value_data() const -> const uint8_t*;
-
-    /// @return the size of the value data of the metrics.
-    auto value_bytes() const -> std::size_t;
-
-    /// @return the pointer to the metadata data of the metrics.
-    auto metadata_data() const -> const uint8_t*;
-
-    /// @return the size of the metadata data of the metrics.
-    auto metadata_bytes() const -> std::size_t;
-
-    /// @return the metadata of the metrics.
-    auto metadata() const -> const protobuf::MetricsMetadata&;
-
     /// Initialize a required metric
     /// @param name The name of the metric
     /// @param value Optional initial value of the metric
@@ -93,7 +78,25 @@ public:
     /// during initialization.
     auto reset() -> void;
 
+    /// @return the const pointer to the value data of the metrics.
+    auto value_data() const -> const uint8_t*;
+
+    /// @return the size of the value data of the metrics.
+    auto value_bytes() const -> std::size_t;
+
+    /// @return the metadata part of the metrics.
+    auto metadata() const -> const protobuf::MetricsMetadata&;
+
+    /// Get the protobuf representation of the metrics including both metadata
+    /// and value data
+    /// @return The protobuf representation of the metrics
+    auto protobuf() const -> const protobuf::Metrics&;
+
 private:
+    /// @param offset The offset of the value data
+    /// @return the pointer to the value data of the metrics.
+    auto value_data(std::size_t offset) -> uint8_t*;
+
     /// No copy
     metrics(metrics&) = delete;
 
@@ -101,17 +104,11 @@ private:
     metrics& operator=(metrics&) = delete;
 
 private:
-    /// The raw memory for the metadata and value data
-    std::vector<uint8_t> m_data;
-
     /// The info of the metrics separated by byte-sizes
-    protobuf::MetricsMetadata m_metadata;
+    protobuf::Metrics m_proto_metrics;
 
     /// The hash of the metadata
     uint32_t m_hash;
-
-    /// The size of the metadata in bytes
-    std::size_t m_metadata_bytes;
 
     /// The size of the value data in bytes
     std::size_t m_value_bytes;
