@@ -15,6 +15,7 @@ inline namespace STEINWURF_ABACUS_VERSION
 /// Tag type representing a gauge kind.
 struct gauge_
 {
+    /// The protobuf kind value for the gauge kind.
     static constexpr protobuf::Kind value = protobuf::Kind::GAUGE;
 };
 
@@ -24,6 +25,7 @@ static const gauge_ gauge;
 /// Tag type representing a counter kind.
 struct counter_
 {
+    /// The protobuf kind value for the counter kind.
     static constexpr protobuf::Kind value = protobuf::Kind::COUNTER;
 };
 
@@ -33,6 +35,7 @@ static const counter_ counter;
 /// Tag type representing a constant kind.
 struct constant_
 {
+    /// The protobuf kind value for the constant kind.
     static constexpr protobuf::Kind value = protobuf::Kind::CONSTANT;
 };
 
