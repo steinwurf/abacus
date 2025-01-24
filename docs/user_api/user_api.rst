@@ -15,7 +15,7 @@ Overview of the public API.
    metric_info/metric_info
    kind
    description
-   availablity
+   availability
    unit
    min
    max
