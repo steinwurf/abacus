@@ -21,9 +21,9 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-static inline auto
-get_kind(const protobuf::Metric& metric) -> std::optional<protobuf::Kind>
+static inline auto get_kind(const protobuf::Metric& metric) -> protobuf::Kind
 {
+    assert(metric.type_case() != protobuf::Metric::TYPE_NOT_SET);
     switch (metric.type_case())
     {
     case protobuf::Metric::kUint64:
@@ -41,8 +41,11 @@ get_kind(const protobuf::Metric& metric) -> std::optional<protobuf::Kind>
     case protobuf::Metric::kBoolean:
         return metric.boolean().kind();
     case protobuf::Metric::kEnum8:
+        return metric.enum8().kind();
     default:
-        return std::nullopt;
+        // This should never be reached
+        assert(false);
+        return protobuf::Kind::CONSTANT;
     }
 }
 
@@ -220,9 +223,10 @@ metrics::metrics(const std::map<name, abacus::info>& info)
             metric.set_optional(is_optional(m->availability));
 
             metric.mutable_enum8()->set_description(m->description.value);
+            metric.mutable_enum8()->set_kind(abacus::to_protobuf(m->kind));
             for (auto [key, value] : m->values)
             {
-                auto enum_value = protobuf::EnumValue();
+                auto enum_value = protobuf::Enum8Metric::EnumValue();
                 enum_value.set_name(value.name);
                 if (!value.description.empty())
                 {
@@ -282,11 +286,7 @@ template <class Metric>
     m_initialized[name] = true;
     const protobuf::Metric& proto_metric = metadata().metrics().at(name);
     assert(proto_metric.optional() == true);
-    auto kind = get_kind(proto_metric);
-    if (kind.has_value())
-    {
-        assert(kind.value() != protobuf::Kind::CONSTANT);
-    }
+    assert(get_kind(proto_metric) != protobuf::Kind::CONSTANT);
 
     auto offset = proto_metric.offset();
 
@@ -321,11 +321,7 @@ template <class Metric>
     m_initialized[name] = true;
     const protobuf::Metric& proto_metric = metadata().metrics().at(name);
     assert(proto_metric.optional() == false);
-    auto kind = get_kind(proto_metric);
-    if (kind.has_value())
-    {
-        assert(kind.value() != protobuf::Kind::CONSTANT);
-    }
+    assert(get_kind(proto_metric) != protobuf::Kind::CONSTANT);
 
     auto offset = proto_metric.offset();
 
@@ -371,8 +367,7 @@ void metrics::initialize_constant(const std::string& name,
     assert(proto_metric.optional() == false &&
            "Constant metrics cannot be optional");
     auto offset = proto_metric.offset();
-    auto kind = get_kind(proto_metric);
-    assert(kind.has_value() && kind.value() == protobuf::Kind::CONSTANT);
+    assert(get_kind(proto_metric) == protobuf::Kind::CONSTANT);
 
     typename Metric::required(value_data(offset), value);
 }

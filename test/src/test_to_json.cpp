@@ -43,7 +43,8 @@ TEST(test_to_json, to_json_minimal)
                          abacus::description{"A boolean constant"},
                          abacus::required}},
         {abacus::name{name3},
-         abacus::enum8{abacus::description{"An enum metric"},
+         abacus::enum8{abacus::gauge,
+                       abacus::description{"An enum metric"},
                        {{0, {"value0", "The value for 0"}},
                         {1, {"value1", "The value for 1"}},
                         {2, {"value2", "The value for 2"}},
@@ -108,6 +109,7 @@ static const char* expected_json = R"({
   "metric3" : {
     "enum8" : {
       "description" : "An enum metric",
+      "kind" : "GAUGE",
       "values" : {
         "0" : {
           "description" : "The value for 0",
@@ -167,7 +169,8 @@ TEST(test_to_json, to_json)
                          abacus::description{"A boolean constant"},
                          abacus::required}},
         {abacus::name{name3},
-         abacus::enum8{abacus::description{"An enum metric"},
+         abacus::enum8{abacus::gauge,
+                       abacus::description{"An enum metric"},
                        {{0, {"value0", "The value for 0"}},
                         {1, {"value1", "The value for 1"}},
                         {2, {"value2", "The value for 2"}},

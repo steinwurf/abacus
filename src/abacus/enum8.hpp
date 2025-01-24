@@ -93,6 +93,9 @@ struct enum8
         std::string description;
     };
 
+    /// The metric kind
+    abacus::kind kind;
+
     /// The metric description
     abacus::description description;
 

@@ -71,16 +71,16 @@ message BoolMetric {
     optional string unit = 3; // Unit of measurement
 }
 
-message EnumValue {
-    string name = 1;                   // Enum name
-    optional string description = 2;   // Enum description
-}
-
 // Metadata for enumerated metrics
 message Enum8Metric {
+    message EnumValue {
+        string name = 1;                   // Enum name
+        optional string description = 2;   // Enum description
+    }
     string description = 1;            // Metric description
-    optional string unit = 2;          // Unit of measurement
-    map<uint32, EnumValue> values = 3; // Mapping from packed index to enum info
+    Kind kind = 2;                     // Kind of metric
+    optional string unit = 3;          // Unit of measurement
+    map<uint32, EnumValue> values = 4; // Mapping from packed index to enum info
 }
 
 message Metric

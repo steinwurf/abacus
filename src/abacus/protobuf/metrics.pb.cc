@@ -210,7 +210,7 @@ struct BoolMetricDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 BoolMetricDefaultTypeInternal _BoolMetric_default_instance_;
         template <typename>
-PROTOBUF_CONSTEXPR EnumValue::EnumValue(::_pbi::ConstantInitialized)
+PROTOBUF_CONSTEXPR Enum8Metric_EnumValue::Enum8Metric_EnumValue(::_pbi::ConstantInitialized)
     : _impl_{
       /*decltype(_impl_._has_bits_)*/ {},
       /*decltype(_impl_._cached_size_)*/ {},
@@ -223,16 +223,16 @@ PROTOBUF_CONSTEXPR EnumValue::EnumValue(::_pbi::ConstantInitialized)
           ::_pbi::ConstantInitialized{},
       },
     } {}
-struct EnumValueDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR EnumValueDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~EnumValueDefaultTypeInternal() {}
+struct Enum8Metric_EnumValueDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR Enum8Metric_EnumValueDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~Enum8Metric_EnumValueDefaultTypeInternal() {}
   union {
-    EnumValue _instance;
+    Enum8Metric_EnumValue _instance;
   };
 };
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 EnumValueDefaultTypeInternal _EnumValue_default_instance_;
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 Enum8Metric_EnumValueDefaultTypeInternal _Enum8Metric_EnumValue_default_instance_;
       template <typename>
 PROTOBUF_CONSTEXPR Enum8Metric_ValuesEntry_DoNotUse::Enum8Metric_ValuesEntry_DoNotUse(::_pbi::ConstantInitialized) {}
 struct Enum8Metric_ValuesEntry_DoNotUseDefaultTypeInternal {
@@ -259,6 +259,7 @@ PROTOBUF_CONSTEXPR Enum8Metric::Enum8Metric(::_pbi::ConstantInitialized)
           &::_pbi::fixed_address_empty_string,
           ::_pbi::ConstantInitialized{},
       },
+      /*decltype(_impl_.kind_)*/ 0,
     } {}
 struct Enum8MetricDefaultTypeInternal {
   PROTOBUF_CONSTEXPR Enum8MetricDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
@@ -471,16 +472,16 @@ const ::uint32_t TableStruct_abacus_2fprotobuf_2fmetrics_2eproto::offsets[] PROT
     ~0u,
     ~0u,
     0,
-    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::EnumValue, _impl_._has_bits_),
-    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::EnumValue, _internal_metadata_),
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Enum8Metric_EnumValue, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Enum8Metric_EnumValue, _internal_metadata_),
     ~0u,  // no _extensions_
     ~0u,  // no _oneof_case_
     ~0u,  // no _weak_field_map_
     ~0u,  // no _inlined_string_donated_
     ~0u,  // no _split_
     ~0u,  // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::EnumValue, _impl_.name_),
-    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::EnumValue, _impl_.description_),
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Enum8Metric_EnumValue, _impl_.name_),
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Enum8Metric_EnumValue, _impl_.description_),
     ~0u,
     0,
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Enum8Metric_ValuesEntry_DoNotUse, _has_bits_),
@@ -504,8 +505,10 @@ const ::uint32_t TableStruct_abacus_2fprotobuf_2fmetrics_2eproto::offsets[] PROT
     ~0u,  // no _split_
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Enum8Metric, _impl_.description_),
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Enum8Metric, _impl_.kind_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Enum8Metric, _impl_.unit_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Enum8Metric, _impl_.values_),
+    ~0u,
     ~0u,
     0,
     ~0u,
@@ -575,13 +578,13 @@ static const ::_pbi::MigrationSchema
         {72, 85, -1, sizeof(::abacus::protobuf::Float64Metric)},
         {90, 103, -1, sizeof(::abacus::protobuf::Float32Metric)},
         {108, 119, -1, sizeof(::abacus::protobuf::BoolMetric)},
-        {122, 132, -1, sizeof(::abacus::protobuf::EnumValue)},
+        {122, 132, -1, sizeof(::abacus::protobuf::Enum8Metric_EnumValue)},
         {134, 144, -1, sizeof(::abacus::protobuf::Enum8Metric_ValuesEntry_DoNotUse)},
-        {146, 157, -1, sizeof(::abacus::protobuf::Enum8Metric)},
-        {160, -1, -1, sizeof(::abacus::protobuf::Metric)},
-        {179, 189, -1, sizeof(::abacus::protobuf::MetricsMetadata_MetricsEntry_DoNotUse)},
-        {191, -1, -1, sizeof(::abacus::protobuf::MetricsMetadata)},
-        {203, 213, -1, sizeof(::abacus::protobuf::Metrics)},
+        {146, 158, -1, sizeof(::abacus::protobuf::Enum8Metric)},
+        {162, -1, -1, sizeof(::abacus::protobuf::Metric)},
+        {181, 191, -1, sizeof(::abacus::protobuf::MetricsMetadata_MetricsEntry_DoNotUse)},
+        {193, -1, -1, sizeof(::abacus::protobuf::MetricsMetadata)},
+        {205, 215, -1, sizeof(::abacus::protobuf::Metrics)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -592,7 +595,7 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::abacus::protobuf::_Float64Metric_default_instance_._instance,
     &::abacus::protobuf::_Float32Metric_default_instance_._instance,
     &::abacus::protobuf::_BoolMetric_default_instance_._instance,
-    &::abacus::protobuf::_EnumValue_default_instance_._instance,
+    &::abacus::protobuf::_Enum8Metric_EnumValue_default_instance_._instance,
     &::abacus::protobuf::_Enum8Metric_ValuesEntry_DoNotUse_default_instance_._instance,
     &::abacus::protobuf::_Enum8Metric_default_instance_._instance,
     &::abacus::protobuf::_Metric_default_instance_._instance,
@@ -628,35 +631,36 @@ const char descriptor_table_protodef_abacus_2fprotobuf_2fmetrics_2eproto[] PROTO
     "\210\001\001\022\020\n\003max\030\005 \001(\002H\002\210\001\001B\007\n\005_unitB\006\n\004_minB\006"
     "\n\004_max\"b\n\nBoolMetric\022\023\n\013description\030\001 \001("
     "\t\022#\n\004kind\030\002 \001(\0162\025.abacus.protobuf.Kind\022\021"
-    "\n\004unit\030\003 \001(\tH\000\210\001\001B\007\n\005_unit\"C\n\tEnumValue\022"
-    "\014\n\004name\030\001 \001(\t\022\030\n\013description\030\002 \001(\tH\000\210\001\001B"
-    "\016\n\014_description\"\303\001\n\013Enum8Metric\022\023\n\013descr"
-    "iption\030\001 \001(\t\022\021\n\004unit\030\002 \001(\tH\000\210\001\001\0228\n\006value"
-    "s\030\003 \003(\0132(.abacus.protobuf.Enum8Metric.Va"
-    "luesEntry\032I\n\013ValuesEntry\022\013\n\003key\030\001 \001(\r\022)\n"
-    "\005value\030\002 \001(\0132\032.abacus.protobuf.EnumValue"
-    ":\0028\001B\007\n\005_unit\"\267\003\n\006Metric\022\016\n\006offset\030\001 \001(\r"
-    "\022\020\n\010optional\030\002 \001(\010\022/\n\006uint64\030\003 \001(\0132\035.aba"
-    "cus.protobuf.UInt64MetricH\000\022-\n\005int64\030\004 \001"
-    "(\0132\034.abacus.protobuf.Int64MetricH\000\022/\n\006ui"
-    "nt32\030\005 \001(\0132\035.abacus.protobuf.UInt32Metri"
-    "cH\000\022-\n\005int32\030\006 \001(\0132\034.abacus.protobuf.Int"
-    "32MetricH\000\0221\n\007float64\030\007 \001(\0132\036.abacus.pro"
-    "tobuf.Float64MetricH\000\0221\n\007float32\030\010 \001(\0132\036"
-    ".abacus.protobuf.Float32MetricH\000\022.\n\007bool"
-    "ean\030\t \001(\0132\033.abacus.protobuf.BoolMetricH\000"
-    "\022-\n\005enum8\030\n \001(\0132\034.abacus.protobuf.Enum8M"
-    "etricH\000B\006\n\004type\"\371\001\n\017MetricsMetadata\022\030\n\020p"
-    "rotocol_version\030\001 \001(\r\022/\n\nendianness\030\002 \001("
-    "\0162\033.abacus.protobuf.Endianness\022\022\n\nsync_v"
-    "alue\030\003 \001(\007\022>\n\007metrics\030\004 \003(\0132-.abacus.pro"
-    "tobuf.MetricsMetadata.MetricsEntry\032G\n\014Me"
-    "tricsEntry\022\013\n\003key\030\001 \001(\t\022&\n\005value\030\002 \001(\0132\027"
-    ".abacus.protobuf.Metric:\0028\001\"_\n\007Metrics\0227"
-    "\n\010metadata\030\001 \001(\0132 .abacus.protobuf.Metri"
-    "csMetadataH\000\210\001\001\022\016\n\006values\030\002 \001(\014B\013\n\t_meta"
-    "data*!\n\nEndianness\022\n\n\006LITTLE\020\000\022\007\n\003BIG\020\001B"
-    "\021Z\017abacus/protobufb\006proto3"
+    "\n\004unit\030\003 \001(\tH\000\210\001\001B\007\n\005_unit\"\271\002\n\013Enum8Metr"
+    "ic\022\023\n\013description\030\001 \001(\t\022#\n\004kind\030\002 \001(\0162\025."
+    "abacus.protobuf.Kind\022\021\n\004unit\030\003 \001(\tH\000\210\001\001\022"
+    "8\n\006values\030\004 \003(\0132(.abacus.protobuf.Enum8M"
+    "etric.ValuesEntry\032C\n\tEnumValue\022\014\n\004name\030\001"
+    " \001(\t\022\030\n\013description\030\002 \001(\tH\000\210\001\001B\016\n\014_descr"
+    "iption\032U\n\013ValuesEntry\022\013\n\003key\030\001 \001(\r\0225\n\005va"
+    "lue\030\002 \001(\0132&.abacus.protobuf.Enum8Metric."
+    "EnumValue:\0028\001B\007\n\005_unit\"\267\003\n\006Metric\022\016\n\006off"
+    "set\030\001 \001(\r\022\020\n\010optional\030\002 \001(\010\022/\n\006uint64\030\003 "
+    "\001(\0132\035.abacus.protobuf.UInt64MetricH\000\022-\n\005"
+    "int64\030\004 \001(\0132\034.abacus.protobuf.Int64Metri"
+    "cH\000\022/\n\006uint32\030\005 \001(\0132\035.abacus.protobuf.UI"
+    "nt32MetricH\000\022-\n\005int32\030\006 \001(\0132\034.abacus.pro"
+    "tobuf.Int32MetricH\000\0221\n\007float64\030\007 \001(\0132\036.a"
+    "bacus.protobuf.Float64MetricH\000\0221\n\007float3"
+    "2\030\010 \001(\0132\036.abacus.protobuf.Float32MetricH"
+    "\000\022.\n\007boolean\030\t \001(\0132\033.abacus.protobuf.Boo"
+    "lMetricH\000\022-\n\005enum8\030\n \001(\0132\034.abacus.protob"
+    "uf.Enum8MetricH\000B\006\n\004type\"\371\001\n\017MetricsMeta"
+    "data\022\030\n\020protocol_version\030\001 \001(\r\022/\n\nendian"
+    "ness\030\002 \001(\0162\033.abacus.protobuf.Endianness\022"
+    "\022\n\nsync_value\030\003 \001(\007\022>\n\007metrics\030\004 \003(\0132-.a"
+    "bacus.protobuf.MetricsMetadata.MetricsEn"
+    "try\032G\n\014MetricsEntry\022\013\n\003key\030\001 \001(\t\022&\n\005valu"
+    "e\030\002 \001(\0132\027.abacus.protobuf.Metric:\0028\001\"_\n\007"
+    "Metrics\0227\n\010metadata\030\001 \001(\0132 .abacus.proto"
+    "buf.MetricsMetadataH\000\210\001\001\022\016\n\006values\030\002 \001(\014"
+    "B\013\n\t_metadata*!\n\nEndianness\022\n\n\006LITTLE\020\000\022"
+    "\007\n\003BIG\020\001B\021Z\017abacus/protobufb\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_deps[1] =
     {
@@ -666,7 +670,7 @@ static ::absl::once_flag descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_on
 const ::_pbi::DescriptorTable descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto = {
     false,
     false,
-    2226,
+    2275,
     descriptor_table_protodef_abacus_2fprotobuf_2fmetrics_2eproto,
     "abacus/protobuf/metrics.proto",
     &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once,
@@ -3080,23 +3084,23 @@ void BoolMetric::InternalSwap(BoolMetric* other) {
 }
 // ===================================================================
 
-class EnumValue::_Internal {
+class Enum8Metric_EnumValue::_Internal {
  public:
-  using HasBits = decltype(std::declval<EnumValue>()._impl_._has_bits_);
+  using HasBits = decltype(std::declval<Enum8Metric_EnumValue>()._impl_._has_bits_);
   static constexpr ::int32_t kHasBitsOffset =
-    8 * PROTOBUF_FIELD_OFFSET(EnumValue, _impl_._has_bits_);
+    8 * PROTOBUF_FIELD_OFFSET(Enum8Metric_EnumValue, _impl_._has_bits_);
   static void set_has_description(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
 };
 
-EnumValue::EnumValue(::google::protobuf::Arena* arena)
+Enum8Metric_EnumValue::Enum8Metric_EnumValue(::google::protobuf::Arena* arena)
     : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:abacus.protobuf.EnumValue)
+  // @@protoc_insertion_point(arena_constructor:abacus.protobuf.Enum8Metric.EnumValue)
 }
-EnumValue::EnumValue(const EnumValue& from) : ::google::protobuf::Message() {
-  EnumValue* const _this = this;
+Enum8Metric_EnumValue::Enum8Metric_EnumValue(const Enum8Metric_EnumValue& from) : ::google::protobuf::Message() {
+  Enum8Metric_EnumValue* const _this = this;
   (void)_this;
   new (&_impl_) Impl_{
       decltype(_impl_._has_bits_){from._impl_._has_bits_},
@@ -3121,9 +3125,9 @@ EnumValue::EnumValue(const EnumValue& from) : ::google::protobuf::Message() {
     _this->_impl_.description_.Set(from._internal_description(), _this->GetArenaForAllocation());
   }
 
-  // @@protoc_insertion_point(copy_constructor:abacus.protobuf.EnumValue)
+  // @@protoc_insertion_point(copy_constructor:abacus.protobuf.Enum8Metric.EnumValue)
 }
-inline void EnumValue::SharedCtor(::_pb::Arena* arena) {
+inline void Enum8Metric_EnumValue::SharedCtor(::_pb::Arena* arena) {
   (void)arena;
   new (&_impl_) Impl_{
       decltype(_impl_._has_bits_){},
@@ -3140,22 +3144,22 @@ inline void EnumValue::SharedCtor(::_pb::Arena* arena) {
         _impl_.description_.Set("", GetArenaForAllocation());
   #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
-EnumValue::~EnumValue() {
-  // @@protoc_insertion_point(destructor:abacus.protobuf.EnumValue)
+Enum8Metric_EnumValue::~Enum8Metric_EnumValue() {
+  // @@protoc_insertion_point(destructor:abacus.protobuf.Enum8Metric.EnumValue)
   _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-inline void EnumValue::SharedDtor() {
+inline void Enum8Metric_EnumValue::SharedDtor() {
   ABSL_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.name_.Destroy();
   _impl_.description_.Destroy();
 }
-void EnumValue::SetCachedSize(int size) const {
+void Enum8Metric_EnumValue::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
 
-PROTOBUF_NOINLINE void EnumValue::Clear() {
-// @@protoc_insertion_point(message_clear_start:abacus.protobuf.EnumValue)
+PROTOBUF_NOINLINE void Enum8Metric_EnumValue::Clear() {
+// @@protoc_insertion_point(message_clear_start:abacus.protobuf.Enum8Metric.EnumValue)
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -3169,7 +3173,7 @@ PROTOBUF_NOINLINE void EnumValue::Clear() {
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* EnumValue::_InternalParse(
+const char* Enum8Metric_EnumValue::_InternalParse(
     const char* ptr, ::_pbi::ParseContext* ctx) {
   ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
@@ -3177,9 +3181,9 @@ const char* EnumValue::_InternalParse(
 
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 49, 2> EnumValue::_table_ = {
+const ::_pbi::TcParseTable<1, 2, 0, 61, 2> Enum8Metric_EnumValue::_table_ = {
   {
-    PROTOBUF_FIELD_OFFSET(EnumValue, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(Enum8Metric_EnumValue, _impl_._has_bits_),
     0, // no _extensions_
     2, 8,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
@@ -3188,38 +3192,38 @@ const ::_pbi::TcParseTable<1, 2, 0, 49, 2> EnumValue::_table_ = {
     2,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
-    &_EnumValue_default_instance_._instance,
+    &_Enum8Metric_EnumValue_default_instance_._instance,
     ::_pbi::TcParser::GenericFallback,  // fallback
   }, {{
     // optional string description = 2;
     {::_pbi::TcParser::FastUS1,
-     {18, 0, 0, PROTOBUF_FIELD_OFFSET(EnumValue, _impl_.description_)}},
+     {18, 0, 0, PROTOBUF_FIELD_OFFSET(Enum8Metric_EnumValue, _impl_.description_)}},
     // string name = 1;
     {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(EnumValue, _impl_.name_)}},
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(Enum8Metric_EnumValue, _impl_.name_)}},
   }}, {{
     65535, 65535
   }}, {{
     // string name = 1;
-    {PROTOBUF_FIELD_OFFSET(EnumValue, _impl_.name_), -1, 0,
+    {PROTOBUF_FIELD_OFFSET(Enum8Metric_EnumValue, _impl_.name_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
     // optional string description = 2;
-    {PROTOBUF_FIELD_OFFSET(EnumValue, _impl_.description_), _Internal::kHasBitsOffset + 0, 0,
+    {PROTOBUF_FIELD_OFFSET(Enum8Metric_EnumValue, _impl_.description_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
   {{
-    "\31\4\13\0\0\0\0\0"
-    "abacus.protobuf.EnumValue"
+    "\45\4\13\0\0\0\0\0"
+    "abacus.protobuf.Enum8Metric.EnumValue"
     "name"
     "description"
   }},
 };
 
-::uint8_t* EnumValue::_InternalSerialize(
+::uint8_t* Enum8Metric_EnumValue::_InternalSerialize(
     ::uint8_t* target,
     ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:abacus.protobuf.EnumValue)
+  // @@protoc_insertion_point(serialize_to_array_start:abacus.protobuf.Enum8Metric.EnumValue)
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
@@ -3227,7 +3231,7 @@ const ::_pbi::TcParseTable<1, 2, 0, 49, 2> EnumValue::_table_ = {
   if (!this->_internal_name().empty()) {
     const std::string& _s = this->_internal_name();
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "abacus.protobuf.EnumValue.name");
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "abacus.protobuf.Enum8Metric.EnumValue.name");
     target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
@@ -3236,7 +3240,7 @@ const ::_pbi::TcParseTable<1, 2, 0, 49, 2> EnumValue::_table_ = {
   if (cached_has_bits & 0x00000001u) {
     const std::string& _s = this->_internal_description();
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "abacus.protobuf.EnumValue.description");
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "abacus.protobuf.Enum8Metric.EnumValue.description");
     target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
@@ -3245,12 +3249,12 @@ const ::_pbi::TcParseTable<1, 2, 0, 49, 2> EnumValue::_table_ = {
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
             _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:abacus.protobuf.EnumValue)
+  // @@protoc_insertion_point(serialize_to_array_end:abacus.protobuf.Enum8Metric.EnumValue)
   return target;
 }
 
-::size_t EnumValue::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:abacus.protobuf.EnumValue)
+::size_t Enum8Metric_EnumValue::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:abacus.protobuf.Enum8Metric.EnumValue)
   ::size_t total_size = 0;
 
   ::uint32_t cached_has_bits = 0;
@@ -3273,17 +3277,17 @@ const ::_pbi::TcParseTable<1, 2, 0, 49, 2> EnumValue::_table_ = {
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::google::protobuf::Message::ClassData EnumValue::_class_data_ = {
+const ::google::protobuf::Message::ClassData Enum8Metric_EnumValue::_class_data_ = {
     ::google::protobuf::Message::CopyWithSourceCheck,
-    EnumValue::MergeImpl
+    Enum8Metric_EnumValue::MergeImpl
 };
-const ::google::protobuf::Message::ClassData*EnumValue::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData*Enum8Metric_EnumValue::GetClassData() const { return &_class_data_; }
 
 
-void EnumValue::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
-  auto* const _this = static_cast<EnumValue*>(&to_msg);
-  auto& from = static_cast<const EnumValue&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:abacus.protobuf.EnumValue)
+void Enum8Metric_EnumValue::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
+  auto* const _this = static_cast<Enum8Metric_EnumValue*>(&to_msg);
+  auto& from = static_cast<const Enum8Metric_EnumValue&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:abacus.protobuf.Enum8Metric.EnumValue)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -3297,18 +3301,18 @@ void EnumValue::MergeImpl(::google::protobuf::Message& to_msg, const ::google::p
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void EnumValue::CopyFrom(const EnumValue& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:abacus.protobuf.EnumValue)
+void Enum8Metric_EnumValue::CopyFrom(const Enum8Metric_EnumValue& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:abacus.protobuf.Enum8Metric.EnumValue)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-PROTOBUF_NOINLINE bool EnumValue::IsInitialized() const {
+PROTOBUF_NOINLINE bool Enum8Metric_EnumValue::IsInitialized() const {
   return true;
 }
 
-void EnumValue::InternalSwap(EnumValue* other) {
+void Enum8Metric_EnumValue::InternalSwap(Enum8Metric_EnumValue* other) {
   using std::swap;
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
@@ -3320,7 +3324,7 @@ void EnumValue::InternalSwap(EnumValue* other) {
                                        &other->_impl_.description_, rhs_arena);
 }
 
-::google::protobuf::Metadata EnumValue::GetMetadata() const {
+::google::protobuf::Metadata Enum8Metric_EnumValue::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_getter, &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once,
       file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[7]);
@@ -3364,6 +3368,7 @@ Enum8Metric::Enum8Metric(const Enum8Metric& from) : ::google::protobuf::Message(
       /* decltype(_impl_.values_) */ {},
       decltype(_impl_.description_){},
       decltype(_impl_.unit_){},
+      decltype(_impl_.kind_){},
   };
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
@@ -3382,6 +3387,7 @@ Enum8Metric::Enum8Metric(const Enum8Metric& from) : ::google::protobuf::Message(
   if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
     _this->_impl_.unit_.Set(from._internal_unit(), _this->GetArenaForAllocation());
   }
+  _this->_impl_.kind_ = from._impl_.kind_;
 
   // @@protoc_insertion_point(copy_constructor:abacus.protobuf.Enum8Metric)
 }
@@ -3393,6 +3399,7 @@ inline void Enum8Metric::SharedCtor(::_pb::Arena* arena) {
       /* decltype(_impl_.values_) */ {::google::protobuf::internal::ArenaInitialized(), arena},
       decltype(_impl_.description_){},
       decltype(_impl_.unit_){},
+      decltype(_impl_.kind_){0},
   };
   _impl_.description_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
@@ -3430,6 +3437,7 @@ PROTOBUF_NOINLINE void Enum8Metric::Clear() {
   if (cached_has_bits & 0x00000001u) {
     _impl_.unit_.ClearNonDefaultToEmpty();
   }
+  _impl_.kind_ = 0;
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -3442,43 +3450,50 @@ const char* Enum8Metric::_InternalParse(
 
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 3, 2, 51, 2> Enum8Metric::_table_ = {
+const ::_pbi::TcParseTable<2, 4, 2, 51, 2> Enum8Metric::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_._has_bits_),
     0, // no _extensions_
-    3, 8,  // max_field_number, fast_idx_mask
+    4, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967288,  // skipmap
+    4294967280,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    3,  // num_field_entries
+    4,  // num_field_entries
     2,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     &_Enum8Metric_default_instance_._instance,
     ::_pbi::TcParser::GenericFallback,  // fallback
   }, {{
-    // optional string unit = 2;
-    {::_pbi::TcParser::FastUS1,
-     {18, 0, 0, PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.unit_)}},
+    {::_pbi::TcParser::MiniParse, {}},
     // string description = 1;
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.description_)}},
+    // .abacus.protobuf.Kind kind = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Enum8Metric, _impl_.kind_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.kind_)}},
+    // optional string unit = 3;
+    {::_pbi::TcParser::FastUS1,
+     {26, 0, 0, PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.unit_)}},
   }}, {{
     65535, 65535
   }}, {{
     // string description = 1;
     {PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.description_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // optional string unit = 2;
+    // .abacus.protobuf.Kind kind = 2;
+    {PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.kind_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+    // optional string unit = 3;
     {PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.unit_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // map<uint32, .abacus.protobuf.EnumValue> values = 3;
+    // map<uint32, .abacus.protobuf.Enum8Metric.EnumValue> values = 4;
     {PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.values_), -1, 0,
     (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
   }}, {{
     {::_pbi::TcParser::GetMapAuxInfo<decltype(Enum8Metric()._impl_.values_)>(1, 0, 0)},
-    {::_pbi::TcParser::CreateInArenaStorageCb<::abacus::protobuf::EnumValue>},
+    {::_pbi::TcParser::CreateInArenaStorageCb<::abacus::protobuf::Enum8Metric_EnumValue>},
   }}, {{
-    "\33\13\4\0\0\0\0\0"
+    "\33\13\0\4\0\0\0\0"
     "abacus.protobuf.Enum8Metric"
     "description"
     "unit"
@@ -3500,30 +3515,37 @@ const ::_pbi::TcParseTable<1, 3, 2, 51, 2> Enum8Metric::_table_ = {
     target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
+  // .abacus.protobuf.Kind kind = 2;
+  if (this->_internal_kind() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
+        2, this->_internal_kind(), target);
+  }
+
   cached_has_bits = _impl_._has_bits_[0];
-  // optional string unit = 2;
+  // optional string unit = 3;
   if (cached_has_bits & 0x00000001u) {
     const std::string& _s = this->_internal_unit();
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
         _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "abacus.protobuf.Enum8Metric.unit");
-    target = stream->WriteStringMaybeAliased(2, _s, target);
+    target = stream->WriteStringMaybeAliased(3, _s, target);
   }
 
-  // map<uint32, .abacus.protobuf.EnumValue> values = 3;
+  // map<uint32, .abacus.protobuf.Enum8Metric.EnumValue> values = 4;
   if (!_internal_values().empty()) {
-    using MapType = ::google::protobuf::Map<::uint32_t, ::abacus::protobuf::EnumValue>;
+    using MapType = ::google::protobuf::Map<::uint32_t, ::abacus::protobuf::Enum8Metric_EnumValue>;
     using WireHelper = Enum8Metric_ValuesEntry_DoNotUse::Funcs;
     const auto& field = _internal_values();
 
     if (stream->IsSerializationDeterministic() && field.size() > 1) {
       for (const auto& entry : ::google::protobuf::internal::MapSorterFlat<MapType>(field)) {
         target = WireHelper::InternalSerialize(
-            3, entry.first, entry.second, target, stream);
+            4, entry.first, entry.second, target, stream);
       }
     } else {
       for (const auto& entry : field) {
         target = WireHelper::InternalSerialize(
-            3, entry.first, entry.second, target, stream);
+            4, entry.first, entry.second, target, stream);
       }
     }
   }
@@ -3545,7 +3567,7 @@ const ::_pbi::TcParseTable<1, 3, 2, 51, 2> Enum8Metric::_table_ = {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // map<uint32, .abacus.protobuf.EnumValue> values = 3;
+  // map<uint32, .abacus.protobuf.Enum8Metric.EnumValue> values = 4;
   total_size += 1 * ::google::protobuf::internal::FromIntSize(_internal_values_size());
   for (const auto& entry : _internal_values()) {
     total_size += Enum8Metric_ValuesEntry_DoNotUse::Funcs::ByteSizeLong(entry.first, entry.second);
@@ -3556,11 +3578,17 @@ const ::_pbi::TcParseTable<1, 3, 2, 51, 2> Enum8Metric::_table_ = {
                                     this->_internal_description());
   }
 
-  // optional string unit = 2;
+  // optional string unit = 3;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                     this->_internal_unit());
+  }
+
+  // .abacus.protobuf.Kind kind = 2;
+  if (this->_internal_kind() != 0) {
+    total_size += 1 +
+                  ::_pbi::WireFormatLite::EnumSize(this->_internal_kind());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
@@ -3588,6 +3616,9 @@ void Enum8Metric::MergeImpl(::google::protobuf::Message& to_msg, const ::google:
   if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
     _this->_internal_set_unit(from._internal_unit());
   }
+  if (from._internal_kind() != 0) {
+    _this->_internal_set_kind(from._internal_kind());
+  }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -3613,6 +3644,7 @@ void Enum8Metric::InternalSwap(Enum8Metric* other) {
                                        &other->_impl_.description_, rhs_arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.unit_, lhs_arena,
                                        &other->_impl_.unit_, rhs_arena);
+  swap(_impl_.kind_, other->_impl_.kind_);
 }
 
 ::google::protobuf::Metadata Enum8Metric::GetMetadata() const {

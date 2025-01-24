@@ -63,7 +63,8 @@ TEST(test_metrics, api)
              abacus::description{"A constant floating point metric"},
              abacus::required, abacus::unit{"ms"}}},
         {abacus::name{name6},
-         abacus::enum8{abacus::description{"An enum metric"},
+         abacus::enum8{abacus::gauge,
+                       abacus::description{"An enum metric"},
                        {{0, {"value0", "The value for 0"}},
                         {1, {"value1", "The value for 1"}},
                         {2, {"value2", "The value for 2"}},
@@ -114,6 +115,8 @@ TEST(test_metrics, api)
               "A constant floating point metric");
     EXPECT_EQ(metrics.metadata().metrics().at(name5).float64().unit(), "ms");
 
+    EXPECT_EQ(metrics.metadata().metrics().at(name6).enum8().kind(),
+              abacus::gauge.value);
     EXPECT_EQ(metrics.metadata().metrics().at(name6).enum8().description(),
               "An enum metric");
     EXPECT_EQ(metrics.metadata().metrics().at(name6).enum8().values().size(),
@@ -424,10 +427,12 @@ TEST(test_metrics, reset)
         {abacus::name{"boolean_optional"},
          abacus::boolean{abacus::gauge, abacus::description{""},
                          abacus::optional}},
-        {abacus::name{"enum8_required"}, abacus::enum8{abacus::description{""},
+        {abacus::name{"enum8_required"}, abacus::enum8{abacus::gauge,
+                                                       abacus::description{""},
                                                        {{0, {"", ""}}},
                                                        abacus::required}},
-        {abacus::name{"enum8_optional"}, abacus::enum8{abacus::description{""},
+        {abacus::name{"enum8_optional"}, abacus::enum8{abacus::gauge,
+                                                       abacus::description{""},
                                                        {{0, {"", ""}}},
                                                        abacus::optional}},
         {abacus::name{"uint64_constant"},
@@ -451,6 +456,10 @@ TEST(test_metrics, reset)
         {abacus::name{"boolean_constant"},
          abacus::boolean{abacus::constant, abacus::description{""},
                          abacus::required}},
+        {abacus::name{"enum8_constant"}, abacus::enum8{abacus::constant,
+                                                       abacus::description{""},
+                                                       {{0, {"", ""}}},
+                                                       abacus::required}},
 
         // Finally a metric that we do not initialize
         {abacus::name{"not_initialized_required"},
@@ -504,6 +513,7 @@ TEST(test_metrics, reset)
     metrics.initialize_constant<abacus::float64>("float64_constant", 5555.0);
     metrics.initialize_constant<abacus::float32>("float32_constant", 6666.0);
     metrics.initialize_constant<abacus::boolean>("boolean_constant", true);
+    metrics.initialize_constant<abacus::enum8>("enum8_constant", 77U);
 
     // Check all required values
     EXPECT_EQ(uint64_required.value(), 1U);
@@ -578,6 +588,7 @@ TEST(test_metrics, reset)
     EXPECT_EQ(view.value<abacus::float64>("float64_constant").value(), 5555.0);
     EXPECT_EQ(view.value<abacus::float32>("float32_constant").value(), 6666.0);
     EXPECT_EQ(view.value<abacus::boolean>("boolean_constant").value(), true);
+    EXPECT_EQ(view.value<abacus::enum8>("enum8_constant").value(), 77U);
 
     // While we are at it, let's check the other values as well
     EXPECT_EQ(view.value<abacus::uint64>("uint64_required").value(), 111U);

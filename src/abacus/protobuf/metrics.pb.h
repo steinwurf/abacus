@@ -66,12 +66,12 @@ extern BoolMetricDefaultTypeInternal _BoolMetric_default_instance_;
 class Enum8Metric;
 struct Enum8MetricDefaultTypeInternal;
 extern Enum8MetricDefaultTypeInternal _Enum8Metric_default_instance_;
+class Enum8Metric_EnumValue;
+struct Enum8Metric_EnumValueDefaultTypeInternal;
+extern Enum8Metric_EnumValueDefaultTypeInternal _Enum8Metric_EnumValue_default_instance_;
 class Enum8Metric_ValuesEntry_DoNotUse;
 struct Enum8Metric_ValuesEntry_DoNotUseDefaultTypeInternal;
 extern Enum8Metric_ValuesEntry_DoNotUseDefaultTypeInternal _Enum8Metric_ValuesEntry_DoNotUse_default_instance_;
-class EnumValue;
-struct EnumValueDefaultTypeInternal;
-extern EnumValueDefaultTypeInternal _EnumValue_default_instance_;
 class Float32Metric;
 struct Float32MetricDefaultTypeInternal;
 extern Float32MetricDefaultTypeInternal _Float32Metric_default_instance_;
@@ -1677,25 +1677,25 @@ class BoolMetric final :
   friend struct ::TableStruct_abacus_2fprotobuf_2fmetrics_2eproto;
 };// -------------------------------------------------------------------
 
-class EnumValue final :
-    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:abacus.protobuf.EnumValue) */ {
+class Enum8Metric_EnumValue final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:abacus.protobuf.Enum8Metric.EnumValue) */ {
  public:
-  inline EnumValue() : EnumValue(nullptr) {}
-  ~EnumValue() override;
+  inline Enum8Metric_EnumValue() : Enum8Metric_EnumValue(nullptr) {}
+  ~Enum8Metric_EnumValue() override;
   template<typename = void>
-  explicit PROTOBUF_CONSTEXPR EnumValue(::google::protobuf::internal::ConstantInitialized);
+  explicit PROTOBUF_CONSTEXPR Enum8Metric_EnumValue(::google::protobuf::internal::ConstantInitialized);
 
-  EnumValue(const EnumValue& from);
-  EnumValue(EnumValue&& from) noexcept
-    : EnumValue() {
+  Enum8Metric_EnumValue(const Enum8Metric_EnumValue& from);
+  Enum8Metric_EnumValue(Enum8Metric_EnumValue&& from) noexcept
+    : Enum8Metric_EnumValue() {
     *this = ::std::move(from);
   }
 
-  inline EnumValue& operator=(const EnumValue& from) {
+  inline Enum8Metric_EnumValue& operator=(const Enum8Metric_EnumValue& from) {
     CopyFrom(from);
     return *this;
   }
-  inline EnumValue& operator=(EnumValue&& from) noexcept {
+  inline Enum8Metric_EnumValue& operator=(Enum8Metric_EnumValue&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -1725,20 +1725,20 @@ class EnumValue final :
   static const ::google::protobuf::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const EnumValue& default_instance() {
+  static const Enum8Metric_EnumValue& default_instance() {
     return *internal_default_instance();
   }
-  static inline const EnumValue* internal_default_instance() {
-    return reinterpret_cast<const EnumValue*>(
-               &_EnumValue_default_instance_);
+  static inline const Enum8Metric_EnumValue* internal_default_instance() {
+    return reinterpret_cast<const Enum8Metric_EnumValue*>(
+               &_Enum8Metric_EnumValue_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     7;
 
-  friend void swap(EnumValue& a, EnumValue& b) {
+  friend void swap(Enum8Metric_EnumValue& a, Enum8Metric_EnumValue& b) {
     a.Swap(&b);
   }
-  inline void Swap(EnumValue* other) {
+  inline void Swap(Enum8Metric_EnumValue* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -1751,7 +1751,7 @@ class EnumValue final :
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(EnumValue* other) {
+  void UnsafeArenaSwap(Enum8Metric_EnumValue* other) {
     if (other == this) return;
     ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -1759,14 +1759,14 @@ class EnumValue final :
 
   // implements Message ----------------------------------------------
 
-  EnumValue* New(::google::protobuf::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<EnumValue>(arena);
+  Enum8Metric_EnumValue* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<Enum8Metric_EnumValue>(arena);
   }
   using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const EnumValue& from);
+  void CopyFrom(const Enum8Metric_EnumValue& from);
   using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom( const EnumValue& from) {
-    EnumValue::MergeImpl(*this, from);
+  void MergeFrom( const Enum8Metric_EnumValue& from) {
+    Enum8Metric_EnumValue::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
@@ -1784,15 +1784,15 @@ class EnumValue final :
   void SharedCtor(::google::protobuf::Arena* arena);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(EnumValue* other);
+  void InternalSwap(Enum8Metric_EnumValue* other);
 
   private:
   friend class ::google::protobuf::internal::AnyMetadata;
   static ::absl::string_view FullMessageName() {
-    return "abacus.protobuf.EnumValue";
+    return "abacus.protobuf.Enum8Metric.EnumValue";
   }
   protected:
-  explicit EnumValue(::google::protobuf::Arena* arena);
+  explicit Enum8Metric_EnumValue(::google::protobuf::Arena* arena);
   public:
 
   static const ClassData _class_data_;
@@ -1841,12 +1841,12 @@ class EnumValue final :
   std::string* _internal_mutable_description();
 
   public:
-  // @@protoc_insertion_point(class_scope:abacus.protobuf.EnumValue)
+  // @@protoc_insertion_point(class_scope:abacus.protobuf.Enum8Metric.EnumValue)
  private:
   class _Internal;
 
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<1, 2, 0, 49, 2> _table_;
+  static const ::google::protobuf::internal::TcParseTable<1, 2, 0, 61, 2> _table_;
   template <typename T> friend class ::google::protobuf::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
@@ -1862,12 +1862,12 @@ class EnumValue final :
 };// -------------------------------------------------------------------
 
 class Enum8Metric_ValuesEntry_DoNotUse final : public ::google::protobuf::internal::MapEntry<Enum8Metric_ValuesEntry_DoNotUse, 
-    ::uint32_t, ::abacus::protobuf::EnumValue,
+    ::uint32_t, ::abacus::protobuf::Enum8Metric_EnumValue,
     ::google::protobuf::internal::WireFormatLite::TYPE_UINT32,
     ::google::protobuf::internal::WireFormatLite::TYPE_MESSAGE> {
 public:
   typedef ::google::protobuf::internal::MapEntry<Enum8Metric_ValuesEntry_DoNotUse, 
-    ::uint32_t, ::abacus::protobuf::EnumValue,
+    ::uint32_t, ::abacus::protobuf::Enum8Metric_EnumValue,
     ::google::protobuf::internal::WireFormatLite::TYPE_UINT32,
     ::google::protobuf::internal::WireFormatLite::TYPE_MESSAGE> SuperType;
   Enum8Metric_ValuesEntry_DoNotUse();
@@ -2010,27 +2010,29 @@ class Enum8Metric final :
 
   // nested types ----------------------------------------------------
 
+  typedef Enum8Metric_EnumValue EnumValue;
 
   // accessors -------------------------------------------------------
 
   enum : int {
-    kValuesFieldNumber = 3,
+    kValuesFieldNumber = 4,
     kDescriptionFieldNumber = 1,
-    kUnitFieldNumber = 2,
+    kUnitFieldNumber = 3,
+    kKindFieldNumber = 2,
   };
-  // map<uint32, .abacus.protobuf.EnumValue> values = 3;
+  // map<uint32, .abacus.protobuf.Enum8Metric.EnumValue> values = 4;
   int values_size() const;
   private:
   int _internal_values_size() const;
 
   public:
   void clear_values() ;
-  const ::google::protobuf::Map<::uint32_t, ::abacus::protobuf::EnumValue>& values() const;
-  ::google::protobuf::Map<::uint32_t, ::abacus::protobuf::EnumValue>* mutable_values();
+  const ::google::protobuf::Map<::uint32_t, ::abacus::protobuf::Enum8Metric_EnumValue>& values() const;
+  ::google::protobuf::Map<::uint32_t, ::abacus::protobuf::Enum8Metric_EnumValue>* mutable_values();
 
   private:
-  const ::google::protobuf::Map<::uint32_t, ::abacus::protobuf::EnumValue>& _internal_values() const;
-  ::google::protobuf::Map<::uint32_t, ::abacus::protobuf::EnumValue>* _internal_mutable_values();
+  const ::google::protobuf::Map<::uint32_t, ::abacus::protobuf::Enum8Metric_EnumValue>& _internal_values() const;
+  ::google::protobuf::Map<::uint32_t, ::abacus::protobuf::Enum8Metric_EnumValue>* _internal_mutable_values();
 
   public:
   // string description = 1;
@@ -2049,7 +2051,7 @@ class Enum8Metric final :
   std::string* _internal_mutable_description();
 
   public:
-  // optional string unit = 2;
+  // optional string unit = 3;
   bool has_unit() const;
   void clear_unit() ;
   const std::string& unit() const;
@@ -2066,24 +2068,35 @@ class Enum8Metric final :
   std::string* _internal_mutable_unit();
 
   public:
+  // .abacus.protobuf.Kind kind = 2;
+  void clear_kind() ;
+  ::abacus::protobuf::Kind kind() const;
+  void set_kind(::abacus::protobuf::Kind value);
+
+  private:
+  ::abacus::protobuf::Kind _internal_kind() const;
+  void _internal_set_kind(::abacus::protobuf::Kind value);
+
+  public:
   // @@protoc_insertion_point(class_scope:abacus.protobuf.Enum8Metric)
  private:
   class _Internal;
 
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<1, 3, 2, 51, 2> _table_;
+  static const ::google::protobuf::internal::TcParseTable<2, 4, 2, 51, 2> _table_;
   template <typename T> friend class ::google::protobuf::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
-    ::google::protobuf::internal::MapField<Enum8Metric_ValuesEntry_DoNotUse, ::uint32_t, ::abacus::protobuf::EnumValue,
+    ::google::protobuf::internal::MapField<Enum8Metric_ValuesEntry_DoNotUse, ::uint32_t, ::abacus::protobuf::Enum8Metric_EnumValue,
                       ::google::protobuf::internal::WireFormatLite::TYPE_UINT32,
                       ::google::protobuf::internal::WireFormatLite::TYPE_MESSAGE>
         values_;
     ::google::protobuf::internal::ArenaStringPtr description_;
     ::google::protobuf::internal::ArenaStringPtr unit_;
+    int kind_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -4230,49 +4243,49 @@ inline void BoolMetric::set_allocated_unit(std::string* value) {
 
 // -------------------------------------------------------------------
 
-// EnumValue
+// Enum8Metric_EnumValue
 
 // string name = 1;
-inline void EnumValue::clear_name() {
+inline void Enum8Metric_EnumValue::clear_name() {
   _impl_.name_.ClearToEmpty();
 }
-inline const std::string& EnumValue::name() const {
-  // @@protoc_insertion_point(field_get:abacus.protobuf.EnumValue.name)
+inline const std::string& Enum8Metric_EnumValue::name() const {
+  // @@protoc_insertion_point(field_get:abacus.protobuf.Enum8Metric.EnumValue.name)
   return _internal_name();
 }
 template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void EnumValue::set_name(Arg_&& arg,
+inline PROTOBUF_ALWAYS_INLINE void Enum8Metric_EnumValue::set_name(Arg_&& arg,
                                                      Args_... args) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ;
   _impl_.name_.Set(static_cast<Arg_&&>(arg), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:abacus.protobuf.EnumValue.name)
+  // @@protoc_insertion_point(field_set:abacus.protobuf.Enum8Metric.EnumValue.name)
 }
-inline std::string* EnumValue::mutable_name() {
+inline std::string* Enum8Metric_EnumValue::mutable_name() {
   std::string* _s = _internal_mutable_name();
-  // @@protoc_insertion_point(field_mutable:abacus.protobuf.EnumValue.name)
+  // @@protoc_insertion_point(field_mutable:abacus.protobuf.Enum8Metric.EnumValue.name)
   return _s;
 }
-inline const std::string& EnumValue::_internal_name() const {
+inline const std::string& Enum8Metric_EnumValue::_internal_name() const {
   PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
   return _impl_.name_.Get();
 }
-inline void EnumValue::_internal_set_name(const std::string& value) {
+inline void Enum8Metric_EnumValue::_internal_set_name(const std::string& value) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ;
   _impl_.name_.Set(value, GetArenaForAllocation());
 }
-inline std::string* EnumValue::_internal_mutable_name() {
+inline std::string* Enum8Metric_EnumValue::_internal_mutable_name() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ;
   return _impl_.name_.Mutable( GetArenaForAllocation());
 }
-inline std::string* EnumValue::release_name() {
+inline std::string* Enum8Metric_EnumValue::release_name() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  // @@protoc_insertion_point(field_release:abacus.protobuf.EnumValue.name)
+  // @@protoc_insertion_point(field_release:abacus.protobuf.Enum8Metric.EnumValue.name)
   return _impl_.name_.Release();
 }
-inline void EnumValue::set_allocated_name(std::string* value) {
+inline void Enum8Metric_EnumValue::set_allocated_name(std::string* value) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.name_.SetAllocated(value, GetArenaForAllocation());
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
@@ -4280,52 +4293,52 @@ inline void EnumValue::set_allocated_name(std::string* value) {
           _impl_.name_.Set("", GetArenaForAllocation());
         }
   #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.EnumValue.name)
+  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Enum8Metric.EnumValue.name)
 }
 
 // optional string description = 2;
-inline bool EnumValue::has_description() const {
+inline bool Enum8Metric_EnumValue::has_description() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
-inline void EnumValue::clear_description() {
+inline void Enum8Metric_EnumValue::clear_description() {
   _impl_.description_.ClearToEmpty();
   _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const std::string& EnumValue::description() const {
-  // @@protoc_insertion_point(field_get:abacus.protobuf.EnumValue.description)
+inline const std::string& Enum8Metric_EnumValue::description() const {
+  // @@protoc_insertion_point(field_get:abacus.protobuf.Enum8Metric.EnumValue.description)
   return _internal_description();
 }
 template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void EnumValue::set_description(Arg_&& arg,
+inline PROTOBUF_ALWAYS_INLINE void Enum8Metric_EnumValue::set_description(Arg_&& arg,
                                                      Args_... args) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_._has_bits_[0] |= 0x00000001u;
   _impl_.description_.Set(static_cast<Arg_&&>(arg), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:abacus.protobuf.EnumValue.description)
+  // @@protoc_insertion_point(field_set:abacus.protobuf.Enum8Metric.EnumValue.description)
 }
-inline std::string* EnumValue::mutable_description() {
+inline std::string* Enum8Metric_EnumValue::mutable_description() {
   std::string* _s = _internal_mutable_description();
-  // @@protoc_insertion_point(field_mutable:abacus.protobuf.EnumValue.description)
+  // @@protoc_insertion_point(field_mutable:abacus.protobuf.Enum8Metric.EnumValue.description)
   return _s;
 }
-inline const std::string& EnumValue::_internal_description() const {
+inline const std::string& Enum8Metric_EnumValue::_internal_description() const {
   PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
   return _impl_.description_.Get();
 }
-inline void EnumValue::_internal_set_description(const std::string& value) {
+inline void Enum8Metric_EnumValue::_internal_set_description(const std::string& value) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_._has_bits_[0] |= 0x00000001u;
   _impl_.description_.Set(value, GetArenaForAllocation());
 }
-inline std::string* EnumValue::_internal_mutable_description() {
+inline std::string* Enum8Metric_EnumValue::_internal_mutable_description() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_._has_bits_[0] |= 0x00000001u;
   return _impl_.description_.Mutable( GetArenaForAllocation());
 }
-inline std::string* EnumValue::release_description() {
+inline std::string* Enum8Metric_EnumValue::release_description() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  // @@protoc_insertion_point(field_release:abacus.protobuf.EnumValue.description)
+  // @@protoc_insertion_point(field_release:abacus.protobuf.Enum8Metric.EnumValue.description)
   if ((_impl_._has_bits_[0] & 0x00000001u) == 0) {
     return nullptr;
   }
@@ -4336,7 +4349,7 @@ inline std::string* EnumValue::release_description() {
   #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   return released;
 }
-inline void EnumValue::set_allocated_description(std::string* value) {
+inline void Enum8Metric_EnumValue::set_allocated_description(std::string* value) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
@@ -4349,7 +4362,7 @@ inline void EnumValue::set_allocated_description(std::string* value) {
           _impl_.description_.Set("", GetArenaForAllocation());
         }
   #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.EnumValue.description)
+  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Enum8Metric.EnumValue.description)
 }
 
 // -------------------------------------------------------------------
@@ -4409,7 +4422,29 @@ inline void Enum8Metric::set_allocated_description(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Enum8Metric.description)
 }
 
-// optional string unit = 2;
+// .abacus.protobuf.Kind kind = 2;
+inline void Enum8Metric::clear_kind() {
+  _impl_.kind_ = 0;
+}
+inline ::abacus::protobuf::Kind Enum8Metric::kind() const {
+  // @@protoc_insertion_point(field_get:abacus.protobuf.Enum8Metric.kind)
+  return _internal_kind();
+}
+inline void Enum8Metric::set_kind(::abacus::protobuf::Kind value) {
+  _internal_set_kind(value);
+  // @@protoc_insertion_point(field_set:abacus.protobuf.Enum8Metric.kind)
+}
+inline ::abacus::protobuf::Kind Enum8Metric::_internal_kind() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return static_cast<::abacus::protobuf::Kind>(_impl_.kind_);
+}
+inline void Enum8Metric::_internal_set_kind(::abacus::protobuf::Kind value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.kind_ = value;
+}
+
+// optional string unit = 3;
 inline bool Enum8Metric::has_unit() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -4478,7 +4513,7 @@ inline void Enum8Metric::set_allocated_unit(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Enum8Metric.unit)
 }
 
-// map<uint32, .abacus.protobuf.EnumValue> values = 3;
+// map<uint32, .abacus.protobuf.Enum8Metric.EnumValue> values = 4;
 inline int Enum8Metric::_internal_values_size() const {
   return _internal_values().size();
 }
@@ -4488,19 +4523,19 @@ inline int Enum8Metric::values_size() const {
 inline void Enum8Metric::clear_values() {
   _impl_.values_.Clear();
 }
-inline const ::google::protobuf::Map<::uint32_t, ::abacus::protobuf::EnumValue>& Enum8Metric::_internal_values() const {
+inline const ::google::protobuf::Map<::uint32_t, ::abacus::protobuf::Enum8Metric_EnumValue>& Enum8Metric::_internal_values() const {
   PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
   return _impl_.values_.GetMap();
 }
-inline const ::google::protobuf::Map<::uint32_t, ::abacus::protobuf::EnumValue>& Enum8Metric::values() const {
+inline const ::google::protobuf::Map<::uint32_t, ::abacus::protobuf::Enum8Metric_EnumValue>& Enum8Metric::values() const {
   // @@protoc_insertion_point(field_map:abacus.protobuf.Enum8Metric.values)
   return _internal_values();
 }
-inline ::google::protobuf::Map<::uint32_t, ::abacus::protobuf::EnumValue>* Enum8Metric::_internal_mutable_values() {
+inline ::google::protobuf::Map<::uint32_t, ::abacus::protobuf::Enum8Metric_EnumValue>* Enum8Metric::_internal_mutable_values() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   return _impl_.values_.MutableMap();
 }
-inline ::google::protobuf::Map<::uint32_t, ::abacus::protobuf::EnumValue>* Enum8Metric::mutable_values() {
+inline ::google::protobuf::Map<::uint32_t, ::abacus::protobuf::Enum8Metric_EnumValue>* Enum8Metric::mutable_values() {
   // @@protoc_insertion_point(field_mutable_map:abacus.protobuf.Enum8Metric.values)
   return _internal_mutable_values();
 }

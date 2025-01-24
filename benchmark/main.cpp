@@ -26,6 +26,7 @@ std::map<abacus::name, abacus::info> create_metric_infos()
                              abacus::required}},
             {abacus::name{"6"},
              abacus::enum8{
+                 abacus::gauge,
                  abacus::description{""},
                  {{0, {"", ""}}, {1, {"", ""}}, {2, {"", ""}}, {3, {"", ""}}},
                  abacus::required}}};
