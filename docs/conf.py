@@ -22,7 +22,7 @@ extensions = [
 wurfapi = {
     "source_paths": [
         # API
-        "../src/abacus/availablity.hpp",
+        "../src/abacus/availability.hpp",
         "../src/abacus/boolean.hpp",
         "../src/abacus/description.hpp",
         "../src/abacus/enum8.hpp",
