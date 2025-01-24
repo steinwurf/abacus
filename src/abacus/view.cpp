@@ -27,32 +27,22 @@ namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-[[nodiscard]] auto view::set_meta_data(const uint8_t* metadata_data,
-                                       std::size_t metadata_bytes) -> bool
+[[nodiscard]] auto view::set_metrics(const protobuf::Metrics& metrics) -> bool
 {
-    assert(metadata_data != nullptr);
-    m_metadata_data = metadata_data;
-    m_metadata_bytes = metadata_bytes;
-    m_value_data = nullptr;
-    m_value_bytes = 0;
-
-    auto result = m_metadata.ParseFromArray(metadata_data, metadata_bytes);
-    if (!result)
+    assert(metrics.IsInitialized());
+    if (set_metadata(metrics.metadata()))
     {
-        return false;
+        return set_value_data((const uint8_t*)metrics.values().data(),
+                              metrics.values().size());
     }
 
-    if (m_metadata.protocol_version() != protocol_version())
-    {
-        m_metadata.Clear();
-        return false;
-    }
-
-    return true;
+    return false;
 }
 
-auto view::set_meta_data(const protobuf::MetricsMetadata& metadata) -> bool
+[[nodiscard]] auto
+view::set_metadata(const protobuf::MetricsMetadata& metadata) -> bool
 {
+    assert(metadata.IsInitialized());
     m_metadata = metadata;
     if (m_metadata.protocol_version() != protocol_version())
     {
@@ -65,7 +55,7 @@ auto view::set_meta_data(const protobuf::MetricsMetadata& metadata) -> bool
 [[nodiscard]] auto view::set_value_data(const uint8_t* value_data,
                                         std::size_t value_bytes) -> bool
 {
-    assert(m_metadata_data != nullptr);
+    assert(m_metadata.IsInitialized());
     assert(value_data != nullptr);
 
     // Check that the hash is correct
@@ -116,8 +106,8 @@ template <class Metric>
 auto view::value(const std::string& name) const
     -> std::optional<typename Metric::type>
 {
+    assert(m_metadata.IsInitialized());
     assert(m_value_data != nullptr);
-    assert(m_metadata_data != nullptr);
     auto m = metric(name);
     auto offset = m.offset();
     assert(offset < m_value_bytes);

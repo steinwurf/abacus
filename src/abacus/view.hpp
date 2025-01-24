@@ -26,25 +26,23 @@ inline namespace STEINWURF_ABACUS_VERSION
 /// The class cannot manipulate the memory, only access the values.
 ///
 /// Note that this class has no constructor, so it can only be declared and
-/// then view.set_meta_data() can be called to initialize the view with the
+/// then view.set_metadata() can be called to initialize the view with the
 /// meta data, subsequently view.set_value_data() can be called to populate
 /// the view with the value data. To update the view with new value data
 /// view.set_value_data() can be called again.
 class view
 {
 public:
-    /// Sets the meta data pointer
-    /// @param metadata_data The meta data pointer
-    /// @param metadata_bytes The meta data size in bytes
-    /// @return true if the meta data was unpacked correctly otherwise false
-    [[nodiscard]] auto set_meta_data(const uint8_t* metadata_data,
-                                     std::size_t metadata_bytes) -> bool;
+    /// Sets the metrics
+    /// @param metrics The metrics
+    /// @return true if the metrics were unpacked correctly otherwise false
+    [[nodiscard]] auto set_metrics(const protobuf::Metrics& metrics) -> bool;
 
     /// Sets the meta data
     /// @param metadata The meta data
     /// @return true if the meta data was unpacked correctly otherwise false
     [[nodiscard]]
-    auto set_meta_data(const protobuf::MetricsMetadata& metadata) -> bool;
+    auto set_metadata(const protobuf::MetricsMetadata& metadata) -> bool;
 
     /// Sets the value data pointer
     /// @param value_data The value data pointer
@@ -79,12 +77,6 @@ public:
         -> std::optional<typename Metric::type>;
 
 private:
-    /// The meta data pointer
-    const uint8_t* m_metadata_data;
-
-    /// The meta data size in bytes
-    std::size_t m_metadata_bytes;
-
     /// The meta data
     protobuf::MetricsMetadata m_metadata;
 

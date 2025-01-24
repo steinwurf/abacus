@@ -53,13 +53,11 @@ TEST(test_view, api)
     auto metric3 = metrics.initialize_optional<abacus::enum8>(name3);
 
     std::vector<uint8_t> value_data(metrics.value_bytes());
-    std::memcpy(value_data.data(),
-                ((const abacus::metrics&)metrics).value_data(),
-                metrics.value_bytes());
+    std::memcpy(value_data.data(), metrics.value_data(), metrics.value_bytes());
 
     abacus::view view;
 
-    bool success = view.set_meta_data(metrics.metadata());
+    bool success = view.set_metadata(metrics.metadata());
     ASSERT_TRUE(success);
     EXPECT_EQ(view.metadata().protocol_version(), abacus::protocol_version());
 
@@ -88,9 +86,15 @@ TEST(test_view, api)
     metric1 = -1000;
     metric3 = 2;
 
+    // Check that the view is not updated
+    EXPECT_FALSE(view_value0.has_value());
+    EXPECT_FALSE(view_value1.has_value());
+    EXPECT_TRUE(view_value2.has_value());
+    EXPECT_EQ(3.14, view_value2.value());
+    EXPECT_FALSE(view_value3.has_value());
+
     // and provide new value data to the view
-    success = view.set_value_data(
-        ((const abacus::metrics&)metrics).value_data(), metrics.value_bytes());
+    success = view.set_value_data(metrics.value_data(), metrics.value_bytes());
     ASSERT_TRUE(success);
     view_value0 = view.value<abacus::uint64>(name0);
 

@@ -266,7 +266,7 @@ TEST(test_metrics, reset_counters)
     EXPECT_EQ(int_metric.value(), -4);
 }
 
-static const std::vector<uint8_t> expected_meta_data = {
+static const std::vector<uint8_t> expected_metadata = {
     0x08, 0x02, 0x1d, 0x26, 0x65, 0xd9, 0x06, 0x22, 0x34, 0x0a, 0x07, 0x6d,
     0x65, 0x74, 0x72, 0x69, 0x63, 0x30, 0x12, 0x29, 0x08, 0x04, 0x1a, 0x25,
     0x0a, 0x1a, 0x41, 0x6e, 0x20, 0x75, 0x6e, 0x73, 0x69, 0x67, 0x6e, 0x65,
@@ -330,7 +330,7 @@ TEST(test_metrics, protocol_version)
     (void)float_metric;
     (void)bool_metric;
 
-    EXPECT_EQ(metrics.metadata().ByteSizeLong(), expected_meta_data.size());
+    EXPECT_EQ(metrics.metadata().ByteSizeLong(), expected_metadata.size());
     {
         // Print the metadata as hex
         std::stringstream meta_stream;
@@ -348,8 +348,8 @@ TEST(test_metrics, protocol_version)
         SCOPED_TRACE(::testing::Message() << "Meta data:\n"
                                           << meta_stream.str());
 
-        auto expected = abacus::parse_metadata(expected_meta_data.data(),
-                                               expected_meta_data.size());
+        auto expected = abacus::parse_metadata(expected_metadata.data(),
+                                               expected_metadata.size());
         auto actual = metrics.metadata();
 
         expected.set_sync_value(1);
@@ -367,17 +367,14 @@ TEST(test_metrics, protocol_version)
         for (std::size_t i = 4; i < metrics.value_bytes(); ++i)
         {
             value_stream << "0x" << std::setw(2) << std::setfill('0')
-                         << static_cast<int>(((const abacus::metrics&)metrics)
-                                                 .value_data()[i])
-                         << ", ";
+                         << static_cast<int>(metrics.value_data()[i]) << ", ";
         }
         SCOPED_TRACE(::testing::Message() << "Value data:\n"
                                           << value_stream.str());
-        EXPECT_EQ(expected_value_data,
-                  std::vector<uint8_t>(
-                      ((const abacus::metrics&)metrics).value_data() + 4,
-                      ((const abacus::metrics&)metrics).value_data() +
-                          metrics.value_bytes()));
+        EXPECT_EQ(
+            expected_value_data,
+            std::vector<uint8_t>(metrics.value_data() + 4,
+                                 metrics.value_data() + metrics.value_bytes()));
     }
 }
 
@@ -569,9 +566,9 @@ TEST(test_metrics, reset)
 
     // Create a view to see the constants
     abacus::view view;
-    ASSERT_TRUE(view.set_meta_data(metrics.metadata()));
-    ASSERT_TRUE(view.set_value_data(
-        ((const abacus::metrics&)metrics).value_data(), metrics.value_bytes()));
+    ASSERT_TRUE(view.set_metadata(metrics.metadata()));
+    ASSERT_TRUE(
+        view.set_value_data(metrics.value_data(), metrics.value_bytes()));
 
     // Check all constant values
     EXPECT_EQ(view.value<abacus::uint64>("uint64_constant").value(), 1111U);
@@ -631,8 +628,8 @@ TEST(test_metrics, reset)
     EXPECT_FALSE(enum8_optional.has_value());
 
     // Update view and check all constant values
-    ASSERT_TRUE(view.set_value_data(
-        ((const abacus::metrics&)metrics).value_data(), metrics.value_bytes()));
+    ASSERT_TRUE(
+        view.set_value_data(metrics.value_data(), metrics.value_bytes()));
 
     // Check all constant values
     EXPECT_EQ(view.value<abacus::uint64>("uint64_constant"), 1111U);

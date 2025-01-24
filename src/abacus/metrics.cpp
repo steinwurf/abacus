@@ -48,13 +48,11 @@ get_kind(const protobuf::Metric& metric) -> std::optional<protobuf::Kind>
 
 metrics::metrics(metrics&& other) noexcept :
     m_proto_metrics(std::move(other.m_proto_metrics)), m_hash(other.m_hash),
-    m_metadata_bytes(other.m_metadata_bytes),
     m_value_bytes(other.m_value_bytes),
     m_initialized(std::move(other.m_initialized))
 {
     other.m_proto_metrics = protobuf::Metrics();
     other.m_hash = 0;
-    other.m_metadata_bytes = 0;
     other.m_value_bytes = 0;
     other.m_initialized.clear();
 }
@@ -245,9 +243,9 @@ metrics::metrics(const std::map<name, abacus::info>& info)
     // calculated correctly
     m_proto_metrics.mutable_metadata()->set_sync_value(1);
 
-    m_metadata_bytes = metadata().ByteSizeLong();
+    auto metadata_bytes = metadata().ByteSizeLong();
 
-    std::vector<uint8_t> data(m_metadata_bytes);
+    std::vector<uint8_t> data(metadata_bytes);
 
     // Serialize the metadata
     metadata().SerializeToArray(data.data(), data.size());
@@ -262,7 +260,7 @@ metrics::metrics(const std::map<name, abacus::info>& info)
     // metadata().SerializeToArray(data.data(), data.size());
 
     // Make sure the metadata didn't change unexpectedly
-    assert(metadata().ByteSizeLong() == m_metadata_bytes);
+    assert(metadata().ByteSizeLong() == metadata_bytes);
 
     // Write the sync value to the first byte of the value data (this will
     // be written as the endianess of the system)
@@ -401,9 +399,9 @@ metrics::~metrics()
 {
 }
 
-auto metrics::value_data(std::size_t offset) const -> const uint8_t*
+auto metrics::value_data() const -> const uint8_t*
 {
-    return (const uint8_t*)m_proto_metrics.values().data() + offset;
+    return (const uint8_t*)m_proto_metrics.values().data();
 }
 
 auto metrics::value_data(std::size_t offset) -> uint8_t*
