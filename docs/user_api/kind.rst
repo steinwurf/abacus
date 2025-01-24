@@ -1,2 +1,2 @@
-.. wurfapi:: enum_synopsis.rst
+.. wurfapi:: type_alias_synopsis.rst
     :selector: abacus::kind

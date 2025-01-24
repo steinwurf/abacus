@@ -1,2 +1,2 @@
-.. wurfapi:: class_synopsis.rst
+.. wurfapi:: type_alias_synopsis.rst
     :selector: abacus::availability
