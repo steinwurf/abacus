@@ -6,6 +6,7 @@ every change, see the Git log.
 
 Latest
 ------
+* Major: Changed protocol format to version 2.
 * Minor: Added benchmark.
 * Major: Changed the metadata to be specified using protobuf 3.
 * Major: Changed callbacks to now use std::function rather than the custom
