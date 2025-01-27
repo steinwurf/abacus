@@ -358,7 +358,7 @@ void metrics::initialize_constant(const std::string& name,
     auto offset = proto_metric.offset();
     assert(get_kind(proto_metric) == protobuf::Kind::CONSTANT);
 
-    typename Metric::required(value_data(offset), value);
+    required_metric<Metric>(value_data(offset), value);
 }
 
 // Explicit instantiations for the expected types
