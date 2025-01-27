@@ -45,7 +45,7 @@ jobs:
           CXX: clang++
           cc: clang
           cxxflags: '-fsanitize=thread -fPIE -g'
-          env: TSAN_OPTIONS="suppressions=../tsan_suppression.txt"
+          env:
           runner: ubuntu-current
         - name: Clang Undefined Sanitizer Latest
           CXX: clang++

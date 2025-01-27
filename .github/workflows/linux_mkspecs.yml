@@ -58,7 +58,7 @@ jobs:
         with:
           max_attempts: 3
           timeout_minutes: 15
-          command: python3 waf configure --git_protocol=git@ ${{ env.EXTRA_RESOLVE_OPTIONS }} --ninja
+          command: python3 waf configure --git_protocol=git@ ${{ env.EXTRA_RESOLVE_OPTIONS }}
       - name: Waf Build
         run: |
           echo "::add-matcher::.github/gcc-problem-matcher.json"
