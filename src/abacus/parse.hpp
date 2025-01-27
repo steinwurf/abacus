@@ -26,11 +26,6 @@ public:
     static auto
     metadata(const uint8_t* metadata_data,
              std::size_t metadata_bytes) -> protobuf::MetricsMetadata;
-
-    /// @param metrics_data The metrics pointer
-    /// @param metrics_bytes The metrics size in bytes
-    static auto metrics(const uint8_t* metrics_data,
-                        std::size_t metrics_bytes) -> protobuf::Metrics;
 };
 }
 }

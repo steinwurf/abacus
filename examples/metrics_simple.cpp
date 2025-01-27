@@ -14,28 +14,23 @@
 // Simple example of metrics on a car.
 int main()
 {
-    std::string name0 = "fuel_consumption";
-    std::string name1 = "wheels";
-    std::string name2 = "days_until_maintenance";
-    std::string name3 = "registered";
-
     std::map<abacus::name, abacus::info> infos = {
-        {abacus::name{name0},
+        {abacus::name{"fuel_consumption"},
          abacus::float64{
              abacus::constant,
              abacus::description{"Fuel consumption in kilometers per liter"},
              abacus::required, abacus::unit{"km/l"}}},
-        {abacus::name{name1},
+        {abacus::name{"wheels"},
          abacus::uint64{abacus::constant,
                         abacus::description{"Wheels on the car"},
                         abacus::required, abacus::unit{"wheels"}}},
-        {abacus::name{name2},
+        {abacus::name{"days_until_maintenance"},
          abacus::int64{
              abacus::gauge,
              abacus::description{"Days until next maintenance, if less than 0, "
                                  "maintenance is overdue"},
              abacus::required, abacus::unit{"days"}}},
-        {abacus::name{name3},
+        {abacus::name{"registered"},
          abacus::boolean{abacus::gauge,
                          abacus::description{"Is the car registered"},
                          abacus::optional}}};

@@ -27,18 +27,6 @@ namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-[[nodiscard]] auto view::set_metrics(const protobuf::Metrics& metrics) -> bool
-{
-    assert(metrics.IsInitialized());
-    if (set_metadata(metrics.metadata()))
-    {
-        return set_value_data((const uint8_t*)metrics.values().data(),
-                              metrics.values().size());
-    }
-
-    return false;
-}
-
 [[nodiscard]] auto
 view::set_metadata(const protobuf::MetricsMetadata& metadata) -> bool
 {

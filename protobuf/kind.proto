@@ -2,9 +2,37 @@ syntax = "proto3";
 package abacus.protobuf;
 option go_package = "abacus/protobuf";
 
-// Specifies the kind of metric
 enum Kind {
-    GAUGE = 0;     // Gauge metric
-    COUNTER = 1;   // Counter metric
-    CONSTANT = 2;  // Constant metric
+    GAUGE = 0;
+    COUNTER = 1;
+    CONSTANT = 2;
 }
+
+// // A gauge metric
+// message Gauge{
+
+//     // Whether the metric is optional
+//     bool optional = 1;
+// }
+
+// // A counter metric
+// message Counter{
+
+//     // Whether the metric is optional
+//     bool optional = 1;
+// }
+
+// // A constant metric
+// message Constant{
+// }
+
+// // A metric kind
+// message Kind {
+
+//     // The kind of metric
+//     oneof value {
+//         Gauge gauge = 1;        // Gauge metric
+//         Counter counter = 2;    // Counter metric
+//         Constant constant = 3;  // Constant metric
+//     }
+// }

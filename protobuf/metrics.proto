@@ -106,8 +106,3 @@ message MetricsMetadata {
     fixed32 sync_value = 3;             // Synchronization value
     map<string, Metric> metrics = 4;    // Mapping from metric name to metadata
 }
-
-message Metrics {
-    optional MetricsMetadata metadata = 1;  // Metadata for all metrics
-    bytes values = 2;                       // Packed memory for all metrics
-}

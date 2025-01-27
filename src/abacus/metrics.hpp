@@ -77,6 +77,12 @@ public:
     /// during initialization.
     auto reset() -> void;
 
+    /// @return the pointer to the metadata part of the metrics.
+    auto metadata_data() const -> const uint8_t*;
+
+    /// @return the size of the metadata part of the metrics.
+    auto metadata_bytes() const -> std::size_t;
+
     /// @return the const pointer to the value data of the metrics.
     auto value_data() const -> const uint8_t*;
 
@@ -85,11 +91,6 @@ public:
 
     /// @return the metadata part of the metrics.
     auto metadata() const -> const protobuf::MetricsMetadata&;
-
-    /// Get the protobuf representation of the metrics including both metadata
-    /// and value data
-    /// @return The protobuf representation of the metrics
-    auto protobuf() const -> const protobuf::Metrics&;
 
 private:
     /// @param offset The offset of the value data
@@ -104,7 +105,13 @@ private:
 
 private:
     /// The info of the metrics separated by byte-sizes
-    protobuf::Metrics m_proto_metrics;
+    protobuf::MetricsMetadata m_metadata;
+
+    /// Data of the metrics, both metadata and values
+    std::vector<uint8_t> m_data;
+
+    /// The size of the metadata in bytes
+    std::size_t m_metadata_bytes;
 
     /// The hash of the metadata
     uint32_t m_hash;

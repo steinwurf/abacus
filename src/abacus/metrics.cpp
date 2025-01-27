@@ -50,11 +50,14 @@ static inline auto get_kind(const protobuf::Metric& metric) -> protobuf::Kind
 }
 
 metrics::metrics(metrics&& other) noexcept :
-    m_proto_metrics(std::move(other.m_proto_metrics)), m_hash(other.m_hash),
+    m_metadata(std::move(other.m_metadata)), m_data(std::move(other.m_data)),
+    m_metadata_bytes(other.m_metadata_bytes), m_hash(other.m_hash),
     m_value_bytes(other.m_value_bytes),
     m_initialized(std::move(other.m_initialized))
 {
-    other.m_proto_metrics = protobuf::Metrics();
+    other.m_metadata = protobuf::MetricsMetadata();
+    other.m_data.clear();
+    other.m_metadata_bytes = 0;
     other.m_hash = 0;
     other.m_value_bytes = 0;
     other.m_initialized.clear();
@@ -62,12 +65,11 @@ metrics::metrics(metrics&& other) noexcept :
 
 metrics::metrics(const std::map<name, abacus::info>& info)
 {
-    m_proto_metrics = protobuf::Metrics();
-    m_proto_metrics.mutable_metadata()->set_protocol_version(
-        protocol_version());
-    m_proto_metrics.mutable_metadata()->set_endianness(
-        endian::is_big_endian() ? protobuf::Endianness::BIG
-                                : protobuf::Endianness::LITTLE);
+    m_metadata = protobuf::MetricsMetadata();
+    m_metadata.set_protocol_version(protocol_version());
+    m_metadata.set_endianness(endian::is_big_endian()
+                                  ? protobuf::Endianness::BIG
+                                  : protobuf::Endianness::LITTLE);
 
     // The first byte is reserved for the sync value
     m_value_bytes = sizeof(uint32_t);
@@ -238,43 +240,38 @@ metrics::metrics(const std::map<name, abacus::info>& info)
             }
         }
 
-        m_proto_metrics.mutable_metadata()->mutable_metrics()->insert(
-            {name.value, metric});
+        m_metadata.mutable_metrics()->insert({name.value, metric});
         m_initialized[name.value] = false;
     }
 
     // Set the sync value to 1 so that the size of the metadata is
     // calculated correctly
-    m_proto_metrics.mutable_metadata()->set_sync_value(1);
+    m_metadata.set_sync_value(1);
 
-    auto metadata_bytes = metadata().ByteSizeLong();
+    m_metadata_bytes = metadata().ByteSizeLong();
 
-    std::vector<uint8_t> data(metadata_bytes);
+    m_data.resize(m_metadata_bytes + m_value_bytes);
 
     // Serialize the metadata
-    metadata().SerializeToArray(data.data(), data.size());
+    metadata().SerializeToArray(m_data.data(), m_metadata_bytes);
 
     // Calculate the hash of the metadata
-    m_hash = detail::hash_function(data.data(), data.size());
+    m_hash = detail::hash_function(m_data.data(), m_metadata_bytes);
 
     // Update the sync value
-    m_proto_metrics.mutable_metadata()->set_sync_value(m_hash);
+    m_metadata.set_sync_value(m_hash);
 
-    // // Serialize the metadata again to include the sync value
-    // metadata().SerializeToArray(data.data(), data.size());
+    // Serialize the metadata again to include the sync value
+    metadata().SerializeToArray(m_data.data(), m_metadata_bytes);
 
     // Make sure the metadata didn't change unexpectedly
-    assert(metadata().ByteSizeLong() == metadata_bytes);
+    assert(metadata().ByteSizeLong() == m_metadata_bytes);
 
     // Write the sync value to the first byte of the value data (this will
     // be written as the endianess of the system)
     // Consuming code can use the endianness field in the metadata to
     // read the sync value
-
-    m_proto_metrics.mutable_values()->resize(m_value_bytes);
-
-    std::memcpy(m_proto_metrics.mutable_values()->data(), &m_hash,
-                sizeof(uint32_t));
+    std::memcpy(value_data(0), &m_hash, sizeof(uint32_t));
 }
 
 template <class Metric>
@@ -396,12 +393,12 @@ metrics::~metrics()
 
 auto metrics::value_data() const -> const uint8_t*
 {
-    return (const uint8_t*)m_proto_metrics.values().data();
+    return m_data.data() + m_metadata_bytes;
 }
 
 auto metrics::value_data(std::size_t offset) -> uint8_t*
 {
-    return (uint8_t*)m_proto_metrics.mutable_values()->data() + offset;
+    return m_data.data() + offset + m_metadata_bytes;
 }
 
 auto metrics::value_bytes() const -> std::size_t
@@ -411,7 +408,17 @@ auto metrics::value_bytes() const -> std::size_t
 
 auto metrics::metadata() const -> const protobuf::MetricsMetadata&
 {
-    return m_proto_metrics.metadata();
+    return m_metadata;
+}
+
+auto metrics::metadata_data() const -> const uint8_t*
+{
+    return m_data.data();
+}
+
+auto metrics::metadata_bytes() const -> std::size_t
+{
+    return m_metadata.ByteSizeLong();
 }
 
 auto metrics::is_initialized(const std::string& name) const -> bool
@@ -506,11 +513,6 @@ auto metrics::reset() -> void
             }
         }
     }
-}
-
-auto metrics::protobuf() const -> const protobuf::Metrics&
-{
-    return m_proto_metrics;
 }
 }
 }

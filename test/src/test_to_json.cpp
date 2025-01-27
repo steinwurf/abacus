@@ -207,8 +207,4 @@ TEST(test_to_json, to_json)
 
     EXPECT_EQ(json_from_view, json_from_data);
     EXPECT_EQ(json_from_view, expected_json) << json_from_view;
-
-    auto to_json_from_metrics = abacus::to_json(metrics.protobuf());
-    EXPECT_EQ(to_json_from_metrics, json_from_data);
-    EXPECT_EQ(to_json_from_metrics, expected_json) << json_from_view;
 }

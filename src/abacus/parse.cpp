@@ -22,15 +22,5 @@ auto parse::metadata(const uint8_t* metadata_data,
     metadata.ParseFromArray(metadata_data, metadata_bytes);
     return metadata;
 }
-
-auto parse::metrics(const uint8_t* metrics_data,
-                    std::size_t metrics_bytes) -> protobuf::Metrics
-{
-    assert(metrics_data != nullptr);
-    assert(metrics_bytes > 0);
-    protobuf::Metrics metrics;
-    metrics.ParseFromArray(metrics_data, metrics_bytes);
-    return metrics;
-}
 }
 }

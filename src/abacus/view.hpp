@@ -33,11 +33,6 @@ inline namespace STEINWURF_ABACUS_VERSION
 class view
 {
 public:
-    /// Sets the metrics
-    /// @param metrics The metrics
-    /// @return true if the metrics were unpacked correctly otherwise false
-    [[nodiscard]] auto set_metrics(const protobuf::Metrics& metrics) -> bool;
-
     /// Sets the meta data
     /// @param metadata The meta data
     /// @return true if the meta data was unpacked correctly otherwise false
