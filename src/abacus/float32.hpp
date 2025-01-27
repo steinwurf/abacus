@@ -27,10 +27,10 @@ struct float32
     using type = float;
 
     /// The optional metric type
-    using optional = detail::optional_metric<float32>;
+    using optional = optional_metric<float32>;
 
     /// The required metric type
-    using required = detail::required_metric<float32>;
+    using required = required_metric<float32>;
 
     /// Set the value of the metric
     /// @param memory The memory to use for the metric, note that the memory

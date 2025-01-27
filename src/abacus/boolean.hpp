@@ -27,9 +27,9 @@ struct boolean
     using type = bool;
 
     /// The optional metric type
-    using optional = detail::optional_metric<boolean>;
+    using optional = optional_metric<boolean>;
     /// The required metric type
-    using required = detail::required_metric<boolean>;
+    using required = required_metric<boolean>;
 
     /// Set the value of the metric
     /// @param memory The memory to use for the metric, note that the memory

@@ -28,10 +28,10 @@ struct enum8
     using type = uint8_t;
 
     /// The optional metric type
-    using optional = detail::optional_metric<enum8>;
+    using optional = optional_metric<enum8>;
 
     /// The required metric type
-    using required = detail::required_metric<enum8>;
+    using required = required_metric<enum8>;
 
     /// Set the value of the metric
     /// @param memory The memory to use for the metric, note that the memory

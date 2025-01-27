@@ -25,10 +25,10 @@ struct uint64
     using type = uint64_t;
 
     /// The optional metric type
-    using optional = detail::optional_metric<uint64>;
+    using optional = optional_metric<uint64>;
 
     /// The required metric type
-    using required = detail::required_metric<uint64>;
+    using required = required_metric<uint64>;
 
     /// Set the value of the metric
     /// @param memory The memory to use for the metric, note that the memory

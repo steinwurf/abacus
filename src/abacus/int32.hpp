@@ -25,10 +25,10 @@ struct int32
     using type = int32_t;
 
     /// The optional metric type
-    using optional = detail::optional_metric<int32>;
+    using optional = optional_metric<int32>;
 
     /// The required metric type
-    using required = detail::required_metric<int32>;
+    using required = required_metric<int32>;
 
     /// Set the value of the metric
     /// @param memory The memory to use for the metric, note that the memory

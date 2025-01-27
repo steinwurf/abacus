@@ -18,8 +18,6 @@ namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-namespace detail
-{
 /// An optional metric class for most metrics
 template <typename Metric>
 struct optional_metric
@@ -173,6 +171,5 @@ protected:
     /// The metric memory
     uint8_t* m_memory = nullptr;
 };
-}
 }
 }
