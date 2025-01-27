@@ -276,7 +276,7 @@ metrics::metrics(const std::map<name, abacus::info>& info)
 
 template <class Metric>
 [[nodiscard]] auto metrics::initialize_optional(const std::string& name) ->
-    typename Metric::optional
+    typename detail::optional_metric<Metric>
 {
     assert(m_initialized.find(name) != m_initialized.end());
     assert(!m_initialized.at(name));
@@ -292,26 +292,26 @@ template <class Metric>
 
 // Explicit instantiations for the expected types
 template auto metrics::initialize_optional<uint64>(const std::string& name)
-    -> uint64::optional;
-template auto
-metrics::initialize_optional<int64>(const std::string& name) -> int64::optional;
+    -> detail::optional_metric<uint64>;
+template auto metrics::initialize_optional<int64>(const std::string& name)
+    -> detail::optional_metric<int64>;
 template auto metrics::initialize_optional<uint32>(const std::string& name)
-    -> uint32::optional;
-template auto
-metrics::initialize_optional<int32>(const std::string& name) -> int32::optional;
+    -> detail::optional_metric<uint32>;
+template auto metrics::initialize_optional<int32>(const std::string& name)
+    -> detail::optional_metric<int32>;
 template auto metrics::initialize_optional<float64>(const std::string& name)
-    -> float64::optional;
+    -> detail::optional_metric<float64>;
 template auto metrics::initialize_optional<float32>(const std::string& name)
-    -> float32::optional;
+    -> detail::optional_metric<float32>;
 template auto metrics::initialize_optional<boolean>(const std::string& name)
-    -> boolean::optional;
-template auto
-metrics::initialize_optional<enum8>(const std::string& name) -> enum8::optional;
+    -> detail::optional_metric<boolean>;
+template auto metrics::initialize_optional<enum8>(const std::string& name)
+    -> detail::optional_metric<enum8>;
 
 template <class Metric>
 [[nodiscard]] auto metrics::initialize_required(const std::string& name,
                                                 typename Metric::type value) ->
-    typename Metric::required
+    typename detail::required_metric<Metric>
 {
     assert(m_initialized.find(name) != m_initialized.end());
     assert(!m_initialized.at(name));
@@ -327,30 +327,30 @@ template <class Metric>
 }
 
 // Explicit instantiations for the expected types
-template auto
-metrics::initialize_required<uint64>(const std::string& name,
-                                     uint64::type value) -> uint64::required;
-template auto
-metrics::initialize_required<int64>(const std::string& name,
-                                    int64::type value) -> int64::required;
-template auto
-metrics::initialize_required<uint32>(const std::string& name,
-                                     uint32::type value) -> uint32::required;
-template auto
-metrics::initialize_required<int32>(const std::string& name,
-                                    int32::type value) -> int32::required;
-template auto
-metrics::initialize_required<float64>(const std::string& name,
-                                      float64::type value) -> float64::required;
-template auto
-metrics::initialize_required<float32>(const std::string& name,
-                                      float32::type value) -> float32::required;
-template auto
-metrics::initialize_required<boolean>(const std::string& name,
-                                      boolean::type value) -> boolean::required;
-template auto
-metrics::initialize_required<enum8>(const std::string& name,
-                                    enum8::type value) -> enum8::required;
+template auto metrics::initialize_required<uint64>(const std::string& name,
+                                                   uint64::type value)
+    -> detail::required_metric<uint64>;
+template auto metrics::initialize_required<int64>(const std::string& name,
+                                                  int64::type value)
+    -> detail::required_metric<int64>;
+template auto metrics::initialize_required<uint32>(const std::string& name,
+                                                   uint32::type value)
+    -> detail::required_metric<uint32>;
+template auto metrics::initialize_required<int32>(const std::string& name,
+                                                  int32::type value)
+    -> detail::required_metric<int32>;
+template auto metrics::initialize_required<float64>(const std::string& name,
+                                                    float64::type value)
+    -> detail::required_metric<float64>;
+template auto metrics::initialize_required<float32>(const std::string& name,
+                                                    float32::type value)
+    -> detail::required_metric<float32>;
+template auto metrics::initialize_required<boolean>(const std::string& name,
+                                                    boolean::type value)
+    -> detail::required_metric<boolean>;
+template auto metrics::initialize_required<enum8>(const std::string& name,
+                                                  enum8::type value)
+    -> detail::required_metric<enum8>;
 
 template <class Metric>
 void metrics::initialize_constant(const std::string& name,

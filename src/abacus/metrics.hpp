@@ -15,6 +15,8 @@
 #include "name.hpp"
 #include "version.hpp"
 
+#include "detail/optional_metric.hpp"
+#include "detail/required_metric.hpp"
 #include "protobuf/metrics.pb.h"
 
 namespace abacus
@@ -48,14 +50,14 @@ public:
     template <class Metric>
     [[nodiscard]] auto initialize_required(const std::string& name,
                                            typename Metric::type value) ->
-        typename Metric::required;
+        typename detail::required_metric<Metric>;
 
     /// Initialize a metric
     /// @param name The name of the metric
     /// @return The metric object
     template <class Metric>
     [[nodiscard]] auto initialize_optional(const std::string& name) ->
-        typename Metric::optional;
+        typename detail::optional_metric<Metric>;
 
     /// Initialize a constant metric
     /// @param name The name of the metric
