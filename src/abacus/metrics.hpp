@@ -15,9 +15,9 @@
 #include "name.hpp"
 #include "version.hpp"
 
-#include "detail/optional_metric.hpp"
-#include "detail/required_metric.hpp"
+#include "optional_metric.hpp"
 #include "protobuf/metrics.pb.h"
+#include "required_metric.hpp"
 
 namespace abacus
 {

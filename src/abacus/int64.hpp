@@ -7,11 +7,11 @@
 
 #include "availability.hpp"
 #include "description.hpp"
-#include "detail/optional_metric.hpp"
-#include "detail/required_metric.hpp"
 #include "kind.hpp"
 #include "max.hpp"
 #include "min.hpp"
+#include "optional_metric.hpp"
+#include "required_metric.hpp"
 #include "unit.hpp"
 
 namespace abacus

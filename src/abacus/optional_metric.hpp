@@ -10,9 +10,9 @@
 #include <cstdint>
 #include <cstring>
 
-#include "has_arithmetic_operators.hpp"
+#include "detail/has_arithmetic_operators.hpp"
 
-#include "../version.hpp"
+#include "version.hpp"
 
 namespace abacus
 {
