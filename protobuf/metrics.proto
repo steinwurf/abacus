@@ -2,73 +2,124 @@ syntax = "proto3";
 package abacus.protobuf;
 option go_package = "abacus/protobuf";
 
-import "abacus/protobuf/kind.proto";
-
 // Specifies the endianness for multi-byte values
 enum Endianness {
     LITTLE = 0;  // Little-endian byte order
     BIG = 1;     // Big-endian byte order
 }
 
+// A gauge used when the value can increase or decrease
+message Gauge{
+
+    // Whether the metric is optional
+    bool optional = 1;
+}
+
+// A counter used when the value is ever-increasing
+message Counter{
+
+    // Whether the metric is optional
+    bool optional = 1;
+}
+
+// A constant used when the value is fixed
+message Constant{
+}
+
+
 // Metadata for unsigned 64-bit metrics
 message UInt64Metric {
     string description = 1;   // Metric description
-    Kind kind = 2;            // Kind of metric
-    optional string unit = 3; // Unit of measurement
-    optional uint64 min = 4;  // Minimum allowable value
-    optional uint64 max = 5;  // Maximum allowable value
+    // The kind of metric
+    oneof kind {
+        Gauge gauge = 2;        // Gauge metric
+        Counter counter = 3;    // Counter metric
+        Constant constant = 4;  // Constant metric
+    }
+    optional string unit = 5; // Unit of measurement
+    optional uint64 min = 6;  // Minimum allowable value
+    optional uint64 max = 7;  // Maximum allowable value
 }
 
 // Metadata for signed 64-bit metrics
 message Int64Metric {
     string description = 1;   // Metric description
-    Kind kind = 2;            // Kind of metric
-    optional string unit = 3; // Unit of measurement
-    optional int64 min = 4;   // Minimum allowable value
-    optional int64 max = 5;   // Maximum allowable value
+    // The kind of metric
+    oneof kind {
+        Gauge gauge = 2;        // Gauge metric
+        Counter counter = 3;    // Counter metric
+        Constant constant = 4;  // Constant metric
+    }
+    optional string unit = 5; // Unit of measurement
+    optional int64 min = 6;   // Minimum allowable value
+    optional int64 max = 7;   // Maximum allowable value
 }
 
 // Metadata for unsigned 32-bit metrics
 message UInt32Metric {
     string description = 1;   // Metric description
-    Kind kind = 2;            // Kind of metric
-    optional string unit = 3; // Unit of measurement
-    optional uint32 min = 4;  // Minimum allowable value
-    optional uint32 max = 5;  // Maximum allowable value
+    // The kind of metric
+    oneof kind {
+        Gauge gauge = 2;        // Gauge metric
+        Counter counter = 3;    // Counter metric
+        Constant constant = 4;  // Constant metric
+    }
+    optional string unit = 5; // Unit of measurement
+    optional uint32 min = 6;  // Minimum allowable value
+    optional uint32 max = 7;  // Maximum allowable value
 }
 
 // Metadata for signed 32-bit metrics
 message Int32Metric {
     string description = 1;   // Metric description
-    Kind kind = 2;            // Kind of metric
-    optional string unit = 3; // Unit of measurement
-    optional int32 min = 4;   // Minimum allowable value
-    optional int32 max = 5;   // Maximum allowable value
+    // The kind of metric
+    oneof kind {
+        Gauge gauge = 2;        // Gauge metric
+        Counter counter = 3;    // Counter metric
+        Constant constant = 4;  // Constant metric
+    }
+    optional string unit = 5; // Unit of measurement
+    optional int32 min = 6;   // Minimum allowable value
+    optional int32 max = 7;   // Maximum allowable value
 }
 
 // Metadata for 64-bit floating-point metrics
 message Float64Metric {
     string description = 1;   // Metric description
-    Kind kind = 2;            // Kind of metric
-    optional string unit = 3; // Unit of measurement
-    optional double min = 4;  // Minimum allowable value
-    optional double max = 5;  // Maximum allowable value
+    // The kind of metric
+    oneof kind {
+        Gauge gauge = 2;        // Gauge metric
+        Counter counter = 3;    // Counter metric
+        Constant constant = 4;  // Constant metric
+    }
+    optional string unit = 5; // Unit of measurement
+    optional double min = 6;  // Minimum allowable value
+    optional double max = 7;  // Maximum allowable value
 }
 
 // Metadata for 32-bit floating-point metrics
 message Float32Metric {
     string description = 1;   // Metric description
-    Kind kind = 2;            // Kind of metric
-    optional string unit = 3; // Unit of measurement
-    optional float min = 4;   // Minimum allowable value
-    optional float max = 5;   // Maximum allowable value
+    // The kind of metric
+    oneof kind {
+        Gauge gauge = 2;        // Gauge metric
+        Counter counter = 3;    // Counter metric
+        Constant constant = 4;  // Constant metric
+    }
+    optional string unit = 5; // Unit of measurement
+    optional float min = 6;   // Minimum allowable value
+    optional float max = 7;   // Maximum allowable value
 }
 
 // Metadata for boolean metrics
 message BoolMetric {
     string description = 1;   // Metric description
-    Kind kind = 2;            // Kind of metric
-    optional string unit = 3; // Unit of measurement
+    // The kind of metric
+    oneof kind {
+        Gauge gauge = 2;        // Gauge metric
+        Constant constant = 3;  // Constant metric
+    }
+    optional string unit = 4; // Unit of measurement
 }
 
 // Metadata for enumerated metrics
@@ -78,15 +129,18 @@ message Enum8Metric {
         optional string description = 2;   // Enum description
     }
     string description = 1;            // Metric description
-    Kind kind = 2;                     // Kind of metric
-    optional string unit = 3;          // Unit of measurement
-    map<uint32, EnumValue> values = 4; // Mapping from packed index to enum info
+    // The kind of metric
+    oneof kind {
+        Gauge gauge = 2;        // Gauge metric
+        Constant constant = 3;  // Constant metric
+    }
+    optional string unit = 4;          // Unit of measurement
+    map<uint32, EnumValue> values = 5; // Mapping from packed index to enum info
 }
 
 message Metric
 {
     uint32 offset = 1;              // Offset into packed memory for the value
-    bool optional = 2;              // Whether the metric is optional
     oneof type {
         UInt64Metric uint64 = 3;    // Metadata for unsigned 64-bit metrics
         Int64Metric int64 = 4;      // Metadata for signed 64-bit metrics

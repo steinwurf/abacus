@@ -38,38 +38,35 @@ TEST(test_metrics, api)
 
     std::map<abacus::name, abacus::info> infos = {
         {abacus::name{name0},
-         abacus::boolean{abacus::counter,
-                         abacus::description{"A boolean metric"},
-                         abacus::optional}},
+         abacus::boolean{abacus::gauge{abacus::optional},
+                         abacus::description{"A boolean metric"}}},
         {abacus::name{name1},
-         abacus::uint64{abacus::counter,
+         abacus::uint64{abacus::counter{abacus::required},
                         abacus::description{"An unsigned integer metric"},
-                        abacus::required, abacus::unit{"bytes"}}},
+                        abacus::unit{"bytes"}}},
         {abacus::name{name2},
-         abacus::int64{abacus::gauge,
+         abacus::int64{abacus::gauge{abacus::optional},
                        abacus::description{"A signed integer metric"},
-                       abacus::optional, abacus::unit{"USD"}}},
+                       abacus::unit{"USD"}}},
         {abacus::name{name3},
-         abacus::float64{abacus::gauge,
+         abacus::float64{abacus::gauge{abacus::optional},
                          abacus::description{"A floating point metric"},
-                         abacus::optional, abacus::unit{"ms"}}},
+                         abacus::unit{"ms"}}},
         {abacus::name{name4},
-         abacus::boolean{abacus::constant,
-                         abacus::description{"A constant boolean metric"},
-                         abacus::required}},
+         abacus::boolean{abacus::constant{},
+                         abacus::description{"A constant boolean metric"}}},
         {abacus::name{name5},
          abacus::float64{
-             abacus::constant,
+             abacus::constant{},
              abacus::description{"A constant floating point metric"},
-             abacus::required, abacus::unit{"ms"}}},
+             abacus::unit{"ms"}}},
         {abacus::name{name6},
-         abacus::enum8{abacus::gauge,
+         abacus::enum8{abacus::gauge{abacus::optional},
                        abacus::description{"An enum metric"},
                        {{0, {"value0", "The value for 0"}},
                         {1, {"value1", "The value for 1"}},
                         {2, {"value2", "The value for 2"}},
-                        {3, {"value3", "The value for 3"}}},
-                       abacus::optional}}};
+                        {3, {"value3", "The value for 3"}}}}}};
 
     abacus::metrics from_metrics(infos);
     abacus::metrics metrics(std::move(from_metrics));
@@ -77,46 +74,46 @@ TEST(test_metrics, api)
     EXPECT_EQ(metrics.metadata().protocol_version(),
               abacus::protocol_version());
 
-    EXPECT_EQ(metrics.metadata().metrics().at(name0).boolean().kind(),
-              abacus::counter.value);
+    EXPECT_EQ(metrics.metadata().metrics().at(name0).boolean().kind_case(),
+              abacus::protobuf::BoolMetric::KindCase::kGauge);
     EXPECT_EQ(metrics.metadata().metrics().at(name0).boolean().description(),
               "A boolean metric");
     EXPECT_EQ(metrics.metadata().metrics().at(name0).boolean().unit(),
               ""); // empty unit
 
-    EXPECT_EQ(metrics.metadata().metrics().at(name1).uint64().kind(),
-              abacus::counter.value);
+    EXPECT_EQ(metrics.metadata().metrics().at(name1).uint64().kind_case(),
+              abacus::protobuf::UInt64Metric::KindCase::kCounter);
     EXPECT_EQ(metrics.metadata().metrics().at(name1).uint64().description(),
               "An unsigned integer metric");
     EXPECT_EQ(metrics.metadata().metrics().at(name1).uint64().unit(), "bytes");
 
-    EXPECT_EQ(metrics.metadata().metrics().at(name2).int64().kind(),
-              abacus::gauge.value);
+    EXPECT_EQ(metrics.metadata().metrics().at(name2).int64().kind_case(),
+              abacus::protobuf::Int64Metric::KindCase::kGauge);
     EXPECT_EQ(metrics.metadata().metrics().at(name2).int64().description(),
               "A signed integer metric");
     EXPECT_EQ(metrics.metadata().metrics().at(name2).int64().unit(), "USD");
 
-    EXPECT_EQ(metrics.metadata().metrics().at(name3).float64().kind(),
-              abacus::gauge.value);
+    EXPECT_EQ(metrics.metadata().metrics().at(name3).float64().kind_case(),
+              abacus::protobuf::Float64Metric::KindCase::kGauge);
     EXPECT_EQ(metrics.metadata().metrics().at(name3).float64().description(),
               "A floating point metric");
     EXPECT_EQ(metrics.metadata().metrics().at(name3).float64().unit(), "ms");
 
-    EXPECT_EQ(metrics.metadata().metrics().at(name4).boolean().kind(),
-              abacus::constant.value);
+    EXPECT_EQ(metrics.metadata().metrics().at(name4).boolean().kind_case(),
+              abacus::protobuf::BoolMetric::KindCase::kConstant);
     EXPECT_EQ(metrics.metadata().metrics().at(name4).boolean().description(),
               "A constant boolean metric");
     EXPECT_EQ(metrics.metadata().metrics().at(name4).boolean().unit(),
               ""); // empty unit
+    EXPECT_EQ(metrics.metadata().metrics().at(name5).float64().kind_case(),
+              abacus::protobuf::Float64Metric::KindCase::kConstant);
 
-    EXPECT_EQ(metrics.metadata().metrics().at(name5).float64().kind(),
-              abacus::constant.value);
     EXPECT_EQ(metrics.metadata().metrics().at(name5).float64().description(),
               "A constant floating point metric");
     EXPECT_EQ(metrics.metadata().metrics().at(name5).float64().unit(), "ms");
 
-    EXPECT_EQ(metrics.metadata().metrics().at(name6).enum8().kind(),
-              abacus::gauge.value);
+    EXPECT_EQ(metrics.metadata().metrics().at(name6).enum8().kind_case(),
+              abacus::protobuf::Enum8Metric::KindCase::kGauge);
     EXPECT_EQ(metrics.metadata().metrics().at(name6).enum8().description(),
               "An enum metric");
     EXPECT_EQ(metrics.metadata().metrics().at(name6).enum8().values().size(),
@@ -202,13 +199,13 @@ TEST(test_metrics, value_and_metadata_bytes)
 
     std::map<abacus::name, abacus::info> infos = {
         {abacus::name{name0},
-         abacus::uint64{abacus::counter,
+         abacus::uint64{abacus::counter{abacus::optional},
                         abacus::description{"An unsigned integer metric"},
-                        abacus::optional, abacus::unit{"bytes"}}},
+                        abacus::unit{"bytes"}}},
         {abacus::name{name1},
-         abacus::int64{abacus::gauge,
+         abacus::int64{abacus::gauge{abacus::optional},
                        abacus::description{"A signed integer metric"},
-                       abacus::optional, abacus::unit{"USD"}}}};
+                       abacus::unit{"USD"}}}};
 
     abacus::metrics metrics{infos};
 
@@ -217,13 +214,14 @@ TEST(test_metrics, value_and_metadata_bytes)
     (void)m0;
     (void)m1;
 
-    EXPECT_EQ(metrics.metadata().ByteSizeLong(), 112U);
+    EXPECT_EQ(metrics.metadata().ByteSizeLong(), 114U);
     EXPECT_EQ(metrics.value_bytes(),
               sizeof(uint32_t) +         // hash
                   1 + sizeof(uint64_t) + // metric0 has_value + value
                   1 + sizeof(int64_t)    // metric1 has_value + value
     );
 }
+
 TEST(test_metrics, reset_counters)
 {
     std::string name0 = "metric0";
@@ -231,13 +229,13 @@ TEST(test_metrics, reset_counters)
 
     std::map<abacus::name, abacus::info> infos = {
         {abacus::name{name0},
-         abacus::uint64{abacus::counter,
+         abacus::uint64{abacus::counter{abacus::optional},
                         abacus::description{"An unsigned integer metric"},
-                        abacus::optional, abacus::unit{"bytes"}}},
+                        abacus::unit{"bytes"}}},
         {abacus::name{name1},
-         abacus::int64{abacus::gauge,
+         abacus::int64{abacus::gauge{abacus::optional},
                        abacus::description{"A signed integer metric"},
-                       abacus::optional, abacus::unit{"USD"}}}};
+                       abacus::unit{"USD"}}}};
 
     abacus::metrics metrics{infos};
 
@@ -270,22 +268,23 @@ TEST(test_metrics, reset_counters)
 }
 
 static const std::vector<uint8_t> expected_metadata = {
-    0x08, 0x02, 0x1d, 0x26, 0x65, 0xd9, 0x06, 0x22, 0x34, 0x0a, 0x07, 0x6d,
-    0x65, 0x74, 0x72, 0x69, 0x63, 0x30, 0x12, 0x29, 0x08, 0x04, 0x1a, 0x25,
-    0x0a, 0x1a, 0x41, 0x6e, 0x20, 0x75, 0x6e, 0x73, 0x69, 0x67, 0x6e, 0x65,
-    0x64, 0x20, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x65, 0x72, 0x20, 0x6d, 0x65,
-    0x74, 0x72, 0x69, 0x63, 0x10, 0x01, 0x1a, 0x05, 0x62, 0x79, 0x74, 0x65,
-    0x73, 0x22, 0x2d, 0x0a, 0x07, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x31,
-    0x12, 0x22, 0x08, 0x0d, 0x22, 0x1e, 0x0a, 0x17, 0x41, 0x20, 0x73, 0x69,
-    0x67, 0x6e, 0x65, 0x64, 0x20, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x65, 0x72,
-    0x20, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x1a, 0x03, 0x55, 0x53, 0x44,
-    0x22, 0x2c, 0x0a, 0x07, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x32, 0x12,
-    0x21, 0x08, 0x16, 0x3a, 0x1d, 0x0a, 0x17, 0x41, 0x20, 0x66, 0x6c, 0x6f,
-    0x61, 0x74, 0x69, 0x6e, 0x67, 0x20, 0x70, 0x6f, 0x69, 0x6e, 0x74, 0x20,
-    0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x1a, 0x02, 0x6d, 0x73, 0x22, 0x21,
-    0x0a, 0x07, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x33, 0x12, 0x16, 0x08,
-    0x1f, 0x4a, 0x12, 0x0a, 0x10, 0x41, 0x20, 0x62, 0x6f, 0x6f, 0x6c, 0x65,
-    0x61, 0x6e, 0x20, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63};
+    0x08, 0x02, 0x1d, 0x57, 0x84, 0xe9, 0x44, 0x22, 0x2f, 0x0a, 0x07, 0x6d,
+    0x65, 0x74, 0x72, 0x69, 0x63, 0x31, 0x12, 0x24, 0x08, 0x0d, 0x22, 0x20,
+    0x0a, 0x17, 0x41, 0x20, 0x73, 0x69, 0x67, 0x6e, 0x65, 0x64, 0x20, 0x69,
+    0x6e, 0x74, 0x65, 0x67, 0x65, 0x72, 0x20, 0x6d, 0x65, 0x74, 0x72, 0x69,
+    0x63, 0x12, 0x00, 0x2a, 0x03, 0x55, 0x53, 0x44, 0x22, 0x23, 0x0a, 0x07,
+    0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x33, 0x12, 0x18, 0x08, 0x1f, 0x4a,
+    0x14, 0x0a, 0x10, 0x41, 0x20, 0x62, 0x6f, 0x6f, 0x6c, 0x65, 0x61, 0x6e,
+    0x20, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x12, 0x00, 0x22, 0x34, 0x0a,
+    0x07, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x30, 0x12, 0x29, 0x08, 0x04,
+    0x1a, 0x25, 0x0a, 0x1a, 0x41, 0x6e, 0x20, 0x75, 0x6e, 0x73, 0x69, 0x67,
+    0x6e, 0x65, 0x64, 0x20, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x65, 0x72, 0x20,
+    0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x1a, 0x00, 0x2a, 0x05, 0x62, 0x79,
+    0x74, 0x65, 0x73, 0x22, 0x2e, 0x0a, 0x07, 0x6d, 0x65, 0x74, 0x72, 0x69,
+    0x63, 0x32, 0x12, 0x23, 0x08, 0x16, 0x3a, 0x1f, 0x0a, 0x17, 0x41, 0x20,
+    0x66, 0x6c, 0x6f, 0x61, 0x74, 0x69, 0x6e, 0x67, 0x20, 0x70, 0x6f, 0x69,
+    0x6e, 0x74, 0x20, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x12, 0x00, 0x2a,
+    0x02, 0x6d, 0x73};
 
 static const std::vector<uint8_t> expected_value_data = {
     0x01, 0x2a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01,
@@ -302,20 +301,20 @@ TEST(test_metrics, protocol_version)
         << "If this test fails, you need to update the protocol version");
     std::map<abacus::name, abacus::info> infos = {
         {abacus::name{"metric0"},
-         abacus::uint64{abacus::counter,
+         abacus::uint64{abacus::counter{abacus::required},
                         abacus::description{"An unsigned integer metric"},
-                        abacus::required, abacus::unit{"bytes"}}},
+                        abacus::unit{"bytes"}}},
         {abacus::name{"metric1"},
-         abacus::int64{abacus::gauge,
+         abacus::int64{abacus::gauge{abacus::required},
                        abacus::description{"A signed integer metric"},
-                       abacus::required, abacus::unit{"USD"}}},
+                       abacus::unit{"USD"}}},
         {abacus::name{"metric2"},
-         abacus::float64{abacus::gauge,
+         abacus::float64{abacus::gauge{abacus::required},
                          abacus::description{"A floating point metric"},
-                         abacus::required, abacus::unit{"ms"}}},
+                         abacus::unit{"ms"}}},
         {abacus::name{"metric3"},
-         abacus::boolean{abacus::gauge, abacus::description{"A boolean metric"},
-                         abacus::required}}};
+         abacus::boolean{abacus::gauge{abacus::required},
+                         abacus::description{"A boolean metric"}}}};
 
     abacus::metrics metrics(infos);
 
@@ -386,88 +385,80 @@ TEST(test_metrics, reset)
     // Create one of each metric both required and optional
     std::map<abacus::name, abacus::info> infos = {
         {abacus::name{"uint64_required"},
-         abacus::uint64{abacus::counter, abacus::description{""},
-                        abacus::required}},
+         abacus::uint64{abacus::counter{abacus::required},
+                        abacus::description{""}}},
         {abacus::name{"uint64_optional"},
-         abacus::uint64{abacus::counter, abacus::description{""},
-                        abacus::optional}},
+         abacus::uint64{abacus::counter{abacus::optional},
+                        abacus::description{""}}},
         {abacus::name{"uint32_required"},
-         abacus::uint32{abacus::counter, abacus::description{""},
-                        abacus::required}},
+         abacus::uint32{abacus::counter{abacus::required},
+                        abacus::description{""}}},
         {abacus::name{"uint32_optional"},
-         abacus::uint32{abacus::counter, abacus::description{""},
-                        abacus::optional}},
+         abacus::uint32{abacus::counter{abacus::optional},
+                        abacus::description{""}}},
         {abacus::name{"int64_required"},
-         abacus::int64{abacus::gauge, abacus::description{""},
-                       abacus::required}},
+         abacus::int64{abacus::gauge{abacus::required},
+                       abacus::description{""}}},
         {abacus::name{"int64_optional"},
-         abacus::int64{abacus::gauge, abacus::description{""},
-                       abacus::optional}},
+         abacus::int64{abacus::gauge{abacus::optional},
+                       abacus::description{""}}},
         {abacus::name{"int32_required"},
-         abacus::int32{abacus::gauge, abacus::description{""},
-                       abacus::required}},
+         abacus::int32{abacus::gauge{abacus::required},
+                       abacus::description{""}}},
         {abacus::name{"int32_optional"},
-         abacus::int32{abacus::gauge, abacus::description{""},
-                       abacus::optional}},
+         abacus::int32{abacus::gauge{abacus::optional},
+                       abacus::description{""}}},
         {abacus::name{"float64_required"},
-         abacus::float64{abacus::gauge, abacus::description{""},
-                         abacus::required}},
+         abacus::float64{abacus::gauge{abacus::required},
+                         abacus::description{""}}},
         {abacus::name{"float64_optional"},
-         abacus::float64{abacus::gauge, abacus::description{""},
-                         abacus::optional}},
+         abacus::float64{abacus::gauge{abacus::optional},
+                         abacus::description{""}}},
         {abacus::name{"float32_required"},
-         abacus::float32{abacus::gauge, abacus::description{""},
-                         abacus::required}},
+         abacus::float32{abacus::gauge{abacus::required},
+                         abacus::description{""}}},
         {abacus::name{"float32_optional"},
-         abacus::float32{abacus::gauge, abacus::description{""},
-                         abacus::optional}},
+         abacus::float32{abacus::gauge{abacus::optional},
+                         abacus::description{""}}},
         {abacus::name{"boolean_required"},
-         abacus::boolean{abacus::gauge, abacus::description{""},
-                         abacus::required}},
+         abacus::boolean{abacus::gauge{abacus::required},
+                         abacus::description{""}}},
         {abacus::name{"boolean_optional"},
-         abacus::boolean{abacus::gauge, abacus::description{""},
-                         abacus::optional}},
-        {abacus::name{"enum8_required"}, abacus::enum8{abacus::gauge,
-                                                       abacus::description{""},
-                                                       {{0, {"", ""}}},
-                                                       abacus::required}},
-        {abacus::name{"enum8_optional"}, abacus::enum8{abacus::gauge,
-                                                       abacus::description{""},
-                                                       {{0, {"", ""}}},
-                                                       abacus::optional}},
+         abacus::boolean{abacus::gauge{abacus::optional},
+                         abacus::description{""}}},
+        {abacus::name{"enum8_required"},
+         abacus::enum8{abacus::gauge{abacus::required},
+                       abacus::description{""},
+                       {{0, {"", ""}}}}},
+        {abacus::name{"enum8_optional"},
+         abacus::enum8{abacus::gauge{abacus::optional},
+                       abacus::description{""},
+                       {{0, {"", ""}}}}},
         {abacus::name{"uint64_constant"},
-         abacus::uint64{abacus::constant, abacus::description{""},
-                        abacus::required}},
+         abacus::uint64{abacus::constant{}, abacus::description{""}}},
         {abacus::name{"uint32_constant"},
-         abacus::uint32{abacus::constant, abacus::description{""},
-                        abacus::required}},
+         abacus::uint32{abacus::constant{}, abacus::description{""}}},
         {abacus::name{"int64_constant"},
-         abacus::int64{abacus::constant, abacus::description{""},
-                       abacus::required}},
+         abacus::int64{abacus::constant{}, abacus::description{""}}},
         {abacus::name{"int32_constant"},
-         abacus::int32{abacus::constant, abacus::description{""},
-                       abacus::required}},
+         abacus::int32{abacus::constant{}, abacus::description{""}}},
         {abacus::name{"float64_constant"},
-         abacus::float64{abacus::constant, abacus::description{""},
-                         abacus::required}},
+         abacus::float64{abacus::constant{}, abacus::description{""}}},
         {abacus::name{"float32_constant"},
-         abacus::float32{abacus::constant, abacus::description{""},
-                         abacus::required}},
+         abacus::float32{abacus::constant{}, abacus::description{""}}},
         {abacus::name{"boolean_constant"},
-         abacus::boolean{abacus::constant, abacus::description{""},
-                         abacus::required}},
-        {abacus::name{"enum8_constant"}, abacus::enum8{abacus::constant,
+         abacus::boolean{abacus::constant{}, abacus::description{""}}},
+        {abacus::name{"enum8_constant"}, abacus::enum8{abacus::constant{},
                                                        abacus::description{""},
-                                                       {{0, {"", ""}}},
-                                                       abacus::required}},
+                                                       {{0, {"", ""}}}}},
 
         // Finally a metric that we do not initialize
         {abacus::name{"not_initialized_required"},
-         abacus::uint64{abacus::counter, abacus::description{""},
-                        abacus::required}},
+         abacus::uint64{abacus::counter{abacus::required},
+                        abacus::description{""}}},
         {abacus::name{"not_initialized_optional"},
-         abacus::uint64{abacus::counter, abacus::description{""},
-                        abacus::optional}}};
+         abacus::uint64{abacus::counter{abacus::optional},
+                        abacus::description{""}}}};
 
     abacus::metrics metrics(infos);
 

@@ -17,23 +17,22 @@ int main()
     std::map<abacus::name, abacus::info> infos = {
         {abacus::name{"fuel_consumption"},
          abacus::float64{
-             abacus::constant,
+             abacus::constant{},
              abacus::description{"Fuel consumption in kilometers per liter"},
-             abacus::required, abacus::unit{"km/l"}}},
+             abacus::unit{"km/l"}}},
         {abacus::name{"wheels"},
-         abacus::uint64{abacus::constant,
+         abacus::uint64{abacus::constant{},
                         abacus::description{"Wheels on the car"},
-                        abacus::required, abacus::unit{"wheels"}}},
+                        abacus::unit{"wheels"}}},
         {abacus::name{"days_until_maintenance"},
          abacus::int64{
-             abacus::gauge,
+             abacus::gauge{abacus::required},
              abacus::description{"Days until next maintenance, if less than 0, "
                                  "maintenance is overdue"},
-             abacus::required, abacus::unit{"days"}}},
+             abacus::unit{"days"}}},
         {abacus::name{"registered"},
-         abacus::boolean{abacus::gauge,
-                         abacus::description{"Is the car registered"},
-                         abacus::optional}}};
+         abacus::boolean{abacus::gauge{abacus::optional},
+                         abacus::description{"Is the car registered"}}}};
 
     abacus::metrics car(infos);
 
@@ -41,11 +40,11 @@ int main()
     car.initialize_constant<abacus::uint64>("wheels", 4);
 
     // The car still has some time before maintenance.
-    abacus::int64::required days_until_maintenance =
+    abacus::required_metric<abacus::int64> days_until_maintenance =
         car.initialize_required<abacus::int64>("days_until_maintenance", 10);
 
     // The car should be registered.
-    abacus::boolean::optional registered =
+    abacus::optional_metric<abacus::boolean> registered =
         car.initialize_optional<abacus::boolean>("registered");
 
     // The registration is initialized, but not set.

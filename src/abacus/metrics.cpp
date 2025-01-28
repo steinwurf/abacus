@@ -12,40 +12,188 @@
 #include "protocol_version.hpp"
 #include "version.hpp"
 
+#include "detail/helpers.hpp"
 #include "protobuf/metrics.pb.h"
 
 #include <endian/is_big_endian.hpp>
+
+#include <iostream>
 
 namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-static inline auto get_kind(const protobuf::Metric& metric) -> protobuf::Kind
+template <class Func>
+static inline auto call_specific(const protobuf::Metric& metric,
+                                 const Func& func) -> bool
 {
-    assert(metric.type_case() != protobuf::Metric::TYPE_NOT_SET);
     switch (metric.type_case())
     {
     case protobuf::Metric::kUint64:
-        return metric.uint64().kind();
+        return func(metric.uint64());
     case protobuf::Metric::kInt64:
-        return metric.int64().kind();
+        return func(metric.int64());
     case protobuf::Metric::kUint32:
-        return metric.uint32().kind();
+        return func(metric.uint32());
     case protobuf::Metric::kInt32:
-        return metric.int32().kind();
+        return func(metric.int32());
     case protobuf::Metric::kFloat64:
-        return metric.float64().kind();
+        return func(metric.float64());
     case protobuf::Metric::kFloat32:
-        return metric.float32().kind();
+        return func(metric.float32());
     case protobuf::Metric::kBoolean:
-        return metric.boolean().kind();
+        return func(metric.boolean());
     case protobuf::Metric::kEnum8:
-        return metric.enum8().kind();
+        return func(metric.enum8());
     default:
         // This should never be reached
         assert(false);
-        return protobuf::Kind::CONSTANT;
+        return false;
+    }
+}
+
+template <typename Metric>
+bool is_constant_impl(const Metric& metric)
+{
+    if constexpr (detail::has_kConstant_v<typename Metric::KindCase>)
+    {
+        return metric.kind_case() == Metric::KindCase::kConstant;
+    }
+    return false;
+}
+
+static inline bool is_constant(const protobuf::Metric& metric)
+{
+    return call_specific(metric, [](const auto& metric)
+                         { return is_constant_impl(metric); });
+    // switch (metric.type_case())
+    // {
+    // case protobuf::Metric::kUint64:
+    //     return metric.uint64().kind_case() ==
+    //            protobuf::UInt64Metric::KindCase::kConstant;
+    // case protobuf::Metric::kInt64:
+    //     return metric.int64().kind_case() ==
+    //            protobuf::Int64Metric::KindCase::kConstant;
+    // case protobuf::Metric::kUint32:
+    //     return metric.uint32().kind_case() ==
+    //            protobuf::UInt32Metric::KindCase::kConstant;
+    // case protobuf::Metric::kInt32:
+    //     return metric.int32().kind_case() ==
+    //            protobuf::Int32Metric::KindCase::kConstant;
+    // case protobuf::Metric::kFloat64:
+    //     return metric.float64().kind_case() ==
+    //            protobuf::Float64Metric::KindCase::kConstant;
+    // case protobuf::Metric::kFloat32:
+    //     return metric.float32().kind_case() ==
+    //            protobuf::Float32Metric::KindCase::kConstant;
+    // case protobuf::Metric::kBoolean:
+    //     return metric.boolean().kind_case() ==
+    //            protobuf::BoolMetric::KindCase::kConstant;
+    // case protobuf::Metric::kEnum8:
+    //     return metric.enum8().kind_case() ==
+    //            protobuf::Enum8Metric::KindCase::kConstant;
+    // case protobuf::Metric::TYPE_NOT_SET:
+    //     // This should never be reached
+    //     assert(false);
+    //     return false;
+    // default:
+    //     // This should never be reached
+    //     assert(false);
+    //     return false;
+    // }
+}
+
+template <typename Metric>
+bool is_optional_impl(const Metric& metric)
+{
+    if constexpr (detail::has_kGauge_v<typename Metric::KindCase>)
+    {
+        if (metric.kind_case() == Metric::KindCase::kGauge)
+        {
+            return metric.gauge().optional();
+        }
+    }
+    if constexpr (detail::has_kCounter_v<typename Metric::KindCase>)
+
+    {
+        if (metric.kind_case() == Metric::KindCase::kCounter)
+        {
+            return metric.counter().optional();
+        }
+    }
+
+    return false;
+}
+
+static inline auto is_optional(const protobuf::Metric& metric) -> bool
+{
+    return call_specific(metric, [](const auto& metric)
+                         { return is_optional_impl(metric); });
+    // switch (metric.type_case())
+    // {
+    // case protobuf::Metric::kUint64:
+    //     return is_optional_impl(metric.uint64());
+    // case protobuf::Metric::kInt64:
+    //     return is_optional_impl(metric.int64());
+    // case protobuf::Metric::kUint32:
+    //     return is_optional_impl(metric.uint32());
+    // case protobuf::Metric::kInt32:
+    //     return is_optional_impl(metric.int32());
+    // case protobuf::Metric::kFloat64:
+    //     return is_optional_impl(metric.float64());
+    // case protobuf::Metric::kFloat32:
+    //     return is_optional_impl(metric.float32());
+    // case protobuf::Metric::kBoolean:
+    //     return is_optional_impl(metric.boolean());
+    // case protobuf::Metric::kEnum8:
+    //     return is_optional_impl(metric.enum8());
+    // case protobuf::Metric::TYPE_NOT_SET:
+    //     // This should never be reached
+    //     assert(false);
+    //     return false;
+    // default:
+    //     // This should never be reached
+    //     assert(false);
+    //     return false;
+    // }
+}
+
+template <class Protobuf, class Kind>
+static inline auto set_kind(Protobuf& protobuf, const Kind& kind)
+{
+    // Check if the Protobuf message has a function called mutable_gauge
+    if constexpr (detail::has_mutable_gauge_v<Protobuf> &&
+                  detail::is_in_variant_v<gauge, Kind>)
+    {
+        if (auto* g = std::get_if<gauge>(&kind))
+        {
+            protobuf.mutable_gauge()->set_optional(
+                std::holds_alternative<optional_>(g->availability));
+            return;
+        }
+    }
+    // Check if the Protobuf message has a function called mutable_counter
+    if constexpr (detail::has_mutable_counter_v<Protobuf> &&
+                  detail::is_in_variant_v<counter, Kind>)
+    {
+        if (auto* c = std::get_if<counter>(&kind))
+        {
+            protobuf.mutable_counter()->set_optional(
+                std::holds_alternative<optional_>(c->availability));
+            return;
+        }
+    }
+
+    if constexpr (detail::has_mutable_constant_v<Protobuf> &&
+                  detail::is_in_variant_v<constant, Kind>)
+    {
+        if (auto* c = std::get_if<constant>(&kind))
+        {
+
+            protobuf.mutable_constant();
+            return;
+        }
     }
 }
 
@@ -76,21 +224,22 @@ metrics::metrics(const std::map<name, abacus::info>& info)
 
     for (auto [name, value] : info)
     {
+
         protobuf::Metric metric;
         metric.set_offset(m_value_bytes);
 
-        // The offset is incremented by one byte which represents whether
-        // the metric is set or not.
+        // The offset is incremented by one byte which represents
+        // whether the metric is set or not.
         m_value_bytes += 1;
 
         if (auto* m = std::get_if<uint64>(&value))
         {
             // The offset is incremented by the size of the type
             m_value_bytes += detail::size_of_type<decltype(m)>();
-            metric.set_optional(is_optional(m->availability));
-
             metric.mutable_uint64()->set_description(m->description.value);
-            metric.mutable_uint64()->set_kind(abacus::to_protobuf(m->kind));
+
+            set_kind(*metric.mutable_uint64(), m->kind);
+
             if (!m->unit.empty())
             {
                 metric.mutable_uint64()->set_unit(m->unit.value);
@@ -108,10 +257,10 @@ metrics::metrics(const std::map<name, abacus::info>& info)
         {
             // The offset is incremented by the size of the type
             m_value_bytes += detail::size_of_type<decltype(m)>();
-            metric.set_optional(is_optional(m->availability));
-
             metric.mutable_int64()->set_description(m->description.value);
-            metric.mutable_int64()->set_kind(to_protobuf(m->kind));
+
+            set_kind(*metric.mutable_int64(), m->kind);
+
             if (!m->unit.empty())
             {
                 metric.mutable_int64()->set_unit(m->unit.value);
@@ -129,10 +278,10 @@ metrics::metrics(const std::map<name, abacus::info>& info)
         {
             // The offset is incremented by the size of the type
             m_value_bytes += detail::size_of_type<decltype(m)>();
-            metric.set_optional(is_optional(m->availability));
-
             metric.mutable_uint32()->set_description(m->description.value);
-            metric.mutable_uint32()->set_kind(to_protobuf(m->kind));
+
+            set_kind(*metric.mutable_uint32(), m->kind);
+
             if (!m->unit.empty())
             {
                 metric.mutable_uint32()->set_unit(m->unit.value);
@@ -150,10 +299,10 @@ metrics::metrics(const std::map<name, abacus::info>& info)
         {
             // The offset is incremented by the size of the type
             m_value_bytes += detail::size_of_type<decltype(m)>();
-            metric.set_optional(is_optional(m->availability));
-
             metric.mutable_int32()->set_description(m->description.value);
-            metric.mutable_int32()->set_kind(to_protobuf(m->kind));
+
+            set_kind(*metric.mutable_int32(), m->kind);
+
             if (!m->unit.empty())
             {
                 metric.mutable_int32()->set_unit(m->unit.value);
@@ -171,10 +320,11 @@ metrics::metrics(const std::map<name, abacus::info>& info)
         {
             // The offset is incremented by the size of the type
             m_value_bytes += detail::size_of_type<decltype(m)>();
-            metric.set_optional(is_optional(m->availability));
 
             metric.mutable_float64()->set_description(m->description.value);
-            metric.mutable_float64()->set_kind(to_protobuf(m->kind));
+
+            set_kind(*metric.mutable_float64(), m->kind);
+
             if (!m->unit.empty())
             {
                 metric.mutable_float64()->set_unit(m->unit.value);
@@ -192,10 +342,11 @@ metrics::metrics(const std::map<name, abacus::info>& info)
         {
             // The offset is incremented by the size of the type
             m_value_bytes += detail::size_of_type<decltype(m)>();
-            metric.set_optional(is_optional(m->availability));
 
             metric.mutable_float32()->set_description(m->description.value);
-            metric.mutable_float32()->set_kind(to_protobuf(m->kind));
+
+            set_kind(*metric.mutable_float32(), m->kind);
+
             if (!m->unit.empty())
             {
                 metric.mutable_float32()->set_unit(m->unit.value);
@@ -213,19 +364,19 @@ metrics::metrics(const std::map<name, abacus::info>& info)
         {
             // The offset is incremented by the size of the type
             m_value_bytes += detail::size_of_type<decltype(m)>();
-            metric.set_optional(is_optional(m->availability));
-
             metric.mutable_boolean()->set_description(m->description.value);
-            metric.mutable_boolean()->set_kind(to_protobuf(m->kind));
+
+            set_kind(*metric.mutable_boolean(), m->kind);
         }
         else if (auto* m = std::get_if<enum8>(&value))
         {
             // The offset is incremented by the size of the type
             m_value_bytes += detail::size_of_type<decltype(m)>();
-            metric.set_optional(is_optional(m->availability));
 
             metric.mutable_enum8()->set_description(m->description.value);
-            metric.mutable_enum8()->set_kind(abacus::to_protobuf(m->kind));
+
+            set_kind(*metric.mutable_enum8(), m->kind);
+
             for (auto [key, value] : m->values)
             {
                 auto enum_value = protobuf::Enum8Metric::EnumValue();
@@ -267,10 +418,10 @@ metrics::metrics(const std::map<name, abacus::info>& info)
     // Make sure the metadata didn't change unexpectedly
     assert(metadata().ByteSizeLong() == m_metadata_bytes);
 
-    // Write the sync value to the first byte of the value data (this will
-    // be written as the endianess of the system)
-    // Consuming code can use the endianness field in the metadata to
-    // read the sync value
+    // Write the sync value to the first byte of the value data (this
+    // will be written as the endianess of the system) Consuming code
+    // can use the endianness field in the metadata to read the sync
+    // value
     std::memcpy(value_data(0), &m_hash, sizeof(uint32_t));
 }
 
@@ -282,8 +433,8 @@ metrics::initialize_optional(const std::string& name) -> optional_metric<Metric>
     assert(!m_initialized.at(name));
     m_initialized[name] = true;
     const protobuf::Metric& proto_metric = metadata().metrics().at(name);
-    assert(proto_metric.optional() == true);
-    assert(get_kind(proto_metric) != protobuf::Kind::CONSTANT);
+    assert(is_optional(proto_metric));
+    // assert(get_kind(proto_metric) != protobuf::Kind::CONSTANT);
 
     auto offset = proto_metric.offset();
 
@@ -317,8 +468,8 @@ template <class Metric>
     assert(!m_initialized.at(name));
     m_initialized[name] = true;
     const protobuf::Metric& proto_metric = metadata().metrics().at(name);
-    assert(proto_metric.optional() == false);
-    assert(get_kind(proto_metric) != protobuf::Kind::CONSTANT);
+    assert(!is_optional(proto_metric));
+    // assert(get_kind(proto_metric) != protobuf::Kind::CONSTANT);
 
     auto offset = proto_metric.offset();
 
@@ -353,10 +504,8 @@ void metrics::initialize_constant(const std::string& name,
     m_initialized[name] = true;
 
     const protobuf::Metric& proto_metric = metadata().metrics().at(name);
-    assert(proto_metric.optional() == false &&
-           "Constant metrics cannot be optional");
     auto offset = proto_metric.offset();
-    assert(get_kind(proto_metric) == protobuf::Kind::CONSTANT);
+    // assert(get_kind(proto_metric) == protobuf::Kind::CONSTANT);
 
     required_metric<Metric>(value_data(offset), value);
 }
@@ -440,14 +589,14 @@ auto metrics::reset() -> void
             continue;
         }
 
-        if (get_kind(metric) == protobuf::Kind::CONSTANT)
+        if (is_constant(metric))
         {
             // Skip constant metrics
             continue;
         }
 
         auto offset = metric.offset();
-        if (metric.optional())
+        if (is_optional(metric))
         {
             // Set the has value byte to 0
             value_data(offset)[0] = 0;

@@ -24,12 +24,6 @@ struct uint32
     /// The primitive type of the metric
     using type = uint32_t;
 
-    /// The optional metric type
-    using optional = optional_metric<uint32>;
-
-    /// The required metric type
-    using required = required_metric<uint32>;
-
     /// Set the value of the metric
     /// @param memory The memory to use for the metric, note that the memory
     ///        must be at least sizeof(type) + 1 bytes long.
@@ -54,13 +48,10 @@ struct uint32
     }
 
     /// The metric kind
-    abacus::kind kind;
+    std::variant<gauge, counter, constant> kind;
 
     /// The metric description
     abacus::description description;
-
-    /// The availability of the metric
-    abacus::availability availability;
 
     /// The unit of the metric
     abacus::unit unit{};

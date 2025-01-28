@@ -23,6 +23,50 @@ namespace _fl = ::google::protobuf::internal::field_layout;
 namespace abacus {
 namespace protobuf {
         template <typename>
+PROTOBUF_CONSTEXPR Gauge::Gauge(::_pbi::ConstantInitialized)
+    : _impl_{
+      /*decltype(_impl_.optional_)*/ false,
+      /*decltype(_impl_._cached_size_)*/ {},
+    } {}
+struct GaugeDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR GaugeDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~GaugeDefaultTypeInternal() {}
+  union {
+    Gauge _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GaugeDefaultTypeInternal _Gauge_default_instance_;
+        template <typename>
+PROTOBUF_CONSTEXPR Counter::Counter(::_pbi::ConstantInitialized)
+    : _impl_{
+      /*decltype(_impl_.optional_)*/ false,
+      /*decltype(_impl_._cached_size_)*/ {},
+    } {}
+struct CounterDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR CounterDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~CounterDefaultTypeInternal() {}
+  union {
+    Counter _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CounterDefaultTypeInternal _Counter_default_instance_;
+      template <typename>
+PROTOBUF_CONSTEXPR Constant::Constant(::_pbi::ConstantInitialized) {}
+struct ConstantDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ConstantDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ConstantDefaultTypeInternal() {}
+  union {
+    Constant _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ConstantDefaultTypeInternal _Constant_default_instance_;
+        template <typename>
 PROTOBUF_CONSTEXPR UInt64Metric::UInt64Metric(::_pbi::ConstantInitialized)
     : _impl_{
       /*decltype(_impl_._has_bits_)*/ {},
@@ -37,7 +81,8 @@ PROTOBUF_CONSTEXPR UInt64Metric::UInt64Metric(::_pbi::ConstantInitialized)
       },
       /*decltype(_impl_.min_)*/ ::uint64_t{0u},
       /*decltype(_impl_.max_)*/ ::uint64_t{0u},
-      /*decltype(_impl_.kind_)*/ 0,
+      /*decltype(_impl_.kind_)*/ {},
+      /*decltype(_impl_._oneof_case_)*/ {},
     } {}
 struct UInt64MetricDefaultTypeInternal {
   PROTOBUF_CONSTEXPR UInt64MetricDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
@@ -64,7 +109,8 @@ PROTOBUF_CONSTEXPR Int64Metric::Int64Metric(::_pbi::ConstantInitialized)
       },
       /*decltype(_impl_.min_)*/ ::int64_t{0},
       /*decltype(_impl_.max_)*/ ::int64_t{0},
-      /*decltype(_impl_.kind_)*/ 0,
+      /*decltype(_impl_.kind_)*/ {},
+      /*decltype(_impl_._oneof_case_)*/ {},
     } {}
 struct Int64MetricDefaultTypeInternal {
   PROTOBUF_CONSTEXPR Int64MetricDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
@@ -89,9 +135,10 @@ PROTOBUF_CONSTEXPR UInt32Metric::UInt32Metric(::_pbi::ConstantInitialized)
           &::_pbi::fixed_address_empty_string,
           ::_pbi::ConstantInitialized{},
       },
-      /*decltype(_impl_.kind_)*/ 0,
       /*decltype(_impl_.min_)*/ 0u,
       /*decltype(_impl_.max_)*/ 0u,
+      /*decltype(_impl_.kind_)*/ {},
+      /*decltype(_impl_._oneof_case_)*/ {},
     } {}
 struct UInt32MetricDefaultTypeInternal {
   PROTOBUF_CONSTEXPR UInt32MetricDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
@@ -116,9 +163,10 @@ PROTOBUF_CONSTEXPR Int32Metric::Int32Metric(::_pbi::ConstantInitialized)
           &::_pbi::fixed_address_empty_string,
           ::_pbi::ConstantInitialized{},
       },
-      /*decltype(_impl_.kind_)*/ 0,
       /*decltype(_impl_.min_)*/ 0,
       /*decltype(_impl_.max_)*/ 0,
+      /*decltype(_impl_.kind_)*/ {},
+      /*decltype(_impl_._oneof_case_)*/ {},
     } {}
 struct Int32MetricDefaultTypeInternal {
   PROTOBUF_CONSTEXPR Int32MetricDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
@@ -145,7 +193,8 @@ PROTOBUF_CONSTEXPR Float64Metric::Float64Metric(::_pbi::ConstantInitialized)
       },
       /*decltype(_impl_.min_)*/ 0,
       /*decltype(_impl_.max_)*/ 0,
-      /*decltype(_impl_.kind_)*/ 0,
+      /*decltype(_impl_.kind_)*/ {},
+      /*decltype(_impl_._oneof_case_)*/ {},
     } {}
 struct Float64MetricDefaultTypeInternal {
   PROTOBUF_CONSTEXPR Float64MetricDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
@@ -170,9 +219,10 @@ PROTOBUF_CONSTEXPR Float32Metric::Float32Metric(::_pbi::ConstantInitialized)
           &::_pbi::fixed_address_empty_string,
           ::_pbi::ConstantInitialized{},
       },
-      /*decltype(_impl_.kind_)*/ 0,
       /*decltype(_impl_.min_)*/ 0,
       /*decltype(_impl_.max_)*/ 0,
+      /*decltype(_impl_.kind_)*/ {},
+      /*decltype(_impl_._oneof_case_)*/ {},
     } {}
 struct Float32MetricDefaultTypeInternal {
   PROTOBUF_CONSTEXPR Float32MetricDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
@@ -197,7 +247,8 @@ PROTOBUF_CONSTEXPR BoolMetric::BoolMetric(::_pbi::ConstantInitialized)
           &::_pbi::fixed_address_empty_string,
           ::_pbi::ConstantInitialized{},
       },
-      /*decltype(_impl_.kind_)*/ 0,
+      /*decltype(_impl_.kind_)*/ {},
+      /*decltype(_impl_._oneof_case_)*/ {},
     } {}
 struct BoolMetricDefaultTypeInternal {
   PROTOBUF_CONSTEXPR BoolMetricDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
@@ -259,7 +310,8 @@ PROTOBUF_CONSTEXPR Enum8Metric::Enum8Metric(::_pbi::ConstantInitialized)
           &::_pbi::fixed_address_empty_string,
           ::_pbi::ConstantInitialized{},
       },
-      /*decltype(_impl_.kind_)*/ 0,
+      /*decltype(_impl_.kind_)*/ {},
+      /*decltype(_impl_._oneof_case_)*/ {},
     } {}
 struct Enum8MetricDefaultTypeInternal {
   PROTOBUF_CONSTEXPR Enum8MetricDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
@@ -275,7 +327,6 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 PROTOBUF_CONSTEXPR Metric::Metric(::_pbi::ConstantInitialized)
     : _impl_{
       /*decltype(_impl_.offset_)*/ 0u,
-      /*decltype(_impl_.optional_)*/ false,
       /*decltype(_impl_.type_)*/ {},
       /*decltype(_impl_._cached_size_)*/ {},
       /*decltype(_impl_._oneof_case_)*/ {},
@@ -323,25 +374,56 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 MetricsMetadataDefaultTypeInternal _MetricsMetadata_default_instance_;
 }  // namespace protobuf
 }  // namespace abacus
-static ::_pb::Metadata file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[13];
+static ::_pb::Metadata file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[16];
 static const ::_pb::EnumDescriptor* file_level_enum_descriptors_abacus_2fprotobuf_2fmetrics_2eproto[1];
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_abacus_2fprotobuf_2fmetrics_2eproto = nullptr;
 const ::uint32_t TableStruct_abacus_2fprotobuf_2fmetrics_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
     protodesc_cold) = {
-    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt64Metric, _impl_._has_bits_),
-    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt64Metric, _internal_metadata_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Gauge, _internal_metadata_),
     ~0u,  // no _extensions_
     ~0u,  // no _oneof_case_
     ~0u,  // no _weak_field_map_
     ~0u,  // no _inlined_string_donated_
     ~0u,  // no _split_
     ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Gauge, _impl_.optional_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Counter, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Counter, _impl_.optional_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Constant, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt64Metric, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt64Metric, _internal_metadata_),
+    ~0u,  // no _extensions_
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt64Metric, _impl_._oneof_case_[0]),
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt64Metric, _impl_.description_),
-    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt64Metric, _impl_.kind_),
+    ::_pbi::kInvalidFieldOffsetTag,
+    ::_pbi::kInvalidFieldOffsetTag,
+    ::_pbi::kInvalidFieldOffsetTag,
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt64Metric, _impl_.unit_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt64Metric, _impl_.min_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt64Metric, _impl_.max_),
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt64Metric, _impl_.kind_),
+    ~0u,
+    ~0u,
     ~0u,
     ~0u,
     0,
@@ -350,16 +432,21 @@ const ::uint32_t TableStruct_abacus_2fprotobuf_2fmetrics_2eproto::offsets[] PROT
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int64Metric, _impl_._has_bits_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int64Metric, _internal_metadata_),
     ~0u,  // no _extensions_
-    ~0u,  // no _oneof_case_
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int64Metric, _impl_._oneof_case_[0]),
     ~0u,  // no _weak_field_map_
     ~0u,  // no _inlined_string_donated_
     ~0u,  // no _split_
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int64Metric, _impl_.description_),
-    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int64Metric, _impl_.kind_),
+    ::_pbi::kInvalidFieldOffsetTag,
+    ::_pbi::kInvalidFieldOffsetTag,
+    ::_pbi::kInvalidFieldOffsetTag,
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int64Metric, _impl_.unit_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int64Metric, _impl_.min_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int64Metric, _impl_.max_),
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int64Metric, _impl_.kind_),
+    ~0u,
+    ~0u,
     ~0u,
     ~0u,
     0,
@@ -368,16 +455,21 @@ const ::uint32_t TableStruct_abacus_2fprotobuf_2fmetrics_2eproto::offsets[] PROT
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt32Metric, _impl_._has_bits_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt32Metric, _internal_metadata_),
     ~0u,  // no _extensions_
-    ~0u,  // no _oneof_case_
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt32Metric, _impl_._oneof_case_[0]),
     ~0u,  // no _weak_field_map_
     ~0u,  // no _inlined_string_donated_
     ~0u,  // no _split_
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt32Metric, _impl_.description_),
-    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt32Metric, _impl_.kind_),
+    ::_pbi::kInvalidFieldOffsetTag,
+    ::_pbi::kInvalidFieldOffsetTag,
+    ::_pbi::kInvalidFieldOffsetTag,
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt32Metric, _impl_.unit_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt32Metric, _impl_.min_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt32Metric, _impl_.max_),
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt32Metric, _impl_.kind_),
+    ~0u,
+    ~0u,
     ~0u,
     ~0u,
     0,
@@ -386,16 +478,21 @@ const ::uint32_t TableStruct_abacus_2fprotobuf_2fmetrics_2eproto::offsets[] PROT
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int32Metric, _impl_._has_bits_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int32Metric, _internal_metadata_),
     ~0u,  // no _extensions_
-    ~0u,  // no _oneof_case_
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int32Metric, _impl_._oneof_case_[0]),
     ~0u,  // no _weak_field_map_
     ~0u,  // no _inlined_string_donated_
     ~0u,  // no _split_
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int32Metric, _impl_.description_),
-    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int32Metric, _impl_.kind_),
+    ::_pbi::kInvalidFieldOffsetTag,
+    ::_pbi::kInvalidFieldOffsetTag,
+    ::_pbi::kInvalidFieldOffsetTag,
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int32Metric, _impl_.unit_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int32Metric, _impl_.min_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int32Metric, _impl_.max_),
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int32Metric, _impl_.kind_),
+    ~0u,
+    ~0u,
     ~0u,
     ~0u,
     0,
@@ -404,16 +501,21 @@ const ::uint32_t TableStruct_abacus_2fprotobuf_2fmetrics_2eproto::offsets[] PROT
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float64Metric, _impl_._has_bits_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float64Metric, _internal_metadata_),
     ~0u,  // no _extensions_
-    ~0u,  // no _oneof_case_
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float64Metric, _impl_._oneof_case_[0]),
     ~0u,  // no _weak_field_map_
     ~0u,  // no _inlined_string_donated_
     ~0u,  // no _split_
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float64Metric, _impl_.description_),
-    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float64Metric, _impl_.kind_),
+    ::_pbi::kInvalidFieldOffsetTag,
+    ::_pbi::kInvalidFieldOffsetTag,
+    ::_pbi::kInvalidFieldOffsetTag,
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float64Metric, _impl_.unit_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float64Metric, _impl_.min_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float64Metric, _impl_.max_),
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float64Metric, _impl_.kind_),
+    ~0u,
+    ~0u,
     ~0u,
     ~0u,
     0,
@@ -422,16 +524,21 @@ const ::uint32_t TableStruct_abacus_2fprotobuf_2fmetrics_2eproto::offsets[] PROT
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float32Metric, _impl_._has_bits_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float32Metric, _internal_metadata_),
     ~0u,  // no _extensions_
-    ~0u,  // no _oneof_case_
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float32Metric, _impl_._oneof_case_[0]),
     ~0u,  // no _weak_field_map_
     ~0u,  // no _inlined_string_donated_
     ~0u,  // no _split_
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float32Metric, _impl_.description_),
-    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float32Metric, _impl_.kind_),
+    ::_pbi::kInvalidFieldOffsetTag,
+    ::_pbi::kInvalidFieldOffsetTag,
+    ::_pbi::kInvalidFieldOffsetTag,
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float32Metric, _impl_.unit_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float32Metric, _impl_.min_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float32Metric, _impl_.max_),
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float32Metric, _impl_.kind_),
+    ~0u,
+    ~0u,
     ~0u,
     ~0u,
     0,
@@ -440,14 +547,17 @@ const ::uint32_t TableStruct_abacus_2fprotobuf_2fmetrics_2eproto::offsets[] PROT
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::BoolMetric, _impl_._has_bits_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::BoolMetric, _internal_metadata_),
     ~0u,  // no _extensions_
-    ~0u,  // no _oneof_case_
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::BoolMetric, _impl_._oneof_case_[0]),
     ~0u,  // no _weak_field_map_
     ~0u,  // no _inlined_string_donated_
     ~0u,  // no _split_
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::BoolMetric, _impl_.description_),
-    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::BoolMetric, _impl_.kind_),
+    ::_pbi::kInvalidFieldOffsetTag,
+    ::_pbi::kInvalidFieldOffsetTag,
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::BoolMetric, _impl_.unit_),
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::BoolMetric, _impl_.kind_),
+    ~0u,
     ~0u,
     ~0u,
     0,
@@ -478,15 +588,18 @@ const ::uint32_t TableStruct_abacus_2fprotobuf_2fmetrics_2eproto::offsets[] PROT
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Enum8Metric, _impl_._has_bits_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Enum8Metric, _internal_metadata_),
     ~0u,  // no _extensions_
-    ~0u,  // no _oneof_case_
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Enum8Metric, _impl_._oneof_case_[0]),
     ~0u,  // no _weak_field_map_
     ~0u,  // no _inlined_string_donated_
     ~0u,  // no _split_
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Enum8Metric, _impl_.description_),
-    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Enum8Metric, _impl_.kind_),
+    ::_pbi::kInvalidFieldOffsetTag,
+    ::_pbi::kInvalidFieldOffsetTag,
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Enum8Metric, _impl_.unit_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Enum8Metric, _impl_.values_),
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Enum8Metric, _impl_.kind_),
+    ~0u,
     ~0u,
     ~0u,
     0,
@@ -500,7 +613,6 @@ const ::uint32_t TableStruct_abacus_2fprotobuf_2fmetrics_2eproto::offsets[] PROT
     ~0u,  // no _split_
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Metric, _impl_.offset_),
-    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Metric, _impl_.optional_),
     ::_pbi::kInvalidFieldOffsetTag,
     ::_pbi::kInvalidFieldOffsetTag,
     ::_pbi::kInvalidFieldOffsetTag,
@@ -538,22 +650,28 @@ const ::uint32_t TableStruct_abacus_2fprotobuf_2fmetrics_2eproto::offsets[] PROT
 
 static const ::_pbi::MigrationSchema
     schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-        {0, 13, -1, sizeof(::abacus::protobuf::UInt64Metric)},
-        {18, 31, -1, sizeof(::abacus::protobuf::Int64Metric)},
-        {36, 49, -1, sizeof(::abacus::protobuf::UInt32Metric)},
-        {54, 67, -1, sizeof(::abacus::protobuf::Int32Metric)},
-        {72, 85, -1, sizeof(::abacus::protobuf::Float64Metric)},
-        {90, 103, -1, sizeof(::abacus::protobuf::Float32Metric)},
-        {108, 119, -1, sizeof(::abacus::protobuf::BoolMetric)},
-        {122, 132, -1, sizeof(::abacus::protobuf::Enum8Metric_EnumValue)},
-        {134, 144, -1, sizeof(::abacus::protobuf::Enum8Metric_ValuesEntry_DoNotUse)},
-        {146, 158, -1, sizeof(::abacus::protobuf::Enum8Metric)},
-        {162, -1, -1, sizeof(::abacus::protobuf::Metric)},
-        {181, 191, -1, sizeof(::abacus::protobuf::MetricsMetadata_MetricsEntry_DoNotUse)},
-        {193, -1, -1, sizeof(::abacus::protobuf::MetricsMetadata)},
+        {0, -1, -1, sizeof(::abacus::protobuf::Gauge)},
+        {9, -1, -1, sizeof(::abacus::protobuf::Counter)},
+        {18, -1, -1, sizeof(::abacus::protobuf::Constant)},
+        {26, 42, -1, sizeof(::abacus::protobuf::UInt64Metric)},
+        {49, 65, -1, sizeof(::abacus::protobuf::Int64Metric)},
+        {72, 88, -1, sizeof(::abacus::protobuf::UInt32Metric)},
+        {95, 111, -1, sizeof(::abacus::protobuf::Int32Metric)},
+        {118, 134, -1, sizeof(::abacus::protobuf::Float64Metric)},
+        {141, 157, -1, sizeof(::abacus::protobuf::Float32Metric)},
+        {164, 177, -1, sizeof(::abacus::protobuf::BoolMetric)},
+        {181, 191, -1, sizeof(::abacus::protobuf::Enum8Metric_EnumValue)},
+        {193, 203, -1, sizeof(::abacus::protobuf::Enum8Metric_ValuesEntry_DoNotUse)},
+        {205, 219, -1, sizeof(::abacus::protobuf::Enum8Metric)},
+        {224, -1, -1, sizeof(::abacus::protobuf::Metric)},
+        {242, 252, -1, sizeof(::abacus::protobuf::MetricsMetadata_MetricsEntry_DoNotUse)},
+        {254, -1, -1, sizeof(::abacus::protobuf::MetricsMetadata)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
+    &::abacus::protobuf::_Gauge_default_instance_._instance,
+    &::abacus::protobuf::_Counter_default_instance_._instance,
+    &::abacus::protobuf::_Constant_default_instance_._instance,
     &::abacus::protobuf::_UInt64Metric_default_instance_._instance,
     &::abacus::protobuf::_Int64Metric_default_instance_._instance,
     &::abacus::protobuf::_UInt32Metric_default_instance_._instance,
@@ -570,76 +688,91 @@ static const ::_pb::Message* const file_default_instances[] = {
 };
 const char descriptor_table_protodef_abacus_2fprotobuf_2fmetrics_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
     "\n\035abacus/protobuf/metrics.proto\022\017abacus."
-    "protobuf\032\032abacus/protobuf/kind.proto\"\230\001\n"
-    "\014UInt64Metric\022\023\n\013description\030\001 \001(\t\022#\n\004ki"
-    "nd\030\002 \001(\0162\025.abacus.protobuf.Kind\022\021\n\004unit\030"
-    "\003 \001(\tH\000\210\001\001\022\020\n\003min\030\004 \001(\004H\001\210\001\001\022\020\n\003max\030\005 \001("
-    "\004H\002\210\001\001B\007\n\005_unitB\006\n\004_minB\006\n\004_max\"\227\001\n\013Int6"
-    "4Metric\022\023\n\013description\030\001 \001(\t\022#\n\004kind\030\002 \001"
-    "(\0162\025.abacus.protobuf.Kind\022\021\n\004unit\030\003 \001(\tH"
-    "\000\210\001\001\022\020\n\003min\030\004 \001(\003H\001\210\001\001\022\020\n\003max\030\005 \001(\003H\002\210\001\001"
-    "B\007\n\005_unitB\006\n\004_minB\006\n\004_max\"\230\001\n\014UInt32Metr"
-    "ic\022\023\n\013description\030\001 \001(\t\022#\n\004kind\030\002 \001(\0162\025."
-    "abacus.protobuf.Kind\022\021\n\004unit\030\003 \001(\tH\000\210\001\001\022"
-    "\020\n\003min\030\004 \001(\rH\001\210\001\001\022\020\n\003max\030\005 \001(\rH\002\210\001\001B\007\n\005_"
-    "unitB\006\n\004_minB\006\n\004_max\"\227\001\n\013Int32Metric\022\023\n\013"
-    "description\030\001 \001(\t\022#\n\004kind\030\002 \001(\0162\025.abacus"
-    ".protobuf.Kind\022\021\n\004unit\030\003 \001(\tH\000\210\001\001\022\020\n\003min"
-    "\030\004 \001(\005H\001\210\001\001\022\020\n\003max\030\005 \001(\005H\002\210\001\001B\007\n\005_unitB\006"
-    "\n\004_minB\006\n\004_max\"\231\001\n\rFloat64Metric\022\023\n\013desc"
-    "ription\030\001 \001(\t\022#\n\004kind\030\002 \001(\0162\025.abacus.pro"
-    "tobuf.Kind\022\021\n\004unit\030\003 \001(\tH\000\210\001\001\022\020\n\003min\030\004 \001"
-    "(\001H\001\210\001\001\022\020\n\003max\030\005 \001(\001H\002\210\001\001B\007\n\005_unitB\006\n\004_m"
-    "inB\006\n\004_max\"\231\001\n\rFloat32Metric\022\023\n\013descript"
-    "ion\030\001 \001(\t\022#\n\004kind\030\002 \001(\0162\025.abacus.protobu"
-    "f.Kind\022\021\n\004unit\030\003 \001(\tH\000\210\001\001\022\020\n\003min\030\004 \001(\002H\001"
-    "\210\001\001\022\020\n\003max\030\005 \001(\002H\002\210\001\001B\007\n\005_unitB\006\n\004_minB\006"
-    "\n\004_max\"b\n\nBoolMetric\022\023\n\013description\030\001 \001("
-    "\t\022#\n\004kind\030\002 \001(\0162\025.abacus.protobuf.Kind\022\021"
-    "\n\004unit\030\003 \001(\tH\000\210\001\001B\007\n\005_unit\"\271\002\n\013Enum8Metr"
-    "ic\022\023\n\013description\030\001 \001(\t\022#\n\004kind\030\002 \001(\0162\025."
-    "abacus.protobuf.Kind\022\021\n\004unit\030\003 \001(\tH\000\210\001\001\022"
-    "8\n\006values\030\004 \003(\0132(.abacus.protobuf.Enum8M"
-    "etric.ValuesEntry\032C\n\tEnumValue\022\014\n\004name\030\001"
-    " \001(\t\022\030\n\013description\030\002 \001(\tH\000\210\001\001B\016\n\014_descr"
-    "iption\032U\n\013ValuesEntry\022\013\n\003key\030\001 \001(\r\0225\n\005va"
-    "lue\030\002 \001(\0132&.abacus.protobuf.Enum8Metric."
-    "EnumValue:\0028\001B\007\n\005_unit\"\267\003\n\006Metric\022\016\n\006off"
-    "set\030\001 \001(\r\022\020\n\010optional\030\002 \001(\010\022/\n\006uint64\030\003 "
-    "\001(\0132\035.abacus.protobuf.UInt64MetricH\000\022-\n\005"
-    "int64\030\004 \001(\0132\034.abacus.protobuf.Int64Metri"
-    "cH\000\022/\n\006uint32\030\005 \001(\0132\035.abacus.protobuf.UI"
-    "nt32MetricH\000\022-\n\005int32\030\006 \001(\0132\034.abacus.pro"
-    "tobuf.Int32MetricH\000\0221\n\007float64\030\007 \001(\0132\036.a"
-    "bacus.protobuf.Float64MetricH\000\0221\n\007float3"
-    "2\030\010 \001(\0132\036.abacus.protobuf.Float32MetricH"
-    "\000\022.\n\007boolean\030\t \001(\0132\033.abacus.protobuf.Boo"
-    "lMetricH\000\022-\n\005enum8\030\n \001(\0132\034.abacus.protob"
-    "uf.Enum8MetricH\000B\006\n\004type\"\371\001\n\017MetricsMeta"
-    "data\022\030\n\020protocol_version\030\001 \001(\r\022/\n\nendian"
-    "ness\030\002 \001(\0162\033.abacus.protobuf.Endianness\022"
-    "\022\n\nsync_value\030\003 \001(\007\022>\n\007metrics\030\004 \003(\0132-.a"
-    "bacus.protobuf.MetricsMetadata.MetricsEn"
-    "try\032G\n\014MetricsEntry\022\013\n\003key\030\001 \001(\t\022&\n\005valu"
-    "e\030\002 \001(\0132\027.abacus.protobuf.Metric:\0028\001*!\n\n"
-    "Endianness\022\n\n\006LITTLE\020\000\022\007\n\003BIG\020\001B\021Z\017abacu"
-    "s/protobufb\006proto3"
-};
-static const ::_pbi::DescriptorTable* const descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_deps[1] =
-    {
-        &::descriptor_table_abacus_2fprotobuf_2fkind_2eproto,
+    "protobuf\"\031\n\005Gauge\022\020\n\010optional\030\001 \001(\010\"\033\n\007C"
+    "ounter\022\020\n\010optional\030\001 \001(\010\"\n\n\010Constant\"\200\002\n"
+    "\014UInt64Metric\022\023\n\013description\030\001 \001(\t\022\'\n\005ga"
+    "uge\030\002 \001(\0132\026.abacus.protobuf.GaugeH\000\022+\n\007c"
+    "ounter\030\003 \001(\0132\030.abacus.protobuf.CounterH\000"
+    "\022-\n\010constant\030\004 \001(\0132\031.abacus.protobuf.Con"
+    "stantH\000\022\021\n\004unit\030\005 \001(\tH\001\210\001\001\022\020\n\003min\030\006 \001(\004H"
+    "\002\210\001\001\022\020\n\003max\030\007 \001(\004H\003\210\001\001B\006\n\004kindB\007\n\005_unitB"
+    "\006\n\004_minB\006\n\004_max\"\377\001\n\013Int64Metric\022\023\n\013descr"
+    "iption\030\001 \001(\t\022\'\n\005gauge\030\002 \001(\0132\026.abacus.pro"
+    "tobuf.GaugeH\000\022+\n\007counter\030\003 \001(\0132\030.abacus."
+    "protobuf.CounterH\000\022-\n\010constant\030\004 \001(\0132\031.a"
+    "bacus.protobuf.ConstantH\000\022\021\n\004unit\030\005 \001(\tH"
+    "\001\210\001\001\022\020\n\003min\030\006 \001(\003H\002\210\001\001\022\020\n\003max\030\007 \001(\003H\003\210\001\001"
+    "B\006\n\004kindB\007\n\005_unitB\006\n\004_minB\006\n\004_max\"\200\002\n\014UI"
+    "nt32Metric\022\023\n\013description\030\001 \001(\t\022\'\n\005gauge"
+    "\030\002 \001(\0132\026.abacus.protobuf.GaugeH\000\022+\n\007coun"
+    "ter\030\003 \001(\0132\030.abacus.protobuf.CounterH\000\022-\n"
+    "\010constant\030\004 \001(\0132\031.abacus.protobuf.Consta"
+    "ntH\000\022\021\n\004unit\030\005 \001(\tH\001\210\001\001\022\020\n\003min\030\006 \001(\rH\002\210\001"
+    "\001\022\020\n\003max\030\007 \001(\rH\003\210\001\001B\006\n\004kindB\007\n\005_unitB\006\n\004"
+    "_minB\006\n\004_max\"\377\001\n\013Int32Metric\022\023\n\013descript"
+    "ion\030\001 \001(\t\022\'\n\005gauge\030\002 \001(\0132\026.abacus.protob"
+    "uf.GaugeH\000\022+\n\007counter\030\003 \001(\0132\030.abacus.pro"
+    "tobuf.CounterH\000\022-\n\010constant\030\004 \001(\0132\031.abac"
+    "us.protobuf.ConstantH\000\022\021\n\004unit\030\005 \001(\tH\001\210\001"
+    "\001\022\020\n\003min\030\006 \001(\005H\002\210\001\001\022\020\n\003max\030\007 \001(\005H\003\210\001\001B\006\n"
+    "\004kindB\007\n\005_unitB\006\n\004_minB\006\n\004_max\"\201\002\n\rFloat"
+    "64Metric\022\023\n\013description\030\001 \001(\t\022\'\n\005gauge\030\002"
+    " \001(\0132\026.abacus.protobuf.GaugeH\000\022+\n\007counte"
+    "r\030\003 \001(\0132\030.abacus.protobuf.CounterH\000\022-\n\010c"
+    "onstant\030\004 \001(\0132\031.abacus.protobuf.Constant"
+    "H\000\022\021\n\004unit\030\005 \001(\tH\001\210\001\001\022\020\n\003min\030\006 \001(\001H\002\210\001\001\022"
+    "\020\n\003max\030\007 \001(\001H\003\210\001\001B\006\n\004kindB\007\n\005_unitB\006\n\004_m"
+    "inB\006\n\004_max\"\201\002\n\rFloat32Metric\022\023\n\013descript"
+    "ion\030\001 \001(\t\022\'\n\005gauge\030\002 \001(\0132\026.abacus.protob"
+    "uf.GaugeH\000\022+\n\007counter\030\003 \001(\0132\030.abacus.pro"
+    "tobuf.CounterH\000\022-\n\010constant\030\004 \001(\0132\031.abac"
+    "us.protobuf.ConstantH\000\022\021\n\004unit\030\005 \001(\tH\001\210\001"
+    "\001\022\020\n\003min\030\006 \001(\002H\002\210\001\001\022\020\n\003max\030\007 \001(\002H\003\210\001\001B\006\n"
+    "\004kindB\007\n\005_unitB\006\n\004_minB\006\n\004_max\"\235\001\n\nBoolM"
+    "etric\022\023\n\013description\030\001 \001(\t\022\'\n\005gauge\030\002 \001("
+    "\0132\026.abacus.protobuf.GaugeH\000\022-\n\010constant\030"
+    "\003 \001(\0132\031.abacus.protobuf.ConstantH\000\022\021\n\004un"
+    "it\030\004 \001(\tH\001\210\001\001B\006\n\004kindB\007\n\005_unit\"\364\002\n\013Enum8"
+    "Metric\022\023\n\013description\030\001 \001(\t\022\'\n\005gauge\030\002 \001"
+    "(\0132\026.abacus.protobuf.GaugeH\000\022-\n\010constant"
+    "\030\003 \001(\0132\031.abacus.protobuf.ConstantH\000\022\021\n\004u"
+    "nit\030\004 \001(\tH\001\210\001\001\0228\n\006values\030\005 \003(\0132(.abacus."
+    "protobuf.Enum8Metric.ValuesEntry\032C\n\tEnum"
+    "Value\022\014\n\004name\030\001 \001(\t\022\030\n\013description\030\002 \001(\t"
+    "H\000\210\001\001B\016\n\014_description\032U\n\013ValuesEntry\022\013\n\003"
+    "key\030\001 \001(\r\0225\n\005value\030\002 \001(\0132&.abacus.protob"
+    "uf.Enum8Metric.EnumValue:\0028\001B\006\n\004kindB\007\n\005"
+    "_unit\"\245\003\n\006Metric\022\016\n\006offset\030\001 \001(\r\022/\n\006uint"
+    "64\030\003 \001(\0132\035.abacus.protobuf.UInt64MetricH"
+    "\000\022-\n\005int64\030\004 \001(\0132\034.abacus.protobuf.Int64"
+    "MetricH\000\022/\n\006uint32\030\005 \001(\0132\035.abacus.protob"
+    "uf.UInt32MetricH\000\022-\n\005int32\030\006 \001(\0132\034.abacu"
+    "s.protobuf.Int32MetricH\000\0221\n\007float64\030\007 \001("
+    "\0132\036.abacus.protobuf.Float64MetricH\000\0221\n\007f"
+    "loat32\030\010 \001(\0132\036.abacus.protobuf.Float32Me"
+    "tricH\000\022.\n\007boolean\030\t \001(\0132\033.abacus.protobu"
+    "f.BoolMetricH\000\022-\n\005enum8\030\n \001(\0132\034.abacus.p"
+    "rotobuf.Enum8MetricH\000B\006\n\004type\"\371\001\n\017Metric"
+    "sMetadata\022\030\n\020protocol_version\030\001 \001(\r\022/\n\ne"
+    "ndianness\030\002 \001(\0162\033.abacus.protobuf.Endian"
+    "ness\022\022\n\nsync_value\030\003 \001(\007\022>\n\007metrics\030\004 \003("
+    "\0132-.abacus.protobuf.MetricsMetadata.Metr"
+    "icsEntry\032G\n\014MetricsEntry\022\013\n\003key\030\001 \001(\t\022&\n"
+    "\005value\030\002 \001(\0132\027.abacus.protobuf.Metric:\0028"
+    "\001*!\n\nEndianness\022\n\n\006LITTLE\020\000\022\007\n\003BIG\020\001B\021Z\017"
+    "abacus/protobufb\006proto3"
 };
 static ::absl::once_flag descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto = {
     false,
     false,
-    2178,
+    2943,
     descriptor_table_protodef_abacus_2fprotobuf_2fmetrics_2eproto,
     "abacus/protobuf/metrics.proto",
     &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once,
-    descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_deps,
-    1,
-    13,
+    nullptr,
+    0,
+    16,
     schemas,
     file_default_instances,
     TableStruct_abacus_2fprotobuf_2fmetrics_2eproto::offsets,
@@ -682,11 +815,385 @@ bool Endianness_IsValid(int value) {
 }
 // ===================================================================
 
+class Gauge::_Internal {
+ public:
+};
+
+Gauge::Gauge(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:abacus.protobuf.Gauge)
+}
+Gauge::Gauge(const Gauge& from)
+    : ::google::protobuf::Message(), _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:abacus.protobuf.Gauge)
+}
+inline void Gauge::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.optional_){false},
+      /*decltype(_impl_._cached_size_)*/ {},
+  };
+}
+Gauge::~Gauge() {
+  // @@protoc_insertion_point(destructor:abacus.protobuf.Gauge)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void Gauge::SharedDtor() {
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+}
+void Gauge::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+PROTOBUF_NOINLINE void Gauge::Clear() {
+// @@protoc_insertion_point(message_clear_start:abacus.protobuf.Gauge)
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.optional_ = false;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+const char* Gauge::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
+  return ptr;
+}
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> Gauge::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_Gauge_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // bool optional = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(Gauge, _impl_.optional_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(Gauge, _impl_.optional_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // bool optional = 1;
+    {PROTOBUF_FIELD_OFFSET(Gauge, _impl_.optional_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+::uint8_t* Gauge::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:abacus.protobuf.Gauge)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // bool optional = 1;
+  if (this->_internal_optional() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        1, this->_internal_optional(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:abacus.protobuf.Gauge)
+  return target;
+}
+
+::size_t Gauge::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:abacus.protobuf.Gauge)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // bool optional = 1;
+  if (this->_internal_optional() != 0) {
+    total_size += 2;
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::google::protobuf::Message::ClassData Gauge::_class_data_ = {
+    ::google::protobuf::Message::CopyWithSourceCheck,
+    Gauge::MergeImpl
+};
+const ::google::protobuf::Message::ClassData*Gauge::GetClassData() const { return &_class_data_; }
+
+
+void Gauge::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
+  auto* const _this = static_cast<Gauge*>(&to_msg);
+  auto& from = static_cast<const Gauge&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:abacus.protobuf.Gauge)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_optional() != 0) {
+    _this->_internal_set_optional(from._internal_optional());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void Gauge::CopyFrom(const Gauge& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:abacus.protobuf.Gauge)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+PROTOBUF_NOINLINE bool Gauge::IsInitialized() const {
+  return true;
+}
+
+void Gauge::InternalSwap(Gauge* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+        swap(_impl_.optional_, other->_impl_.optional_);
+}
+
+::google::protobuf::Metadata Gauge::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_getter, &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once,
+      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[0]);
+}
+// ===================================================================
+
+class Counter::_Internal {
+ public:
+};
+
+Counter::Counter(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:abacus.protobuf.Counter)
+}
+Counter::Counter(const Counter& from)
+    : ::google::protobuf::Message(), _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:abacus.protobuf.Counter)
+}
+inline void Counter::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.optional_){false},
+      /*decltype(_impl_._cached_size_)*/ {},
+  };
+}
+Counter::~Counter() {
+  // @@protoc_insertion_point(destructor:abacus.protobuf.Counter)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void Counter::SharedDtor() {
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+}
+void Counter::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+PROTOBUF_NOINLINE void Counter::Clear() {
+// @@protoc_insertion_point(message_clear_start:abacus.protobuf.Counter)
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.optional_ = false;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+const char* Counter::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
+  return ptr;
+}
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> Counter::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_Counter_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // bool optional = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(Counter, _impl_.optional_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(Counter, _impl_.optional_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // bool optional = 1;
+    {PROTOBUF_FIELD_OFFSET(Counter, _impl_.optional_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+::uint8_t* Counter::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:abacus.protobuf.Counter)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // bool optional = 1;
+  if (this->_internal_optional() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(
+        1, this->_internal_optional(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:abacus.protobuf.Counter)
+  return target;
+}
+
+::size_t Counter::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:abacus.protobuf.Counter)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // bool optional = 1;
+  if (this->_internal_optional() != 0) {
+    total_size += 2;
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::google::protobuf::Message::ClassData Counter::_class_data_ = {
+    ::google::protobuf::Message::CopyWithSourceCheck,
+    Counter::MergeImpl
+};
+const ::google::protobuf::Message::ClassData*Counter::GetClassData() const { return &_class_data_; }
+
+
+void Counter::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
+  auto* const _this = static_cast<Counter*>(&to_msg);
+  auto& from = static_cast<const Counter&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:abacus.protobuf.Counter)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_optional() != 0) {
+    _this->_internal_set_optional(from._internal_optional());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void Counter::CopyFrom(const Counter& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:abacus.protobuf.Counter)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+PROTOBUF_NOINLINE bool Counter::IsInitialized() const {
+  return true;
+}
+
+void Counter::InternalSwap(Counter* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+        swap(_impl_.optional_, other->_impl_.optional_);
+}
+
+::google::protobuf::Metadata Counter::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_getter, &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once,
+      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[1]);
+}
+// ===================================================================
+
+class Constant::_Internal {
+ public:
+};
+
+Constant::Constant(::google::protobuf::Arena* arena)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+  // @@protoc_insertion_point(arena_constructor:abacus.protobuf.Constant)
+}
+Constant::Constant(const Constant& from) : ::google::protobuf::internal::ZeroFieldsBase() {
+  Constant* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
+  // @@protoc_insertion_point(copy_constructor:abacus.protobuf.Constant)
+}
+
+
+
+
+const ::google::protobuf::Message::ClassData Constant::_class_data_ = {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl,
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl,
+};
+const ::google::protobuf::Message::ClassData*Constant::GetClassData() const { return &_class_data_; }
+
+
+
+
+
+
+
+::google::protobuf::Metadata Constant::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_getter, &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once,
+      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[2]);
+}
+// ===================================================================
+
 class UInt64Metric::_Internal {
  public:
   using HasBits = decltype(std::declval<UInt64Metric>()._impl_._has_bits_);
   static constexpr ::int32_t kHasBitsOffset =
     8 * PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_._has_bits_);
+  static constexpr ::int32_t kOneofCaseOffset =
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt64Metric, _impl_._oneof_case_);
+  static const ::abacus::protobuf::Gauge& gauge(const UInt64Metric* msg);
+  static const ::abacus::protobuf::Counter& counter(const UInt64Metric* msg);
+  static const ::abacus::protobuf::Constant& constant(const UInt64Metric* msg);
   static void set_has_unit(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
@@ -698,6 +1205,60 @@ class UInt64Metric::_Internal {
   }
 };
 
+const ::abacus::protobuf::Gauge& UInt64Metric::_Internal::gauge(const UInt64Metric* msg) {
+  return *msg->_impl_.kind_.gauge_;
+}
+const ::abacus::protobuf::Counter& UInt64Metric::_Internal::counter(const UInt64Metric* msg) {
+  return *msg->_impl_.kind_.counter_;
+}
+const ::abacus::protobuf::Constant& UInt64Metric::_Internal::constant(const UInt64Metric* msg) {
+  return *msg->_impl_.kind_.constant_;
+}
+void UInt64Metric::set_allocated_gauge(::abacus::protobuf::Gauge* gauge) {
+  ::google::protobuf::Arena* message_arena = GetArenaForAllocation();
+  clear_kind();
+  if (gauge) {
+    ::google::protobuf::Arena* submessage_arena =
+      ::google::protobuf::Arena::InternalGetOwningArena(gauge);
+    if (message_arena != submessage_arena) {
+      gauge = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, gauge, submessage_arena);
+    }
+    set_has_gauge();
+    _impl_.kind_.gauge_ = gauge;
+  }
+  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.UInt64Metric.gauge)
+}
+void UInt64Metric::set_allocated_counter(::abacus::protobuf::Counter* counter) {
+  ::google::protobuf::Arena* message_arena = GetArenaForAllocation();
+  clear_kind();
+  if (counter) {
+    ::google::protobuf::Arena* submessage_arena =
+      ::google::protobuf::Arena::InternalGetOwningArena(counter);
+    if (message_arena != submessage_arena) {
+      counter = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, counter, submessage_arena);
+    }
+    set_has_counter();
+    _impl_.kind_.counter_ = counter;
+  }
+  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.UInt64Metric.counter)
+}
+void UInt64Metric::set_allocated_constant(::abacus::protobuf::Constant* constant) {
+  ::google::protobuf::Arena* message_arena = GetArenaForAllocation();
+  clear_kind();
+  if (constant) {
+    ::google::protobuf::Arena* submessage_arena =
+      ::google::protobuf::Arena::InternalGetOwningArena(constant);
+    if (message_arena != submessage_arena) {
+      constant = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, constant, submessage_arena);
+    }
+    set_has_constant();
+    _impl_.kind_.constant_ = constant;
+  }
+  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.UInt64Metric.constant)
+}
 UInt64Metric::UInt64Metric(::google::protobuf::Arena* arena)
     : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
@@ -714,6 +1275,7 @@ UInt64Metric::UInt64Metric(const UInt64Metric& from) : ::google::protobuf::Messa
       decltype(_impl_.min_){},
       decltype(_impl_.max_){},
       decltype(_impl_.kind_){},
+      /*decltype(_impl_._oneof_case_)*/ {},
   };
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
@@ -732,8 +1294,29 @@ UInt64Metric::UInt64Metric(const UInt64Metric& from) : ::google::protobuf::Messa
     _this->_impl_.unit_.Set(from._internal_unit(), _this->GetArenaForAllocation());
   }
   ::memcpy(&_impl_.min_, &from._impl_.min_,
-    static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.kind_) -
-    reinterpret_cast<char*>(&_impl_.min_)) + sizeof(_impl_.kind_));
+    static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.max_) -
+    reinterpret_cast<char*>(&_impl_.min_)) + sizeof(_impl_.max_));
+  clear_has_kind();
+  switch (from.kind_case()) {
+    case kGauge: {
+      _this->_internal_mutable_gauge()->::abacus::protobuf::Gauge::MergeFrom(
+          from._internal_gauge());
+      break;
+    }
+    case kCounter: {
+      _this->_internal_mutable_counter()->::abacus::protobuf::Counter::MergeFrom(
+          from._internal_counter());
+      break;
+    }
+    case kConstant: {
+      _this->_internal_mutable_constant()->::abacus::protobuf::Constant::MergeFrom(
+          from._internal_constant());
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
+  }
 
   // @@protoc_insertion_point(copy_constructor:abacus.protobuf.UInt64Metric)
 }
@@ -746,7 +1329,8 @@ inline void UInt64Metric::SharedCtor(::_pb::Arena* arena) {
       decltype(_impl_.unit_){},
       decltype(_impl_.min_){::uint64_t{0u}},
       decltype(_impl_.max_){::uint64_t{0u}},
-      decltype(_impl_.kind_){0},
+      decltype(_impl_.kind_){},
+      /*decltype(_impl_._oneof_case_)*/ {},
   };
   _impl_.description_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
@@ -756,6 +1340,7 @@ inline void UInt64Metric::SharedCtor(::_pb::Arena* arena) {
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
         _impl_.unit_.Set("", GetArenaForAllocation());
   #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  clear_has_kind();
 }
 UInt64Metric::~UInt64Metric() {
   // @@protoc_insertion_point(destructor:abacus.protobuf.UInt64Metric)
@@ -766,10 +1351,42 @@ inline void UInt64Metric::SharedDtor() {
   ABSL_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.description_.Destroy();
   _impl_.unit_.Destroy();
+  if (has_kind()) {
+    clear_kind();
+  }
 }
 void UInt64Metric::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
+
+void UInt64Metric::clear_kind() {
+// @@protoc_insertion_point(one_of_clear_start:abacus.protobuf.UInt64Metric)
+  switch (kind_case()) {
+    case kGauge: {
+      if (GetArenaForAllocation() == nullptr) {
+        delete _impl_.kind_.gauge_;
+      }
+      break;
+    }
+    case kCounter: {
+      if (GetArenaForAllocation() == nullptr) {
+        delete _impl_.kind_.counter_;
+      }
+      break;
+    }
+    case kConstant: {
+      if (GetArenaForAllocation() == nullptr) {
+        delete _impl_.kind_.constant_;
+      }
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
+  }
+  _impl_._oneof_case_[0] = KIND_NOT_SET;
+}
+
 
 PROTOBUF_NOINLINE void UInt64Metric::Clear() {
 // @@protoc_insertion_point(message_clear_start:abacus.protobuf.UInt64Metric)
@@ -787,7 +1404,7 @@ PROTOBUF_NOINLINE void UInt64Metric::Clear() {
         reinterpret_cast<char*>(&_impl_.max_) -
         reinterpret_cast<char*>(&_impl_.min_)) + sizeof(_impl_.max_));
   }
-  _impl_.kind_ = 0;
+  clear_kind();
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -800,17 +1417,17 @@ const char* UInt64Metric::_InternalParse(
 
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 5, 0, 52, 2> UInt64Metric::_table_ = {
+const ::_pbi::TcParseTable<3, 7, 3, 52, 2> UInt64Metric::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_._has_bits_),
     0, // no _extensions_
-    5, 56,  // max_field_number, fast_idx_mask
+    7, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967264,  // skipmap
+    4294967168,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    5,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
+    7,  // num_field_entries
+    3,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
     &_UInt64Metric_default_instance_._instance,
     ::_pbi::TcParser::GenericFallback,  // fallback
   }, {{
@@ -818,42 +1435,48 @@ const ::_pbi::TcParseTable<3, 5, 0, 52, 2> UInt64Metric::_table_ = {
     // string description = 1;
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.description_)}},
-    // .abacus.protobuf.Kind kind = 2;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UInt64Metric, _impl_.kind_), 63>(),
-     {16, 63, 0, PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.kind_)}},
-    // optional string unit = 3;
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    // optional string unit = 5;
     {::_pbi::TcParser::FastUS1,
-     {26, 0, 0, PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.unit_)}},
-    // optional uint64 min = 4;
+     {42, 0, 0, PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.unit_)}},
+    // optional uint64 min = 6;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(UInt64Metric, _impl_.min_), 1>(),
-     {32, 1, 0, PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.min_)}},
-    // optional uint64 max = 5;
+     {48, 1, 0, PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.min_)}},
+    // optional uint64 max = 7;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(UInt64Metric, _impl_.max_), 2>(),
-     {40, 2, 0, PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.max_)}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
+     {56, 2, 0, PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.max_)}},
   }}, {{
     65535, 65535
   }}, {{
     // string description = 1;
     {PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.description_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // .abacus.protobuf.Kind kind = 2;
-    {PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.kind_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-    // optional string unit = 3;
+    // .abacus.protobuf.Gauge gauge = 2;
+    {PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.kind_.gauge_), _Internal::kOneofCaseOffset + 0, 0,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .abacus.protobuf.Counter counter = 3;
+    {PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.kind_.counter_), _Internal::kOneofCaseOffset + 0, 1,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .abacus.protobuf.Constant constant = 4;
+    {PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.kind_.constant_), _Internal::kOneofCaseOffset + 0, 2,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvDefault)},
+    // optional string unit = 5;
     {PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.unit_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // optional uint64 min = 4;
+    // optional uint64 min = 6;
     {PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.min_), _Internal::kHasBitsOffset + 1, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUInt64)},
-    // optional uint64 max = 5;
+    // optional uint64 max = 7;
     {PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.max_), _Internal::kHasBitsOffset + 2, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUInt64)},
-  }},
-  // no aux_entries
-  {{
-    "\34\13\0\4\0\0\0\0"
+  }}, {{
+    {::_pbi::TcParser::GetTable<::abacus::protobuf::Gauge>()},
+    {::_pbi::TcParser::GetTable<::abacus::protobuf::Counter>()},
+    {::_pbi::FieldAuxDefaultMessage{}, &::abacus::protobuf::_Constant_default_instance_},
+  }}, {{
+    "\34\13\0\0\0\4\0\0"
     "abacus.protobuf.UInt64Metric"
     "description"
     "unit"
@@ -875,34 +1498,49 @@ const ::_pbi::TcParseTable<3, 5, 0, 52, 2> UInt64Metric::_table_ = {
     target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
-  // .abacus.protobuf.Kind kind = 2;
-  if (this->_internal_kind() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteEnumToArray(
-        2, this->_internal_kind(), target);
+  switch (kind_case()) {
+    case kGauge: {
+      target = ::google::protobuf::internal::WireFormatLite::
+        InternalWriteMessage(2, _Internal::gauge(this),
+          _Internal::gauge(this).GetCachedSize(), target, stream);
+      break;
+    }
+    case kCounter: {
+      target = ::google::protobuf::internal::WireFormatLite::
+        InternalWriteMessage(3, _Internal::counter(this),
+          _Internal::counter(this).GetCachedSize(), target, stream);
+      break;
+    }
+    case kConstant: {
+      target = ::google::protobuf::internal::WireFormatLite::
+        InternalWriteMessage(4, _Internal::constant(this),
+          _Internal::constant(this).GetCachedSize(), target, stream);
+      break;
+    }
+    default:
+      break;
   }
-
   cached_has_bits = _impl_._has_bits_[0];
-  // optional string unit = 3;
+  // optional string unit = 5;
   if (cached_has_bits & 0x00000001u) {
     const std::string& _s = this->_internal_unit();
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
         _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "abacus.protobuf.UInt64Metric.unit");
-    target = stream->WriteStringMaybeAliased(3, _s, target);
+    target = stream->WriteStringMaybeAliased(5, _s, target);
   }
 
-  // optional uint64 min = 4;
+  // optional uint64 min = 6;
   if (cached_has_bits & 0x00000002u) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteUInt64ToArray(
-        4, this->_internal_min(), target);
+        6, this->_internal_min(), target);
   }
 
-  // optional uint64 max = 5;
+  // optional uint64 max = 7;
   if (cached_has_bits & 0x00000004u) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteUInt64ToArray(
-        5, this->_internal_max(), target);
+        7, this->_internal_max(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -930,31 +1568,51 @@ const ::_pbi::TcParseTable<3, 5, 0, 52, 2> UInt64Metric::_table_ = {
 
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000007u) {
-    // optional string unit = 3;
+    // optional string unit = 5;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                       this->_internal_unit());
     }
 
-    // optional uint64 min = 4;
+    // optional uint64 min = 6;
     if (cached_has_bits & 0x00000002u) {
       total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
           this->_internal_min());
     }
 
-    // optional uint64 max = 5;
+    // optional uint64 max = 7;
     if (cached_has_bits & 0x00000004u) {
       total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
           this->_internal_max());
     }
 
   }
-  // .abacus.protobuf.Kind kind = 2;
-  if (this->_internal_kind() != 0) {
-    total_size += 1 +
-                  ::_pbi::WireFormatLite::EnumSize(this->_internal_kind());
+  switch (kind_case()) {
+    // .abacus.protobuf.Gauge gauge = 2;
+    case kGauge: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          *_impl_.kind_.gauge_);
+      break;
+    }
+    // .abacus.protobuf.Counter counter = 3;
+    case kCounter: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          *_impl_.kind_.counter_);
+      break;
+    }
+    // .abacus.protobuf.Constant constant = 4;
+    case kConstant: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          *_impl_.kind_.constant_);
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
   }
-
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
@@ -989,8 +1647,25 @@ void UInt64Metric::MergeImpl(::google::protobuf::Message& to_msg, const ::google
     }
     _this->_impl_._has_bits_[0] |= cached_has_bits;
   }
-  if (from._internal_kind() != 0) {
-    _this->_internal_set_kind(from._internal_kind());
+  switch (from.kind_case()) {
+    case kGauge: {
+      _this->_internal_mutable_gauge()->::abacus::protobuf::Gauge::MergeFrom(
+          from._internal_gauge());
+      break;
+    }
+    case kCounter: {
+      _this->_internal_mutable_counter()->::abacus::protobuf::Counter::MergeFrom(
+          from._internal_counter());
+      break;
+    }
+    case kConstant: {
+      _this->_internal_mutable_constant()->::abacus::protobuf::Constant::MergeFrom(
+          from._internal_constant());
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -1017,17 +1692,19 @@ void UInt64Metric::InternalSwap(UInt64Metric* other) {
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.unit_, lhs_arena,
                                        &other->_impl_.unit_, rhs_arena);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.kind_)
-      + sizeof(UInt64Metric::_impl_.kind_)
+      PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.max_)
+      + sizeof(UInt64Metric::_impl_.max_)
       - PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.min_)>(
           reinterpret_cast<char*>(&_impl_.min_),
           reinterpret_cast<char*>(&other->_impl_.min_));
+  swap(_impl_.kind_, other->_impl_.kind_);
+  swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);
 }
 
 ::google::protobuf::Metadata UInt64Metric::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_getter, &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once,
-      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[0]);
+      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[3]);
 }
 // ===================================================================
 
@@ -1036,6 +1713,11 @@ class Int64Metric::_Internal {
   using HasBits = decltype(std::declval<Int64Metric>()._impl_._has_bits_);
   static constexpr ::int32_t kHasBitsOffset =
     8 * PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_._has_bits_);
+  static constexpr ::int32_t kOneofCaseOffset =
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int64Metric, _impl_._oneof_case_);
+  static const ::abacus::protobuf::Gauge& gauge(const Int64Metric* msg);
+  static const ::abacus::protobuf::Counter& counter(const Int64Metric* msg);
+  static const ::abacus::protobuf::Constant& constant(const Int64Metric* msg);
   static void set_has_unit(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
@@ -1047,6 +1729,60 @@ class Int64Metric::_Internal {
   }
 };
 
+const ::abacus::protobuf::Gauge& Int64Metric::_Internal::gauge(const Int64Metric* msg) {
+  return *msg->_impl_.kind_.gauge_;
+}
+const ::abacus::protobuf::Counter& Int64Metric::_Internal::counter(const Int64Metric* msg) {
+  return *msg->_impl_.kind_.counter_;
+}
+const ::abacus::protobuf::Constant& Int64Metric::_Internal::constant(const Int64Metric* msg) {
+  return *msg->_impl_.kind_.constant_;
+}
+void Int64Metric::set_allocated_gauge(::abacus::protobuf::Gauge* gauge) {
+  ::google::protobuf::Arena* message_arena = GetArenaForAllocation();
+  clear_kind();
+  if (gauge) {
+    ::google::protobuf::Arena* submessage_arena =
+      ::google::protobuf::Arena::InternalGetOwningArena(gauge);
+    if (message_arena != submessage_arena) {
+      gauge = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, gauge, submessage_arena);
+    }
+    set_has_gauge();
+    _impl_.kind_.gauge_ = gauge;
+  }
+  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Int64Metric.gauge)
+}
+void Int64Metric::set_allocated_counter(::abacus::protobuf::Counter* counter) {
+  ::google::protobuf::Arena* message_arena = GetArenaForAllocation();
+  clear_kind();
+  if (counter) {
+    ::google::protobuf::Arena* submessage_arena =
+      ::google::protobuf::Arena::InternalGetOwningArena(counter);
+    if (message_arena != submessage_arena) {
+      counter = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, counter, submessage_arena);
+    }
+    set_has_counter();
+    _impl_.kind_.counter_ = counter;
+  }
+  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Int64Metric.counter)
+}
+void Int64Metric::set_allocated_constant(::abacus::protobuf::Constant* constant) {
+  ::google::protobuf::Arena* message_arena = GetArenaForAllocation();
+  clear_kind();
+  if (constant) {
+    ::google::protobuf::Arena* submessage_arena =
+      ::google::protobuf::Arena::InternalGetOwningArena(constant);
+    if (message_arena != submessage_arena) {
+      constant = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, constant, submessage_arena);
+    }
+    set_has_constant();
+    _impl_.kind_.constant_ = constant;
+  }
+  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Int64Metric.constant)
+}
 Int64Metric::Int64Metric(::google::protobuf::Arena* arena)
     : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
@@ -1063,6 +1799,7 @@ Int64Metric::Int64Metric(const Int64Metric& from) : ::google::protobuf::Message(
       decltype(_impl_.min_){},
       decltype(_impl_.max_){},
       decltype(_impl_.kind_){},
+      /*decltype(_impl_._oneof_case_)*/ {},
   };
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
@@ -1081,8 +1818,29 @@ Int64Metric::Int64Metric(const Int64Metric& from) : ::google::protobuf::Message(
     _this->_impl_.unit_.Set(from._internal_unit(), _this->GetArenaForAllocation());
   }
   ::memcpy(&_impl_.min_, &from._impl_.min_,
-    static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.kind_) -
-    reinterpret_cast<char*>(&_impl_.min_)) + sizeof(_impl_.kind_));
+    static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.max_) -
+    reinterpret_cast<char*>(&_impl_.min_)) + sizeof(_impl_.max_));
+  clear_has_kind();
+  switch (from.kind_case()) {
+    case kGauge: {
+      _this->_internal_mutable_gauge()->::abacus::protobuf::Gauge::MergeFrom(
+          from._internal_gauge());
+      break;
+    }
+    case kCounter: {
+      _this->_internal_mutable_counter()->::abacus::protobuf::Counter::MergeFrom(
+          from._internal_counter());
+      break;
+    }
+    case kConstant: {
+      _this->_internal_mutable_constant()->::abacus::protobuf::Constant::MergeFrom(
+          from._internal_constant());
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
+  }
 
   // @@protoc_insertion_point(copy_constructor:abacus.protobuf.Int64Metric)
 }
@@ -1095,7 +1853,8 @@ inline void Int64Metric::SharedCtor(::_pb::Arena* arena) {
       decltype(_impl_.unit_){},
       decltype(_impl_.min_){::int64_t{0}},
       decltype(_impl_.max_){::int64_t{0}},
-      decltype(_impl_.kind_){0},
+      decltype(_impl_.kind_){},
+      /*decltype(_impl_._oneof_case_)*/ {},
   };
   _impl_.description_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
@@ -1105,6 +1864,7 @@ inline void Int64Metric::SharedCtor(::_pb::Arena* arena) {
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
         _impl_.unit_.Set("", GetArenaForAllocation());
   #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  clear_has_kind();
 }
 Int64Metric::~Int64Metric() {
   // @@protoc_insertion_point(destructor:abacus.protobuf.Int64Metric)
@@ -1115,10 +1875,42 @@ inline void Int64Metric::SharedDtor() {
   ABSL_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.description_.Destroy();
   _impl_.unit_.Destroy();
+  if (has_kind()) {
+    clear_kind();
+  }
 }
 void Int64Metric::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
+
+void Int64Metric::clear_kind() {
+// @@protoc_insertion_point(one_of_clear_start:abacus.protobuf.Int64Metric)
+  switch (kind_case()) {
+    case kGauge: {
+      if (GetArenaForAllocation() == nullptr) {
+        delete _impl_.kind_.gauge_;
+      }
+      break;
+    }
+    case kCounter: {
+      if (GetArenaForAllocation() == nullptr) {
+        delete _impl_.kind_.counter_;
+      }
+      break;
+    }
+    case kConstant: {
+      if (GetArenaForAllocation() == nullptr) {
+        delete _impl_.kind_.constant_;
+      }
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
+  }
+  _impl_._oneof_case_[0] = KIND_NOT_SET;
+}
+
 
 PROTOBUF_NOINLINE void Int64Metric::Clear() {
 // @@protoc_insertion_point(message_clear_start:abacus.protobuf.Int64Metric)
@@ -1136,7 +1928,7 @@ PROTOBUF_NOINLINE void Int64Metric::Clear() {
         reinterpret_cast<char*>(&_impl_.max_) -
         reinterpret_cast<char*>(&_impl_.min_)) + sizeof(_impl_.max_));
   }
-  _impl_.kind_ = 0;
+  clear_kind();
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -1149,17 +1941,17 @@ const char* Int64Metric::_InternalParse(
 
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 5, 0, 51, 2> Int64Metric::_table_ = {
+const ::_pbi::TcParseTable<3, 7, 3, 51, 2> Int64Metric::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_._has_bits_),
     0, // no _extensions_
-    5, 56,  // max_field_number, fast_idx_mask
+    7, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967264,  // skipmap
+    4294967168,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    5,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
+    7,  // num_field_entries
+    3,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
     &_Int64Metric_default_instance_._instance,
     ::_pbi::TcParser::GenericFallback,  // fallback
   }, {{
@@ -1167,42 +1959,48 @@ const ::_pbi::TcParseTable<3, 5, 0, 51, 2> Int64Metric::_table_ = {
     // string description = 1;
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.description_)}},
-    // .abacus.protobuf.Kind kind = 2;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Int64Metric, _impl_.kind_), 63>(),
-     {16, 63, 0, PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.kind_)}},
-    // optional string unit = 3;
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    // optional string unit = 5;
     {::_pbi::TcParser::FastUS1,
-     {26, 0, 0, PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.unit_)}},
-    // optional int64 min = 4;
+     {42, 0, 0, PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.unit_)}},
+    // optional int64 min = 6;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(Int64Metric, _impl_.min_), 1>(),
-     {32, 1, 0, PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.min_)}},
-    // optional int64 max = 5;
+     {48, 1, 0, PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.min_)}},
+    // optional int64 max = 7;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(Int64Metric, _impl_.max_), 2>(),
-     {40, 2, 0, PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.max_)}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
+     {56, 2, 0, PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.max_)}},
   }}, {{
     65535, 65535
   }}, {{
     // string description = 1;
     {PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.description_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // .abacus.protobuf.Kind kind = 2;
-    {PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.kind_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-    // optional string unit = 3;
+    // .abacus.protobuf.Gauge gauge = 2;
+    {PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.kind_.gauge_), _Internal::kOneofCaseOffset + 0, 0,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .abacus.protobuf.Counter counter = 3;
+    {PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.kind_.counter_), _Internal::kOneofCaseOffset + 0, 1,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .abacus.protobuf.Constant constant = 4;
+    {PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.kind_.constant_), _Internal::kOneofCaseOffset + 0, 2,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvDefault)},
+    // optional string unit = 5;
     {PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.unit_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // optional int64 min = 4;
+    // optional int64 min = 6;
     {PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.min_), _Internal::kHasBitsOffset + 1, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
-    // optional int64 max = 5;
+    // optional int64 max = 7;
     {PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.max_), _Internal::kHasBitsOffset + 2, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
-  }},
-  // no aux_entries
-  {{
-    "\33\13\0\4\0\0\0\0"
+  }}, {{
+    {::_pbi::TcParser::GetTable<::abacus::protobuf::Gauge>()},
+    {::_pbi::TcParser::GetTable<::abacus::protobuf::Counter>()},
+    {::_pbi::FieldAuxDefaultMessage{}, &::abacus::protobuf::_Constant_default_instance_},
+  }}, {{
+    "\33\13\0\0\0\4\0\0"
     "abacus.protobuf.Int64Metric"
     "description"
     "unit"
@@ -1224,33 +2022,48 @@ const ::_pbi::TcParseTable<3, 5, 0, 51, 2> Int64Metric::_table_ = {
     target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
-  // .abacus.protobuf.Kind kind = 2;
-  if (this->_internal_kind() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteEnumToArray(
-        2, this->_internal_kind(), target);
+  switch (kind_case()) {
+    case kGauge: {
+      target = ::google::protobuf::internal::WireFormatLite::
+        InternalWriteMessage(2, _Internal::gauge(this),
+          _Internal::gauge(this).GetCachedSize(), target, stream);
+      break;
+    }
+    case kCounter: {
+      target = ::google::protobuf::internal::WireFormatLite::
+        InternalWriteMessage(3, _Internal::counter(this),
+          _Internal::counter(this).GetCachedSize(), target, stream);
+      break;
+    }
+    case kConstant: {
+      target = ::google::protobuf::internal::WireFormatLite::
+        InternalWriteMessage(4, _Internal::constant(this),
+          _Internal::constant(this).GetCachedSize(), target, stream);
+      break;
+    }
+    default:
+      break;
   }
-
   cached_has_bits = _impl_._has_bits_[0];
-  // optional string unit = 3;
+  // optional string unit = 5;
   if (cached_has_bits & 0x00000001u) {
     const std::string& _s = this->_internal_unit();
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
         _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "abacus.protobuf.Int64Metric.unit");
-    target = stream->WriteStringMaybeAliased(3, _s, target);
+    target = stream->WriteStringMaybeAliased(5, _s, target);
   }
 
-  // optional int64 min = 4;
+  // optional int64 min = 6;
   if (cached_has_bits & 0x00000002u) {
     target = ::google::protobuf::internal::WireFormatLite::
-        WriteInt64ToArrayWithField<4>(
+        WriteInt64ToArrayWithField<6>(
             stream, this->_internal_min(), target);
   }
 
-  // optional int64 max = 5;
+  // optional int64 max = 7;
   if (cached_has_bits & 0x00000004u) {
     target = ::google::protobuf::internal::WireFormatLite::
-        WriteInt64ToArrayWithField<5>(
+        WriteInt64ToArrayWithField<7>(
             stream, this->_internal_max(), target);
   }
 
@@ -1279,31 +2092,51 @@ const ::_pbi::TcParseTable<3, 5, 0, 51, 2> Int64Metric::_table_ = {
 
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000007u) {
-    // optional string unit = 3;
+    // optional string unit = 5;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                       this->_internal_unit());
     }
 
-    // optional int64 min = 4;
+    // optional int64 min = 6;
     if (cached_has_bits & 0x00000002u) {
       total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
           this->_internal_min());
     }
 
-    // optional int64 max = 5;
+    // optional int64 max = 7;
     if (cached_has_bits & 0x00000004u) {
       total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
           this->_internal_max());
     }
 
   }
-  // .abacus.protobuf.Kind kind = 2;
-  if (this->_internal_kind() != 0) {
-    total_size += 1 +
-                  ::_pbi::WireFormatLite::EnumSize(this->_internal_kind());
+  switch (kind_case()) {
+    // .abacus.protobuf.Gauge gauge = 2;
+    case kGauge: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          *_impl_.kind_.gauge_);
+      break;
+    }
+    // .abacus.protobuf.Counter counter = 3;
+    case kCounter: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          *_impl_.kind_.counter_);
+      break;
+    }
+    // .abacus.protobuf.Constant constant = 4;
+    case kConstant: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          *_impl_.kind_.constant_);
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
   }
-
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
@@ -1338,8 +2171,25 @@ void Int64Metric::MergeImpl(::google::protobuf::Message& to_msg, const ::google:
     }
     _this->_impl_._has_bits_[0] |= cached_has_bits;
   }
-  if (from._internal_kind() != 0) {
-    _this->_internal_set_kind(from._internal_kind());
+  switch (from.kind_case()) {
+    case kGauge: {
+      _this->_internal_mutable_gauge()->::abacus::protobuf::Gauge::MergeFrom(
+          from._internal_gauge());
+      break;
+    }
+    case kCounter: {
+      _this->_internal_mutable_counter()->::abacus::protobuf::Counter::MergeFrom(
+          from._internal_counter());
+      break;
+    }
+    case kConstant: {
+      _this->_internal_mutable_constant()->::abacus::protobuf::Constant::MergeFrom(
+          from._internal_constant());
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -1366,17 +2216,19 @@ void Int64Metric::InternalSwap(Int64Metric* other) {
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.unit_, lhs_arena,
                                        &other->_impl_.unit_, rhs_arena);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.kind_)
-      + sizeof(Int64Metric::_impl_.kind_)
+      PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.max_)
+      + sizeof(Int64Metric::_impl_.max_)
       - PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.min_)>(
           reinterpret_cast<char*>(&_impl_.min_),
           reinterpret_cast<char*>(&other->_impl_.min_));
+  swap(_impl_.kind_, other->_impl_.kind_);
+  swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);
 }
 
 ::google::protobuf::Metadata Int64Metric::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_getter, &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once,
-      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[1]);
+      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[4]);
 }
 // ===================================================================
 
@@ -1385,6 +2237,11 @@ class UInt32Metric::_Internal {
   using HasBits = decltype(std::declval<UInt32Metric>()._impl_._has_bits_);
   static constexpr ::int32_t kHasBitsOffset =
     8 * PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_._has_bits_);
+  static constexpr ::int32_t kOneofCaseOffset =
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt32Metric, _impl_._oneof_case_);
+  static const ::abacus::protobuf::Gauge& gauge(const UInt32Metric* msg);
+  static const ::abacus::protobuf::Counter& counter(const UInt32Metric* msg);
+  static const ::abacus::protobuf::Constant& constant(const UInt32Metric* msg);
   static void set_has_unit(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
@@ -1396,6 +2253,60 @@ class UInt32Metric::_Internal {
   }
 };
 
+const ::abacus::protobuf::Gauge& UInt32Metric::_Internal::gauge(const UInt32Metric* msg) {
+  return *msg->_impl_.kind_.gauge_;
+}
+const ::abacus::protobuf::Counter& UInt32Metric::_Internal::counter(const UInt32Metric* msg) {
+  return *msg->_impl_.kind_.counter_;
+}
+const ::abacus::protobuf::Constant& UInt32Metric::_Internal::constant(const UInt32Metric* msg) {
+  return *msg->_impl_.kind_.constant_;
+}
+void UInt32Metric::set_allocated_gauge(::abacus::protobuf::Gauge* gauge) {
+  ::google::protobuf::Arena* message_arena = GetArenaForAllocation();
+  clear_kind();
+  if (gauge) {
+    ::google::protobuf::Arena* submessage_arena =
+      ::google::protobuf::Arena::InternalGetOwningArena(gauge);
+    if (message_arena != submessage_arena) {
+      gauge = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, gauge, submessage_arena);
+    }
+    set_has_gauge();
+    _impl_.kind_.gauge_ = gauge;
+  }
+  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.UInt32Metric.gauge)
+}
+void UInt32Metric::set_allocated_counter(::abacus::protobuf::Counter* counter) {
+  ::google::protobuf::Arena* message_arena = GetArenaForAllocation();
+  clear_kind();
+  if (counter) {
+    ::google::protobuf::Arena* submessage_arena =
+      ::google::protobuf::Arena::InternalGetOwningArena(counter);
+    if (message_arena != submessage_arena) {
+      counter = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, counter, submessage_arena);
+    }
+    set_has_counter();
+    _impl_.kind_.counter_ = counter;
+  }
+  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.UInt32Metric.counter)
+}
+void UInt32Metric::set_allocated_constant(::abacus::protobuf::Constant* constant) {
+  ::google::protobuf::Arena* message_arena = GetArenaForAllocation();
+  clear_kind();
+  if (constant) {
+    ::google::protobuf::Arena* submessage_arena =
+      ::google::protobuf::Arena::InternalGetOwningArena(constant);
+    if (message_arena != submessage_arena) {
+      constant = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, constant, submessage_arena);
+    }
+    set_has_constant();
+    _impl_.kind_.constant_ = constant;
+  }
+  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.UInt32Metric.constant)
+}
 UInt32Metric::UInt32Metric(::google::protobuf::Arena* arena)
     : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
@@ -1409,9 +2320,10 @@ UInt32Metric::UInt32Metric(const UInt32Metric& from) : ::google::protobuf::Messa
       /*decltype(_impl_._cached_size_)*/ {},
       decltype(_impl_.description_){},
       decltype(_impl_.unit_){},
-      decltype(_impl_.kind_){},
       decltype(_impl_.min_){},
       decltype(_impl_.max_){},
+      decltype(_impl_.kind_){},
+      /*decltype(_impl_._oneof_case_)*/ {},
   };
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
@@ -1429,9 +2341,30 @@ UInt32Metric::UInt32Metric(const UInt32Metric& from) : ::google::protobuf::Messa
   if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
     _this->_impl_.unit_.Set(from._internal_unit(), _this->GetArenaForAllocation());
   }
-  ::memcpy(&_impl_.kind_, &from._impl_.kind_,
+  ::memcpy(&_impl_.min_, &from._impl_.min_,
     static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.max_) -
-    reinterpret_cast<char*>(&_impl_.kind_)) + sizeof(_impl_.max_));
+    reinterpret_cast<char*>(&_impl_.min_)) + sizeof(_impl_.max_));
+  clear_has_kind();
+  switch (from.kind_case()) {
+    case kGauge: {
+      _this->_internal_mutable_gauge()->::abacus::protobuf::Gauge::MergeFrom(
+          from._internal_gauge());
+      break;
+    }
+    case kCounter: {
+      _this->_internal_mutable_counter()->::abacus::protobuf::Counter::MergeFrom(
+          from._internal_counter());
+      break;
+    }
+    case kConstant: {
+      _this->_internal_mutable_constant()->::abacus::protobuf::Constant::MergeFrom(
+          from._internal_constant());
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
+  }
 
   // @@protoc_insertion_point(copy_constructor:abacus.protobuf.UInt32Metric)
 }
@@ -1442,9 +2375,10 @@ inline void UInt32Metric::SharedCtor(::_pb::Arena* arena) {
       /*decltype(_impl_._cached_size_)*/ {},
       decltype(_impl_.description_){},
       decltype(_impl_.unit_){},
-      decltype(_impl_.kind_){0},
       decltype(_impl_.min_){0u},
       decltype(_impl_.max_){0u},
+      decltype(_impl_.kind_){},
+      /*decltype(_impl_._oneof_case_)*/ {},
   };
   _impl_.description_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
@@ -1454,6 +2388,7 @@ inline void UInt32Metric::SharedCtor(::_pb::Arena* arena) {
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
         _impl_.unit_.Set("", GetArenaForAllocation());
   #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  clear_has_kind();
 }
 UInt32Metric::~UInt32Metric() {
   // @@protoc_insertion_point(destructor:abacus.protobuf.UInt32Metric)
@@ -1464,10 +2399,42 @@ inline void UInt32Metric::SharedDtor() {
   ABSL_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.description_.Destroy();
   _impl_.unit_.Destroy();
+  if (has_kind()) {
+    clear_kind();
+  }
 }
 void UInt32Metric::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
+
+void UInt32Metric::clear_kind() {
+// @@protoc_insertion_point(one_of_clear_start:abacus.protobuf.UInt32Metric)
+  switch (kind_case()) {
+    case kGauge: {
+      if (GetArenaForAllocation() == nullptr) {
+        delete _impl_.kind_.gauge_;
+      }
+      break;
+    }
+    case kCounter: {
+      if (GetArenaForAllocation() == nullptr) {
+        delete _impl_.kind_.counter_;
+      }
+      break;
+    }
+    case kConstant: {
+      if (GetArenaForAllocation() == nullptr) {
+        delete _impl_.kind_.constant_;
+      }
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
+  }
+  _impl_._oneof_case_[0] = KIND_NOT_SET;
+}
+
 
 PROTOBUF_NOINLINE void UInt32Metric::Clear() {
 // @@protoc_insertion_point(message_clear_start:abacus.protobuf.UInt32Metric)
@@ -1480,12 +2447,12 @@ PROTOBUF_NOINLINE void UInt32Metric::Clear() {
   if (cached_has_bits & 0x00000001u) {
     _impl_.unit_.ClearNonDefaultToEmpty();
   }
-  _impl_.kind_ = 0;
   if (cached_has_bits & 0x00000006u) {
     ::memset(&_impl_.min_, 0, static_cast<::size_t>(
         reinterpret_cast<char*>(&_impl_.max_) -
         reinterpret_cast<char*>(&_impl_.min_)) + sizeof(_impl_.max_));
   }
+  clear_kind();
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -1498,17 +2465,17 @@ const char* UInt32Metric::_InternalParse(
 
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 5, 0, 52, 2> UInt32Metric::_table_ = {
+const ::_pbi::TcParseTable<3, 7, 3, 52, 2> UInt32Metric::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_._has_bits_),
     0, // no _extensions_
-    5, 56,  // max_field_number, fast_idx_mask
+    7, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967264,  // skipmap
+    4294967168,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    5,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
+    7,  // num_field_entries
+    3,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
     &_UInt32Metric_default_instance_._instance,
     ::_pbi::TcParser::GenericFallback,  // fallback
   }, {{
@@ -1516,42 +2483,48 @@ const ::_pbi::TcParseTable<3, 5, 0, 52, 2> UInt32Metric::_table_ = {
     // string description = 1;
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.description_)}},
-    // .abacus.protobuf.Kind kind = 2;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UInt32Metric, _impl_.kind_), 63>(),
-     {16, 63, 0, PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.kind_)}},
-    // optional string unit = 3;
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    // optional string unit = 5;
     {::_pbi::TcParser::FastUS1,
-     {26, 0, 0, PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.unit_)}},
-    // optional uint32 min = 4;
+     {42, 0, 0, PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.unit_)}},
+    // optional uint32 min = 6;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UInt32Metric, _impl_.min_), 1>(),
-     {32, 1, 0, PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.min_)}},
-    // optional uint32 max = 5;
+     {48, 1, 0, PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.min_)}},
+    // optional uint32 max = 7;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UInt32Metric, _impl_.max_), 2>(),
-     {40, 2, 0, PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.max_)}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
+     {56, 2, 0, PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.max_)}},
   }}, {{
     65535, 65535
   }}, {{
     // string description = 1;
     {PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.description_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // .abacus.protobuf.Kind kind = 2;
-    {PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.kind_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-    // optional string unit = 3;
+    // .abacus.protobuf.Gauge gauge = 2;
+    {PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.kind_.gauge_), _Internal::kOneofCaseOffset + 0, 0,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .abacus.protobuf.Counter counter = 3;
+    {PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.kind_.counter_), _Internal::kOneofCaseOffset + 0, 1,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .abacus.protobuf.Constant constant = 4;
+    {PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.kind_.constant_), _Internal::kOneofCaseOffset + 0, 2,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvDefault)},
+    // optional string unit = 5;
     {PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.unit_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // optional uint32 min = 4;
+    // optional uint32 min = 6;
     {PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.min_), _Internal::kHasBitsOffset + 1, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUInt32)},
-    // optional uint32 max = 5;
+    // optional uint32 max = 7;
     {PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.max_), _Internal::kHasBitsOffset + 2, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUInt32)},
-  }},
-  // no aux_entries
-  {{
-    "\34\13\0\4\0\0\0\0"
+  }}, {{
+    {::_pbi::TcParser::GetTable<::abacus::protobuf::Gauge>()},
+    {::_pbi::TcParser::GetTable<::abacus::protobuf::Counter>()},
+    {::_pbi::FieldAuxDefaultMessage{}, &::abacus::protobuf::_Constant_default_instance_},
+  }}, {{
+    "\34\13\0\0\0\4\0\0"
     "abacus.protobuf.UInt32Metric"
     "description"
     "unit"
@@ -1573,34 +2546,49 @@ const ::_pbi::TcParseTable<3, 5, 0, 52, 2> UInt32Metric::_table_ = {
     target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
-  // .abacus.protobuf.Kind kind = 2;
-  if (this->_internal_kind() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteEnumToArray(
-        2, this->_internal_kind(), target);
+  switch (kind_case()) {
+    case kGauge: {
+      target = ::google::protobuf::internal::WireFormatLite::
+        InternalWriteMessage(2, _Internal::gauge(this),
+          _Internal::gauge(this).GetCachedSize(), target, stream);
+      break;
+    }
+    case kCounter: {
+      target = ::google::protobuf::internal::WireFormatLite::
+        InternalWriteMessage(3, _Internal::counter(this),
+          _Internal::counter(this).GetCachedSize(), target, stream);
+      break;
+    }
+    case kConstant: {
+      target = ::google::protobuf::internal::WireFormatLite::
+        InternalWriteMessage(4, _Internal::constant(this),
+          _Internal::constant(this).GetCachedSize(), target, stream);
+      break;
+    }
+    default:
+      break;
   }
-
   cached_has_bits = _impl_._has_bits_[0];
-  // optional string unit = 3;
+  // optional string unit = 5;
   if (cached_has_bits & 0x00000001u) {
     const std::string& _s = this->_internal_unit();
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
         _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "abacus.protobuf.UInt32Metric.unit");
-    target = stream->WriteStringMaybeAliased(3, _s, target);
+    target = stream->WriteStringMaybeAliased(5, _s, target);
   }
 
-  // optional uint32 min = 4;
+  // optional uint32 min = 6;
   if (cached_has_bits & 0x00000002u) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
-        4, this->_internal_min(), target);
+        6, this->_internal_min(), target);
   }
 
-  // optional uint32 max = 5;
+  // optional uint32 max = 7;
   if (cached_has_bits & 0x00000004u) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
-        5, this->_internal_max(), target);
+        7, this->_internal_max(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1626,32 +2614,52 @@ const ::_pbi::TcParseTable<3, 5, 0, 52, 2> UInt32Metric::_table_ = {
                                     this->_internal_description());
   }
 
-  // optional string unit = 3;
   cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                    this->_internal_unit());
-  }
+  if (cached_has_bits & 0x00000007u) {
+    // optional string unit = 5;
+    if (cached_has_bits & 0x00000001u) {
+      total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                      this->_internal_unit());
+    }
 
-  // .abacus.protobuf.Kind kind = 2;
-  if (this->_internal_kind() != 0) {
-    total_size += 1 +
-                  ::_pbi::WireFormatLite::EnumSize(this->_internal_kind());
-  }
-
-  if (cached_has_bits & 0x00000006u) {
-    // optional uint32 min = 4;
+    // optional uint32 min = 6;
     if (cached_has_bits & 0x00000002u) {
       total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
           this->_internal_min());
     }
 
-    // optional uint32 max = 5;
+    // optional uint32 max = 7;
     if (cached_has_bits & 0x00000004u) {
       total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
           this->_internal_max());
     }
 
+  }
+  switch (kind_case()) {
+    // .abacus.protobuf.Gauge gauge = 2;
+    case kGauge: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          *_impl_.kind_.gauge_);
+      break;
+    }
+    // .abacus.protobuf.Counter counter = 3;
+    case kCounter: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          *_impl_.kind_.counter_);
+      break;
+    }
+    // .abacus.protobuf.Constant constant = 4;
+    case kConstant: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          *_impl_.kind_.constant_);
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
   }
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
@@ -1674,14 +2682,11 @@ void UInt32Metric::MergeImpl(::google::protobuf::Message& to_msg, const ::google
   if (!from._internal_description().empty()) {
     _this->_internal_set_description(from._internal_description());
   }
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_internal_set_unit(from._internal_unit());
-  }
-  if (from._internal_kind() != 0) {
-    _this->_internal_set_kind(from._internal_kind());
-  }
   cached_has_bits = from._impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000006u) {
+  if (cached_has_bits & 0x00000007u) {
+    if (cached_has_bits & 0x00000001u) {
+      _this->_internal_set_unit(from._internal_unit());
+    }
     if (cached_has_bits & 0x00000002u) {
       _this->_impl_.min_ = from._impl_.min_;
     }
@@ -1689,6 +2694,26 @@ void UInt32Metric::MergeImpl(::google::protobuf::Message& to_msg, const ::google
       _this->_impl_.max_ = from._impl_.max_;
     }
     _this->_impl_._has_bits_[0] |= cached_has_bits;
+  }
+  switch (from.kind_case()) {
+    case kGauge: {
+      _this->_internal_mutable_gauge()->::abacus::protobuf::Gauge::MergeFrom(
+          from._internal_gauge());
+      break;
+    }
+    case kCounter: {
+      _this->_internal_mutable_counter()->::abacus::protobuf::Counter::MergeFrom(
+          from._internal_counter());
+      break;
+    }
+    case kConstant: {
+      _this->_internal_mutable_constant()->::abacus::protobuf::Constant::MergeFrom(
+          from._internal_constant());
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -1717,15 +2742,17 @@ void UInt32Metric::InternalSwap(UInt32Metric* other) {
   ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.max_)
       + sizeof(UInt32Metric::_impl_.max_)
-      - PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.kind_)>(
-          reinterpret_cast<char*>(&_impl_.kind_),
-          reinterpret_cast<char*>(&other->_impl_.kind_));
+      - PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.min_)>(
+          reinterpret_cast<char*>(&_impl_.min_),
+          reinterpret_cast<char*>(&other->_impl_.min_));
+  swap(_impl_.kind_, other->_impl_.kind_);
+  swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);
 }
 
 ::google::protobuf::Metadata UInt32Metric::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_getter, &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once,
-      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[2]);
+      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[5]);
 }
 // ===================================================================
 
@@ -1734,6 +2761,11 @@ class Int32Metric::_Internal {
   using HasBits = decltype(std::declval<Int32Metric>()._impl_._has_bits_);
   static constexpr ::int32_t kHasBitsOffset =
     8 * PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_._has_bits_);
+  static constexpr ::int32_t kOneofCaseOffset =
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int32Metric, _impl_._oneof_case_);
+  static const ::abacus::protobuf::Gauge& gauge(const Int32Metric* msg);
+  static const ::abacus::protobuf::Counter& counter(const Int32Metric* msg);
+  static const ::abacus::protobuf::Constant& constant(const Int32Metric* msg);
   static void set_has_unit(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
@@ -1745,6 +2777,60 @@ class Int32Metric::_Internal {
   }
 };
 
+const ::abacus::protobuf::Gauge& Int32Metric::_Internal::gauge(const Int32Metric* msg) {
+  return *msg->_impl_.kind_.gauge_;
+}
+const ::abacus::protobuf::Counter& Int32Metric::_Internal::counter(const Int32Metric* msg) {
+  return *msg->_impl_.kind_.counter_;
+}
+const ::abacus::protobuf::Constant& Int32Metric::_Internal::constant(const Int32Metric* msg) {
+  return *msg->_impl_.kind_.constant_;
+}
+void Int32Metric::set_allocated_gauge(::abacus::protobuf::Gauge* gauge) {
+  ::google::protobuf::Arena* message_arena = GetArenaForAllocation();
+  clear_kind();
+  if (gauge) {
+    ::google::protobuf::Arena* submessage_arena =
+      ::google::protobuf::Arena::InternalGetOwningArena(gauge);
+    if (message_arena != submessage_arena) {
+      gauge = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, gauge, submessage_arena);
+    }
+    set_has_gauge();
+    _impl_.kind_.gauge_ = gauge;
+  }
+  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Int32Metric.gauge)
+}
+void Int32Metric::set_allocated_counter(::abacus::protobuf::Counter* counter) {
+  ::google::protobuf::Arena* message_arena = GetArenaForAllocation();
+  clear_kind();
+  if (counter) {
+    ::google::protobuf::Arena* submessage_arena =
+      ::google::protobuf::Arena::InternalGetOwningArena(counter);
+    if (message_arena != submessage_arena) {
+      counter = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, counter, submessage_arena);
+    }
+    set_has_counter();
+    _impl_.kind_.counter_ = counter;
+  }
+  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Int32Metric.counter)
+}
+void Int32Metric::set_allocated_constant(::abacus::protobuf::Constant* constant) {
+  ::google::protobuf::Arena* message_arena = GetArenaForAllocation();
+  clear_kind();
+  if (constant) {
+    ::google::protobuf::Arena* submessage_arena =
+      ::google::protobuf::Arena::InternalGetOwningArena(constant);
+    if (message_arena != submessage_arena) {
+      constant = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, constant, submessage_arena);
+    }
+    set_has_constant();
+    _impl_.kind_.constant_ = constant;
+  }
+  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Int32Metric.constant)
+}
 Int32Metric::Int32Metric(::google::protobuf::Arena* arena)
     : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
@@ -1758,9 +2844,10 @@ Int32Metric::Int32Metric(const Int32Metric& from) : ::google::protobuf::Message(
       /*decltype(_impl_._cached_size_)*/ {},
       decltype(_impl_.description_){},
       decltype(_impl_.unit_){},
-      decltype(_impl_.kind_){},
       decltype(_impl_.min_){},
       decltype(_impl_.max_){},
+      decltype(_impl_.kind_){},
+      /*decltype(_impl_._oneof_case_)*/ {},
   };
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
@@ -1778,9 +2865,30 @@ Int32Metric::Int32Metric(const Int32Metric& from) : ::google::protobuf::Message(
   if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
     _this->_impl_.unit_.Set(from._internal_unit(), _this->GetArenaForAllocation());
   }
-  ::memcpy(&_impl_.kind_, &from._impl_.kind_,
+  ::memcpy(&_impl_.min_, &from._impl_.min_,
     static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.max_) -
-    reinterpret_cast<char*>(&_impl_.kind_)) + sizeof(_impl_.max_));
+    reinterpret_cast<char*>(&_impl_.min_)) + sizeof(_impl_.max_));
+  clear_has_kind();
+  switch (from.kind_case()) {
+    case kGauge: {
+      _this->_internal_mutable_gauge()->::abacus::protobuf::Gauge::MergeFrom(
+          from._internal_gauge());
+      break;
+    }
+    case kCounter: {
+      _this->_internal_mutable_counter()->::abacus::protobuf::Counter::MergeFrom(
+          from._internal_counter());
+      break;
+    }
+    case kConstant: {
+      _this->_internal_mutable_constant()->::abacus::protobuf::Constant::MergeFrom(
+          from._internal_constant());
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
+  }
 
   // @@protoc_insertion_point(copy_constructor:abacus.protobuf.Int32Metric)
 }
@@ -1791,9 +2899,10 @@ inline void Int32Metric::SharedCtor(::_pb::Arena* arena) {
       /*decltype(_impl_._cached_size_)*/ {},
       decltype(_impl_.description_){},
       decltype(_impl_.unit_){},
-      decltype(_impl_.kind_){0},
       decltype(_impl_.min_){0},
       decltype(_impl_.max_){0},
+      decltype(_impl_.kind_){},
+      /*decltype(_impl_._oneof_case_)*/ {},
   };
   _impl_.description_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
@@ -1803,6 +2912,7 @@ inline void Int32Metric::SharedCtor(::_pb::Arena* arena) {
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
         _impl_.unit_.Set("", GetArenaForAllocation());
   #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  clear_has_kind();
 }
 Int32Metric::~Int32Metric() {
   // @@protoc_insertion_point(destructor:abacus.protobuf.Int32Metric)
@@ -1813,10 +2923,42 @@ inline void Int32Metric::SharedDtor() {
   ABSL_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.description_.Destroy();
   _impl_.unit_.Destroy();
+  if (has_kind()) {
+    clear_kind();
+  }
 }
 void Int32Metric::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
+
+void Int32Metric::clear_kind() {
+// @@protoc_insertion_point(one_of_clear_start:abacus.protobuf.Int32Metric)
+  switch (kind_case()) {
+    case kGauge: {
+      if (GetArenaForAllocation() == nullptr) {
+        delete _impl_.kind_.gauge_;
+      }
+      break;
+    }
+    case kCounter: {
+      if (GetArenaForAllocation() == nullptr) {
+        delete _impl_.kind_.counter_;
+      }
+      break;
+    }
+    case kConstant: {
+      if (GetArenaForAllocation() == nullptr) {
+        delete _impl_.kind_.constant_;
+      }
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
+  }
+  _impl_._oneof_case_[0] = KIND_NOT_SET;
+}
+
 
 PROTOBUF_NOINLINE void Int32Metric::Clear() {
 // @@protoc_insertion_point(message_clear_start:abacus.protobuf.Int32Metric)
@@ -1829,12 +2971,12 @@ PROTOBUF_NOINLINE void Int32Metric::Clear() {
   if (cached_has_bits & 0x00000001u) {
     _impl_.unit_.ClearNonDefaultToEmpty();
   }
-  _impl_.kind_ = 0;
   if (cached_has_bits & 0x00000006u) {
     ::memset(&_impl_.min_, 0, static_cast<::size_t>(
         reinterpret_cast<char*>(&_impl_.max_) -
         reinterpret_cast<char*>(&_impl_.min_)) + sizeof(_impl_.max_));
   }
+  clear_kind();
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -1847,17 +2989,17 @@ const char* Int32Metric::_InternalParse(
 
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 5, 0, 51, 2> Int32Metric::_table_ = {
+const ::_pbi::TcParseTable<3, 7, 3, 51, 2> Int32Metric::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_._has_bits_),
     0, // no _extensions_
-    5, 56,  // max_field_number, fast_idx_mask
+    7, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967264,  // skipmap
+    4294967168,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    5,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
+    7,  // num_field_entries
+    3,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
     &_Int32Metric_default_instance_._instance,
     ::_pbi::TcParser::GenericFallback,  // fallback
   }, {{
@@ -1865,42 +3007,48 @@ const ::_pbi::TcParseTable<3, 5, 0, 51, 2> Int32Metric::_table_ = {
     // string description = 1;
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.description_)}},
-    // .abacus.protobuf.Kind kind = 2;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Int32Metric, _impl_.kind_), 63>(),
-     {16, 63, 0, PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.kind_)}},
-    // optional string unit = 3;
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    // optional string unit = 5;
     {::_pbi::TcParser::FastUS1,
-     {26, 0, 0, PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.unit_)}},
-    // optional int32 min = 4;
+     {42, 0, 0, PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.unit_)}},
+    // optional int32 min = 6;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Int32Metric, _impl_.min_), 1>(),
-     {32, 1, 0, PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.min_)}},
-    // optional int32 max = 5;
+     {48, 1, 0, PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.min_)}},
+    // optional int32 max = 7;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Int32Metric, _impl_.max_), 2>(),
-     {40, 2, 0, PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.max_)}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
+     {56, 2, 0, PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.max_)}},
   }}, {{
     65535, 65535
   }}, {{
     // string description = 1;
     {PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.description_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // .abacus.protobuf.Kind kind = 2;
-    {PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.kind_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-    // optional string unit = 3;
+    // .abacus.protobuf.Gauge gauge = 2;
+    {PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.kind_.gauge_), _Internal::kOneofCaseOffset + 0, 0,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .abacus.protobuf.Counter counter = 3;
+    {PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.kind_.counter_), _Internal::kOneofCaseOffset + 0, 1,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .abacus.protobuf.Constant constant = 4;
+    {PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.kind_.constant_), _Internal::kOneofCaseOffset + 0, 2,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvDefault)},
+    // optional string unit = 5;
     {PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.unit_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // optional int32 min = 4;
+    // optional int32 min = 6;
     {PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.min_), _Internal::kHasBitsOffset + 1, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // optional int32 max = 5;
+    // optional int32 max = 7;
     {PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.max_), _Internal::kHasBitsOffset + 2, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-  }},
-  // no aux_entries
-  {{
-    "\33\13\0\4\0\0\0\0"
+  }}, {{
+    {::_pbi::TcParser::GetTable<::abacus::protobuf::Gauge>()},
+    {::_pbi::TcParser::GetTable<::abacus::protobuf::Counter>()},
+    {::_pbi::FieldAuxDefaultMessage{}, &::abacus::protobuf::_Constant_default_instance_},
+  }}, {{
+    "\33\13\0\0\0\4\0\0"
     "abacus.protobuf.Int32Metric"
     "description"
     "unit"
@@ -1922,33 +3070,48 @@ const ::_pbi::TcParseTable<3, 5, 0, 51, 2> Int32Metric::_table_ = {
     target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
-  // .abacus.protobuf.Kind kind = 2;
-  if (this->_internal_kind() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteEnumToArray(
-        2, this->_internal_kind(), target);
+  switch (kind_case()) {
+    case kGauge: {
+      target = ::google::protobuf::internal::WireFormatLite::
+        InternalWriteMessage(2, _Internal::gauge(this),
+          _Internal::gauge(this).GetCachedSize(), target, stream);
+      break;
+    }
+    case kCounter: {
+      target = ::google::protobuf::internal::WireFormatLite::
+        InternalWriteMessage(3, _Internal::counter(this),
+          _Internal::counter(this).GetCachedSize(), target, stream);
+      break;
+    }
+    case kConstant: {
+      target = ::google::protobuf::internal::WireFormatLite::
+        InternalWriteMessage(4, _Internal::constant(this),
+          _Internal::constant(this).GetCachedSize(), target, stream);
+      break;
+    }
+    default:
+      break;
   }
-
   cached_has_bits = _impl_._has_bits_[0];
-  // optional string unit = 3;
+  // optional string unit = 5;
   if (cached_has_bits & 0x00000001u) {
     const std::string& _s = this->_internal_unit();
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
         _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "abacus.protobuf.Int32Metric.unit");
-    target = stream->WriteStringMaybeAliased(3, _s, target);
+    target = stream->WriteStringMaybeAliased(5, _s, target);
   }
 
-  // optional int32 min = 4;
+  // optional int32 min = 6;
   if (cached_has_bits & 0x00000002u) {
     target = ::google::protobuf::internal::WireFormatLite::
-        WriteInt32ToArrayWithField<4>(
+        WriteInt32ToArrayWithField<6>(
             stream, this->_internal_min(), target);
   }
 
-  // optional int32 max = 5;
+  // optional int32 max = 7;
   if (cached_has_bits & 0x00000004u) {
     target = ::google::protobuf::internal::WireFormatLite::
-        WriteInt32ToArrayWithField<5>(
+        WriteInt32ToArrayWithField<7>(
             stream, this->_internal_max(), target);
   }
 
@@ -1975,32 +3138,52 @@ const ::_pbi::TcParseTable<3, 5, 0, 51, 2> Int32Metric::_table_ = {
                                     this->_internal_description());
   }
 
-  // optional string unit = 3;
   cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                    this->_internal_unit());
-  }
+  if (cached_has_bits & 0x00000007u) {
+    // optional string unit = 5;
+    if (cached_has_bits & 0x00000001u) {
+      total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                      this->_internal_unit());
+    }
 
-  // .abacus.protobuf.Kind kind = 2;
-  if (this->_internal_kind() != 0) {
-    total_size += 1 +
-                  ::_pbi::WireFormatLite::EnumSize(this->_internal_kind());
-  }
-
-  if (cached_has_bits & 0x00000006u) {
-    // optional int32 min = 4;
+    // optional int32 min = 6;
     if (cached_has_bits & 0x00000002u) {
       total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
           this->_internal_min());
     }
 
-    // optional int32 max = 5;
+    // optional int32 max = 7;
     if (cached_has_bits & 0x00000004u) {
       total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
           this->_internal_max());
     }
 
+  }
+  switch (kind_case()) {
+    // .abacus.protobuf.Gauge gauge = 2;
+    case kGauge: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          *_impl_.kind_.gauge_);
+      break;
+    }
+    // .abacus.protobuf.Counter counter = 3;
+    case kCounter: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          *_impl_.kind_.counter_);
+      break;
+    }
+    // .abacus.protobuf.Constant constant = 4;
+    case kConstant: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          *_impl_.kind_.constant_);
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
   }
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
@@ -2023,14 +3206,11 @@ void Int32Metric::MergeImpl(::google::protobuf::Message& to_msg, const ::google:
   if (!from._internal_description().empty()) {
     _this->_internal_set_description(from._internal_description());
   }
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_internal_set_unit(from._internal_unit());
-  }
-  if (from._internal_kind() != 0) {
-    _this->_internal_set_kind(from._internal_kind());
-  }
   cached_has_bits = from._impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000006u) {
+  if (cached_has_bits & 0x00000007u) {
+    if (cached_has_bits & 0x00000001u) {
+      _this->_internal_set_unit(from._internal_unit());
+    }
     if (cached_has_bits & 0x00000002u) {
       _this->_impl_.min_ = from._impl_.min_;
     }
@@ -2038,6 +3218,26 @@ void Int32Metric::MergeImpl(::google::protobuf::Message& to_msg, const ::google:
       _this->_impl_.max_ = from._impl_.max_;
     }
     _this->_impl_._has_bits_[0] |= cached_has_bits;
+  }
+  switch (from.kind_case()) {
+    case kGauge: {
+      _this->_internal_mutable_gauge()->::abacus::protobuf::Gauge::MergeFrom(
+          from._internal_gauge());
+      break;
+    }
+    case kCounter: {
+      _this->_internal_mutable_counter()->::abacus::protobuf::Counter::MergeFrom(
+          from._internal_counter());
+      break;
+    }
+    case kConstant: {
+      _this->_internal_mutable_constant()->::abacus::protobuf::Constant::MergeFrom(
+          from._internal_constant());
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -2066,15 +3266,17 @@ void Int32Metric::InternalSwap(Int32Metric* other) {
   ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.max_)
       + sizeof(Int32Metric::_impl_.max_)
-      - PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.kind_)>(
-          reinterpret_cast<char*>(&_impl_.kind_),
-          reinterpret_cast<char*>(&other->_impl_.kind_));
+      - PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.min_)>(
+          reinterpret_cast<char*>(&_impl_.min_),
+          reinterpret_cast<char*>(&other->_impl_.min_));
+  swap(_impl_.kind_, other->_impl_.kind_);
+  swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);
 }
 
 ::google::protobuf::Metadata Int32Metric::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_getter, &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once,
-      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[3]);
+      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[6]);
 }
 // ===================================================================
 
@@ -2083,6 +3285,11 @@ class Float64Metric::_Internal {
   using HasBits = decltype(std::declval<Float64Metric>()._impl_._has_bits_);
   static constexpr ::int32_t kHasBitsOffset =
     8 * PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_._has_bits_);
+  static constexpr ::int32_t kOneofCaseOffset =
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float64Metric, _impl_._oneof_case_);
+  static const ::abacus::protobuf::Gauge& gauge(const Float64Metric* msg);
+  static const ::abacus::protobuf::Counter& counter(const Float64Metric* msg);
+  static const ::abacus::protobuf::Constant& constant(const Float64Metric* msg);
   static void set_has_unit(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
@@ -2094,6 +3301,60 @@ class Float64Metric::_Internal {
   }
 };
 
+const ::abacus::protobuf::Gauge& Float64Metric::_Internal::gauge(const Float64Metric* msg) {
+  return *msg->_impl_.kind_.gauge_;
+}
+const ::abacus::protobuf::Counter& Float64Metric::_Internal::counter(const Float64Metric* msg) {
+  return *msg->_impl_.kind_.counter_;
+}
+const ::abacus::protobuf::Constant& Float64Metric::_Internal::constant(const Float64Metric* msg) {
+  return *msg->_impl_.kind_.constant_;
+}
+void Float64Metric::set_allocated_gauge(::abacus::protobuf::Gauge* gauge) {
+  ::google::protobuf::Arena* message_arena = GetArenaForAllocation();
+  clear_kind();
+  if (gauge) {
+    ::google::protobuf::Arena* submessage_arena =
+      ::google::protobuf::Arena::InternalGetOwningArena(gauge);
+    if (message_arena != submessage_arena) {
+      gauge = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, gauge, submessage_arena);
+    }
+    set_has_gauge();
+    _impl_.kind_.gauge_ = gauge;
+  }
+  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Float64Metric.gauge)
+}
+void Float64Metric::set_allocated_counter(::abacus::protobuf::Counter* counter) {
+  ::google::protobuf::Arena* message_arena = GetArenaForAllocation();
+  clear_kind();
+  if (counter) {
+    ::google::protobuf::Arena* submessage_arena =
+      ::google::protobuf::Arena::InternalGetOwningArena(counter);
+    if (message_arena != submessage_arena) {
+      counter = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, counter, submessage_arena);
+    }
+    set_has_counter();
+    _impl_.kind_.counter_ = counter;
+  }
+  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Float64Metric.counter)
+}
+void Float64Metric::set_allocated_constant(::abacus::protobuf::Constant* constant) {
+  ::google::protobuf::Arena* message_arena = GetArenaForAllocation();
+  clear_kind();
+  if (constant) {
+    ::google::protobuf::Arena* submessage_arena =
+      ::google::protobuf::Arena::InternalGetOwningArena(constant);
+    if (message_arena != submessage_arena) {
+      constant = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, constant, submessage_arena);
+    }
+    set_has_constant();
+    _impl_.kind_.constant_ = constant;
+  }
+  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Float64Metric.constant)
+}
 Float64Metric::Float64Metric(::google::protobuf::Arena* arena)
     : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
@@ -2110,6 +3371,7 @@ Float64Metric::Float64Metric(const Float64Metric& from) : ::google::protobuf::Me
       decltype(_impl_.min_){},
       decltype(_impl_.max_){},
       decltype(_impl_.kind_){},
+      /*decltype(_impl_._oneof_case_)*/ {},
   };
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
@@ -2128,8 +3390,29 @@ Float64Metric::Float64Metric(const Float64Metric& from) : ::google::protobuf::Me
     _this->_impl_.unit_.Set(from._internal_unit(), _this->GetArenaForAllocation());
   }
   ::memcpy(&_impl_.min_, &from._impl_.min_,
-    static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.kind_) -
-    reinterpret_cast<char*>(&_impl_.min_)) + sizeof(_impl_.kind_));
+    static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.max_) -
+    reinterpret_cast<char*>(&_impl_.min_)) + sizeof(_impl_.max_));
+  clear_has_kind();
+  switch (from.kind_case()) {
+    case kGauge: {
+      _this->_internal_mutable_gauge()->::abacus::protobuf::Gauge::MergeFrom(
+          from._internal_gauge());
+      break;
+    }
+    case kCounter: {
+      _this->_internal_mutable_counter()->::abacus::protobuf::Counter::MergeFrom(
+          from._internal_counter());
+      break;
+    }
+    case kConstant: {
+      _this->_internal_mutable_constant()->::abacus::protobuf::Constant::MergeFrom(
+          from._internal_constant());
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
+  }
 
   // @@protoc_insertion_point(copy_constructor:abacus.protobuf.Float64Metric)
 }
@@ -2142,7 +3425,8 @@ inline void Float64Metric::SharedCtor(::_pb::Arena* arena) {
       decltype(_impl_.unit_){},
       decltype(_impl_.min_){0},
       decltype(_impl_.max_){0},
-      decltype(_impl_.kind_){0},
+      decltype(_impl_.kind_){},
+      /*decltype(_impl_._oneof_case_)*/ {},
   };
   _impl_.description_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
@@ -2152,6 +3436,7 @@ inline void Float64Metric::SharedCtor(::_pb::Arena* arena) {
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
         _impl_.unit_.Set("", GetArenaForAllocation());
   #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  clear_has_kind();
 }
 Float64Metric::~Float64Metric() {
   // @@protoc_insertion_point(destructor:abacus.protobuf.Float64Metric)
@@ -2162,10 +3447,42 @@ inline void Float64Metric::SharedDtor() {
   ABSL_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.description_.Destroy();
   _impl_.unit_.Destroy();
+  if (has_kind()) {
+    clear_kind();
+  }
 }
 void Float64Metric::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
+
+void Float64Metric::clear_kind() {
+// @@protoc_insertion_point(one_of_clear_start:abacus.protobuf.Float64Metric)
+  switch (kind_case()) {
+    case kGauge: {
+      if (GetArenaForAllocation() == nullptr) {
+        delete _impl_.kind_.gauge_;
+      }
+      break;
+    }
+    case kCounter: {
+      if (GetArenaForAllocation() == nullptr) {
+        delete _impl_.kind_.counter_;
+      }
+      break;
+    }
+    case kConstant: {
+      if (GetArenaForAllocation() == nullptr) {
+        delete _impl_.kind_.constant_;
+      }
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
+  }
+  _impl_._oneof_case_[0] = KIND_NOT_SET;
+}
+
 
 PROTOBUF_NOINLINE void Float64Metric::Clear() {
 // @@protoc_insertion_point(message_clear_start:abacus.protobuf.Float64Metric)
@@ -2183,7 +3500,7 @@ PROTOBUF_NOINLINE void Float64Metric::Clear() {
         reinterpret_cast<char*>(&_impl_.max_) -
         reinterpret_cast<char*>(&_impl_.min_)) + sizeof(_impl_.max_));
   }
-  _impl_.kind_ = 0;
+  clear_kind();
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -2196,17 +3513,17 @@ const char* Float64Metric::_InternalParse(
 
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 5, 0, 53, 2> Float64Metric::_table_ = {
+const ::_pbi::TcParseTable<3, 7, 3, 53, 2> Float64Metric::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_._has_bits_),
     0, // no _extensions_
-    5, 56,  // max_field_number, fast_idx_mask
+    7, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967264,  // skipmap
+    4294967168,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    5,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
+    7,  // num_field_entries
+    3,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
     &_Float64Metric_default_instance_._instance,
     ::_pbi::TcParser::GenericFallback,  // fallback
   }, {{
@@ -2214,42 +3531,48 @@ const ::_pbi::TcParseTable<3, 5, 0, 53, 2> Float64Metric::_table_ = {
     // string description = 1;
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.description_)}},
-    // .abacus.protobuf.Kind kind = 2;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Float64Metric, _impl_.kind_), 63>(),
-     {16, 63, 0, PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.kind_)}},
-    // optional string unit = 3;
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    // optional string unit = 5;
     {::_pbi::TcParser::FastUS1,
-     {26, 0, 0, PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.unit_)}},
-    // optional double min = 4;
+     {42, 0, 0, PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.unit_)}},
+    // optional double min = 6;
     {::_pbi::TcParser::FastF64S1,
-     {33, 1, 0, PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.min_)}},
-    // optional double max = 5;
+     {49, 1, 0, PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.min_)}},
+    // optional double max = 7;
     {::_pbi::TcParser::FastF64S1,
-     {41, 2, 0, PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.max_)}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
+     {57, 2, 0, PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.max_)}},
   }}, {{
     65535, 65535
   }}, {{
     // string description = 1;
     {PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.description_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // .abacus.protobuf.Kind kind = 2;
-    {PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.kind_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-    // optional string unit = 3;
+    // .abacus.protobuf.Gauge gauge = 2;
+    {PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.kind_.gauge_), _Internal::kOneofCaseOffset + 0, 0,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .abacus.protobuf.Counter counter = 3;
+    {PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.kind_.counter_), _Internal::kOneofCaseOffset + 0, 1,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .abacus.protobuf.Constant constant = 4;
+    {PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.kind_.constant_), _Internal::kOneofCaseOffset + 0, 2,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvDefault)},
+    // optional string unit = 5;
     {PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.unit_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // optional double min = 4;
+    // optional double min = 6;
     {PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.min_), _Internal::kHasBitsOffset + 1, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kDouble)},
-    // optional double max = 5;
+    // optional double max = 7;
     {PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.max_), _Internal::kHasBitsOffset + 2, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kDouble)},
-  }},
-  // no aux_entries
-  {{
-    "\35\13\0\4\0\0\0\0"
+  }}, {{
+    {::_pbi::TcParser::GetTable<::abacus::protobuf::Gauge>()},
+    {::_pbi::TcParser::GetTable<::abacus::protobuf::Counter>()},
+    {::_pbi::FieldAuxDefaultMessage{}, &::abacus::protobuf::_Constant_default_instance_},
+  }}, {{
+    "\35\13\0\0\0\4\0\0"
     "abacus.protobuf.Float64Metric"
     "description"
     "unit"
@@ -2271,34 +3594,49 @@ const ::_pbi::TcParseTable<3, 5, 0, 53, 2> Float64Metric::_table_ = {
     target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
-  // .abacus.protobuf.Kind kind = 2;
-  if (this->_internal_kind() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteEnumToArray(
-        2, this->_internal_kind(), target);
+  switch (kind_case()) {
+    case kGauge: {
+      target = ::google::protobuf::internal::WireFormatLite::
+        InternalWriteMessage(2, _Internal::gauge(this),
+          _Internal::gauge(this).GetCachedSize(), target, stream);
+      break;
+    }
+    case kCounter: {
+      target = ::google::protobuf::internal::WireFormatLite::
+        InternalWriteMessage(3, _Internal::counter(this),
+          _Internal::counter(this).GetCachedSize(), target, stream);
+      break;
+    }
+    case kConstant: {
+      target = ::google::protobuf::internal::WireFormatLite::
+        InternalWriteMessage(4, _Internal::constant(this),
+          _Internal::constant(this).GetCachedSize(), target, stream);
+      break;
+    }
+    default:
+      break;
   }
-
   cached_has_bits = _impl_._has_bits_[0];
-  // optional string unit = 3;
+  // optional string unit = 5;
   if (cached_has_bits & 0x00000001u) {
     const std::string& _s = this->_internal_unit();
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
         _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "abacus.protobuf.Float64Metric.unit");
-    target = stream->WriteStringMaybeAliased(3, _s, target);
+    target = stream->WriteStringMaybeAliased(5, _s, target);
   }
 
-  // optional double min = 4;
+  // optional double min = 6;
   if (cached_has_bits & 0x00000002u) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteDoubleToArray(
-        4, this->_internal_min(), target);
+        6, this->_internal_min(), target);
   }
 
-  // optional double max = 5;
+  // optional double max = 7;
   if (cached_has_bits & 0x00000004u) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteDoubleToArray(
-        5, this->_internal_max(), target);
+        7, this->_internal_max(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2326,29 +3664,49 @@ const ::_pbi::TcParseTable<3, 5, 0, 53, 2> Float64Metric::_table_ = {
 
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000007u) {
-    // optional string unit = 3;
+    // optional string unit = 5;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                       this->_internal_unit());
     }
 
-    // optional double min = 4;
+    // optional double min = 6;
     if (cached_has_bits & 0x00000002u) {
       total_size += 9;
     }
 
-    // optional double max = 5;
+    // optional double max = 7;
     if (cached_has_bits & 0x00000004u) {
       total_size += 9;
     }
 
   }
-  // .abacus.protobuf.Kind kind = 2;
-  if (this->_internal_kind() != 0) {
-    total_size += 1 +
-                  ::_pbi::WireFormatLite::EnumSize(this->_internal_kind());
+  switch (kind_case()) {
+    // .abacus.protobuf.Gauge gauge = 2;
+    case kGauge: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          *_impl_.kind_.gauge_);
+      break;
+    }
+    // .abacus.protobuf.Counter counter = 3;
+    case kCounter: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          *_impl_.kind_.counter_);
+      break;
+    }
+    // .abacus.protobuf.Constant constant = 4;
+    case kConstant: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          *_impl_.kind_.constant_);
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
   }
-
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
@@ -2383,8 +3741,25 @@ void Float64Metric::MergeImpl(::google::protobuf::Message& to_msg, const ::googl
     }
     _this->_impl_._has_bits_[0] |= cached_has_bits;
   }
-  if (from._internal_kind() != 0) {
-    _this->_internal_set_kind(from._internal_kind());
+  switch (from.kind_case()) {
+    case kGauge: {
+      _this->_internal_mutable_gauge()->::abacus::protobuf::Gauge::MergeFrom(
+          from._internal_gauge());
+      break;
+    }
+    case kCounter: {
+      _this->_internal_mutable_counter()->::abacus::protobuf::Counter::MergeFrom(
+          from._internal_counter());
+      break;
+    }
+    case kConstant: {
+      _this->_internal_mutable_constant()->::abacus::protobuf::Constant::MergeFrom(
+          from._internal_constant());
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -2411,17 +3786,19 @@ void Float64Metric::InternalSwap(Float64Metric* other) {
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.unit_, lhs_arena,
                                        &other->_impl_.unit_, rhs_arena);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.kind_)
-      + sizeof(Float64Metric::_impl_.kind_)
+      PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.max_)
+      + sizeof(Float64Metric::_impl_.max_)
       - PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.min_)>(
           reinterpret_cast<char*>(&_impl_.min_),
           reinterpret_cast<char*>(&other->_impl_.min_));
+  swap(_impl_.kind_, other->_impl_.kind_);
+  swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);
 }
 
 ::google::protobuf::Metadata Float64Metric::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_getter, &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once,
-      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[4]);
+      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[7]);
 }
 // ===================================================================
 
@@ -2430,6 +3807,11 @@ class Float32Metric::_Internal {
   using HasBits = decltype(std::declval<Float32Metric>()._impl_._has_bits_);
   static constexpr ::int32_t kHasBitsOffset =
     8 * PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_._has_bits_);
+  static constexpr ::int32_t kOneofCaseOffset =
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float32Metric, _impl_._oneof_case_);
+  static const ::abacus::protobuf::Gauge& gauge(const Float32Metric* msg);
+  static const ::abacus::protobuf::Counter& counter(const Float32Metric* msg);
+  static const ::abacus::protobuf::Constant& constant(const Float32Metric* msg);
   static void set_has_unit(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
@@ -2441,6 +3823,60 @@ class Float32Metric::_Internal {
   }
 };
 
+const ::abacus::protobuf::Gauge& Float32Metric::_Internal::gauge(const Float32Metric* msg) {
+  return *msg->_impl_.kind_.gauge_;
+}
+const ::abacus::protobuf::Counter& Float32Metric::_Internal::counter(const Float32Metric* msg) {
+  return *msg->_impl_.kind_.counter_;
+}
+const ::abacus::protobuf::Constant& Float32Metric::_Internal::constant(const Float32Metric* msg) {
+  return *msg->_impl_.kind_.constant_;
+}
+void Float32Metric::set_allocated_gauge(::abacus::protobuf::Gauge* gauge) {
+  ::google::protobuf::Arena* message_arena = GetArenaForAllocation();
+  clear_kind();
+  if (gauge) {
+    ::google::protobuf::Arena* submessage_arena =
+      ::google::protobuf::Arena::InternalGetOwningArena(gauge);
+    if (message_arena != submessage_arena) {
+      gauge = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, gauge, submessage_arena);
+    }
+    set_has_gauge();
+    _impl_.kind_.gauge_ = gauge;
+  }
+  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Float32Metric.gauge)
+}
+void Float32Metric::set_allocated_counter(::abacus::protobuf::Counter* counter) {
+  ::google::protobuf::Arena* message_arena = GetArenaForAllocation();
+  clear_kind();
+  if (counter) {
+    ::google::protobuf::Arena* submessage_arena =
+      ::google::protobuf::Arena::InternalGetOwningArena(counter);
+    if (message_arena != submessage_arena) {
+      counter = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, counter, submessage_arena);
+    }
+    set_has_counter();
+    _impl_.kind_.counter_ = counter;
+  }
+  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Float32Metric.counter)
+}
+void Float32Metric::set_allocated_constant(::abacus::protobuf::Constant* constant) {
+  ::google::protobuf::Arena* message_arena = GetArenaForAllocation();
+  clear_kind();
+  if (constant) {
+    ::google::protobuf::Arena* submessage_arena =
+      ::google::protobuf::Arena::InternalGetOwningArena(constant);
+    if (message_arena != submessage_arena) {
+      constant = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, constant, submessage_arena);
+    }
+    set_has_constant();
+    _impl_.kind_.constant_ = constant;
+  }
+  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Float32Metric.constant)
+}
 Float32Metric::Float32Metric(::google::protobuf::Arena* arena)
     : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
@@ -2454,9 +3890,10 @@ Float32Metric::Float32Metric(const Float32Metric& from) : ::google::protobuf::Me
       /*decltype(_impl_._cached_size_)*/ {},
       decltype(_impl_.description_){},
       decltype(_impl_.unit_){},
-      decltype(_impl_.kind_){},
       decltype(_impl_.min_){},
       decltype(_impl_.max_){},
+      decltype(_impl_.kind_){},
+      /*decltype(_impl_._oneof_case_)*/ {},
   };
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
@@ -2474,9 +3911,30 @@ Float32Metric::Float32Metric(const Float32Metric& from) : ::google::protobuf::Me
   if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
     _this->_impl_.unit_.Set(from._internal_unit(), _this->GetArenaForAllocation());
   }
-  ::memcpy(&_impl_.kind_, &from._impl_.kind_,
+  ::memcpy(&_impl_.min_, &from._impl_.min_,
     static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.max_) -
-    reinterpret_cast<char*>(&_impl_.kind_)) + sizeof(_impl_.max_));
+    reinterpret_cast<char*>(&_impl_.min_)) + sizeof(_impl_.max_));
+  clear_has_kind();
+  switch (from.kind_case()) {
+    case kGauge: {
+      _this->_internal_mutable_gauge()->::abacus::protobuf::Gauge::MergeFrom(
+          from._internal_gauge());
+      break;
+    }
+    case kCounter: {
+      _this->_internal_mutable_counter()->::abacus::protobuf::Counter::MergeFrom(
+          from._internal_counter());
+      break;
+    }
+    case kConstant: {
+      _this->_internal_mutable_constant()->::abacus::protobuf::Constant::MergeFrom(
+          from._internal_constant());
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
+  }
 
   // @@protoc_insertion_point(copy_constructor:abacus.protobuf.Float32Metric)
 }
@@ -2487,9 +3945,10 @@ inline void Float32Metric::SharedCtor(::_pb::Arena* arena) {
       /*decltype(_impl_._cached_size_)*/ {},
       decltype(_impl_.description_){},
       decltype(_impl_.unit_){},
-      decltype(_impl_.kind_){0},
       decltype(_impl_.min_){0},
       decltype(_impl_.max_){0},
+      decltype(_impl_.kind_){},
+      /*decltype(_impl_._oneof_case_)*/ {},
   };
   _impl_.description_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
@@ -2499,6 +3958,7 @@ inline void Float32Metric::SharedCtor(::_pb::Arena* arena) {
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
         _impl_.unit_.Set("", GetArenaForAllocation());
   #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  clear_has_kind();
 }
 Float32Metric::~Float32Metric() {
   // @@protoc_insertion_point(destructor:abacus.protobuf.Float32Metric)
@@ -2509,10 +3969,42 @@ inline void Float32Metric::SharedDtor() {
   ABSL_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.description_.Destroy();
   _impl_.unit_.Destroy();
+  if (has_kind()) {
+    clear_kind();
+  }
 }
 void Float32Metric::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
+
+void Float32Metric::clear_kind() {
+// @@protoc_insertion_point(one_of_clear_start:abacus.protobuf.Float32Metric)
+  switch (kind_case()) {
+    case kGauge: {
+      if (GetArenaForAllocation() == nullptr) {
+        delete _impl_.kind_.gauge_;
+      }
+      break;
+    }
+    case kCounter: {
+      if (GetArenaForAllocation() == nullptr) {
+        delete _impl_.kind_.counter_;
+      }
+      break;
+    }
+    case kConstant: {
+      if (GetArenaForAllocation() == nullptr) {
+        delete _impl_.kind_.constant_;
+      }
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
+  }
+  _impl_._oneof_case_[0] = KIND_NOT_SET;
+}
+
 
 PROTOBUF_NOINLINE void Float32Metric::Clear() {
 // @@protoc_insertion_point(message_clear_start:abacus.protobuf.Float32Metric)
@@ -2525,12 +4017,12 @@ PROTOBUF_NOINLINE void Float32Metric::Clear() {
   if (cached_has_bits & 0x00000001u) {
     _impl_.unit_.ClearNonDefaultToEmpty();
   }
-  _impl_.kind_ = 0;
   if (cached_has_bits & 0x00000006u) {
     ::memset(&_impl_.min_, 0, static_cast<::size_t>(
         reinterpret_cast<char*>(&_impl_.max_) -
         reinterpret_cast<char*>(&_impl_.min_)) + sizeof(_impl_.max_));
   }
+  clear_kind();
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -2543,17 +4035,17 @@ const char* Float32Metric::_InternalParse(
 
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 5, 0, 53, 2> Float32Metric::_table_ = {
+const ::_pbi::TcParseTable<3, 7, 3, 53, 2> Float32Metric::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_._has_bits_),
     0, // no _extensions_
-    5, 56,  // max_field_number, fast_idx_mask
+    7, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967264,  // skipmap
+    4294967168,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    5,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
+    7,  // num_field_entries
+    3,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
     &_Float32Metric_default_instance_._instance,
     ::_pbi::TcParser::GenericFallback,  // fallback
   }, {{
@@ -2561,42 +4053,48 @@ const ::_pbi::TcParseTable<3, 5, 0, 53, 2> Float32Metric::_table_ = {
     // string description = 1;
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.description_)}},
-    // .abacus.protobuf.Kind kind = 2;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Float32Metric, _impl_.kind_), 63>(),
-     {16, 63, 0, PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.kind_)}},
-    // optional string unit = 3;
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    // optional string unit = 5;
     {::_pbi::TcParser::FastUS1,
-     {26, 0, 0, PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.unit_)}},
-    // optional float min = 4;
+     {42, 0, 0, PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.unit_)}},
+    // optional float min = 6;
     {::_pbi::TcParser::FastF32S1,
-     {37, 1, 0, PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.min_)}},
-    // optional float max = 5;
+     {53, 1, 0, PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.min_)}},
+    // optional float max = 7;
     {::_pbi::TcParser::FastF32S1,
-     {45, 2, 0, PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.max_)}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
+     {61, 2, 0, PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.max_)}},
   }}, {{
     65535, 65535
   }}, {{
     // string description = 1;
     {PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.description_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // .abacus.protobuf.Kind kind = 2;
-    {PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.kind_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-    // optional string unit = 3;
+    // .abacus.protobuf.Gauge gauge = 2;
+    {PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.kind_.gauge_), _Internal::kOneofCaseOffset + 0, 0,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .abacus.protobuf.Counter counter = 3;
+    {PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.kind_.counter_), _Internal::kOneofCaseOffset + 0, 1,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .abacus.protobuf.Constant constant = 4;
+    {PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.kind_.constant_), _Internal::kOneofCaseOffset + 0, 2,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvDefault)},
+    // optional string unit = 5;
     {PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.unit_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // optional float min = 4;
+    // optional float min = 6;
     {PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.min_), _Internal::kHasBitsOffset + 1, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kFloat)},
-    // optional float max = 5;
+    // optional float max = 7;
     {PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.max_), _Internal::kHasBitsOffset + 2, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kFloat)},
-  }},
-  // no aux_entries
-  {{
-    "\35\13\0\4\0\0\0\0"
+  }}, {{
+    {::_pbi::TcParser::GetTable<::abacus::protobuf::Gauge>()},
+    {::_pbi::TcParser::GetTable<::abacus::protobuf::Counter>()},
+    {::_pbi::FieldAuxDefaultMessage{}, &::abacus::protobuf::_Constant_default_instance_},
+  }}, {{
+    "\35\13\0\0\0\4\0\0"
     "abacus.protobuf.Float32Metric"
     "description"
     "unit"
@@ -2618,34 +4116,49 @@ const ::_pbi::TcParseTable<3, 5, 0, 53, 2> Float32Metric::_table_ = {
     target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
-  // .abacus.protobuf.Kind kind = 2;
-  if (this->_internal_kind() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteEnumToArray(
-        2, this->_internal_kind(), target);
+  switch (kind_case()) {
+    case kGauge: {
+      target = ::google::protobuf::internal::WireFormatLite::
+        InternalWriteMessage(2, _Internal::gauge(this),
+          _Internal::gauge(this).GetCachedSize(), target, stream);
+      break;
+    }
+    case kCounter: {
+      target = ::google::protobuf::internal::WireFormatLite::
+        InternalWriteMessage(3, _Internal::counter(this),
+          _Internal::counter(this).GetCachedSize(), target, stream);
+      break;
+    }
+    case kConstant: {
+      target = ::google::protobuf::internal::WireFormatLite::
+        InternalWriteMessage(4, _Internal::constant(this),
+          _Internal::constant(this).GetCachedSize(), target, stream);
+      break;
+    }
+    default:
+      break;
   }
-
   cached_has_bits = _impl_._has_bits_[0];
-  // optional string unit = 3;
+  // optional string unit = 5;
   if (cached_has_bits & 0x00000001u) {
     const std::string& _s = this->_internal_unit();
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
         _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "abacus.protobuf.Float32Metric.unit");
-    target = stream->WriteStringMaybeAliased(3, _s, target);
+    target = stream->WriteStringMaybeAliased(5, _s, target);
   }
 
-  // optional float min = 4;
+  // optional float min = 6;
   if (cached_has_bits & 0x00000002u) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteFloatToArray(
-        4, this->_internal_min(), target);
+        6, this->_internal_min(), target);
   }
 
-  // optional float max = 5;
+  // optional float max = 7;
   if (cached_has_bits & 0x00000004u) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteFloatToArray(
-        5, this->_internal_max(), target);
+        7, this->_internal_max(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2671,30 +4184,50 @@ const ::_pbi::TcParseTable<3, 5, 0, 53, 2> Float32Metric::_table_ = {
                                     this->_internal_description());
   }
 
-  // optional string unit = 3;
   cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                    this->_internal_unit());
-  }
+  if (cached_has_bits & 0x00000007u) {
+    // optional string unit = 5;
+    if (cached_has_bits & 0x00000001u) {
+      total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                      this->_internal_unit());
+    }
 
-  // .abacus.protobuf.Kind kind = 2;
-  if (this->_internal_kind() != 0) {
-    total_size += 1 +
-                  ::_pbi::WireFormatLite::EnumSize(this->_internal_kind());
-  }
-
-  if (cached_has_bits & 0x00000006u) {
-    // optional float min = 4;
+    // optional float min = 6;
     if (cached_has_bits & 0x00000002u) {
       total_size += 5;
     }
 
-    // optional float max = 5;
+    // optional float max = 7;
     if (cached_has_bits & 0x00000004u) {
       total_size += 5;
     }
 
+  }
+  switch (kind_case()) {
+    // .abacus.protobuf.Gauge gauge = 2;
+    case kGauge: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          *_impl_.kind_.gauge_);
+      break;
+    }
+    // .abacus.protobuf.Counter counter = 3;
+    case kCounter: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          *_impl_.kind_.counter_);
+      break;
+    }
+    // .abacus.protobuf.Constant constant = 4;
+    case kConstant: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          *_impl_.kind_.constant_);
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
   }
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
@@ -2717,14 +4250,11 @@ void Float32Metric::MergeImpl(::google::protobuf::Message& to_msg, const ::googl
   if (!from._internal_description().empty()) {
     _this->_internal_set_description(from._internal_description());
   }
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_internal_set_unit(from._internal_unit());
-  }
-  if (from._internal_kind() != 0) {
-    _this->_internal_set_kind(from._internal_kind());
-  }
   cached_has_bits = from._impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000006u) {
+  if (cached_has_bits & 0x00000007u) {
+    if (cached_has_bits & 0x00000001u) {
+      _this->_internal_set_unit(from._internal_unit());
+    }
     if (cached_has_bits & 0x00000002u) {
       _this->_impl_.min_ = from._impl_.min_;
     }
@@ -2732,6 +4262,26 @@ void Float32Metric::MergeImpl(::google::protobuf::Message& to_msg, const ::googl
       _this->_impl_.max_ = from._impl_.max_;
     }
     _this->_impl_._has_bits_[0] |= cached_has_bits;
+  }
+  switch (from.kind_case()) {
+    case kGauge: {
+      _this->_internal_mutable_gauge()->::abacus::protobuf::Gauge::MergeFrom(
+          from._internal_gauge());
+      break;
+    }
+    case kCounter: {
+      _this->_internal_mutable_counter()->::abacus::protobuf::Counter::MergeFrom(
+          from._internal_counter());
+      break;
+    }
+    case kConstant: {
+      _this->_internal_mutable_constant()->::abacus::protobuf::Constant::MergeFrom(
+          from._internal_constant());
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -2760,15 +4310,17 @@ void Float32Metric::InternalSwap(Float32Metric* other) {
   ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.max_)
       + sizeof(Float32Metric::_impl_.max_)
-      - PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.kind_)>(
-          reinterpret_cast<char*>(&_impl_.kind_),
-          reinterpret_cast<char*>(&other->_impl_.kind_));
+      - PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.min_)>(
+          reinterpret_cast<char*>(&_impl_.min_),
+          reinterpret_cast<char*>(&other->_impl_.min_));
+  swap(_impl_.kind_, other->_impl_.kind_);
+  swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);
 }
 
 ::google::protobuf::Metadata Float32Metric::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_getter, &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once,
-      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[5]);
+      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[8]);
 }
 // ===================================================================
 
@@ -2777,11 +4329,51 @@ class BoolMetric::_Internal {
   using HasBits = decltype(std::declval<BoolMetric>()._impl_._has_bits_);
   static constexpr ::int32_t kHasBitsOffset =
     8 * PROTOBUF_FIELD_OFFSET(BoolMetric, _impl_._has_bits_);
+  static constexpr ::int32_t kOneofCaseOffset =
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::BoolMetric, _impl_._oneof_case_);
+  static const ::abacus::protobuf::Gauge& gauge(const BoolMetric* msg);
+  static const ::abacus::protobuf::Constant& constant(const BoolMetric* msg);
   static void set_has_unit(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
 };
 
+const ::abacus::protobuf::Gauge& BoolMetric::_Internal::gauge(const BoolMetric* msg) {
+  return *msg->_impl_.kind_.gauge_;
+}
+const ::abacus::protobuf::Constant& BoolMetric::_Internal::constant(const BoolMetric* msg) {
+  return *msg->_impl_.kind_.constant_;
+}
+void BoolMetric::set_allocated_gauge(::abacus::protobuf::Gauge* gauge) {
+  ::google::protobuf::Arena* message_arena = GetArenaForAllocation();
+  clear_kind();
+  if (gauge) {
+    ::google::protobuf::Arena* submessage_arena =
+      ::google::protobuf::Arena::InternalGetOwningArena(gauge);
+    if (message_arena != submessage_arena) {
+      gauge = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, gauge, submessage_arena);
+    }
+    set_has_gauge();
+    _impl_.kind_.gauge_ = gauge;
+  }
+  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.BoolMetric.gauge)
+}
+void BoolMetric::set_allocated_constant(::abacus::protobuf::Constant* constant) {
+  ::google::protobuf::Arena* message_arena = GetArenaForAllocation();
+  clear_kind();
+  if (constant) {
+    ::google::protobuf::Arena* submessage_arena =
+      ::google::protobuf::Arena::InternalGetOwningArena(constant);
+    if (message_arena != submessage_arena) {
+      constant = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, constant, submessage_arena);
+    }
+    set_has_constant();
+    _impl_.kind_.constant_ = constant;
+  }
+  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.BoolMetric.constant)
+}
 BoolMetric::BoolMetric(::google::protobuf::Arena* arena)
     : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
@@ -2796,6 +4388,7 @@ BoolMetric::BoolMetric(const BoolMetric& from) : ::google::protobuf::Message() {
       decltype(_impl_.description_){},
       decltype(_impl_.unit_){},
       decltype(_impl_.kind_){},
+      /*decltype(_impl_._oneof_case_)*/ {},
   };
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
@@ -2813,7 +4406,22 @@ BoolMetric::BoolMetric(const BoolMetric& from) : ::google::protobuf::Message() {
   if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
     _this->_impl_.unit_.Set(from._internal_unit(), _this->GetArenaForAllocation());
   }
-  _this->_impl_.kind_ = from._impl_.kind_;
+  clear_has_kind();
+  switch (from.kind_case()) {
+    case kGauge: {
+      _this->_internal_mutable_gauge()->::abacus::protobuf::Gauge::MergeFrom(
+          from._internal_gauge());
+      break;
+    }
+    case kConstant: {
+      _this->_internal_mutable_constant()->::abacus::protobuf::Constant::MergeFrom(
+          from._internal_constant());
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
+  }
 
   // @@protoc_insertion_point(copy_constructor:abacus.protobuf.BoolMetric)
 }
@@ -2824,7 +4432,8 @@ inline void BoolMetric::SharedCtor(::_pb::Arena* arena) {
       /*decltype(_impl_._cached_size_)*/ {},
       decltype(_impl_.description_){},
       decltype(_impl_.unit_){},
-      decltype(_impl_.kind_){0},
+      decltype(_impl_.kind_){},
+      /*decltype(_impl_._oneof_case_)*/ {},
   };
   _impl_.description_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
@@ -2834,6 +4443,7 @@ inline void BoolMetric::SharedCtor(::_pb::Arena* arena) {
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
         _impl_.unit_.Set("", GetArenaForAllocation());
   #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  clear_has_kind();
 }
 BoolMetric::~BoolMetric() {
   // @@protoc_insertion_point(destructor:abacus.protobuf.BoolMetric)
@@ -2844,10 +4454,36 @@ inline void BoolMetric::SharedDtor() {
   ABSL_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.description_.Destroy();
   _impl_.unit_.Destroy();
+  if (has_kind()) {
+    clear_kind();
+  }
 }
 void BoolMetric::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
+
+void BoolMetric::clear_kind() {
+// @@protoc_insertion_point(one_of_clear_start:abacus.protobuf.BoolMetric)
+  switch (kind_case()) {
+    case kGauge: {
+      if (GetArenaForAllocation() == nullptr) {
+        delete _impl_.kind_.gauge_;
+      }
+      break;
+    }
+    case kConstant: {
+      if (GetArenaForAllocation() == nullptr) {
+        delete _impl_.kind_.constant_;
+      }
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
+  }
+  _impl_._oneof_case_[0] = KIND_NOT_SET;
+}
+
 
 PROTOBUF_NOINLINE void BoolMetric::Clear() {
 // @@protoc_insertion_point(message_clear_start:abacus.protobuf.BoolMetric)
@@ -2860,7 +4496,7 @@ PROTOBUF_NOINLINE void BoolMetric::Clear() {
   if (cached_has_bits & 0x00000001u) {
     _impl_.unit_.ClearNonDefaultToEmpty();
   }
-  _impl_.kind_ = 0;
+  clear_kind();
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -2873,46 +4509,46 @@ const char* BoolMetric::_InternalParse(
 
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 3, 0, 50, 2> BoolMetric::_table_ = {
+const ::_pbi::TcParseTable<1, 4, 2, 50, 2> BoolMetric::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(BoolMetric, _impl_._has_bits_),
     0, // no _extensions_
-    3, 24,  // max_field_number, fast_idx_mask
+    4, 8,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967288,  // skipmap
+    4294967280,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    3,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
+    4,  // num_field_entries
+    2,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
     &_BoolMetric_default_instance_._instance,
     ::_pbi::TcParser::GenericFallback,  // fallback
   }, {{
-    {::_pbi::TcParser::MiniParse, {}},
+    // optional string unit = 4;
+    {::_pbi::TcParser::FastUS1,
+     {34, 0, 0, PROTOBUF_FIELD_OFFSET(BoolMetric, _impl_.unit_)}},
     // string description = 1;
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(BoolMetric, _impl_.description_)}},
-    // .abacus.protobuf.Kind kind = 2;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(BoolMetric, _impl_.kind_), 63>(),
-     {16, 63, 0, PROTOBUF_FIELD_OFFSET(BoolMetric, _impl_.kind_)}},
-    // optional string unit = 3;
-    {::_pbi::TcParser::FastUS1,
-     {26, 0, 0, PROTOBUF_FIELD_OFFSET(BoolMetric, _impl_.unit_)}},
   }}, {{
     65535, 65535
   }}, {{
     // string description = 1;
     {PROTOBUF_FIELD_OFFSET(BoolMetric, _impl_.description_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // .abacus.protobuf.Kind kind = 2;
-    {PROTOBUF_FIELD_OFFSET(BoolMetric, _impl_.kind_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-    // optional string unit = 3;
+    // .abacus.protobuf.Gauge gauge = 2;
+    {PROTOBUF_FIELD_OFFSET(BoolMetric, _impl_.kind_.gauge_), _Internal::kOneofCaseOffset + 0, 0,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .abacus.protobuf.Constant constant = 3;
+    {PROTOBUF_FIELD_OFFSET(BoolMetric, _impl_.kind_.constant_), _Internal::kOneofCaseOffset + 0, 1,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvDefault)},
+    // optional string unit = 4;
     {PROTOBUF_FIELD_OFFSET(BoolMetric, _impl_.unit_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-  }},
-  // no aux_entries
-  {{
-    "\32\13\0\4\0\0\0\0"
+  }}, {{
+    {::_pbi::TcParser::GetTable<::abacus::protobuf::Gauge>()},
+    {::_pbi::FieldAuxDefaultMessage{}, &::abacus::protobuf::_Constant_default_instance_},
+  }}, {{
+    "\32\13\0\0\4\0\0\0"
     "abacus.protobuf.BoolMetric"
     "description"
     "unit"
@@ -2934,20 +4570,29 @@ const ::_pbi::TcParseTable<2, 3, 0, 50, 2> BoolMetric::_table_ = {
     target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
-  // .abacus.protobuf.Kind kind = 2;
-  if (this->_internal_kind() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteEnumToArray(
-        2, this->_internal_kind(), target);
+  switch (kind_case()) {
+    case kGauge: {
+      target = ::google::protobuf::internal::WireFormatLite::
+        InternalWriteMessage(2, _Internal::gauge(this),
+          _Internal::gauge(this).GetCachedSize(), target, stream);
+      break;
+    }
+    case kConstant: {
+      target = ::google::protobuf::internal::WireFormatLite::
+        InternalWriteMessage(3, _Internal::constant(this),
+          _Internal::constant(this).GetCachedSize(), target, stream);
+      break;
+    }
+    default:
+      break;
   }
-
   cached_has_bits = _impl_._has_bits_[0];
-  // optional string unit = 3;
+  // optional string unit = 4;
   if (cached_has_bits & 0x00000001u) {
     const std::string& _s = this->_internal_unit();
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
         _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "abacus.protobuf.BoolMetric.unit");
-    target = stream->WriteStringMaybeAliased(3, _s, target);
+    target = stream->WriteStringMaybeAliased(4, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2973,19 +4618,32 @@ const ::_pbi::TcParseTable<2, 3, 0, 50, 2> BoolMetric::_table_ = {
                                     this->_internal_description());
   }
 
-  // optional string unit = 3;
+  // optional string unit = 4;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                     this->_internal_unit());
   }
 
-  // .abacus.protobuf.Kind kind = 2;
-  if (this->_internal_kind() != 0) {
-    total_size += 1 +
-                  ::_pbi::WireFormatLite::EnumSize(this->_internal_kind());
+  switch (kind_case()) {
+    // .abacus.protobuf.Gauge gauge = 2;
+    case kGauge: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          *_impl_.kind_.gauge_);
+      break;
+    }
+    // .abacus.protobuf.Constant constant = 3;
+    case kConstant: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          *_impl_.kind_.constant_);
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
   }
-
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
@@ -3010,8 +4668,20 @@ void BoolMetric::MergeImpl(::google::protobuf::Message& to_msg, const ::google::
   if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
     _this->_internal_set_unit(from._internal_unit());
   }
-  if (from._internal_kind() != 0) {
-    _this->_internal_set_kind(from._internal_kind());
+  switch (from.kind_case()) {
+    case kGauge: {
+      _this->_internal_mutable_gauge()->::abacus::protobuf::Gauge::MergeFrom(
+          from._internal_gauge());
+      break;
+    }
+    case kConstant: {
+      _this->_internal_mutable_constant()->::abacus::protobuf::Constant::MergeFrom(
+          from._internal_constant());
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -3038,12 +4708,13 @@ void BoolMetric::InternalSwap(BoolMetric* other) {
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.unit_, lhs_arena,
                                        &other->_impl_.unit_, rhs_arena);
   swap(_impl_.kind_, other->_impl_.kind_);
+  swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);
 }
 
 ::google::protobuf::Metadata BoolMetric::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_getter, &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once,
-      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[6]);
+      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[9]);
 }
 // ===================================================================
 
@@ -3290,7 +4961,7 @@ void Enum8Metric_EnumValue::InternalSwap(Enum8Metric_EnumValue* other) {
 ::google::protobuf::Metadata Enum8Metric_EnumValue::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_getter, &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once,
-      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[7]);
+      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[10]);
 }
 // ===================================================================
 
@@ -3303,7 +4974,7 @@ void Enum8Metric_ValuesEntry_DoNotUse::MergeFrom(const Enum8Metric_ValuesEntry_D
 ::google::protobuf::Metadata Enum8Metric_ValuesEntry_DoNotUse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_getter, &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once,
-      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[8]);
+      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[11]);
 }
 // ===================================================================
 
@@ -3312,11 +4983,51 @@ class Enum8Metric::_Internal {
   using HasBits = decltype(std::declval<Enum8Metric>()._impl_._has_bits_);
   static constexpr ::int32_t kHasBitsOffset =
     8 * PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_._has_bits_);
+  static constexpr ::int32_t kOneofCaseOffset =
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Enum8Metric, _impl_._oneof_case_);
+  static const ::abacus::protobuf::Gauge& gauge(const Enum8Metric* msg);
+  static const ::abacus::protobuf::Constant& constant(const Enum8Metric* msg);
   static void set_has_unit(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
 };
 
+const ::abacus::protobuf::Gauge& Enum8Metric::_Internal::gauge(const Enum8Metric* msg) {
+  return *msg->_impl_.kind_.gauge_;
+}
+const ::abacus::protobuf::Constant& Enum8Metric::_Internal::constant(const Enum8Metric* msg) {
+  return *msg->_impl_.kind_.constant_;
+}
+void Enum8Metric::set_allocated_gauge(::abacus::protobuf::Gauge* gauge) {
+  ::google::protobuf::Arena* message_arena = GetArenaForAllocation();
+  clear_kind();
+  if (gauge) {
+    ::google::protobuf::Arena* submessage_arena =
+      ::google::protobuf::Arena::InternalGetOwningArena(gauge);
+    if (message_arena != submessage_arena) {
+      gauge = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, gauge, submessage_arena);
+    }
+    set_has_gauge();
+    _impl_.kind_.gauge_ = gauge;
+  }
+  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Enum8Metric.gauge)
+}
+void Enum8Metric::set_allocated_constant(::abacus::protobuf::Constant* constant) {
+  ::google::protobuf::Arena* message_arena = GetArenaForAllocation();
+  clear_kind();
+  if (constant) {
+    ::google::protobuf::Arena* submessage_arena =
+      ::google::protobuf::Arena::InternalGetOwningArena(constant);
+    if (message_arena != submessage_arena) {
+      constant = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, constant, submessage_arena);
+    }
+    set_has_constant();
+    _impl_.kind_.constant_ = constant;
+  }
+  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Enum8Metric.constant)
+}
 Enum8Metric::Enum8Metric(::google::protobuf::Arena* arena)
     : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
@@ -3332,6 +5043,7 @@ Enum8Metric::Enum8Metric(const Enum8Metric& from) : ::google::protobuf::Message(
       decltype(_impl_.description_){},
       decltype(_impl_.unit_){},
       decltype(_impl_.kind_){},
+      /*decltype(_impl_._oneof_case_)*/ {},
   };
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
@@ -3350,7 +5062,22 @@ Enum8Metric::Enum8Metric(const Enum8Metric& from) : ::google::protobuf::Message(
   if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
     _this->_impl_.unit_.Set(from._internal_unit(), _this->GetArenaForAllocation());
   }
-  _this->_impl_.kind_ = from._impl_.kind_;
+  clear_has_kind();
+  switch (from.kind_case()) {
+    case kGauge: {
+      _this->_internal_mutable_gauge()->::abacus::protobuf::Gauge::MergeFrom(
+          from._internal_gauge());
+      break;
+    }
+    case kConstant: {
+      _this->_internal_mutable_constant()->::abacus::protobuf::Constant::MergeFrom(
+          from._internal_constant());
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
+  }
 
   // @@protoc_insertion_point(copy_constructor:abacus.protobuf.Enum8Metric)
 }
@@ -3362,7 +5089,8 @@ inline void Enum8Metric::SharedCtor(::_pb::Arena* arena) {
       /* decltype(_impl_.values_) */ {::google::protobuf::internal::ArenaInitialized(), arena},
       decltype(_impl_.description_){},
       decltype(_impl_.unit_){},
-      decltype(_impl_.kind_){0},
+      decltype(_impl_.kind_){},
+      /*decltype(_impl_._oneof_case_)*/ {},
   };
   _impl_.description_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
@@ -3372,6 +5100,7 @@ inline void Enum8Metric::SharedCtor(::_pb::Arena* arena) {
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
         _impl_.unit_.Set("", GetArenaForAllocation());
   #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  clear_has_kind();
 }
 Enum8Metric::~Enum8Metric() {
   // @@protoc_insertion_point(destructor:abacus.protobuf.Enum8Metric)
@@ -3383,10 +5112,36 @@ inline void Enum8Metric::SharedDtor() {
   _impl_.values_.~MapField();
   _impl_.description_.Destroy();
   _impl_.unit_.Destroy();
+  if (has_kind()) {
+    clear_kind();
+  }
 }
 void Enum8Metric::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
+
+void Enum8Metric::clear_kind() {
+// @@protoc_insertion_point(one_of_clear_start:abacus.protobuf.Enum8Metric)
+  switch (kind_case()) {
+    case kGauge: {
+      if (GetArenaForAllocation() == nullptr) {
+        delete _impl_.kind_.gauge_;
+      }
+      break;
+    }
+    case kConstant: {
+      if (GetArenaForAllocation() == nullptr) {
+        delete _impl_.kind_.constant_;
+      }
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
+  }
+  _impl_._oneof_case_[0] = KIND_NOT_SET;
+}
+
 
 PROTOBUF_NOINLINE void Enum8Metric::Clear() {
 // @@protoc_insertion_point(message_clear_start:abacus.protobuf.Enum8Metric)
@@ -3400,7 +5155,7 @@ PROTOBUF_NOINLINE void Enum8Metric::Clear() {
   if (cached_has_bits & 0x00000001u) {
     _impl_.unit_.ClearNonDefaultToEmpty();
   }
-  _impl_.kind_ = 0;
+  clear_kind();
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -3413,50 +5168,51 @@ const char* Enum8Metric::_InternalParse(
 
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 4, 2, 51, 2> Enum8Metric::_table_ = {
+const ::_pbi::TcParseTable<1, 5, 4, 51, 2> Enum8Metric::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_._has_bits_),
     0, // no _extensions_
-    4, 24,  // max_field_number, fast_idx_mask
+    5, 8,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967280,  // skipmap
+    4294967264,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    4,  // num_field_entries
-    2,  // num_aux_entries
+    5,  // num_field_entries
+    4,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     &_Enum8Metric_default_instance_._instance,
     ::_pbi::TcParser::GenericFallback,  // fallback
   }, {{
-    {::_pbi::TcParser::MiniParse, {}},
+    // optional string unit = 4;
+    {::_pbi::TcParser::FastUS1,
+     {34, 0, 0, PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.unit_)}},
     // string description = 1;
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.description_)}},
-    // .abacus.protobuf.Kind kind = 2;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Enum8Metric, _impl_.kind_), 63>(),
-     {16, 63, 0, PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.kind_)}},
-    // optional string unit = 3;
-    {::_pbi::TcParser::FastUS1,
-     {26, 0, 0, PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.unit_)}},
   }}, {{
     65535, 65535
   }}, {{
     // string description = 1;
     {PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.description_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // .abacus.protobuf.Kind kind = 2;
-    {PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.kind_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-    // optional string unit = 3;
+    // .abacus.protobuf.Gauge gauge = 2;
+    {PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.kind_.gauge_), _Internal::kOneofCaseOffset + 0, 0,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .abacus.protobuf.Constant constant = 3;
+    {PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.kind_.constant_), _Internal::kOneofCaseOffset + 0, 1,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvDefault)},
+    // optional string unit = 4;
     {PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.unit_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // map<uint32, .abacus.protobuf.Enum8Metric.EnumValue> values = 4;
-    {PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.values_), -1, 0,
+    // map<uint32, .abacus.protobuf.Enum8Metric.EnumValue> values = 5;
+    {PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.values_), -1, 2,
     (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
   }}, {{
+    {::_pbi::TcParser::GetTable<::abacus::protobuf::Gauge>()},
+    {::_pbi::FieldAuxDefaultMessage{}, &::abacus::protobuf::_Constant_default_instance_},
     {::_pbi::TcParser::GetMapAuxInfo<decltype(Enum8Metric()._impl_.values_)>(1, 0, 0)},
     {::_pbi::TcParser::CreateInArenaStorageCb<::abacus::protobuf::Enum8Metric_EnumValue>},
   }}, {{
-    "\33\13\0\4\0\0\0\0"
+    "\33\13\0\0\4\0\0\0"
     "abacus.protobuf.Enum8Metric"
     "description"
     "unit"
@@ -3478,23 +5234,32 @@ const ::_pbi::TcParseTable<2, 4, 2, 51, 2> Enum8Metric::_table_ = {
     target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
-  // .abacus.protobuf.Kind kind = 2;
-  if (this->_internal_kind() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteEnumToArray(
-        2, this->_internal_kind(), target);
+  switch (kind_case()) {
+    case kGauge: {
+      target = ::google::protobuf::internal::WireFormatLite::
+        InternalWriteMessage(2, _Internal::gauge(this),
+          _Internal::gauge(this).GetCachedSize(), target, stream);
+      break;
+    }
+    case kConstant: {
+      target = ::google::protobuf::internal::WireFormatLite::
+        InternalWriteMessage(3, _Internal::constant(this),
+          _Internal::constant(this).GetCachedSize(), target, stream);
+      break;
+    }
+    default:
+      break;
   }
-
   cached_has_bits = _impl_._has_bits_[0];
-  // optional string unit = 3;
+  // optional string unit = 4;
   if (cached_has_bits & 0x00000001u) {
     const std::string& _s = this->_internal_unit();
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
         _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "abacus.protobuf.Enum8Metric.unit");
-    target = stream->WriteStringMaybeAliased(3, _s, target);
+    target = stream->WriteStringMaybeAliased(4, _s, target);
   }
 
-  // map<uint32, .abacus.protobuf.Enum8Metric.EnumValue> values = 4;
+  // map<uint32, .abacus.protobuf.Enum8Metric.EnumValue> values = 5;
   if (!_internal_values().empty()) {
     using MapType = ::google::protobuf::Map<::uint32_t, ::abacus::protobuf::Enum8Metric_EnumValue>;
     using WireHelper = Enum8Metric_ValuesEntry_DoNotUse::Funcs;
@@ -3503,12 +5268,12 @@ const ::_pbi::TcParseTable<2, 4, 2, 51, 2> Enum8Metric::_table_ = {
     if (stream->IsSerializationDeterministic() && field.size() > 1) {
       for (const auto& entry : ::google::protobuf::internal::MapSorterFlat<MapType>(field)) {
         target = WireHelper::InternalSerialize(
-            4, entry.first, entry.second, target, stream);
+            5, entry.first, entry.second, target, stream);
       }
     } else {
       for (const auto& entry : field) {
         target = WireHelper::InternalSerialize(
-            4, entry.first, entry.second, target, stream);
+            5, entry.first, entry.second, target, stream);
       }
     }
   }
@@ -3530,7 +5295,7 @@ const ::_pbi::TcParseTable<2, 4, 2, 51, 2> Enum8Metric::_table_ = {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // map<uint32, .abacus.protobuf.Enum8Metric.EnumValue> values = 4;
+  // map<uint32, .abacus.protobuf.Enum8Metric.EnumValue> values = 5;
   total_size += 1 * ::google::protobuf::internal::FromIntSize(_internal_values_size());
   for (const auto& entry : _internal_values()) {
     total_size += Enum8Metric_ValuesEntry_DoNotUse::Funcs::ByteSizeLong(entry.first, entry.second);
@@ -3541,19 +5306,32 @@ const ::_pbi::TcParseTable<2, 4, 2, 51, 2> Enum8Metric::_table_ = {
                                     this->_internal_description());
   }
 
-  // optional string unit = 3;
+  // optional string unit = 4;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                     this->_internal_unit());
   }
 
-  // .abacus.protobuf.Kind kind = 2;
-  if (this->_internal_kind() != 0) {
-    total_size += 1 +
-                  ::_pbi::WireFormatLite::EnumSize(this->_internal_kind());
+  switch (kind_case()) {
+    // .abacus.protobuf.Gauge gauge = 2;
+    case kGauge: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          *_impl_.kind_.gauge_);
+      break;
+    }
+    // .abacus.protobuf.Constant constant = 3;
+    case kConstant: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          *_impl_.kind_.constant_);
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
   }
-
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
@@ -3579,8 +5357,20 @@ void Enum8Metric::MergeImpl(::google::protobuf::Message& to_msg, const ::google:
   if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
     _this->_internal_set_unit(from._internal_unit());
   }
-  if (from._internal_kind() != 0) {
-    _this->_internal_set_kind(from._internal_kind());
+  switch (from.kind_case()) {
+    case kGauge: {
+      _this->_internal_mutable_gauge()->::abacus::protobuf::Gauge::MergeFrom(
+          from._internal_gauge());
+      break;
+    }
+    case kConstant: {
+      _this->_internal_mutable_constant()->::abacus::protobuf::Constant::MergeFrom(
+          from._internal_constant());
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -3608,12 +5398,13 @@ void Enum8Metric::InternalSwap(Enum8Metric* other) {
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.unit_, lhs_arena,
                                        &other->_impl_.unit_, rhs_arena);
   swap(_impl_.kind_, other->_impl_.kind_);
+  swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);
 }
 
 ::google::protobuf::Metadata Enum8Metric::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_getter, &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once,
-      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[9]);
+      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[12]);
 }
 // ===================================================================
 
@@ -3785,16 +5576,13 @@ Metric::Metric(const Metric& from) : ::google::protobuf::Message() {
   (void)_this;
   new (&_impl_) Impl_{
       decltype(_impl_.offset_){},
-      decltype(_impl_.optional_){},
       decltype(_impl_.type_){},
       /*decltype(_impl_._cached_size_)*/ {},
       /*decltype(_impl_._oneof_case_)*/ {},
   };
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
-  ::memcpy(&_impl_.offset_, &from._impl_.offset_,
-    static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.optional_) -
-    reinterpret_cast<char*>(&_impl_.offset_)) + sizeof(_impl_.optional_));
+  _this->_impl_.offset_ = from._impl_.offset_;
   clear_has_type();
   switch (from.type_case()) {
     case kUint64: {
@@ -3848,7 +5636,6 @@ inline void Metric::SharedCtor(::_pb::Arena* arena) {
   (void)arena;
   new (&_impl_) Impl_{
       decltype(_impl_.offset_){0u},
-      decltype(_impl_.optional_){false},
       decltype(_impl_.type_){},
       /*decltype(_impl_._cached_size_)*/ {},
       /*decltype(_impl_._oneof_case_)*/ {},
@@ -3935,9 +5722,7 @@ PROTOBUF_NOINLINE void Metric::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  ::memset(&_impl_.offset_, 0, static_cast<::size_t>(
-      reinterpret_cast<char*>(&_impl_.optional_) -
-      reinterpret_cast<char*>(&_impl_.offset_)) + sizeof(_impl_.optional_));
+  _impl_.offset_ = 0u;
   clear_type();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -3950,23 +5735,20 @@ const char* Metric::_InternalParse(
 
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 10, 8, 0, 2> Metric::_table_ = {
+const ::_pbi::TcParseTable<0, 9, 8, 0, 2> Metric::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    10, 8,  // max_field_number, fast_idx_mask
+    10, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294966272,  // skipmap
+    4294966274,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    10,  // num_field_entries
+    9,  // num_field_entries
     8,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     &_Metric_default_instance_._instance,
     ::_pbi::TcParser::GenericFallback,  // fallback
   }, {{
-    // bool optional = 2;
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(Metric, _impl_.optional_), 63>(),
-     {16, 63, 0, PROTOBUF_FIELD_OFFSET(Metric, _impl_.optional_)}},
     // uint32 offset = 1;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Metric, _impl_.offset_), 63>(),
      {8, 63, 0, PROTOBUF_FIELD_OFFSET(Metric, _impl_.offset_)}},
@@ -3976,9 +5758,6 @@ const ::_pbi::TcParseTable<1, 10, 8, 0, 2> Metric::_table_ = {
     // uint32 offset = 1;
     {PROTOBUF_FIELD_OFFSET(Metric, _impl_.offset_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
-    // bool optional = 2;
-    {PROTOBUF_FIELD_OFFSET(Metric, _impl_.optional_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
     // .abacus.protobuf.UInt64Metric uint64 = 3;
     {PROTOBUF_FIELD_OFFSET(Metric, _impl_.type_.uint64_), _Internal::kOneofCaseOffset + 0, 0,
     (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
@@ -4028,13 +5807,6 @@ const ::_pbi::TcParseTable<1, 10, 8, 0, 2> Metric::_table_ = {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
         1, this->_internal_offset(), target);
-  }
-
-  // bool optional = 2;
-  if (this->_internal_optional() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(
-        2, this->_internal_optional(), target);
   }
 
   switch (type_case()) {
@@ -4110,11 +5882,6 @@ const ::_pbi::TcParseTable<1, 10, 8, 0, 2> Metric::_table_ = {
   if (this->_internal_offset() != 0) {
     total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
         this->_internal_offset());
-  }
-
-  // bool optional = 2;
-  if (this->_internal_optional() != 0) {
-    total_size += 2;
   }
 
   switch (type_case()) {
@@ -4199,9 +5966,6 @@ void Metric::MergeImpl(::google::protobuf::Message& to_msg, const ::google::prot
   if (from._internal_offset() != 0) {
     _this->_internal_set_offset(from._internal_offset());
   }
-  if (from._internal_optional() != 0) {
-    _this->_internal_set_optional(from._internal_optional());
-  }
   switch (from.type_case()) {
     case kUint64: {
       _this->_internal_mutable_uint64()->::abacus::protobuf::UInt64Metric::MergeFrom(
@@ -4264,12 +6028,7 @@ PROTOBUF_NOINLINE bool Metric::IsInitialized() const {
 void Metric::InternalSwap(Metric* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Metric, _impl_.optional_)
-      + sizeof(Metric::_impl_.optional_)
-      - PROTOBUF_FIELD_OFFSET(Metric, _impl_.offset_)>(
-          reinterpret_cast<char*>(&_impl_.offset_),
-          reinterpret_cast<char*>(&other->_impl_.offset_));
+        swap(_impl_.offset_, other->_impl_.offset_);
   swap(_impl_.type_, other->_impl_.type_);
   swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);
 }
@@ -4277,7 +6036,7 @@ void Metric::InternalSwap(Metric* other) {
 ::google::protobuf::Metadata Metric::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_getter, &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once,
-      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[10]);
+      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[13]);
 }
 // ===================================================================
 
@@ -4290,7 +6049,7 @@ void MetricsMetadata_MetricsEntry_DoNotUse::MergeFrom(const MetricsMetadata_Metr
 ::google::protobuf::Metadata MetricsMetadata_MetricsEntry_DoNotUse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_getter, &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once,
-      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[11]);
+      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[14]);
 }
 // ===================================================================
 
@@ -4564,7 +6323,7 @@ void MetricsMetadata::InternalSwap(MetricsMetadata* other) {
 ::google::protobuf::Metadata MetricsMetadata::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_getter, &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once,
-      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[12]);
+      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[15]);
 }
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace protobuf

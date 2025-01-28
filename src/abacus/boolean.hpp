@@ -26,11 +26,6 @@ struct boolean
     /// The primitive type of the metric
     using type = bool;
 
-    /// The optional metric type
-    using optional = optional_metric<boolean>;
-    /// The required metric type
-    using required = required_metric<boolean>;
-
     /// Set the value of the metric
     /// @param memory The memory to use for the metric, note that the memory
     ///        must be at least sizeof(type) + 1 bytes long.
@@ -54,13 +49,10 @@ struct boolean
     }
 
     /// The kind of the metric
-    abacus::kind kind;
+    std::variant<gauge, constant> kind;
 
     /// The description of the metric
     abacus::description description;
-
-    /// The availability of the metric
-    abacus::availability availability;
 };
 }
 }

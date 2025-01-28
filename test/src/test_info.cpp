@@ -8,6 +8,8 @@
 #include <gtest/gtest.h>
 
 #include <abacus/info.hpp>
+#include <abacus/optional_metric.hpp>
+#include <abacus/required_metric.hpp>
 
 template <typename T>
 void integer_test()
@@ -15,7 +17,7 @@ void integer_test()
     using type = typename T::type;
 
     {
-        using optional = typename T::optional;
+        using optional = abacus::optional_metric<T>;
         uint8_t data[sizeof(type) + 1];
         std::memset(data, 0, sizeof(data));
         optional o;
@@ -36,7 +38,7 @@ void integer_test()
         EXPECT_FALSE(o.has_value());
     }
     {
-        using required = typename T::required;
+        using required = abacus::required_metric<T>;
         uint8_t data[sizeof(type) + 1];
         std::memset(data, 0, sizeof(data));
         required r;
@@ -67,7 +69,7 @@ void floating_point_test()
     using type = typename T::type;
 
     {
-        using optional = typename T::optional;
+        using optional = abacus::optional_metric<T>;
         uint8_t data[sizeof(type) + 1];
         std::memset(data, 0, sizeof(data));
         optional o;
@@ -88,7 +90,7 @@ void floating_point_test()
         EXPECT_FALSE(o.has_value());
     }
     {
-        using required = typename T::required;
+        using required = abacus::required_metric<T>;
         uint8_t data[sizeof(type) + 1];
         std::memset(data, 0, sizeof(data));
         required r;
@@ -115,11 +117,12 @@ TEST(test_info, floating_point)
 TEST(test_info, boolean)
 {
     {
+        using optional = abacus::optional_metric<abacus::boolean>;
         uint8_t data[sizeof(bool) + 1];
         std::memset(data, 0, sizeof(data));
-        abacus::boolean::optional o;
+        optional o;
         EXPECT_FALSE(o.is_initialized());
-        o = abacus::boolean::optional(data);
+        o = optional(data);
         EXPECT_TRUE(o.is_initialized());
         EXPECT_FALSE(o.has_value());
         o = true;
@@ -131,11 +134,12 @@ TEST(test_info, boolean)
         EXPECT_FALSE(o.has_value());
     }
     {
+        using required = abacus::required_metric<abacus::boolean>;
         uint8_t data[sizeof(bool) + 1];
         std::memset(data, 0, sizeof(data));
-        abacus::boolean::required r;
+        required r;
         EXPECT_FALSE(r.is_initialized());
-        r = abacus::boolean::required(data, true);
+        r = required(data, true);
         EXPECT_TRUE(r.is_initialized());
         EXPECT_EQ(r.value(), true);
         r = false;
@@ -156,11 +160,13 @@ enum class test_enum
 TEST(test_info, enum8)
 {
     {
+        using optional = abacus::optional_metric<abacus::enum8>;
+
         uint8_t data[sizeof(uint8_t) + 1];
         std::memset(data, 0, sizeof(data));
-        abacus::enum8::optional o;
+        optional o;
         EXPECT_FALSE(o.is_initialized());
-        o = abacus::enum8::optional(data);
+        o = optional(data);
         EXPECT_TRUE(o.is_initialized());
         EXPECT_FALSE(o.has_value());
         o = 10U;
@@ -191,11 +197,13 @@ TEST(test_info, enum8)
     }
 
     {
+        using required = abacus::required_metric<abacus::enum8>;
+
         uint8_t data[sizeof(uint8_t) + 1];
         std::memset(data, 0, sizeof(data));
-        abacus::enum8::required r;
+        required r;
         EXPECT_FALSE(r.is_initialized());
-        r = abacus::enum8::required(data, 10U);
+        r = required(data, 10U);
         EXPECT_TRUE(r.is_initialized());
         EXPECT_EQ(r.value(), 10U);
         r = 20U;
