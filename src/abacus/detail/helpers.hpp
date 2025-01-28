@@ -119,6 +119,36 @@ struct has_kConstant<T, std::void_t<decltype(T::kConstant)>> : std::true_type
 
 template <typename T>
 inline constexpr bool has_kConstant_v = has_kConstant<T>::value;
+
+template <class Func>
+static inline auto call_type(const protobuf::Metric& metric, const Func& func)
+    -> decltype(func(metric.uint64()))
+{
+    switch (metric.type_case())
+    {
+    case protobuf::Metric::kUint64:
+        return func(metric.uint64());
+    case protobuf::Metric::kInt64:
+        return func(metric.int64());
+    case protobuf::Metric::kUint32:
+        return func(metric.uint32());
+    case protobuf::Metric::kInt32:
+        return func(metric.int32());
+    case protobuf::Metric::kFloat64:
+        return func(metric.float64());
+    case protobuf::Metric::kFloat32:
+        return func(metric.float32());
+    case protobuf::Metric::kBoolean:
+        return func(metric.boolean());
+    case protobuf::Metric::kEnum8:
+        return func(metric.enum8());
+    default:
+        // This should never be reached
+        assert(false);
+        using ReturnType = decltype(func(metric.uint64()));
+        return ReturnType();
+    }
+}
 }
 }
 }

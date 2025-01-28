@@ -24,77 +24,47 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-template <class Func>
-static inline auto call_type(const protobuf::Metric& metric,
-                             const Func& func) -> bool
-{
-    switch (metric.type_case())
-    {
-    case protobuf::Metric::kUint64:
-        return func(metric.uint64());
-    case protobuf::Metric::kInt64:
-        return func(metric.int64());
-    case protobuf::Metric::kUint32:
-        return func(metric.uint32());
-    case protobuf::Metric::kInt32:
-        return func(metric.int32());
-    case protobuf::Metric::kFloat64:
-        return func(metric.float64());
-    case protobuf::Metric::kFloat32:
-        return func(metric.float32());
-    case protobuf::Metric::kBoolean:
-        return func(metric.boolean());
-    case protobuf::Metric::kEnum8:
-        return func(metric.enum8());
-    default:
-        // This should never be reached
-        assert(false);
-        return false;
-    }
-}
-
-template <typename Metric>
-bool is_constant_impl(const Metric& metric)
-{
-    if constexpr (detail::has_kConstant_v<typename Metric::KindCase>)
-    {
-        return metric.kind_case() == Metric::KindCase::kConstant;
-    }
-    return false;
-}
-
-template <typename Metric>
-bool is_optional_impl(const Metric& metric)
-{
-    if constexpr (detail::has_kGauge_v<typename Metric::KindCase>)
-    {
-        if (metric.kind_case() == Metric::KindCase::kGauge)
-        {
-            return metric.gauge().optional();
-        }
-    }
-    if constexpr (detail::has_kCounter_v<typename Metric::KindCase>)
-
-    {
-        if (metric.kind_case() == Metric::KindCase::kCounter)
-        {
-            return metric.counter().optional();
-        }
-    }
-
-    return false;
-}
-
 static inline auto is_optional(const protobuf::Metric& metric) -> bool
 {
-    return call_type(metric, [](const auto& metric)
-                     { return is_optional_impl(metric); });
+    return detail::call_type(
+        metric,
+        [](const auto& metric)
+        {
+            using Metric = std::decay_t<decltype(metric)>;
+            if constexpr (detail::has_kGauge_v<typename Metric::KindCase>)
+            {
+                if (metric.kind_case() == Metric::KindCase::kGauge)
+                {
+                    return metric.gauge().optional();
+                }
+            }
+            if constexpr (detail::has_kCounter_v<typename Metric::KindCase>)
+
+            {
+                if (metric.kind_case() == Metric::KindCase::kCounter)
+                {
+                    return metric.counter().optional();
+                }
+            }
+
+            return false;
+        });
 }
 
 static inline bool is_constant(const protobuf::Metric& metric)
 {
-    return call_type(metric, [](const auto& metric)
-                     { return is_constant_impl(metric); });
+    return detail::call_type(
+        metric,
+        [](const auto& metric)
+        {
+            using Metric = std::decay_t<decltype(metric)>;
+
+            if constexpr (detail::has_kConstant_v<typename Metric::KindCase>)
+            {
+                return metric.kind_case() == Metric::KindCase::kConstant;
+            }
+            return false;
+        });
 }
 
 template <class Protobuf, class Kind>
