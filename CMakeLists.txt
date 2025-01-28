@@ -98,10 +98,10 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
   add_subdirectory("${STEINWURF_RESOLVE}/gtest-source")
 
   # Build test executable
-  file(GLOB_RECURSE abacus_test_sources ./test/*.cpp)
-  add_executable(abacus_test ${abacus_test_sources})
-  target_link_libraries(abacus_test gtest_main)
-  target_link_libraries(abacus_test
+  file(GLOB_RECURSE abacus_tests_sources ./test/*.cpp)
+  add_executable(abacus_tests ${abacus_tests_sources})
+  target_link_libraries(abacus_tests gtest_main)
+  target_link_libraries(abacus_tests
     steinwurf::abacus
     steinwurf::endian
     steinwurf::bourne
