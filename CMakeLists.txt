@@ -107,7 +107,7 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
     steinwurf::bourne
     steinwurf::protobuf)
 
-  add_test(abacus_test abacus_test)
+  add_test(abacus_tests abacus_tests)
 
   # Google Benchmark dependency
   set(BENCHMARK_ENABLE_TESTING
