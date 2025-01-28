@@ -98,7 +98,6 @@ static inline auto set_kind(Protobuf& protobuf, const Kind& kind)
     {
         if (auto* c = std::get_if<constant>(&kind))
         {
-
             protobuf.mutable_constant();
             return;
         }
@@ -132,7 +131,6 @@ metrics::metrics(const std::map<name, abacus::info>& info)
 
     for (auto [name, value] : info)
     {
-
         protobuf::Metric metric;
         metric.set_offset(m_value_bytes);
 
