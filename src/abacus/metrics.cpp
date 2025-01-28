@@ -25,8 +25,8 @@ inline namespace STEINWURF_ABACUS_VERSION
 {
 
 template <class Func>
-static inline auto call_specific(const protobuf::Metric& metric,
-                                 const Func& func) -> bool
+static inline auto call_type(const protobuf::Metric& metric,
+                             const Func& func) -> bool
 {
     switch (metric.type_case())
     {
@@ -63,47 +63,6 @@ bool is_constant_impl(const Metric& metric)
     return false;
 }
 
-static inline bool is_constant(const protobuf::Metric& metric)
-{
-    return call_specific(metric, [](const auto& metric)
-                         { return is_constant_impl(metric); });
-    // switch (metric.type_case())
-    // {
-    // case protobuf::Metric::kUint64:
-    //     return metric.uint64().kind_case() ==
-    //            protobuf::UInt64Metric::KindCase::kConstant;
-    // case protobuf::Metric::kInt64:
-    //     return metric.int64().kind_case() ==
-    //            protobuf::Int64Metric::KindCase::kConstant;
-    // case protobuf::Metric::kUint32:
-    //     return metric.uint32().kind_case() ==
-    //            protobuf::UInt32Metric::KindCase::kConstant;
-    // case protobuf::Metric::kInt32:
-    //     return metric.int32().kind_case() ==
-    //            protobuf::Int32Metric::KindCase::kConstant;
-    // case protobuf::Metric::kFloat64:
-    //     return metric.float64().kind_case() ==
-    //            protobuf::Float64Metric::KindCase::kConstant;
-    // case protobuf::Metric::kFloat32:
-    //     return metric.float32().kind_case() ==
-    //            protobuf::Float32Metric::KindCase::kConstant;
-    // case protobuf::Metric::kBoolean:
-    //     return metric.boolean().kind_case() ==
-    //            protobuf::BoolMetric::KindCase::kConstant;
-    // case protobuf::Metric::kEnum8:
-    //     return metric.enum8().kind_case() ==
-    //            protobuf::Enum8Metric::KindCase::kConstant;
-    // case protobuf::Metric::TYPE_NOT_SET:
-    //     // This should never be reached
-    //     assert(false);
-    //     return false;
-    // default:
-    //     // This should never be reached
-    //     assert(false);
-    //     return false;
-    // }
-}
-
 template <typename Metric>
 bool is_optional_impl(const Metric& metric)
 {
@@ -128,35 +87,14 @@ bool is_optional_impl(const Metric& metric)
 
 static inline auto is_optional(const protobuf::Metric& metric) -> bool
 {
-    return call_specific(metric, [](const auto& metric)
-                         { return is_optional_impl(metric); });
-    // switch (metric.type_case())
-    // {
-    // case protobuf::Metric::kUint64:
-    //     return is_optional_impl(metric.uint64());
-    // case protobuf::Metric::kInt64:
-    //     return is_optional_impl(metric.int64());
-    // case protobuf::Metric::kUint32:
-    //     return is_optional_impl(metric.uint32());
-    // case protobuf::Metric::kInt32:
-    //     return is_optional_impl(metric.int32());
-    // case protobuf::Metric::kFloat64:
-    //     return is_optional_impl(metric.float64());
-    // case protobuf::Metric::kFloat32:
-    //     return is_optional_impl(metric.float32());
-    // case protobuf::Metric::kBoolean:
-    //     return is_optional_impl(metric.boolean());
-    // case protobuf::Metric::kEnum8:
-    //     return is_optional_impl(metric.enum8());
-    // case protobuf::Metric::TYPE_NOT_SET:
-    //     // This should never be reached
-    //     assert(false);
-    //     return false;
-    // default:
-    //     // This should never be reached
-    //     assert(false);
-    //     return false;
-    // }
+    return call_type(metric, [](const auto& metric)
+                     { return is_optional_impl(metric); });
+}
+
+static inline bool is_constant(const protobuf::Metric& metric)
+{
+    return call_type(metric, [](const auto& metric)
+                     { return is_constant_impl(metric); });
 }
 
 template <class Protobuf, class Kind>
