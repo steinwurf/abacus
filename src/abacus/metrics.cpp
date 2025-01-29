@@ -445,7 +445,7 @@ auto metrics::value_data() const -> const uint8_t*
 
 auto metrics::value_data(std::size_t offset) -> uint8_t*
 {
-    return m_data.data() + offset + m_metadata_bytes;
+    return m_data.data() + m_metadata_bytes + offset;
 }
 
 auto metrics::value_bytes() const -> std::size_t
@@ -465,7 +465,7 @@ auto metrics::metadata_data() const -> const uint8_t*
 
 auto metrics::metadata_bytes() const -> std::size_t
 {
-    return m_metadata.ByteSizeLong();
+    return m_metadata_bytes;
 }
 
 auto metrics::is_initialized(const std::string& name) const -> bool
