@@ -27,6 +27,12 @@ struct enum8
     /// The primitive type of the metric
     using type = uint8_t;
 
+    /// Required enum8 metric
+    using required = required_metric<enum8>;
+
+    /// Optional enum8 metric
+    using optional = optional_metric<enum8>;
+
     /// Set the value of the metric
     /// @param memory The memory to use for the metric, note that the memory
     ///        must be at least sizeof(type) + 1 bytes long.

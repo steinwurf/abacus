@@ -40,11 +40,11 @@ int main()
     car.initialize_constant<abacus::uint64>("wheels", 4);
 
     // The car still has some time before maintenance.
-    abacus::required_metric<abacus::int64> days_until_maintenance =
+    abacus::int64::required days_until_maintenance =
         car.initialize_required<abacus::int64>("days_until_maintenance", 10);
 
     // The car should be registered.
-    abacus::optional_metric<abacus::boolean> registered =
+    abacus::boolean::optional registered =
         car.initialize_optional<abacus::boolean>("registered");
 
     // The registration is initialized, but not set.

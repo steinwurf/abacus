@@ -26,6 +26,12 @@ struct boolean
     /// The primitive type of the metric
     using type = bool;
 
+    /// Required boolean metric
+    using required = required_metric<boolean>;
+
+    /// Optional boolean metric
+    using optional = optional_metric<boolean>;
+
     /// Set the value of the metric
     /// @param memory The memory to use for the metric, note that the memory
     ///        must be at least sizeof(type) + 1 bytes long.

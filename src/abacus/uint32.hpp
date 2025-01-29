@@ -24,6 +24,12 @@ struct uint32
     /// The primitive type of the metric
     using type = uint32_t;
 
+    /// Required uint32 metric
+    using required = required_metric<uint32>;
+
+    /// Optional uint32 metric
+    using optional = optional_metric<uint32>;
+
     /// Set the value of the metric
     /// @param memory The memory to use for the metric, note that the memory
     ///        must be at least sizeof(type) + 1 bytes long.

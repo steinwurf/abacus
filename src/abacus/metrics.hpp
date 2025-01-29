@@ -48,16 +48,16 @@ public:
     /// @param value Optional initial value of the metric
     /// @return The metric object
     template <class Metric>
-    [[nodiscard]] auto
-    initialize_required(const std::string& name,
-                        typename Metric::type value) -> required_metric<Metric>;
+    [[nodiscard]] auto initialize_required(const std::string& name,
+                                           typename Metric::type value) ->
+        typename Metric::required;
 
     /// Initialize a metric
     /// @param name The name of the metric
     /// @return The metric object
     template <class Metric>
-    [[nodiscard]] auto
-    initialize_optional(const std::string& name) -> optional_metric<Metric>;
+    [[nodiscard]] auto initialize_optional(const std::string& name) ->
+        typename Metric::optional;
 
     /// Initialize a constant metric
     /// @param name The name of the metric
