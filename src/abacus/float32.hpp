@@ -60,7 +60,7 @@ struct float32
     }
 
     /// The metric kind
-    std::variant<gauge, counter, constant> kind;
+    std::variant<gauge, counter, constant<type>> kind;
 
     /// The metric description
     abacus::description description;

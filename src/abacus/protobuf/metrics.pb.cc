@@ -324,6 +324,27 @@ struct Enum8MetricDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 Enum8MetricDefaultTypeInternal _Enum8Metric_default_instance_;
         template <typename>
+PROTOBUF_CONSTEXPR StringMetric::StringMetric(::_pbi::ConstantInitialized)
+    : _impl_{
+      /*decltype(_impl_.description_)*/ {
+          &::_pbi::fixed_address_empty_string,
+          ::_pbi::ConstantInitialized{},
+      },
+      /*decltype(_impl_.kind_)*/ {},
+      /*decltype(_impl_._cached_size_)*/ {},
+      /*decltype(_impl_._oneof_case_)*/ {},
+    } {}
+struct StringMetricDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR StringMetricDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~StringMetricDefaultTypeInternal() {}
+  union {
+    StringMetric _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 StringMetricDefaultTypeInternal _StringMetric_default_instance_;
+        template <typename>
 PROTOBUF_CONSTEXPR Metric::Metric(::_pbi::ConstantInitialized)
     : _impl_{
       /*decltype(_impl_.offset_)*/ 0u,
@@ -374,7 +395,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 MetricsMetadataDefaultTypeInternal _MetricsMetadata_default_instance_;
 }  // namespace protobuf
 }  // namespace abacus
-static ::_pb::Metadata file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[16];
+static ::_pb::Metadata file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[17];
 static const ::_pb::EnumDescriptor* file_level_enum_descriptors_abacus_2fprotobuf_2fmetrics_2eproto[1];
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_abacus_2fprotobuf_2fmetrics_2eproto = nullptr;
@@ -605,6 +626,17 @@ const ::uint32_t TableStruct_abacus_2fprotobuf_2fmetrics_2eproto::offsets[] PROT
     0,
     ~0u,
     ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::StringMetric, _internal_metadata_),
+    ~0u,  // no _extensions_
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::StringMetric, _impl_._oneof_case_[0]),
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::StringMetric, _impl_.description_),
+    ::_pbi::kInvalidFieldOffsetTag,
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::StringMetric, _impl_.kind_),
+    ~0u,  // no _has_bits_
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Metric, _internal_metadata_),
     ~0u,  // no _extensions_
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Metric, _impl_._oneof_case_[0]),
@@ -613,6 +645,7 @@ const ::uint32_t TableStruct_abacus_2fprotobuf_2fmetrics_2eproto::offsets[] PROT
     ~0u,  // no _split_
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Metric, _impl_.offset_),
+    ::_pbi::kInvalidFieldOffsetTag,
     ::_pbi::kInvalidFieldOffsetTag,
     ::_pbi::kInvalidFieldOffsetTag,
     ::_pbi::kInvalidFieldOffsetTag,
@@ -663,9 +696,10 @@ static const ::_pbi::MigrationSchema
         {181, 191, -1, sizeof(::abacus::protobuf::Enum8Metric_EnumValue)},
         {193, 203, -1, sizeof(::abacus::protobuf::Enum8Metric_ValuesEntry_DoNotUse)},
         {205, 219, -1, sizeof(::abacus::protobuf::Enum8Metric)},
-        {224, -1, -1, sizeof(::abacus::protobuf::Metric)},
-        {242, 252, -1, sizeof(::abacus::protobuf::MetricsMetadata_MetricsEntry_DoNotUse)},
-        {254, -1, -1, sizeof(::abacus::protobuf::MetricsMetadata)},
+        {224, -1, -1, sizeof(::abacus::protobuf::StringMetric)},
+        {235, -1, -1, sizeof(::abacus::protobuf::Metric)},
+        {254, 264, -1, sizeof(::abacus::protobuf::MetricsMetadata_MetricsEntry_DoNotUse)},
+        {266, -1, -1, sizeof(::abacus::protobuf::MetricsMetadata)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -682,6 +716,7 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::abacus::protobuf::_Enum8Metric_EnumValue_default_instance_._instance,
     &::abacus::protobuf::_Enum8Metric_ValuesEntry_DoNotUse_default_instance_._instance,
     &::abacus::protobuf::_Enum8Metric_default_instance_._instance,
+    &::abacus::protobuf::_StringMetric_default_instance_._instance,
     &::abacus::protobuf::_Metric_default_instance_._instance,
     &::abacus::protobuf::_MetricsMetadata_MetricsEntry_DoNotUse_default_instance_._instance,
     &::abacus::protobuf::_MetricsMetadata_default_instance_._instance,
@@ -742,37 +777,41 @@ const char descriptor_table_protodef_abacus_2fprotobuf_2fmetrics_2eproto[] PROTO
     "H\000\210\001\001B\016\n\014_description\032U\n\013ValuesEntry\022\013\n\003"
     "key\030\001 \001(\r\0225\n\005value\030\002 \001(\0132&.abacus.protob"
     "uf.Enum8Metric.EnumValue:\0028\001B\006\n\004kindB\007\n\005"
-    "_unit\"\245\003\n\006Metric\022\016\n\006offset\030\001 \001(\r\022/\n\006uint"
-    "64\030\003 \001(\0132\035.abacus.protobuf.UInt64MetricH"
-    "\000\022-\n\005int64\030\004 \001(\0132\034.abacus.protobuf.Int64"
-    "MetricH\000\022/\n\006uint32\030\005 \001(\0132\035.abacus.protob"
-    "uf.UInt32MetricH\000\022-\n\005int32\030\006 \001(\0132\034.abacu"
-    "s.protobuf.Int32MetricH\000\0221\n\007float64\030\007 \001("
-    "\0132\036.abacus.protobuf.Float64MetricH\000\0221\n\007f"
-    "loat32\030\010 \001(\0132\036.abacus.protobuf.Float32Me"
-    "tricH\000\022.\n\007boolean\030\t \001(\0132\033.abacus.protobu"
-    "f.BoolMetricH\000\022-\n\005enum8\030\n \001(\0132\034.abacus.p"
-    "rotobuf.Enum8MetricH\000B\006\n\004type\"\371\001\n\017Metric"
-    "sMetadata\022\030\n\020protocol_version\030\001 \001(\r\022/\n\ne"
-    "ndianness\030\002 \001(\0162\033.abacus.protobuf.Endian"
-    "ness\022\022\n\nsync_value\030\003 \001(\007\022>\n\007metrics\030\004 \003("
-    "\0132-.abacus.protobuf.MetricsMetadata.Metr"
-    "icsEntry\032G\n\014MetricsEntry\022\013\n\003key\030\001 \001(\t\022&\n"
-    "\005value\030\002 \001(\0132\027.abacus.protobuf.Metric:\0028"
-    "\001*!\n\nEndianness\022\n\n\006LITTLE\020\000\022\007\n\003BIG\020\001B\021Z\017"
-    "abacus/protobufb\006proto3"
+    "_unit\"Z\n\014StringMetric\022\023\n\013description\030\001 \001"
+    "(\t\022-\n\010constant\030\002 \001(\0132\031.abacus.protobuf.C"
+    "onstantH\000B\006\n\004kind\"\326\003\n\006Metric\022\016\n\006offset\030\001"
+    " \001(\r\022/\n\006uint64\030\003 \001(\0132\035.abacus.protobuf.U"
+    "Int64MetricH\000\022-\n\005int64\030\004 \001(\0132\034.abacus.pr"
+    "otobuf.Int64MetricH\000\022/\n\006uint32\030\005 \001(\0132\035.a"
+    "bacus.protobuf.UInt32MetricH\000\022-\n\005int32\030\006"
+    " \001(\0132\034.abacus.protobuf.Int32MetricH\000\0221\n\007"
+    "float64\030\007 \001(\0132\036.abacus.protobuf.Float64M"
+    "etricH\000\0221\n\007float32\030\010 \001(\0132\036.abacus.protob"
+    "uf.Float32MetricH\000\022.\n\007boolean\030\t \001(\0132\033.ab"
+    "acus.protobuf.BoolMetricH\000\022-\n\005enum8\030\n \001("
+    "\0132\034.abacus.protobuf.Enum8MetricH\000\022/\n\006str"
+    "ing\030\013 \001(\0132\035.abacus.protobuf.StringMetric"
+    "H\000B\006\n\004type\"\371\001\n\017MetricsMetadata\022\030\n\020protoc"
+    "ol_version\030\001 \001(\r\022/\n\nendianness\030\002 \001(\0162\033.a"
+    "bacus.protobuf.Endianness\022\022\n\nsync_value\030"
+    "\003 \001(\007\022>\n\007metrics\030\004 \003(\0132-.abacus.protobuf"
+    ".MetricsMetadata.MetricsEntry\032G\n\014Metrics"
+    "Entry\022\013\n\003key\030\001 \001(\t\022&\n\005value\030\002 \001(\0132\027.abac"
+    "us.protobuf.Metric:\0028\001*!\n\nEndianness\022\n\n\006"
+    "LITTLE\020\000\022\007\n\003BIG\020\001B\021Z\017abacus/protobufb\006pr"
+    "oto3"
 };
 static ::absl::once_flag descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto = {
     false,
     false,
-    2943,
+    3084,
     descriptor_table_protodef_abacus_2fprotobuf_2fmetrics_2eproto,
     "abacus/protobuf/metrics.proto",
     &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once,
     nullptr,
     0,
-    16,
+    17,
     schemas,
     file_default_instances,
     TableStruct_abacus_2fprotobuf_2fmetrics_2eproto::offsets,
@@ -5408,6 +5447,289 @@ void Enum8Metric::InternalSwap(Enum8Metric* other) {
 }
 // ===================================================================
 
+class StringMetric::_Internal {
+ public:
+  static constexpr ::int32_t kOneofCaseOffset =
+    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::StringMetric, _impl_._oneof_case_);
+  static const ::abacus::protobuf::Constant& constant(const StringMetric* msg);
+};
+
+const ::abacus::protobuf::Constant& StringMetric::_Internal::constant(const StringMetric* msg) {
+  return *msg->_impl_.kind_.constant_;
+}
+void StringMetric::set_allocated_constant(::abacus::protobuf::Constant* constant) {
+  ::google::protobuf::Arena* message_arena = GetArenaForAllocation();
+  clear_kind();
+  if (constant) {
+    ::google::protobuf::Arena* submessage_arena =
+      ::google::protobuf::Arena::InternalGetOwningArena(constant);
+    if (message_arena != submessage_arena) {
+      constant = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, constant, submessage_arena);
+    }
+    set_has_constant();
+    _impl_.kind_.constant_ = constant;
+  }
+  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.StringMetric.constant)
+}
+StringMetric::StringMetric(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:abacus.protobuf.StringMetric)
+}
+StringMetric::StringMetric(const StringMetric& from) : ::google::protobuf::Message() {
+  StringMetric* const _this = this;
+  (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.description_){},
+      decltype(_impl_.kind_){},
+      /*decltype(_impl_._cached_size_)*/ {},
+      /*decltype(_impl_._oneof_case_)*/ {},
+  };
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  _impl_.description_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.description_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_description().empty()) {
+    _this->_impl_.description_.Set(from._internal_description(), _this->GetArenaForAllocation());
+  }
+  clear_has_kind();
+  switch (from.kind_case()) {
+    case kConstant: {
+      _this->_internal_mutable_constant()->::abacus::protobuf::Constant::MergeFrom(
+          from._internal_constant());
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
+  }
+
+  // @@protoc_insertion_point(copy_constructor:abacus.protobuf.StringMetric)
+}
+inline void StringMetric::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.description_){},
+      decltype(_impl_.kind_){},
+      /*decltype(_impl_._cached_size_)*/ {},
+      /*decltype(_impl_._oneof_case_)*/ {},
+  };
+  _impl_.description_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.description_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  clear_has_kind();
+}
+StringMetric::~StringMetric() {
+  // @@protoc_insertion_point(destructor:abacus.protobuf.StringMetric)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void StringMetric::SharedDtor() {
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.description_.Destroy();
+  if (has_kind()) {
+    clear_kind();
+  }
+}
+void StringMetric::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void StringMetric::clear_kind() {
+// @@protoc_insertion_point(one_of_clear_start:abacus.protobuf.StringMetric)
+  switch (kind_case()) {
+    case kConstant: {
+      if (GetArenaForAllocation() == nullptr) {
+        delete _impl_.kind_.constant_;
+      }
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
+  }
+  _impl_._oneof_case_[0] = KIND_NOT_SET;
+}
+
+
+PROTOBUF_NOINLINE void StringMetric::Clear() {
+// @@protoc_insertion_point(message_clear_start:abacus.protobuf.StringMetric)
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.description_.ClearToEmpty();
+  clear_kind();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+const char* StringMetric::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
+  return ptr;
+}
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 2, 1, 48, 2> StringMetric::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_StringMetric_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // string description = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(StringMetric, _impl_.description_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string description = 1;
+    {PROTOBUF_FIELD_OFFSET(StringMetric, _impl_.description_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // .abacus.protobuf.Constant constant = 2;
+    {PROTOBUF_FIELD_OFFSET(StringMetric, _impl_.kind_.constant_), _Internal::kOneofCaseOffset + 0, 0,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvDefault)},
+  }}, {{
+    {::_pbi::FieldAuxDefaultMessage{}, &::abacus::protobuf::_Constant_default_instance_},
+  }}, {{
+    "\34\13\0\0\0\0\0\0"
+    "abacus.protobuf.StringMetric"
+    "description"
+  }},
+};
+
+::uint8_t* StringMetric::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:abacus.protobuf.StringMetric)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // string description = 1;
+  if (!this->_internal_description().empty()) {
+    const std::string& _s = this->_internal_description();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "abacus.protobuf.StringMetric.description");
+    target = stream->WriteStringMaybeAliased(1, _s, target);
+  }
+
+  // .abacus.protobuf.Constant constant = 2;
+  if (kind_case() == kConstant) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessage(2, _Internal::constant(this),
+        _Internal::constant(this).GetCachedSize(), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:abacus.protobuf.StringMetric)
+  return target;
+}
+
+::size_t StringMetric::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:abacus.protobuf.StringMetric)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string description = 1;
+  if (!this->_internal_description().empty()) {
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_description());
+  }
+
+  switch (kind_case()) {
+    // .abacus.protobuf.Constant constant = 2;
+    case kConstant: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          *_impl_.kind_.constant_);
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
+  }
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::google::protobuf::Message::ClassData StringMetric::_class_data_ = {
+    ::google::protobuf::Message::CopyWithSourceCheck,
+    StringMetric::MergeImpl
+};
+const ::google::protobuf::Message::ClassData*StringMetric::GetClassData() const { return &_class_data_; }
+
+
+void StringMetric::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
+  auto* const _this = static_cast<StringMetric*>(&to_msg);
+  auto& from = static_cast<const StringMetric&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:abacus.protobuf.StringMetric)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_description().empty()) {
+    _this->_internal_set_description(from._internal_description());
+  }
+  switch (from.kind_case()) {
+    case kConstant: {
+      _this->_internal_mutable_constant()->::abacus::protobuf::Constant::MergeFrom(
+          from._internal_constant());
+      break;
+    }
+    case KIND_NOT_SET: {
+      break;
+    }
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void StringMetric::CopyFrom(const StringMetric& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:abacus.protobuf.StringMetric)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+PROTOBUF_NOINLINE bool StringMetric::IsInitialized() const {
+  return true;
+}
+
+void StringMetric::InternalSwap(StringMetric* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.description_, lhs_arena,
+                                       &other->_impl_.description_, rhs_arena);
+  swap(_impl_.kind_, other->_impl_.kind_);
+  swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);
+}
+
+::google::protobuf::Metadata StringMetric::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_getter, &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once,
+      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[13]);
+}
+// ===================================================================
+
 class Metric::_Internal {
  public:
   static constexpr ::int32_t kOneofCaseOffset =
@@ -5420,6 +5742,7 @@ class Metric::_Internal {
   static const ::abacus::protobuf::Float32Metric& float32(const Metric* msg);
   static const ::abacus::protobuf::BoolMetric& boolean(const Metric* msg);
   static const ::abacus::protobuf::Enum8Metric& enum8(const Metric* msg);
+  static const ::abacus::protobuf::StringMetric& string(const Metric* msg);
 };
 
 const ::abacus::protobuf::UInt64Metric& Metric::_Internal::uint64(const Metric* msg) {
@@ -5445,6 +5768,9 @@ const ::abacus::protobuf::BoolMetric& Metric::_Internal::boolean(const Metric* m
 }
 const ::abacus::protobuf::Enum8Metric& Metric::_Internal::enum8(const Metric* msg) {
   return *msg->_impl_.type_.enum8_;
+}
+const ::abacus::protobuf::StringMetric& Metric::_Internal::string(const Metric* msg) {
+  return *msg->_impl_.type_.string_;
 }
 void Metric::set_allocated_uint64(::abacus::protobuf::UInt64Metric* uint64) {
   ::google::protobuf::Arena* message_arena = GetArenaForAllocation();
@@ -5566,6 +5892,21 @@ void Metric::set_allocated_enum8(::abacus::protobuf::Enum8Metric* enum8) {
   }
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Metric.enum8)
 }
+void Metric::set_allocated_string(::abacus::protobuf::StringMetric* string) {
+  ::google::protobuf::Arena* message_arena = GetArenaForAllocation();
+  clear_type();
+  if (string) {
+    ::google::protobuf::Arena* submessage_arena =
+      ::google::protobuf::Arena::InternalGetOwningArena(string);
+    if (message_arena != submessage_arena) {
+      string = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, string, submessage_arena);
+    }
+    set_has_string();
+    _impl_.type_.string_ = string;
+  }
+  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Metric.string)
+}
 Metric::Metric(::google::protobuf::Arena* arena)
     : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
@@ -5623,6 +5964,11 @@ Metric::Metric(const Metric& from) : ::google::protobuf::Message() {
     case kEnum8: {
       _this->_internal_mutable_enum8()->::abacus::protobuf::Enum8Metric::MergeFrom(
           from._internal_enum8());
+      break;
+    }
+    case kString: {
+      _this->_internal_mutable_string()->::abacus::protobuf::StringMetric::MergeFrom(
+          from._internal_string());
       break;
     }
     case TYPE_NOT_SET: {
@@ -5708,6 +6054,12 @@ void Metric::clear_type() {
       }
       break;
     }
+    case kString: {
+      if (GetArenaForAllocation() == nullptr) {
+        delete _impl_.type_.string_;
+      }
+      break;
+    }
     case TYPE_NOT_SET: {
       break;
     }
@@ -5735,16 +6087,16 @@ const char* Metric::_InternalParse(
 
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 9, 8, 0, 2> Metric::_table_ = {
+const ::_pbi::TcParseTable<0, 10, 9, 0, 2> Metric::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    10, 0,  // max_field_number, fast_idx_mask
+    11, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294966274,  // skipmap
+    4294965250,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    9,  // num_field_entries
-    8,  // num_aux_entries
+    10,  // num_field_entries
+    9,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     &_Metric_default_instance_._instance,
     ::_pbi::TcParser::GenericFallback,  // fallback
@@ -5782,6 +6134,9 @@ const ::_pbi::TcParseTable<0, 9, 8, 0, 2> Metric::_table_ = {
     // .abacus.protobuf.Enum8Metric enum8 = 10;
     {PROTOBUF_FIELD_OFFSET(Metric, _impl_.type_.enum8_), _Internal::kOneofCaseOffset + 0, 7,
     (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .abacus.protobuf.StringMetric string = 11;
+    {PROTOBUF_FIELD_OFFSET(Metric, _impl_.type_.string_), _Internal::kOneofCaseOffset + 0, 8,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
   }}, {{
     {::_pbi::TcParser::GetTable<::abacus::protobuf::UInt64Metric>()},
     {::_pbi::TcParser::GetTable<::abacus::protobuf::Int64Metric>()},
@@ -5791,6 +6146,7 @@ const ::_pbi::TcParseTable<0, 9, 8, 0, 2> Metric::_table_ = {
     {::_pbi::TcParser::GetTable<::abacus::protobuf::Float32Metric>()},
     {::_pbi::TcParser::GetTable<::abacus::protobuf::BoolMetric>()},
     {::_pbi::TcParser::GetTable<::abacus::protobuf::Enum8Metric>()},
+    {::_pbi::TcParser::GetTable<::abacus::protobuf::StringMetric>()},
   }}, {{
   }},
 };
@@ -5856,6 +6212,12 @@ const ::_pbi::TcParseTable<0, 9, 8, 0, 2> Metric::_table_ = {
       target = ::google::protobuf::internal::WireFormatLite::
         InternalWriteMessage(10, _Internal::enum8(this),
           _Internal::enum8(this).GetCachedSize(), target, stream);
+      break;
+    }
+    case kString: {
+      target = ::google::protobuf::internal::WireFormatLite::
+        InternalWriteMessage(11, _Internal::string(this),
+          _Internal::string(this).GetCachedSize(), target, stream);
       break;
     }
     default:
@@ -5941,6 +6303,13 @@ const ::_pbi::TcParseTable<0, 9, 8, 0, 2> Metric::_table_ = {
           *_impl_.type_.enum8_);
       break;
     }
+    // .abacus.protobuf.StringMetric string = 11;
+    case kString: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          *_impl_.type_.string_);
+      break;
+    }
     case TYPE_NOT_SET: {
       break;
     }
@@ -6007,6 +6376,11 @@ void Metric::MergeImpl(::google::protobuf::Message& to_msg, const ::google::prot
           from._internal_enum8());
       break;
     }
+    case kString: {
+      _this->_internal_mutable_string()->::abacus::protobuf::StringMetric::MergeFrom(
+          from._internal_string());
+      break;
+    }
     case TYPE_NOT_SET: {
       break;
     }
@@ -6036,7 +6410,7 @@ void Metric::InternalSwap(Metric* other) {
 ::google::protobuf::Metadata Metric::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_getter, &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once,
-      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[13]);
+      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[14]);
 }
 // ===================================================================
 
@@ -6049,7 +6423,7 @@ void MetricsMetadata_MetricsEntry_DoNotUse::MergeFrom(const MetricsMetadata_Metr
 ::google::protobuf::Metadata MetricsMetadata_MetricsEntry_DoNotUse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_getter, &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once,
-      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[14]);
+      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[15]);
 }
 // ===================================================================
 
@@ -6323,7 +6697,7 @@ void MetricsMetadata::InternalSwap(MetricsMetadata* other) {
 ::google::protobuf::Metadata MetricsMetadata::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_getter, &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once,
-      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[15]);
+      file_level_metadata_abacus_2fprotobuf_2fmetrics_2eproto[16]);
 }
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace protobuf

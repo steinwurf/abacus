@@ -59,13 +59,6 @@ public:
     [[nodiscard]] auto initialize_optional(const std::string& name) ->
         typename Metric::optional;
 
-    /// Initialize a constant metric
-    /// @param name The name of the metric
-    /// @param value The value of the metric
-    template <class Metric>
-    void initialize_constant(const std::string& name,
-                             typename Metric::type value);
-
     /// Check if a metric has been initialized
     /// @param name The name of the metric
     /// @return true if the metric has been initialized

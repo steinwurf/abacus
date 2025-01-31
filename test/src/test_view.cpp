@@ -31,7 +31,7 @@ TEST(test_view, api)
                        abacus::unit{"USD"}}},
         {abacus::name{name2},
          abacus::float64{
-             abacus::constant{},
+             abacus::constant{3.14},
              abacus::description{"A constant floating point metric"},
              abacus::unit{"ms"}}},
         {abacus::name{name3},
@@ -47,8 +47,6 @@ TEST(test_view, api)
     auto metric0 = metrics.initialize_optional<abacus::uint64>(name0);
 
     auto metric1 = metrics.initialize_optional<abacus::int64>(name1);
-
-    metrics.initialize_constant<abacus::float64>(name2, 3.14);
 
     auto metric3 = metrics.initialize_optional<abacus::enum8>(name3);
 

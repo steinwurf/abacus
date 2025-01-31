@@ -94,7 +94,7 @@ struct enum8
     };
 
     /// The metric kind
-    std::variant<gauge, constant> kind;
+    std::variant<gauge, constant<uint8_t>> kind;
 
     /// The metric description
     abacus::description description;

@@ -17,11 +17,11 @@ int main()
     std::map<abacus::name, abacus::info> infos = {
         {abacus::name{"fuel_consumption"},
          abacus::float64{
-             abacus::constant{},
+             abacus::constant{22.3},
              abacus::description{"Fuel consumption in kilometers per liter"},
              abacus::unit{"km/l"}}},
         {abacus::name{"wheels"},
-         abacus::uint64{abacus::constant{},
+         abacus::uint64{abacus::constant{4UL},
                         abacus::description{"Wheels on the car"},
                         abacus::unit{"wheels"}}},
         {abacus::name{"days_until_maintenance"},
@@ -35,9 +35,6 @@ int main()
                          abacus::description{"Is the car registered"}}}};
 
     abacus::metrics car(infos);
-
-    car.initialize_constant<abacus::float64>("fuel_consumption", 22.3);
-    car.initialize_constant<abacus::uint64>("wheels", 4);
 
     // The car still has some time before maintenance.
     abacus::int64::required days_until_maintenance =

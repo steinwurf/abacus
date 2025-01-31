@@ -39,7 +39,7 @@ TEST(test_to_json, to_json_minimal)
                        abacus::unit{"USD"}, abacus::min{int64_t{-100}},
                        abacus::max{int64_t{100}}}},
         {abacus::name{name2},
-         abacus::boolean{abacus::constant{},
+         abacus::boolean{abacus::constant{true},
                          abacus::description{"A boolean constant"}}},
         {abacus::name{name3},
          abacus::enum8{abacus::gauge{abacus::required},
@@ -53,7 +53,6 @@ TEST(test_to_json, to_json_minimal)
 
     auto m0 = metrics.initialize_required<abacus::uint64>(name0, 42);
     auto m1 = metrics.initialize_required<abacus::int64>(name1, -42);
-    metrics.initialize_constant<abacus::boolean>(name2, true);
     auto m3 = metrics.initialize_required<abacus::enum8>(name3, 2);
 
     (void)m0;
@@ -167,7 +166,7 @@ TEST(test_to_json, to_json)
                        abacus::unit{"USD"}, abacus::min{int64_t{-100}},
                        abacus::max{int64_t{100}}}},
         {abacus::name{name2},
-         abacus::boolean{abacus::constant{},
+         abacus::boolean{abacus::constant{true},
                          abacus::description{"A boolean constant"}}},
         {abacus::name{name3},
          abacus::enum8{abacus::gauge{abacus::required},
@@ -181,7 +180,6 @@ TEST(test_to_json, to_json)
 
     auto m0 = metrics.initialize_required<abacus::uint64>(name0, 42);
     auto m1 = metrics.initialize_required<abacus::int64>(name1, -42);
-    metrics.initialize_constant<abacus::boolean>(name2, true);
     auto m3 = metrics.initialize_required<abacus::enum8>(
         name3, (uint8_t)test_enum::value1);
 

@@ -26,7 +26,6 @@ message Counter{
 message Constant{
 }
 
-
 // Metadata for unsigned 64-bit metrics
 message UInt64Metric {
     string description = 1;   // Metric description
@@ -138,6 +137,16 @@ message Enum8Metric {
     map<uint32, EnumValue> values = 5; // Mapping from packed index to enum info
 }
 
+// Metadata for a string metric
+message StringMetric {
+    string description = 1;   // Metric description
+    // The kind of metric
+    oneof kind {
+        Constant constant = 2;  // Constant metric
+    }
+}
+
+// Metadata for a single metric
 message Metric
 {
     uint32 offset = 1;              // Offset into packed memory for the value
@@ -150,6 +159,7 @@ message Metric
         Float32Metric float32 = 8;  // Metadata for 32-bit floating-point metrics
         BoolMetric boolean = 9;     // Metadata for boolean metrics
         Enum8Metric enum8 = 10;     // Metadata for enumerated metrics
+        StringMetric string = 11;   // Metadata for a string metric
     }
 }
 

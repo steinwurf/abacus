@@ -35,6 +35,7 @@ TEST(test_metrics, api)
     std::string name4 = "metric4";
     std::string name5 = "metric5";
     std::string name6 = "metric6";
+    std::string name7 = "metric7";
 
     std::map<abacus::name, abacus::info> infos = {
         {abacus::name{name0},
@@ -53,11 +54,11 @@ TEST(test_metrics, api)
                          abacus::description{"A floating point metric"},
                          abacus::unit{"ms"}}},
         {abacus::name{name4},
-         abacus::boolean{abacus::constant{},
+         abacus::boolean{abacus::constant{true},
                          abacus::description{"A constant boolean metric"}}},
         {abacus::name{name5},
          abacus::float64{
-             abacus::constant{},
+             abacus::constant{42.42},
              abacus::description{"A constant floating point metric"},
              abacus::unit{"ms"}}},
         {abacus::name{name6},
@@ -66,11 +67,14 @@ TEST(test_metrics, api)
                        {{0, {"value0", "The value for 0"}},
                         {1, {"value1", "The value for 1"}},
                         {2, {"value2", "The value for 2"}},
-                        {3, {"value3", "The value for 3"}}}}}};
+                        {3, {"value3", "The value for 3"}}}}},
+        {abacus::name{name7},
+         abacus::string{abacus::constant{"hello"},
+                        abacus::description{"A string metric"}}}};
 
     abacus::metrics from_metrics(infos);
     abacus::metrics metrics(std::move(from_metrics));
-    EXPECT_EQ(metrics.metadata().metrics().size(), 7U);
+    EXPECT_EQ(metrics.metadata().metrics().size(), 8U);
     EXPECT_EQ(metrics.metadata().protocol_version(),
               abacus::protocol_version());
 
@@ -130,6 +134,11 @@ TEST(test_metrics, api)
                   .description(),
               "The value for 0");
 
+    EXPECT_EQ(metrics.metadata().metrics().at(name7).string().kind_case(),
+              abacus::protobuf::StringMetric::KindCase::kConstant);
+    EXPECT_EQ(metrics.metadata().metrics().at(name7).string().description(),
+              "A string metric");
+
     EXPECT_FALSE(metrics.is_initialized());
     EXPECT_FALSE(metrics.is_initialized(name1));
     auto metric1 = metrics.initialize_required<abacus::uint64>(name1, 9000U);
@@ -150,20 +159,15 @@ TEST(test_metrics, api)
     auto metric0 = metrics.initialize_optional<abacus::boolean>(name0);
     EXPECT_TRUE(metrics.is_initialized(name0));
 
-    EXPECT_FALSE(metrics.is_initialized());
-    EXPECT_FALSE(metrics.is_initialized(name4));
-    metrics.initialize_constant<abacus::boolean>(name4, true);
     EXPECT_TRUE(metrics.is_initialized(name4));
-
-    EXPECT_FALSE(metrics.is_initialized());
-    EXPECT_FALSE(metrics.is_initialized(name5));
-    metrics.initialize_constant<abacus::float64>(name5, 42.42);
     EXPECT_TRUE(metrics.is_initialized(name5));
 
     EXPECT_FALSE(metrics.is_initialized());
     EXPECT_FALSE(metrics.is_initialized(name6));
     auto metric6 = metrics.initialize_optional<abacus::enum8>(name6);
     EXPECT_TRUE(metrics.is_initialized(name6));
+
+    EXPECT_TRUE(metrics.is_initialized(name7));
 
     EXPECT_TRUE(metrics.is_initialized());
 
@@ -435,22 +439,23 @@ TEST(test_metrics, reset)
                        abacus::description{""},
                        {{0, {"", ""}}}}},
         {abacus::name{"uint64_constant"},
-         abacus::uint64{abacus::constant{}, abacus::description{""}}},
+         abacus::uint64{abacus::constant{1111UL}, abacus::description{""}}},
         {abacus::name{"uint32_constant"},
-         abacus::uint32{abacus::constant{}, abacus::description{""}}},
+         abacus::uint32{abacus::constant{2222U}, abacus::description{""}}},
         {abacus::name{"int64_constant"},
-         abacus::int64{abacus::constant{}, abacus::description{""}}},
+         abacus::int64{abacus::constant{3333L}, abacus::description{""}}},
         {abacus::name{"int32_constant"},
-         abacus::int32{abacus::constant{}, abacus::description{""}}},
+         abacus::int32{abacus::constant{4444}, abacus::description{""}}},
         {abacus::name{"float64_constant"},
-         abacus::float64{abacus::constant{}, abacus::description{""}}},
+         abacus::float64{abacus::constant{5555.0}, abacus::description{""}}},
         {abacus::name{"float32_constant"},
-         abacus::float32{abacus::constant{}, abacus::description{""}}},
+         abacus::float32{abacus::constant{6666.0f}, abacus::description{""}}},
         {abacus::name{"boolean_constant"},
-         abacus::boolean{abacus::constant{}, abacus::description{""}}},
-        {abacus::name{"enum8_constant"}, abacus::enum8{abacus::constant{},
-                                                       abacus::description{""},
-                                                       {{0, {"", ""}}}}},
+         abacus::boolean{abacus::constant{true}, abacus::description{""}}},
+        {abacus::name{"enum8_constant"},
+         abacus::enum8{abacus::constant{(uint8_t)77},
+                       abacus::description{""},
+                       {{0, {"", ""}}}}},
 
         // Finally a metric that we do not initialize
         {abacus::name{"not_initialized_required"},
@@ -495,16 +500,6 @@ TEST(test_metrics, reset)
         metrics.initialize_required<abacus::enum8>("enum8_required", 0U);
     auto enum8_optional =
         metrics.initialize_optional<abacus::enum8>("enum8_optional");
-
-    // Initialize constant metrics
-    metrics.initialize_constant<abacus::uint64>("uint64_constant", 1111U);
-    metrics.initialize_constant<abacus::uint32>("uint32_constant", 2222U);
-    metrics.initialize_constant<abacus::int64>("int64_constant", 3333);
-    metrics.initialize_constant<abacus::int32>("int32_constant", 4444);
-    metrics.initialize_constant<abacus::float64>("float64_constant", 5555.0);
-    metrics.initialize_constant<abacus::float32>("float32_constant", 6666.0);
-    metrics.initialize_constant<abacus::boolean>("boolean_constant", true);
-    metrics.initialize_constant<abacus::enum8>("enum8_constant", 77U);
 
     // Check all required values
     EXPECT_EQ(uint64_required.value(), 1U);

@@ -102,6 +102,9 @@ extern MetricsMetadataDefaultTypeInternal _MetricsMetadata_default_instance_;
 class MetricsMetadata_MetricsEntry_DoNotUse;
 struct MetricsMetadata_MetricsEntry_DoNotUseDefaultTypeInternal;
 extern MetricsMetadata_MetricsEntry_DoNotUseDefaultTypeInternal _MetricsMetadata_MetricsEntry_DoNotUse_default_instance_;
+class StringMetric;
+struct StringMetricDefaultTypeInternal;
+extern StringMetricDefaultTypeInternal _StringMetric_default_instance_;
 class UInt32Metric;
 struct UInt32MetricDefaultTypeInternal;
 extern UInt32MetricDefaultTypeInternal _UInt32Metric_default_instance_;
@@ -3080,6 +3083,208 @@ class Enum8Metric final :
   friend struct ::TableStruct_abacus_2fprotobuf_2fmetrics_2eproto;
 };// -------------------------------------------------------------------
 
+class StringMetric final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:abacus.protobuf.StringMetric) */ {
+ public:
+  inline StringMetric() : StringMetric(nullptr) {}
+  ~StringMetric() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR StringMetric(::google::protobuf::internal::ConstantInitialized);
+
+  StringMetric(const StringMetric& from);
+  StringMetric(StringMetric&& from) noexcept
+    : StringMetric() {
+    *this = ::std::move(from);
+  }
+
+  inline StringMetric& operator=(const StringMetric& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline StringMetric& operator=(StringMetric&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const StringMetric& default_instance() {
+    return *internal_default_instance();
+  }
+  enum KindCase {
+    kConstant = 2,
+    KIND_NOT_SET = 0,
+  };
+
+  static inline const StringMetric* internal_default_instance() {
+    return reinterpret_cast<const StringMetric*>(
+               &_StringMetric_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    13;
+
+  friend void swap(StringMetric& a, StringMetric& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(StringMetric* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(StringMetric* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  StringMetric* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<StringMetric>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const StringMetric& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const StringMetric& from) {
+    StringMetric::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(StringMetric* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "abacus.protobuf.StringMetric";
+  }
+  protected:
+  explicit StringMetric(::google::protobuf::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kDescriptionFieldNumber = 1,
+    kConstantFieldNumber = 2,
+  };
+  // string description = 1;
+  void clear_description() ;
+  const std::string& description() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_description(Arg_&& arg, Args_... args);
+  std::string* mutable_description();
+  PROTOBUF_NODISCARD std::string* release_description();
+  void set_allocated_description(std::string* ptr);
+
+  private:
+  const std::string& _internal_description() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_description(
+      const std::string& value);
+  std::string* _internal_mutable_description();
+
+  public:
+  // .abacus.protobuf.Constant constant = 2;
+  bool has_constant() const;
+  private:
+  bool _internal_has_constant() const;
+
+  public:
+  void clear_constant() ;
+  const ::abacus::protobuf::Constant& constant() const;
+  PROTOBUF_NODISCARD ::abacus::protobuf::Constant* release_constant();
+  ::abacus::protobuf::Constant* mutable_constant();
+  void set_allocated_constant(::abacus::protobuf::Constant* value);
+  void unsafe_arena_set_allocated_constant(::abacus::protobuf::Constant* value);
+  ::abacus::protobuf::Constant* unsafe_arena_release_constant();
+
+  private:
+  const ::abacus::protobuf::Constant& _internal_constant() const;
+  ::abacus::protobuf::Constant* _internal_mutable_constant();
+
+  public:
+  void clear_kind();
+  KindCase kind_case() const;
+  // @@protoc_insertion_point(class_scope:abacus.protobuf.StringMetric)
+ private:
+  class _Internal;
+  void set_has_constant();
+
+  inline bool has_kind() const;
+  inline void clear_has_kind();
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<0, 2, 1, 48, 2> _table_;
+  template <typename T> friend class ::google::protobuf::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::google::protobuf::internal::ArenaStringPtr description_;
+    union KindUnion {
+      constexpr KindUnion() : _constinit_{} {}
+        ::google::protobuf::internal::ConstantInitialized _constinit_;
+      ::abacus::protobuf::Constant* constant_;
+    } kind_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    ::uint32_t _oneof_case_[1];
+
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_abacus_2fprotobuf_2fmetrics_2eproto;
+};// -------------------------------------------------------------------
+
 class Metric final :
     public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:abacus.protobuf.Metric) */ {
  public:
@@ -3140,6 +3345,7 @@ class Metric final :
     kFloat32 = 8,
     kBoolean = 9,
     kEnum8 = 10,
+    kString = 11,
     TYPE_NOT_SET = 0,
   };
 
@@ -3148,7 +3354,7 @@ class Metric final :
                &_Metric_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    13;
+    14;
 
   friend void swap(Metric& a, Metric& b) {
     a.Swap(&b);
@@ -3229,6 +3435,7 @@ class Metric final :
     kFloat32FieldNumber = 8,
     kBooleanFieldNumber = 9,
     kEnum8FieldNumber = 10,
+    kStringFieldNumber = 11,
   };
   // uint32 offset = 1;
   void clear_offset() ;
@@ -3392,6 +3599,25 @@ class Metric final :
   ::abacus::protobuf::Enum8Metric* _internal_mutable_enum8();
 
   public:
+  // .abacus.protobuf.StringMetric string = 11;
+  bool has_string() const;
+  private:
+  bool _internal_has_string() const;
+
+  public:
+  void clear_string() ;
+  const ::abacus::protobuf::StringMetric& string() const;
+  PROTOBUF_NODISCARD ::abacus::protobuf::StringMetric* release_string();
+  ::abacus::protobuf::StringMetric* mutable_string();
+  void set_allocated_string(::abacus::protobuf::StringMetric* value);
+  void unsafe_arena_set_allocated_string(::abacus::protobuf::StringMetric* value);
+  ::abacus::protobuf::StringMetric* unsafe_arena_release_string();
+
+  private:
+  const ::abacus::protobuf::StringMetric& _internal_string() const;
+  ::abacus::protobuf::StringMetric* _internal_mutable_string();
+
+  public:
   void clear_type();
   TypeCase type_case() const;
   // @@protoc_insertion_point(class_scope:abacus.protobuf.Metric)
@@ -3405,12 +3631,13 @@ class Metric final :
   void set_has_float32();
   void set_has_boolean();
   void set_has_enum8();
+  void set_has_string();
 
   inline bool has_type() const;
   inline void clear_has_type();
 
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 9, 8, 0, 2> _table_;
+  static const ::google::protobuf::internal::TcParseTable<0, 10, 9, 0, 2> _table_;
   template <typename T> friend class ::google::protobuf::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
@@ -3427,6 +3654,7 @@ class Metric final :
       ::abacus::protobuf::Float32Metric* float32_;
       ::abacus::protobuf::BoolMetric* boolean_;
       ::abacus::protobuf::Enum8Metric* enum8_;
+      ::abacus::protobuf::StringMetric* string_;
     } type_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     ::uint32_t _oneof_case_[1];
@@ -3519,7 +3747,7 @@ class MetricsMetadata final :
                &_MetricsMetadata_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    15;
+    16;
 
   friend void swap(MetricsMetadata& a, MetricsMetadata& b) {
     a.Swap(&b);
@@ -6905,6 +7133,144 @@ inline Enum8Metric::KindCase Enum8Metric::kind_case() const {
 }
 // -------------------------------------------------------------------
 
+// StringMetric
+
+// string description = 1;
+inline void StringMetric::clear_description() {
+  _impl_.description_.ClearToEmpty();
+}
+inline const std::string& StringMetric::description() const {
+  // @@protoc_insertion_point(field_get:abacus.protobuf.StringMetric.description)
+  return _internal_description();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void StringMetric::set_description(Arg_&& arg,
+                                                     Args_... args) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.description_.Set(static_cast<Arg_&&>(arg), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:abacus.protobuf.StringMetric.description)
+}
+inline std::string* StringMetric::mutable_description() {
+  std::string* _s = _internal_mutable_description();
+  // @@protoc_insertion_point(field_mutable:abacus.protobuf.StringMetric.description)
+  return _s;
+}
+inline const std::string& StringMetric::_internal_description() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.description_.Get();
+}
+inline void StringMetric::_internal_set_description(const std::string& value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.description_.Set(value, GetArenaForAllocation());
+}
+inline std::string* StringMetric::_internal_mutable_description() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  return _impl_.description_.Mutable( GetArenaForAllocation());
+}
+inline std::string* StringMetric::release_description() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:abacus.protobuf.StringMetric.description)
+  return _impl_.description_.Release();
+}
+inline void StringMetric::set_allocated_description(std::string* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.description_.SetAllocated(value, GetArenaForAllocation());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        if (_impl_.description_.IsDefault()) {
+          _impl_.description_.Set("", GetArenaForAllocation());
+        }
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.StringMetric.description)
+}
+
+// .abacus.protobuf.Constant constant = 2;
+inline bool StringMetric::has_constant() const {
+  return kind_case() == kConstant;
+}
+inline bool StringMetric::_internal_has_constant() const {
+  return kind_case() == kConstant;
+}
+inline void StringMetric::set_has_constant() {
+  _impl_._oneof_case_[0] = kConstant;
+}
+inline void StringMetric::clear_constant() {
+  if (kind_case() == kConstant) {
+    if (GetArenaForAllocation() == nullptr) {
+      delete _impl_.kind_.constant_;
+    }
+    clear_has_kind();
+  }
+}
+inline ::abacus::protobuf::Constant* StringMetric::release_constant() {
+  // @@protoc_insertion_point(field_release:abacus.protobuf.StringMetric.constant)
+  if (kind_case() == kConstant) {
+    clear_has_kind();
+    ::abacus::protobuf::Constant* temp = _impl_.kind_.constant_;
+    if (GetArenaForAllocation() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.kind_.constant_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::abacus::protobuf::Constant& StringMetric::_internal_constant() const {
+  return kind_case() == kConstant
+      ? *_impl_.kind_.constant_
+      : reinterpret_cast<::abacus::protobuf::Constant&>(::abacus::protobuf::_Constant_default_instance_);
+}
+inline const ::abacus::protobuf::Constant& StringMetric::constant() const {
+  // @@protoc_insertion_point(field_get:abacus.protobuf.StringMetric.constant)
+  return _internal_constant();
+}
+inline ::abacus::protobuf::Constant* StringMetric::unsafe_arena_release_constant() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:abacus.protobuf.StringMetric.constant)
+  if (kind_case() == kConstant) {
+    clear_has_kind();
+    ::abacus::protobuf::Constant* temp = _impl_.kind_.constant_;
+    _impl_.kind_.constant_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void StringMetric::unsafe_arena_set_allocated_constant(::abacus::protobuf::Constant* constant) {
+  clear_kind();
+  if (constant) {
+    set_has_constant();
+    _impl_.kind_.constant_ = constant;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:abacus.protobuf.StringMetric.constant)
+}
+inline ::abacus::protobuf::Constant* StringMetric::_internal_mutable_constant() {
+  if (kind_case() != kConstant) {
+    clear_kind();
+    set_has_constant();
+    _impl_.kind_.constant_ = CreateMaybeMessage< ::abacus::protobuf::Constant >(GetArenaForAllocation());
+  }
+  return _impl_.kind_.constant_;
+}
+inline ::abacus::protobuf::Constant* StringMetric::mutable_constant() {
+  ::abacus::protobuf::Constant* _msg = _internal_mutable_constant();
+  // @@protoc_insertion_point(field_mutable:abacus.protobuf.StringMetric.constant)
+  return _msg;
+}
+
+inline bool StringMetric::has_kind() const {
+  return kind_case() != KIND_NOT_SET;
+}
+inline void StringMetric::clear_has_kind() {
+  _impl_._oneof_case_[0] = KIND_NOT_SET;
+}
+inline StringMetric::KindCase StringMetric::kind_case() const {
+  return StringMetric::KindCase(_impl_._oneof_case_[0]);
+}
+// -------------------------------------------------------------------
+
 // Metric
 
 // uint32 offset = 1;
@@ -7518,6 +7884,80 @@ inline ::abacus::protobuf::Enum8Metric* Metric::_internal_mutable_enum8() {
 inline ::abacus::protobuf::Enum8Metric* Metric::mutable_enum8() {
   ::abacus::protobuf::Enum8Metric* _msg = _internal_mutable_enum8();
   // @@protoc_insertion_point(field_mutable:abacus.protobuf.Metric.enum8)
+  return _msg;
+}
+
+// .abacus.protobuf.StringMetric string = 11;
+inline bool Metric::has_string() const {
+  return type_case() == kString;
+}
+inline bool Metric::_internal_has_string() const {
+  return type_case() == kString;
+}
+inline void Metric::set_has_string() {
+  _impl_._oneof_case_[0] = kString;
+}
+inline void Metric::clear_string() {
+  if (type_case() == kString) {
+    if (GetArenaForAllocation() == nullptr) {
+      delete _impl_.type_.string_;
+    }
+    clear_has_type();
+  }
+}
+inline ::abacus::protobuf::StringMetric* Metric::release_string() {
+  // @@protoc_insertion_point(field_release:abacus.protobuf.Metric.string)
+  if (type_case() == kString) {
+    clear_has_type();
+    ::abacus::protobuf::StringMetric* temp = _impl_.type_.string_;
+    if (GetArenaForAllocation() != nullptr) {
+      temp = ::google::protobuf::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.type_.string_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::abacus::protobuf::StringMetric& Metric::_internal_string() const {
+  return type_case() == kString
+      ? *_impl_.type_.string_
+      : reinterpret_cast<::abacus::protobuf::StringMetric&>(::abacus::protobuf::_StringMetric_default_instance_);
+}
+inline const ::abacus::protobuf::StringMetric& Metric::string() const {
+  // @@protoc_insertion_point(field_get:abacus.protobuf.Metric.string)
+  return _internal_string();
+}
+inline ::abacus::protobuf::StringMetric* Metric::unsafe_arena_release_string() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:abacus.protobuf.Metric.string)
+  if (type_case() == kString) {
+    clear_has_type();
+    ::abacus::protobuf::StringMetric* temp = _impl_.type_.string_;
+    _impl_.type_.string_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void Metric::unsafe_arena_set_allocated_string(::abacus::protobuf::StringMetric* string) {
+  clear_type();
+  if (string) {
+    set_has_string();
+    _impl_.type_.string_ = string;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:abacus.protobuf.Metric.string)
+}
+inline ::abacus::protobuf::StringMetric* Metric::_internal_mutable_string() {
+  if (type_case() != kString) {
+    clear_type();
+    set_has_string();
+    _impl_.type_.string_ = CreateMaybeMessage< ::abacus::protobuf::StringMetric >(GetArenaForAllocation());
+  }
+  return _impl_.type_.string_;
+}
+inline ::abacus::protobuf::StringMetric* Metric::mutable_string() {
+  ::abacus::protobuf::StringMetric* _msg = _internal_mutable_string();
+  // @@protoc_insertion_point(field_mutable:abacus.protobuf.Metric.string)
   return _msg;
 }
 

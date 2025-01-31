@@ -142,6 +142,8 @@ static inline auto call_type(const protobuf::Metric& metric, const Func& func)
         return func(metric.boolean());
     case protobuf::Metric::kEnum8:
         return func(metric.enum8());
+    case protobuf::Metric::kString:
+        return func(metric.string());
     default:
         // This should never be reached
         assert(false);

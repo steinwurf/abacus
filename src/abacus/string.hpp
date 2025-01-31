@@ -18,17 +18,11 @@ namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-/// A 32-bit signed integer metric
-struct int32
+/// A 32-bit integer metric
+struct string
 {
     /// The primitive type of the metric
-    using type = int32_t;
-
-    /// Required int32 metric
-    using required = required_metric<int32>;
-
-    /// Optional int32 metric
-    using optional = optional_metric<int32>;
+    using type = std::string_view;
 
     /// Set the value of the metric
     /// @param memory The memory to use for the metric, note that the memory
@@ -37,7 +31,7 @@ struct int32
     static inline auto set_value(uint8_t* memory, type value) -> void
     {
         assert(memory != nullptr);
-        std::memcpy(memory + 1, &value, sizeof(type));
+        std::memcpy(memory + 1, value.data(), value.size());
     }
 
     /// Get the value of the metric
@@ -48,25 +42,15 @@ struct int32
     {
         assert(memory != nullptr);
         assert(memory[0] == 1);
-        type value;
-        std::memcpy(&value, memory + 1, sizeof(type));
-        return value;
+
+        return std::string_view(reinterpret_cast<const char*>(memory + 1));
     }
 
     /// The metric kind
-    std::variant<gauge, counter, constant<type>> kind;
+    std::variant<constant<std::string_view>> kind;
 
     /// The metric description
     abacus::description description;
-
-    /// The unit of the metric
-    abacus::unit unit{};
-
-    /// The minimum value of the metric
-    abacus::min<type> min{};
-
-    /// The maximum value of the metric
-    abacus::max<type> max{};
 };
 }
 }

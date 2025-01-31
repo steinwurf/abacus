@@ -55,7 +55,7 @@ struct boolean
     }
 
     /// The kind of the metric
-    std::variant<gauge, constant> kind;
+    std::variant<gauge, constant<type>> kind;
 
     /// The description of the metric
     abacus::description description;
