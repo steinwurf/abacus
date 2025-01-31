@@ -6,6 +6,7 @@
 #include "view.hpp"
 
 #include "boolean.hpp"
+#include "detail/helpers.hpp"
 #include "enum8.hpp"
 #include "float32.hpp"
 #include "float64.hpp"
@@ -97,7 +98,7 @@ auto view::value(const std::string& name) const
     assert(m_metadata.IsInitialized());
     assert(m_value_data != nullptr);
     auto m = metric(name);
-    auto offset = m.offset();
+    auto offset = detail::get_offset(m);
     assert(offset < m_value_bytes);
 
     if (m_value_data[offset] == 0)

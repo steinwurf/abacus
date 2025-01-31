@@ -651,9 +651,9 @@ class UInt64Metric final :
     return *internal_default_instance();
   }
   enum KindCase {
-    kGauge = 2,
-    kCounter = 3,
-    kConstant = 4,
+    kGauge = 3,
+    kCounter = 4,
+    kConstant = 5,
     KIND_NOT_SET = 0,
   };
 
@@ -734,15 +734,16 @@ class UInt64Metric final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kDescriptionFieldNumber = 1,
-    kUnitFieldNumber = 5,
-    kMinFieldNumber = 6,
-    kMaxFieldNumber = 7,
-    kGaugeFieldNumber = 2,
-    kCounterFieldNumber = 3,
-    kConstantFieldNumber = 4,
+    kDescriptionFieldNumber = 2,
+    kUnitFieldNumber = 6,
+    kMinFieldNumber = 7,
+    kMaxFieldNumber = 8,
+    kOffsetFieldNumber = 1,
+    kGaugeFieldNumber = 3,
+    kCounterFieldNumber = 4,
+    kConstantFieldNumber = 5,
   };
-  // string description = 1;
+  // string description = 2;
   void clear_description() ;
   const std::string& description() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -758,7 +759,7 @@ class UInt64Metric final :
   std::string* _internal_mutable_description();
 
   public:
-  // optional string unit = 5;
+  // optional string unit = 6;
   bool has_unit() const;
   void clear_unit() ;
   const std::string& unit() const;
@@ -775,7 +776,7 @@ class UInt64Metric final :
   std::string* _internal_mutable_unit();
 
   public:
-  // optional uint64 min = 6;
+  // optional uint64 min = 7;
   bool has_min() const;
   void clear_min() ;
   ::uint64_t min() const;
@@ -786,7 +787,7 @@ class UInt64Metric final :
   void _internal_set_min(::uint64_t value);
 
   public:
-  // optional uint64 max = 7;
+  // optional uint64 max = 8;
   bool has_max() const;
   void clear_max() ;
   ::uint64_t max() const;
@@ -797,7 +798,17 @@ class UInt64Metric final :
   void _internal_set_max(::uint64_t value);
 
   public:
-  // .abacus.protobuf.Gauge gauge = 2;
+  // uint32 offset = 1;
+  void clear_offset() ;
+  ::uint32_t offset() const;
+  void set_offset(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_offset() const;
+  void _internal_set_offset(::uint32_t value);
+
+  public:
+  // .abacus.protobuf.Gauge gauge = 3;
   bool has_gauge() const;
   private:
   bool _internal_has_gauge() const;
@@ -816,7 +827,7 @@ class UInt64Metric final :
   ::abacus::protobuf::Gauge* _internal_mutable_gauge();
 
   public:
-  // .abacus.protobuf.Counter counter = 3;
+  // .abacus.protobuf.Counter counter = 4;
   bool has_counter() const;
   private:
   bool _internal_has_counter() const;
@@ -835,7 +846,7 @@ class UInt64Metric final :
   ::abacus::protobuf::Counter* _internal_mutable_counter();
 
   public:
-  // .abacus.protobuf.Constant constant = 4;
+  // .abacus.protobuf.Constant constant = 5;
   bool has_constant() const;
   private:
   bool _internal_has_constant() const;
@@ -867,7 +878,7 @@ class UInt64Metric final :
   inline void clear_has_kind();
 
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 7, 3, 52, 2> _table_;
+  static const ::google::protobuf::internal::TcParseTable<3, 8, 3, 60, 2> _table_;
   template <typename T> friend class ::google::protobuf::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
@@ -878,6 +889,7 @@ class UInt64Metric final :
     ::google::protobuf::internal::ArenaStringPtr unit_;
     ::uint64_t min_;
     ::uint64_t max_;
+    ::uint32_t offset_;
     union KindUnion {
       constexpr KindUnion() : _constinit_{} {}
         ::google::protobuf::internal::ConstantInitialized _constinit_;
@@ -945,9 +957,9 @@ class Int64Metric final :
     return *internal_default_instance();
   }
   enum KindCase {
-    kGauge = 2,
-    kCounter = 3,
-    kConstant = 4,
+    kGauge = 3,
+    kCounter = 4,
+    kConstant = 5,
     KIND_NOT_SET = 0,
   };
 
@@ -1028,15 +1040,16 @@ class Int64Metric final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kDescriptionFieldNumber = 1,
-    kUnitFieldNumber = 5,
-    kMinFieldNumber = 6,
-    kMaxFieldNumber = 7,
-    kGaugeFieldNumber = 2,
-    kCounterFieldNumber = 3,
-    kConstantFieldNumber = 4,
+    kDescriptionFieldNumber = 2,
+    kUnitFieldNumber = 6,
+    kMinFieldNumber = 7,
+    kMaxFieldNumber = 8,
+    kOffsetFieldNumber = 1,
+    kGaugeFieldNumber = 3,
+    kCounterFieldNumber = 4,
+    kConstantFieldNumber = 5,
   };
-  // string description = 1;
+  // string description = 2;
   void clear_description() ;
   const std::string& description() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -1052,7 +1065,7 @@ class Int64Metric final :
   std::string* _internal_mutable_description();
 
   public:
-  // optional string unit = 5;
+  // optional string unit = 6;
   bool has_unit() const;
   void clear_unit() ;
   const std::string& unit() const;
@@ -1069,7 +1082,7 @@ class Int64Metric final :
   std::string* _internal_mutable_unit();
 
   public:
-  // optional int64 min = 6;
+  // optional int64 min = 7;
   bool has_min() const;
   void clear_min() ;
   ::int64_t min() const;
@@ -1080,7 +1093,7 @@ class Int64Metric final :
   void _internal_set_min(::int64_t value);
 
   public:
-  // optional int64 max = 7;
+  // optional int64 max = 8;
   bool has_max() const;
   void clear_max() ;
   ::int64_t max() const;
@@ -1091,7 +1104,17 @@ class Int64Metric final :
   void _internal_set_max(::int64_t value);
 
   public:
-  // .abacus.protobuf.Gauge gauge = 2;
+  // uint32 offset = 1;
+  void clear_offset() ;
+  ::uint32_t offset() const;
+  void set_offset(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_offset() const;
+  void _internal_set_offset(::uint32_t value);
+
+  public:
+  // .abacus.protobuf.Gauge gauge = 3;
   bool has_gauge() const;
   private:
   bool _internal_has_gauge() const;
@@ -1110,7 +1133,7 @@ class Int64Metric final :
   ::abacus::protobuf::Gauge* _internal_mutable_gauge();
 
   public:
-  // .abacus.protobuf.Counter counter = 3;
+  // .abacus.protobuf.Counter counter = 4;
   bool has_counter() const;
   private:
   bool _internal_has_counter() const;
@@ -1129,7 +1152,7 @@ class Int64Metric final :
   ::abacus::protobuf::Counter* _internal_mutable_counter();
 
   public:
-  // .abacus.protobuf.Constant constant = 4;
+  // .abacus.protobuf.Constant constant = 5;
   bool has_constant() const;
   private:
   bool _internal_has_constant() const;
@@ -1161,7 +1184,7 @@ class Int64Metric final :
   inline void clear_has_kind();
 
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 7, 3, 51, 2> _table_;
+  static const ::google::protobuf::internal::TcParseTable<3, 8, 3, 59, 2> _table_;
   template <typename T> friend class ::google::protobuf::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
@@ -1172,6 +1195,7 @@ class Int64Metric final :
     ::google::protobuf::internal::ArenaStringPtr unit_;
     ::int64_t min_;
     ::int64_t max_;
+    ::uint32_t offset_;
     union KindUnion {
       constexpr KindUnion() : _constinit_{} {}
         ::google::protobuf::internal::ConstantInitialized _constinit_;
@@ -1239,9 +1263,9 @@ class UInt32Metric final :
     return *internal_default_instance();
   }
   enum KindCase {
-    kGauge = 2,
-    kCounter = 3,
-    kConstant = 4,
+    kGauge = 3,
+    kCounter = 4,
+    kConstant = 5,
     KIND_NOT_SET = 0,
   };
 
@@ -1322,15 +1346,16 @@ class UInt32Metric final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kDescriptionFieldNumber = 1,
-    kUnitFieldNumber = 5,
-    kMinFieldNumber = 6,
-    kMaxFieldNumber = 7,
-    kGaugeFieldNumber = 2,
-    kCounterFieldNumber = 3,
-    kConstantFieldNumber = 4,
+    kDescriptionFieldNumber = 2,
+    kUnitFieldNumber = 6,
+    kOffsetFieldNumber = 1,
+    kMinFieldNumber = 7,
+    kMaxFieldNumber = 8,
+    kGaugeFieldNumber = 3,
+    kCounterFieldNumber = 4,
+    kConstantFieldNumber = 5,
   };
-  // string description = 1;
+  // string description = 2;
   void clear_description() ;
   const std::string& description() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -1346,7 +1371,7 @@ class UInt32Metric final :
   std::string* _internal_mutable_description();
 
   public:
-  // optional string unit = 5;
+  // optional string unit = 6;
   bool has_unit() const;
   void clear_unit() ;
   const std::string& unit() const;
@@ -1363,7 +1388,17 @@ class UInt32Metric final :
   std::string* _internal_mutable_unit();
 
   public:
-  // optional uint32 min = 6;
+  // uint32 offset = 1;
+  void clear_offset() ;
+  ::uint32_t offset() const;
+  void set_offset(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_offset() const;
+  void _internal_set_offset(::uint32_t value);
+
+  public:
+  // optional uint32 min = 7;
   bool has_min() const;
   void clear_min() ;
   ::uint32_t min() const;
@@ -1374,7 +1409,7 @@ class UInt32Metric final :
   void _internal_set_min(::uint32_t value);
 
   public:
-  // optional uint32 max = 7;
+  // optional uint32 max = 8;
   bool has_max() const;
   void clear_max() ;
   ::uint32_t max() const;
@@ -1385,7 +1420,7 @@ class UInt32Metric final :
   void _internal_set_max(::uint32_t value);
 
   public:
-  // .abacus.protobuf.Gauge gauge = 2;
+  // .abacus.protobuf.Gauge gauge = 3;
   bool has_gauge() const;
   private:
   bool _internal_has_gauge() const;
@@ -1404,7 +1439,7 @@ class UInt32Metric final :
   ::abacus::protobuf::Gauge* _internal_mutable_gauge();
 
   public:
-  // .abacus.protobuf.Counter counter = 3;
+  // .abacus.protobuf.Counter counter = 4;
   bool has_counter() const;
   private:
   bool _internal_has_counter() const;
@@ -1423,7 +1458,7 @@ class UInt32Metric final :
   ::abacus::protobuf::Counter* _internal_mutable_counter();
 
   public:
-  // .abacus.protobuf.Constant constant = 4;
+  // .abacus.protobuf.Constant constant = 5;
   bool has_constant() const;
   private:
   bool _internal_has_constant() const;
@@ -1455,7 +1490,7 @@ class UInt32Metric final :
   inline void clear_has_kind();
 
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 7, 3, 52, 2> _table_;
+  static const ::google::protobuf::internal::TcParseTable<3, 8, 3, 60, 2> _table_;
   template <typename T> friend class ::google::protobuf::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
@@ -1464,6 +1499,7 @@ class UInt32Metric final :
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::internal::ArenaStringPtr description_;
     ::google::protobuf::internal::ArenaStringPtr unit_;
+    ::uint32_t offset_;
     ::uint32_t min_;
     ::uint32_t max_;
     union KindUnion {
@@ -1533,9 +1569,9 @@ class Int32Metric final :
     return *internal_default_instance();
   }
   enum KindCase {
-    kGauge = 2,
-    kCounter = 3,
-    kConstant = 4,
+    kGauge = 3,
+    kCounter = 4,
+    kConstant = 5,
     KIND_NOT_SET = 0,
   };
 
@@ -1616,15 +1652,16 @@ class Int32Metric final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kDescriptionFieldNumber = 1,
-    kUnitFieldNumber = 5,
-    kMinFieldNumber = 6,
-    kMaxFieldNumber = 7,
-    kGaugeFieldNumber = 2,
-    kCounterFieldNumber = 3,
-    kConstantFieldNumber = 4,
+    kDescriptionFieldNumber = 2,
+    kUnitFieldNumber = 6,
+    kOffsetFieldNumber = 1,
+    kMinFieldNumber = 7,
+    kMaxFieldNumber = 8,
+    kGaugeFieldNumber = 3,
+    kCounterFieldNumber = 4,
+    kConstantFieldNumber = 5,
   };
-  // string description = 1;
+  // string description = 2;
   void clear_description() ;
   const std::string& description() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -1640,7 +1677,7 @@ class Int32Metric final :
   std::string* _internal_mutable_description();
 
   public:
-  // optional string unit = 5;
+  // optional string unit = 6;
   bool has_unit() const;
   void clear_unit() ;
   const std::string& unit() const;
@@ -1657,7 +1694,17 @@ class Int32Metric final :
   std::string* _internal_mutable_unit();
 
   public:
-  // optional int32 min = 6;
+  // uint32 offset = 1;
+  void clear_offset() ;
+  ::uint32_t offset() const;
+  void set_offset(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_offset() const;
+  void _internal_set_offset(::uint32_t value);
+
+  public:
+  // optional int32 min = 7;
   bool has_min() const;
   void clear_min() ;
   ::int32_t min() const;
@@ -1668,7 +1715,7 @@ class Int32Metric final :
   void _internal_set_min(::int32_t value);
 
   public:
-  // optional int32 max = 7;
+  // optional int32 max = 8;
   bool has_max() const;
   void clear_max() ;
   ::int32_t max() const;
@@ -1679,7 +1726,7 @@ class Int32Metric final :
   void _internal_set_max(::int32_t value);
 
   public:
-  // .abacus.protobuf.Gauge gauge = 2;
+  // .abacus.protobuf.Gauge gauge = 3;
   bool has_gauge() const;
   private:
   bool _internal_has_gauge() const;
@@ -1698,7 +1745,7 @@ class Int32Metric final :
   ::abacus::protobuf::Gauge* _internal_mutable_gauge();
 
   public:
-  // .abacus.protobuf.Counter counter = 3;
+  // .abacus.protobuf.Counter counter = 4;
   bool has_counter() const;
   private:
   bool _internal_has_counter() const;
@@ -1717,7 +1764,7 @@ class Int32Metric final :
   ::abacus::protobuf::Counter* _internal_mutable_counter();
 
   public:
-  // .abacus.protobuf.Constant constant = 4;
+  // .abacus.protobuf.Constant constant = 5;
   bool has_constant() const;
   private:
   bool _internal_has_constant() const;
@@ -1749,7 +1796,7 @@ class Int32Metric final :
   inline void clear_has_kind();
 
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 7, 3, 51, 2> _table_;
+  static const ::google::protobuf::internal::TcParseTable<3, 8, 3, 59, 2> _table_;
   template <typename T> friend class ::google::protobuf::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
@@ -1758,6 +1805,7 @@ class Int32Metric final :
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::internal::ArenaStringPtr description_;
     ::google::protobuf::internal::ArenaStringPtr unit_;
+    ::uint32_t offset_;
     ::int32_t min_;
     ::int32_t max_;
     union KindUnion {
@@ -1827,9 +1875,9 @@ class Float64Metric final :
     return *internal_default_instance();
   }
   enum KindCase {
-    kGauge = 2,
-    kCounter = 3,
-    kConstant = 4,
+    kGauge = 3,
+    kCounter = 4,
+    kConstant = 5,
     KIND_NOT_SET = 0,
   };
 
@@ -1910,15 +1958,16 @@ class Float64Metric final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kDescriptionFieldNumber = 1,
-    kUnitFieldNumber = 5,
-    kMinFieldNumber = 6,
-    kMaxFieldNumber = 7,
-    kGaugeFieldNumber = 2,
-    kCounterFieldNumber = 3,
-    kConstantFieldNumber = 4,
+    kDescriptionFieldNumber = 2,
+    kUnitFieldNumber = 6,
+    kMinFieldNumber = 7,
+    kMaxFieldNumber = 8,
+    kOffsetFieldNumber = 1,
+    kGaugeFieldNumber = 3,
+    kCounterFieldNumber = 4,
+    kConstantFieldNumber = 5,
   };
-  // string description = 1;
+  // string description = 2;
   void clear_description() ;
   const std::string& description() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -1934,7 +1983,7 @@ class Float64Metric final :
   std::string* _internal_mutable_description();
 
   public:
-  // optional string unit = 5;
+  // optional string unit = 6;
   bool has_unit() const;
   void clear_unit() ;
   const std::string& unit() const;
@@ -1951,7 +2000,7 @@ class Float64Metric final :
   std::string* _internal_mutable_unit();
 
   public:
-  // optional double min = 6;
+  // optional double min = 7;
   bool has_min() const;
   void clear_min() ;
   double min() const;
@@ -1962,7 +2011,7 @@ class Float64Metric final :
   void _internal_set_min(double value);
 
   public:
-  // optional double max = 7;
+  // optional double max = 8;
   bool has_max() const;
   void clear_max() ;
   double max() const;
@@ -1973,7 +2022,17 @@ class Float64Metric final :
   void _internal_set_max(double value);
 
   public:
-  // .abacus.protobuf.Gauge gauge = 2;
+  // uint32 offset = 1;
+  void clear_offset() ;
+  ::uint32_t offset() const;
+  void set_offset(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_offset() const;
+  void _internal_set_offset(::uint32_t value);
+
+  public:
+  // .abacus.protobuf.Gauge gauge = 3;
   bool has_gauge() const;
   private:
   bool _internal_has_gauge() const;
@@ -1992,7 +2051,7 @@ class Float64Metric final :
   ::abacus::protobuf::Gauge* _internal_mutable_gauge();
 
   public:
-  // .abacus.protobuf.Counter counter = 3;
+  // .abacus.protobuf.Counter counter = 4;
   bool has_counter() const;
   private:
   bool _internal_has_counter() const;
@@ -2011,7 +2070,7 @@ class Float64Metric final :
   ::abacus::protobuf::Counter* _internal_mutable_counter();
 
   public:
-  // .abacus.protobuf.Constant constant = 4;
+  // .abacus.protobuf.Constant constant = 5;
   bool has_constant() const;
   private:
   bool _internal_has_constant() const;
@@ -2043,7 +2102,7 @@ class Float64Metric final :
   inline void clear_has_kind();
 
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 7, 3, 53, 2> _table_;
+  static const ::google::protobuf::internal::TcParseTable<3, 8, 3, 61, 2> _table_;
   template <typename T> friend class ::google::protobuf::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
@@ -2054,6 +2113,7 @@ class Float64Metric final :
     ::google::protobuf::internal::ArenaStringPtr unit_;
     double min_;
     double max_;
+    ::uint32_t offset_;
     union KindUnion {
       constexpr KindUnion() : _constinit_{} {}
         ::google::protobuf::internal::ConstantInitialized _constinit_;
@@ -2121,9 +2181,9 @@ class Float32Metric final :
     return *internal_default_instance();
   }
   enum KindCase {
-    kGauge = 2,
-    kCounter = 3,
-    kConstant = 4,
+    kGauge = 3,
+    kCounter = 4,
+    kConstant = 5,
     KIND_NOT_SET = 0,
   };
 
@@ -2204,15 +2264,16 @@ class Float32Metric final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kDescriptionFieldNumber = 1,
-    kUnitFieldNumber = 5,
-    kMinFieldNumber = 6,
-    kMaxFieldNumber = 7,
-    kGaugeFieldNumber = 2,
-    kCounterFieldNumber = 3,
-    kConstantFieldNumber = 4,
+    kDescriptionFieldNumber = 2,
+    kUnitFieldNumber = 6,
+    kOffsetFieldNumber = 1,
+    kMinFieldNumber = 7,
+    kMaxFieldNumber = 8,
+    kGaugeFieldNumber = 3,
+    kCounterFieldNumber = 4,
+    kConstantFieldNumber = 5,
   };
-  // string description = 1;
+  // string description = 2;
   void clear_description() ;
   const std::string& description() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -2228,7 +2289,7 @@ class Float32Metric final :
   std::string* _internal_mutable_description();
 
   public:
-  // optional string unit = 5;
+  // optional string unit = 6;
   bool has_unit() const;
   void clear_unit() ;
   const std::string& unit() const;
@@ -2245,7 +2306,17 @@ class Float32Metric final :
   std::string* _internal_mutable_unit();
 
   public:
-  // optional float min = 6;
+  // uint32 offset = 1;
+  void clear_offset() ;
+  ::uint32_t offset() const;
+  void set_offset(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_offset() const;
+  void _internal_set_offset(::uint32_t value);
+
+  public:
+  // optional float min = 7;
   bool has_min() const;
   void clear_min() ;
   float min() const;
@@ -2256,7 +2327,7 @@ class Float32Metric final :
   void _internal_set_min(float value);
 
   public:
-  // optional float max = 7;
+  // optional float max = 8;
   bool has_max() const;
   void clear_max() ;
   float max() const;
@@ -2267,7 +2338,7 @@ class Float32Metric final :
   void _internal_set_max(float value);
 
   public:
-  // .abacus.protobuf.Gauge gauge = 2;
+  // .abacus.protobuf.Gauge gauge = 3;
   bool has_gauge() const;
   private:
   bool _internal_has_gauge() const;
@@ -2286,7 +2357,7 @@ class Float32Metric final :
   ::abacus::protobuf::Gauge* _internal_mutable_gauge();
 
   public:
-  // .abacus.protobuf.Counter counter = 3;
+  // .abacus.protobuf.Counter counter = 4;
   bool has_counter() const;
   private:
   bool _internal_has_counter() const;
@@ -2305,7 +2376,7 @@ class Float32Metric final :
   ::abacus::protobuf::Counter* _internal_mutable_counter();
 
   public:
-  // .abacus.protobuf.Constant constant = 4;
+  // .abacus.protobuf.Constant constant = 5;
   bool has_constant() const;
   private:
   bool _internal_has_constant() const;
@@ -2337,7 +2408,7 @@ class Float32Metric final :
   inline void clear_has_kind();
 
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 7, 3, 53, 2> _table_;
+  static const ::google::protobuf::internal::TcParseTable<3, 8, 3, 61, 2> _table_;
   template <typename T> friend class ::google::protobuf::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
@@ -2346,6 +2417,7 @@ class Float32Metric final :
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::internal::ArenaStringPtr description_;
     ::google::protobuf::internal::ArenaStringPtr unit_;
+    ::uint32_t offset_;
     float min_;
     float max_;
     union KindUnion {
@@ -2415,8 +2487,8 @@ class BoolMetric final :
     return *internal_default_instance();
   }
   enum KindCase {
-    kGauge = 2,
-    kConstant = 3,
+    kGauge = 3,
+    kConstant = 4,
     KIND_NOT_SET = 0,
   };
 
@@ -2497,12 +2569,13 @@ class BoolMetric final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kDescriptionFieldNumber = 1,
-    kUnitFieldNumber = 4,
-    kGaugeFieldNumber = 2,
-    kConstantFieldNumber = 3,
+    kDescriptionFieldNumber = 2,
+    kUnitFieldNumber = 5,
+    kOffsetFieldNumber = 1,
+    kGaugeFieldNumber = 3,
+    kConstantFieldNumber = 4,
   };
-  // string description = 1;
+  // string description = 2;
   void clear_description() ;
   const std::string& description() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -2518,7 +2591,7 @@ class BoolMetric final :
   std::string* _internal_mutable_description();
 
   public:
-  // optional string unit = 4;
+  // optional string unit = 5;
   bool has_unit() const;
   void clear_unit() ;
   const std::string& unit() const;
@@ -2535,7 +2608,17 @@ class BoolMetric final :
   std::string* _internal_mutable_unit();
 
   public:
-  // .abacus.protobuf.Gauge gauge = 2;
+  // uint32 offset = 1;
+  void clear_offset() ;
+  ::uint32_t offset() const;
+  void set_offset(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_offset() const;
+  void _internal_set_offset(::uint32_t value);
+
+  public:
+  // .abacus.protobuf.Gauge gauge = 3;
   bool has_gauge() const;
   private:
   bool _internal_has_gauge() const;
@@ -2554,7 +2637,7 @@ class BoolMetric final :
   ::abacus::protobuf::Gauge* _internal_mutable_gauge();
 
   public:
-  // .abacus.protobuf.Constant constant = 3;
+  // .abacus.protobuf.Constant constant = 4;
   bool has_constant() const;
   private:
   bool _internal_has_constant() const;
@@ -2585,7 +2668,7 @@ class BoolMetric final :
   inline void clear_has_kind();
 
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<1, 4, 2, 50, 2> _table_;
+  static const ::google::protobuf::internal::TcParseTable<3, 5, 2, 50, 2> _table_;
   template <typename T> friend class ::google::protobuf::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
@@ -2594,6 +2677,7 @@ class BoolMetric final :
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::internal::ArenaStringPtr description_;
     ::google::protobuf::internal::ArenaStringPtr unit_;
+    ::uint32_t offset_;
     union KindUnion {
       constexpr KindUnion() : _constinit_{} {}
         ::google::protobuf::internal::ConstantInitialized _constinit_;
@@ -2868,8 +2952,8 @@ class Enum8Metric final :
     return *internal_default_instance();
   }
   enum KindCase {
-    kGauge = 2,
-    kConstant = 3,
+    kGauge = 3,
+    kConstant = 4,
     KIND_NOT_SET = 0,
   };
 
@@ -2952,13 +3036,14 @@ class Enum8Metric final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kValuesFieldNumber = 5,
-    kDescriptionFieldNumber = 1,
-    kUnitFieldNumber = 4,
-    kGaugeFieldNumber = 2,
-    kConstantFieldNumber = 3,
+    kValuesFieldNumber = 6,
+    kDescriptionFieldNumber = 2,
+    kUnitFieldNumber = 5,
+    kOffsetFieldNumber = 1,
+    kGaugeFieldNumber = 3,
+    kConstantFieldNumber = 4,
   };
-  // map<uint32, .abacus.protobuf.Enum8Metric.EnumValue> values = 5;
+  // map<uint32, .abacus.protobuf.Enum8Metric.EnumValue> values = 6;
   int values_size() const;
   private:
   int _internal_values_size() const;
@@ -2973,7 +3058,7 @@ class Enum8Metric final :
   ::google::protobuf::Map<::uint32_t, ::abacus::protobuf::Enum8Metric_EnumValue>* _internal_mutable_values();
 
   public:
-  // string description = 1;
+  // string description = 2;
   void clear_description() ;
   const std::string& description() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -2989,7 +3074,7 @@ class Enum8Metric final :
   std::string* _internal_mutable_description();
 
   public:
-  // optional string unit = 4;
+  // optional string unit = 5;
   bool has_unit() const;
   void clear_unit() ;
   const std::string& unit() const;
@@ -3006,7 +3091,17 @@ class Enum8Metric final :
   std::string* _internal_mutable_unit();
 
   public:
-  // .abacus.protobuf.Gauge gauge = 2;
+  // uint32 offset = 1;
+  void clear_offset() ;
+  ::uint32_t offset() const;
+  void set_offset(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_offset() const;
+  void _internal_set_offset(::uint32_t value);
+
+  public:
+  // .abacus.protobuf.Gauge gauge = 3;
   bool has_gauge() const;
   private:
   bool _internal_has_gauge() const;
@@ -3025,7 +3120,7 @@ class Enum8Metric final :
   ::abacus::protobuf::Gauge* _internal_mutable_gauge();
 
   public:
-  // .abacus.protobuf.Constant constant = 3;
+  // .abacus.protobuf.Constant constant = 4;
   bool has_constant() const;
   private:
   bool _internal_has_constant() const;
@@ -3056,7 +3151,7 @@ class Enum8Metric final :
   inline void clear_has_kind();
 
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<1, 5, 4, 51, 2> _table_;
+  static const ::google::protobuf::internal::TcParseTable<3, 6, 4, 51, 2> _table_;
   template <typename T> friend class ::google::protobuf::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
@@ -3069,6 +3164,7 @@ class Enum8Metric final :
         values_;
     ::google::protobuf::internal::ArenaStringPtr description_;
     ::google::protobuf::internal::ArenaStringPtr unit_;
+    ::uint32_t offset_;
     union KindUnion {
       constexpr KindUnion() : _constinit_{} {}
         ::google::protobuf::internal::ConstantInitialized _constinit_;
@@ -3135,7 +3231,7 @@ class StringMetric final :
     return *internal_default_instance();
   }
   enum KindCase {
-    kConstant = 2,
+    kConstant = 3,
     KIND_NOT_SET = 0,
   };
 
@@ -3216,10 +3312,11 @@ class StringMetric final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kDescriptionFieldNumber = 1,
-    kConstantFieldNumber = 2,
+    kDescriptionFieldNumber = 2,
+    kOffsetFieldNumber = 1,
+    kConstantFieldNumber = 3,
   };
-  // string description = 1;
+  // string description = 2;
   void clear_description() ;
   const std::string& description() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -3235,7 +3332,17 @@ class StringMetric final :
   std::string* _internal_mutable_description();
 
   public:
-  // .abacus.protobuf.Constant constant = 2;
+  // uint32 offset = 1;
+  void clear_offset() ;
+  ::uint32_t offset() const;
+  void set_offset(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_offset() const;
+  void _internal_set_offset(::uint32_t value);
+
+  public:
+  // .abacus.protobuf.Constant constant = 3;
   bool has_constant() const;
   private:
   bool _internal_has_constant() const;
@@ -3265,12 +3372,13 @@ class StringMetric final :
   inline void clear_has_kind();
 
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 2, 1, 48, 2> _table_;
+  static const ::google::protobuf::internal::TcParseTable<1, 3, 1, 48, 2> _table_;
   template <typename T> friend class ::google::protobuf::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
     ::google::protobuf::internal::ArenaStringPtr description_;
+    ::uint32_t offset_;
     union KindUnion {
       constexpr KindUnion() : _constinit_{} {}
         ::google::protobuf::internal::ConstantInitialized _constinit_;
@@ -3426,7 +3534,6 @@ class Metric final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kOffsetFieldNumber = 1,
     kUint64FieldNumber = 3,
     kInt64FieldNumber = 4,
     kUint32FieldNumber = 5,
@@ -3437,16 +3544,6 @@ class Metric final :
     kEnum8FieldNumber = 10,
     kStringFieldNumber = 11,
   };
-  // uint32 offset = 1;
-  void clear_offset() ;
-  ::uint32_t offset() const;
-  void set_offset(::uint32_t value);
-
-  private:
-  ::uint32_t _internal_offset() const;
-  void _internal_set_offset(::uint32_t value);
-
-  public:
   // .abacus.protobuf.UInt64Metric uint64 = 3;
   bool has_uint64() const;
   private:
@@ -3637,12 +3734,11 @@ class Metric final :
   inline void clear_has_type();
 
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 10, 9, 0, 2> _table_;
+  static const ::google::protobuf::internal::TcParseTable<0, 9, 9, 0, 2> _table_;
   template <typename T> friend class ::google::protobuf::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::uint32_t offset_;
     union TypeUnion {
       constexpr TypeUnion() : _constinit_{} {}
         ::google::protobuf::internal::ConstantInitialized _constinit_;
@@ -3966,7 +4062,29 @@ inline void Counter::_internal_set_optional(bool value) {
 
 // UInt64Metric
 
-// string description = 1;
+// uint32 offset = 1;
+inline void UInt64Metric::clear_offset() {
+  _impl_.offset_ = 0u;
+}
+inline ::uint32_t UInt64Metric::offset() const {
+  // @@protoc_insertion_point(field_get:abacus.protobuf.UInt64Metric.offset)
+  return _internal_offset();
+}
+inline void UInt64Metric::set_offset(::uint32_t value) {
+  _internal_set_offset(value);
+  // @@protoc_insertion_point(field_set:abacus.protobuf.UInt64Metric.offset)
+}
+inline ::uint32_t UInt64Metric::_internal_offset() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.offset_;
+}
+inline void UInt64Metric::_internal_set_offset(::uint32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.offset_ = value;
+}
+
+// string description = 2;
 inline void UInt64Metric::clear_description() {
   _impl_.description_.ClearToEmpty();
 }
@@ -4017,7 +4135,7 @@ inline void UInt64Metric::set_allocated_description(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.UInt64Metric.description)
 }
 
-// .abacus.protobuf.Gauge gauge = 2;
+// .abacus.protobuf.Gauge gauge = 3;
 inline bool UInt64Metric::has_gauge() const {
   return kind_case() == kGauge;
 }
@@ -4091,7 +4209,7 @@ inline ::abacus::protobuf::Gauge* UInt64Metric::mutable_gauge() {
   return _msg;
 }
 
-// .abacus.protobuf.Counter counter = 3;
+// .abacus.protobuf.Counter counter = 4;
 inline bool UInt64Metric::has_counter() const {
   return kind_case() == kCounter;
 }
@@ -4165,7 +4283,7 @@ inline ::abacus::protobuf::Counter* UInt64Metric::mutable_counter() {
   return _msg;
 }
 
-// .abacus.protobuf.Constant constant = 4;
+// .abacus.protobuf.Constant constant = 5;
 inline bool UInt64Metric::has_constant() const {
   return kind_case() == kConstant;
 }
@@ -4239,7 +4357,7 @@ inline ::abacus::protobuf::Constant* UInt64Metric::mutable_constant() {
   return _msg;
 }
 
-// optional string unit = 5;
+// optional string unit = 6;
 inline bool UInt64Metric::has_unit() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -4308,7 +4426,7 @@ inline void UInt64Metric::set_allocated_unit(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.UInt64Metric.unit)
 }
 
-// optional uint64 min = 6;
+// optional uint64 min = 7;
 inline bool UInt64Metric::has_min() const {
   bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   return value;
@@ -4335,7 +4453,7 @@ inline void UInt64Metric::_internal_set_min(::uint64_t value) {
   _impl_.min_ = value;
 }
 
-// optional uint64 max = 7;
+// optional uint64 max = 8;
 inline bool UInt64Metric::has_max() const {
   bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
   return value;
@@ -4375,7 +4493,29 @@ inline UInt64Metric::KindCase UInt64Metric::kind_case() const {
 
 // Int64Metric
 
-// string description = 1;
+// uint32 offset = 1;
+inline void Int64Metric::clear_offset() {
+  _impl_.offset_ = 0u;
+}
+inline ::uint32_t Int64Metric::offset() const {
+  // @@protoc_insertion_point(field_get:abacus.protobuf.Int64Metric.offset)
+  return _internal_offset();
+}
+inline void Int64Metric::set_offset(::uint32_t value) {
+  _internal_set_offset(value);
+  // @@protoc_insertion_point(field_set:abacus.protobuf.Int64Metric.offset)
+}
+inline ::uint32_t Int64Metric::_internal_offset() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.offset_;
+}
+inline void Int64Metric::_internal_set_offset(::uint32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.offset_ = value;
+}
+
+// string description = 2;
 inline void Int64Metric::clear_description() {
   _impl_.description_.ClearToEmpty();
 }
@@ -4426,7 +4566,7 @@ inline void Int64Metric::set_allocated_description(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Int64Metric.description)
 }
 
-// .abacus.protobuf.Gauge gauge = 2;
+// .abacus.protobuf.Gauge gauge = 3;
 inline bool Int64Metric::has_gauge() const {
   return kind_case() == kGauge;
 }
@@ -4500,7 +4640,7 @@ inline ::abacus::protobuf::Gauge* Int64Metric::mutable_gauge() {
   return _msg;
 }
 
-// .abacus.protobuf.Counter counter = 3;
+// .abacus.protobuf.Counter counter = 4;
 inline bool Int64Metric::has_counter() const {
   return kind_case() == kCounter;
 }
@@ -4574,7 +4714,7 @@ inline ::abacus::protobuf::Counter* Int64Metric::mutable_counter() {
   return _msg;
 }
 
-// .abacus.protobuf.Constant constant = 4;
+// .abacus.protobuf.Constant constant = 5;
 inline bool Int64Metric::has_constant() const {
   return kind_case() == kConstant;
 }
@@ -4648,7 +4788,7 @@ inline ::abacus::protobuf::Constant* Int64Metric::mutable_constant() {
   return _msg;
 }
 
-// optional string unit = 5;
+// optional string unit = 6;
 inline bool Int64Metric::has_unit() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -4717,7 +4857,7 @@ inline void Int64Metric::set_allocated_unit(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Int64Metric.unit)
 }
 
-// optional int64 min = 6;
+// optional int64 min = 7;
 inline bool Int64Metric::has_min() const {
   bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   return value;
@@ -4744,7 +4884,7 @@ inline void Int64Metric::_internal_set_min(::int64_t value) {
   _impl_.min_ = value;
 }
 
-// optional int64 max = 7;
+// optional int64 max = 8;
 inline bool Int64Metric::has_max() const {
   bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
   return value;
@@ -4784,7 +4924,29 @@ inline Int64Metric::KindCase Int64Metric::kind_case() const {
 
 // UInt32Metric
 
-// string description = 1;
+// uint32 offset = 1;
+inline void UInt32Metric::clear_offset() {
+  _impl_.offset_ = 0u;
+}
+inline ::uint32_t UInt32Metric::offset() const {
+  // @@protoc_insertion_point(field_get:abacus.protobuf.UInt32Metric.offset)
+  return _internal_offset();
+}
+inline void UInt32Metric::set_offset(::uint32_t value) {
+  _internal_set_offset(value);
+  // @@protoc_insertion_point(field_set:abacus.protobuf.UInt32Metric.offset)
+}
+inline ::uint32_t UInt32Metric::_internal_offset() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.offset_;
+}
+inline void UInt32Metric::_internal_set_offset(::uint32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.offset_ = value;
+}
+
+// string description = 2;
 inline void UInt32Metric::clear_description() {
   _impl_.description_.ClearToEmpty();
 }
@@ -4835,7 +4997,7 @@ inline void UInt32Metric::set_allocated_description(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.UInt32Metric.description)
 }
 
-// .abacus.protobuf.Gauge gauge = 2;
+// .abacus.protobuf.Gauge gauge = 3;
 inline bool UInt32Metric::has_gauge() const {
   return kind_case() == kGauge;
 }
@@ -4909,7 +5071,7 @@ inline ::abacus::protobuf::Gauge* UInt32Metric::mutable_gauge() {
   return _msg;
 }
 
-// .abacus.protobuf.Counter counter = 3;
+// .abacus.protobuf.Counter counter = 4;
 inline bool UInt32Metric::has_counter() const {
   return kind_case() == kCounter;
 }
@@ -4983,7 +5145,7 @@ inline ::abacus::protobuf::Counter* UInt32Metric::mutable_counter() {
   return _msg;
 }
 
-// .abacus.protobuf.Constant constant = 4;
+// .abacus.protobuf.Constant constant = 5;
 inline bool UInt32Metric::has_constant() const {
   return kind_case() == kConstant;
 }
@@ -5057,7 +5219,7 @@ inline ::abacus::protobuf::Constant* UInt32Metric::mutable_constant() {
   return _msg;
 }
 
-// optional string unit = 5;
+// optional string unit = 6;
 inline bool UInt32Metric::has_unit() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -5126,7 +5288,7 @@ inline void UInt32Metric::set_allocated_unit(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.UInt32Metric.unit)
 }
 
-// optional uint32 min = 6;
+// optional uint32 min = 7;
 inline bool UInt32Metric::has_min() const {
   bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   return value;
@@ -5153,7 +5315,7 @@ inline void UInt32Metric::_internal_set_min(::uint32_t value) {
   _impl_.min_ = value;
 }
 
-// optional uint32 max = 7;
+// optional uint32 max = 8;
 inline bool UInt32Metric::has_max() const {
   bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
   return value;
@@ -5193,7 +5355,29 @@ inline UInt32Metric::KindCase UInt32Metric::kind_case() const {
 
 // Int32Metric
 
-// string description = 1;
+// uint32 offset = 1;
+inline void Int32Metric::clear_offset() {
+  _impl_.offset_ = 0u;
+}
+inline ::uint32_t Int32Metric::offset() const {
+  // @@protoc_insertion_point(field_get:abacus.protobuf.Int32Metric.offset)
+  return _internal_offset();
+}
+inline void Int32Metric::set_offset(::uint32_t value) {
+  _internal_set_offset(value);
+  // @@protoc_insertion_point(field_set:abacus.protobuf.Int32Metric.offset)
+}
+inline ::uint32_t Int32Metric::_internal_offset() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.offset_;
+}
+inline void Int32Metric::_internal_set_offset(::uint32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.offset_ = value;
+}
+
+// string description = 2;
 inline void Int32Metric::clear_description() {
   _impl_.description_.ClearToEmpty();
 }
@@ -5244,7 +5428,7 @@ inline void Int32Metric::set_allocated_description(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Int32Metric.description)
 }
 
-// .abacus.protobuf.Gauge gauge = 2;
+// .abacus.protobuf.Gauge gauge = 3;
 inline bool Int32Metric::has_gauge() const {
   return kind_case() == kGauge;
 }
@@ -5318,7 +5502,7 @@ inline ::abacus::protobuf::Gauge* Int32Metric::mutable_gauge() {
   return _msg;
 }
 
-// .abacus.protobuf.Counter counter = 3;
+// .abacus.protobuf.Counter counter = 4;
 inline bool Int32Metric::has_counter() const {
   return kind_case() == kCounter;
 }
@@ -5392,7 +5576,7 @@ inline ::abacus::protobuf::Counter* Int32Metric::mutable_counter() {
   return _msg;
 }
 
-// .abacus.protobuf.Constant constant = 4;
+// .abacus.protobuf.Constant constant = 5;
 inline bool Int32Metric::has_constant() const {
   return kind_case() == kConstant;
 }
@@ -5466,7 +5650,7 @@ inline ::abacus::protobuf::Constant* Int32Metric::mutable_constant() {
   return _msg;
 }
 
-// optional string unit = 5;
+// optional string unit = 6;
 inline bool Int32Metric::has_unit() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -5535,7 +5719,7 @@ inline void Int32Metric::set_allocated_unit(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Int32Metric.unit)
 }
 
-// optional int32 min = 6;
+// optional int32 min = 7;
 inline bool Int32Metric::has_min() const {
   bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   return value;
@@ -5562,7 +5746,7 @@ inline void Int32Metric::_internal_set_min(::int32_t value) {
   _impl_.min_ = value;
 }
 
-// optional int32 max = 7;
+// optional int32 max = 8;
 inline bool Int32Metric::has_max() const {
   bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
   return value;
@@ -5602,7 +5786,29 @@ inline Int32Metric::KindCase Int32Metric::kind_case() const {
 
 // Float64Metric
 
-// string description = 1;
+// uint32 offset = 1;
+inline void Float64Metric::clear_offset() {
+  _impl_.offset_ = 0u;
+}
+inline ::uint32_t Float64Metric::offset() const {
+  // @@protoc_insertion_point(field_get:abacus.protobuf.Float64Metric.offset)
+  return _internal_offset();
+}
+inline void Float64Metric::set_offset(::uint32_t value) {
+  _internal_set_offset(value);
+  // @@protoc_insertion_point(field_set:abacus.protobuf.Float64Metric.offset)
+}
+inline ::uint32_t Float64Metric::_internal_offset() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.offset_;
+}
+inline void Float64Metric::_internal_set_offset(::uint32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.offset_ = value;
+}
+
+// string description = 2;
 inline void Float64Metric::clear_description() {
   _impl_.description_.ClearToEmpty();
 }
@@ -5653,7 +5859,7 @@ inline void Float64Metric::set_allocated_description(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Float64Metric.description)
 }
 
-// .abacus.protobuf.Gauge gauge = 2;
+// .abacus.protobuf.Gauge gauge = 3;
 inline bool Float64Metric::has_gauge() const {
   return kind_case() == kGauge;
 }
@@ -5727,7 +5933,7 @@ inline ::abacus::protobuf::Gauge* Float64Metric::mutable_gauge() {
   return _msg;
 }
 
-// .abacus.protobuf.Counter counter = 3;
+// .abacus.protobuf.Counter counter = 4;
 inline bool Float64Metric::has_counter() const {
   return kind_case() == kCounter;
 }
@@ -5801,7 +6007,7 @@ inline ::abacus::protobuf::Counter* Float64Metric::mutable_counter() {
   return _msg;
 }
 
-// .abacus.protobuf.Constant constant = 4;
+// .abacus.protobuf.Constant constant = 5;
 inline bool Float64Metric::has_constant() const {
   return kind_case() == kConstant;
 }
@@ -5875,7 +6081,7 @@ inline ::abacus::protobuf::Constant* Float64Metric::mutable_constant() {
   return _msg;
 }
 
-// optional string unit = 5;
+// optional string unit = 6;
 inline bool Float64Metric::has_unit() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -5944,7 +6150,7 @@ inline void Float64Metric::set_allocated_unit(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Float64Metric.unit)
 }
 
-// optional double min = 6;
+// optional double min = 7;
 inline bool Float64Metric::has_min() const {
   bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   return value;
@@ -5971,7 +6177,7 @@ inline void Float64Metric::_internal_set_min(double value) {
   _impl_.min_ = value;
 }
 
-// optional double max = 7;
+// optional double max = 8;
 inline bool Float64Metric::has_max() const {
   bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
   return value;
@@ -6011,7 +6217,29 @@ inline Float64Metric::KindCase Float64Metric::kind_case() const {
 
 // Float32Metric
 
-// string description = 1;
+// uint32 offset = 1;
+inline void Float32Metric::clear_offset() {
+  _impl_.offset_ = 0u;
+}
+inline ::uint32_t Float32Metric::offset() const {
+  // @@protoc_insertion_point(field_get:abacus.protobuf.Float32Metric.offset)
+  return _internal_offset();
+}
+inline void Float32Metric::set_offset(::uint32_t value) {
+  _internal_set_offset(value);
+  // @@protoc_insertion_point(field_set:abacus.protobuf.Float32Metric.offset)
+}
+inline ::uint32_t Float32Metric::_internal_offset() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.offset_;
+}
+inline void Float32Metric::_internal_set_offset(::uint32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.offset_ = value;
+}
+
+// string description = 2;
 inline void Float32Metric::clear_description() {
   _impl_.description_.ClearToEmpty();
 }
@@ -6062,7 +6290,7 @@ inline void Float32Metric::set_allocated_description(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Float32Metric.description)
 }
 
-// .abacus.protobuf.Gauge gauge = 2;
+// .abacus.protobuf.Gauge gauge = 3;
 inline bool Float32Metric::has_gauge() const {
   return kind_case() == kGauge;
 }
@@ -6136,7 +6364,7 @@ inline ::abacus::protobuf::Gauge* Float32Metric::mutable_gauge() {
   return _msg;
 }
 
-// .abacus.protobuf.Counter counter = 3;
+// .abacus.protobuf.Counter counter = 4;
 inline bool Float32Metric::has_counter() const {
   return kind_case() == kCounter;
 }
@@ -6210,7 +6438,7 @@ inline ::abacus::protobuf::Counter* Float32Metric::mutable_counter() {
   return _msg;
 }
 
-// .abacus.protobuf.Constant constant = 4;
+// .abacus.protobuf.Constant constant = 5;
 inline bool Float32Metric::has_constant() const {
   return kind_case() == kConstant;
 }
@@ -6284,7 +6512,7 @@ inline ::abacus::protobuf::Constant* Float32Metric::mutable_constant() {
   return _msg;
 }
 
-// optional string unit = 5;
+// optional string unit = 6;
 inline bool Float32Metric::has_unit() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -6353,7 +6581,7 @@ inline void Float32Metric::set_allocated_unit(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Float32Metric.unit)
 }
 
-// optional float min = 6;
+// optional float min = 7;
 inline bool Float32Metric::has_min() const {
   bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   return value;
@@ -6380,7 +6608,7 @@ inline void Float32Metric::_internal_set_min(float value) {
   _impl_.min_ = value;
 }
 
-// optional float max = 7;
+// optional float max = 8;
 inline bool Float32Metric::has_max() const {
   bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
   return value;
@@ -6420,7 +6648,29 @@ inline Float32Metric::KindCase Float32Metric::kind_case() const {
 
 // BoolMetric
 
-// string description = 1;
+// uint32 offset = 1;
+inline void BoolMetric::clear_offset() {
+  _impl_.offset_ = 0u;
+}
+inline ::uint32_t BoolMetric::offset() const {
+  // @@protoc_insertion_point(field_get:abacus.protobuf.BoolMetric.offset)
+  return _internal_offset();
+}
+inline void BoolMetric::set_offset(::uint32_t value) {
+  _internal_set_offset(value);
+  // @@protoc_insertion_point(field_set:abacus.protobuf.BoolMetric.offset)
+}
+inline ::uint32_t BoolMetric::_internal_offset() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.offset_;
+}
+inline void BoolMetric::_internal_set_offset(::uint32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.offset_ = value;
+}
+
+// string description = 2;
 inline void BoolMetric::clear_description() {
   _impl_.description_.ClearToEmpty();
 }
@@ -6471,7 +6721,7 @@ inline void BoolMetric::set_allocated_description(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.BoolMetric.description)
 }
 
-// .abacus.protobuf.Gauge gauge = 2;
+// .abacus.protobuf.Gauge gauge = 3;
 inline bool BoolMetric::has_gauge() const {
   return kind_case() == kGauge;
 }
@@ -6545,7 +6795,7 @@ inline ::abacus::protobuf::Gauge* BoolMetric::mutable_gauge() {
   return _msg;
 }
 
-// .abacus.protobuf.Constant constant = 3;
+// .abacus.protobuf.Constant constant = 4;
 inline bool BoolMetric::has_constant() const {
   return kind_case() == kConstant;
 }
@@ -6619,7 +6869,7 @@ inline ::abacus::protobuf::Constant* BoolMetric::mutable_constant() {
   return _msg;
 }
 
-// optional string unit = 4;
+// optional string unit = 5;
 inline bool BoolMetric::has_unit() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -6827,7 +7077,29 @@ inline void Enum8Metric_EnumValue::set_allocated_description(std::string* value)
 
 // Enum8Metric
 
-// string description = 1;
+// uint32 offset = 1;
+inline void Enum8Metric::clear_offset() {
+  _impl_.offset_ = 0u;
+}
+inline ::uint32_t Enum8Metric::offset() const {
+  // @@protoc_insertion_point(field_get:abacus.protobuf.Enum8Metric.offset)
+  return _internal_offset();
+}
+inline void Enum8Metric::set_offset(::uint32_t value) {
+  _internal_set_offset(value);
+  // @@protoc_insertion_point(field_set:abacus.protobuf.Enum8Metric.offset)
+}
+inline ::uint32_t Enum8Metric::_internal_offset() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.offset_;
+}
+inline void Enum8Metric::_internal_set_offset(::uint32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.offset_ = value;
+}
+
+// string description = 2;
 inline void Enum8Metric::clear_description() {
   _impl_.description_.ClearToEmpty();
 }
@@ -6878,7 +7150,7 @@ inline void Enum8Metric::set_allocated_description(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Enum8Metric.description)
 }
 
-// .abacus.protobuf.Gauge gauge = 2;
+// .abacus.protobuf.Gauge gauge = 3;
 inline bool Enum8Metric::has_gauge() const {
   return kind_case() == kGauge;
 }
@@ -6952,7 +7224,7 @@ inline ::abacus::protobuf::Gauge* Enum8Metric::mutable_gauge() {
   return _msg;
 }
 
-// .abacus.protobuf.Constant constant = 3;
+// .abacus.protobuf.Constant constant = 4;
 inline bool Enum8Metric::has_constant() const {
   return kind_case() == kConstant;
 }
@@ -7026,7 +7298,7 @@ inline ::abacus::protobuf::Constant* Enum8Metric::mutable_constant() {
   return _msg;
 }
 
-// optional string unit = 4;
+// optional string unit = 5;
 inline bool Enum8Metric::has_unit() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -7095,7 +7367,7 @@ inline void Enum8Metric::set_allocated_unit(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Enum8Metric.unit)
 }
 
-// map<uint32, .abacus.protobuf.Enum8Metric.EnumValue> values = 5;
+// map<uint32, .abacus.protobuf.Enum8Metric.EnumValue> values = 6;
 inline int Enum8Metric::_internal_values_size() const {
   return _internal_values().size();
 }
@@ -7135,7 +7407,29 @@ inline Enum8Metric::KindCase Enum8Metric::kind_case() const {
 
 // StringMetric
 
-// string description = 1;
+// uint32 offset = 1;
+inline void StringMetric::clear_offset() {
+  _impl_.offset_ = 0u;
+}
+inline ::uint32_t StringMetric::offset() const {
+  // @@protoc_insertion_point(field_get:abacus.protobuf.StringMetric.offset)
+  return _internal_offset();
+}
+inline void StringMetric::set_offset(::uint32_t value) {
+  _internal_set_offset(value);
+  // @@protoc_insertion_point(field_set:abacus.protobuf.StringMetric.offset)
+}
+inline ::uint32_t StringMetric::_internal_offset() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.offset_;
+}
+inline void StringMetric::_internal_set_offset(::uint32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.offset_ = value;
+}
+
+// string description = 2;
 inline void StringMetric::clear_description() {
   _impl_.description_.ClearToEmpty();
 }
@@ -7186,7 +7480,7 @@ inline void StringMetric::set_allocated_description(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.StringMetric.description)
 }
 
-// .abacus.protobuf.Constant constant = 2;
+// .abacus.protobuf.Constant constant = 3;
 inline bool StringMetric::has_constant() const {
   return kind_case() == kConstant;
 }
@@ -7272,28 +7566,6 @@ inline StringMetric::KindCase StringMetric::kind_case() const {
 // -------------------------------------------------------------------
 
 // Metric
-
-// uint32 offset = 1;
-inline void Metric::clear_offset() {
-  _impl_.offset_ = 0u;
-}
-inline ::uint32_t Metric::offset() const {
-  // @@protoc_insertion_point(field_get:abacus.protobuf.Metric.offset)
-  return _internal_offset();
-}
-inline void Metric::set_offset(::uint32_t value) {
-  _internal_set_offset(value);
-  // @@protoc_insertion_point(field_set:abacus.protobuf.Metric.offset)
-}
-inline ::uint32_t Metric::_internal_offset() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.offset_;
-}
-inline void Metric::_internal_set_offset(::uint32_t value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.offset_ = value;
-}
 
 // .abacus.protobuf.UInt64Metric uint64 = 3;
 inline bool Metric::has_uint64() const {

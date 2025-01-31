@@ -32,6 +32,8 @@ struct string
     {
         assert(memory != nullptr);
         std::memcpy(memory + 1, value.data(), value.size());
+        // Set the null terminator
+        memory[1 + value.size()] = '\0';
     }
 
     /// Get the value of the metric

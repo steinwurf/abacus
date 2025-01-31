@@ -23,9 +23,9 @@ private:
 public:
     /// @param metadata_data The meta data pointer
     /// @param metadata_bytes The meta data size in bytes
-    static auto
-    metadata(const uint8_t* metadata_data,
-             std::size_t metadata_bytes) -> protobuf::MetricsMetadata;
+    static auto metadata(const uint8_t* metadata_data,
+                         std::size_t metadata_bytes)
+        -> std::optional<protobuf::MetricsMetadata>;
 };
 }
 }

@@ -134,15 +134,11 @@ metrics::metrics(const std::map<name, abacus::info>& info)
     for (auto [name, value] : info)
     {
         protobuf::Metric metric;
-        metric.set_offset(m_value_bytes);
-
-        // The offset is incremented by one byte which represents
-        // whether the metric is set or not.
-        m_value_bytes += 1;
 
         if (auto* m = std::get_if<uint64>(&value))
         {
             // The offset is incremented by the size of the type
+            metric.mutable_uint64()->set_offset(m_value_bytes);
             m_value_bytes += detail::size_of_type<decltype(m)>();
             metric.mutable_uint64()->set_description(m->description.value);
 
@@ -169,6 +165,7 @@ metrics::metrics(const std::map<name, abacus::info>& info)
         else if (auto* m = std::get_if<int64>(&value))
         {
             // The offset is incremented by the size of the type
+            metric.mutable_int64()->set_offset(m_value_bytes);
             m_value_bytes += detail::size_of_type<decltype(m)>();
             metric.mutable_int64()->set_description(m->description.value);
 
@@ -195,6 +192,7 @@ metrics::metrics(const std::map<name, abacus::info>& info)
         else if (auto* m = std::get_if<uint32>(&value))
         {
             // The offset is incremented by the size of the type
+            metric.mutable_uint32()->set_offset(m_value_bytes);
             m_value_bytes += detail::size_of_type<decltype(m)>();
             metric.mutable_uint32()->set_description(m->description.value);
 
@@ -221,6 +219,7 @@ metrics::metrics(const std::map<name, abacus::info>& info)
         else if (auto* m = std::get_if<int32>(&value))
         {
             // The offset is incremented by the size of the type
+            metric.mutable_int32()->set_offset(m_value_bytes);
             m_value_bytes += detail::size_of_type<decltype(m)>();
             metric.mutable_int32()->set_description(m->description.value);
 
@@ -247,6 +246,7 @@ metrics::metrics(const std::map<name, abacus::info>& info)
         else if (auto* m = std::get_if<float64>(&value))
         {
             // The offset is incremented by the size of the type
+            metric.mutable_float64()->set_offset(m_value_bytes);
             m_value_bytes += detail::size_of_type<decltype(m)>();
 
             metric.mutable_float64()->set_description(m->description.value);
@@ -273,6 +273,7 @@ metrics::metrics(const std::map<name, abacus::info>& info)
         }
         else if (auto* m = std::get_if<float32>(&value))
         {
+            metric.mutable_float32()->set_offset(m_value_bytes);
             // The offset is incremented by the size of the type
             m_value_bytes += detail::size_of_type<decltype(m)>();
 
@@ -300,6 +301,7 @@ metrics::metrics(const std::map<name, abacus::info>& info)
         }
         else if (auto* m = std::get_if<boolean>(&value))
         {
+            metric.mutable_boolean()->set_offset(m_value_bytes);
             // The offset is incremented by the size of the type
             m_value_bytes += detail::size_of_type<decltype(m)>();
             metric.mutable_boolean()->set_description(m->description.value);
@@ -313,6 +315,7 @@ metrics::metrics(const std::map<name, abacus::info>& info)
         }
         else if (auto* m = std::get_if<enum8>(&value))
         {
+            metric.mutable_enum8()->set_offset(m_value_bytes);
             // The offset is incremented by the size of the type
             m_value_bytes += detail::size_of_type<decltype(m)>();
 
@@ -340,13 +343,13 @@ metrics::metrics(const std::map<name, abacus::info>& info)
         }
         else if (auto* m = std::get_if<string>(&value))
         {
-            // The offset is incremented by the size of the type
-
+            metric.mutable_string()->set_offset(m_value_bytes);
             metric.mutable_string()->set_description(m->description.value);
             set_kind<string::type>(*metric.mutable_string(), m->kind);
 
-            // The string metric is known to always be constant
+            // The offset is incremented by the size of the type
             auto value = std::get<constant<string::type>>(m->kind).value;
+            // The string metric is known to always be constant
             m_value_bytes += value.size();
             // The string is stored as a null-terminated string
             m_value_bytes += 1;
@@ -356,6 +359,9 @@ metrics::metrics(const std::map<name, abacus::info>& info)
                 constants.push_back(name);
             }
         }
+        // The offset is incremented by one byte which represents
+        // whether the metric is set or not.
+        m_value_bytes += 1;
 
         m_metadata.mutable_metrics()->insert({name.value, metric});
         m_initialized[name.value] = false;
@@ -402,7 +408,8 @@ metrics::metrics(const std::map<name, abacus::info>& info)
                     std::get<constant<typename Metric::type>>(metric.kind)
                         .value;
                 m_initialized[name.value] = true;
-                auto offset = metadata().metrics().at(name.value).offset();
+                auto offset =
+                    detail::get_offset(metadata().metrics().at(name.value));
                 value_data(offset)[0] = 1;
                 Metric::set_value(value_data(offset), value);
             },
@@ -421,7 +428,7 @@ template <class Metric>
     assert(is_optional(proto_metric));
     assert(!is_constant(proto_metric));
 
-    auto offset = proto_metric.offset();
+    auto offset = detail::get_offset(proto_metric);
 
     return {value_data(offset)};
 }
@@ -456,7 +463,7 @@ template <class Metric>
     assert(!is_optional(proto_metric));
     assert(!is_constant(proto_metric));
 
-    auto offset = proto_metric.offset();
+    auto offset = detail::get_offset(proto_metric);
 
     m_initial_values[name] = value;
     return {value_data(offset), value};
@@ -555,7 +562,7 @@ auto metrics::reset() -> void
             continue;
         }
 
-        auto offset = metric.offset();
+        auto offset = detail::get_offset(metric);
         if (is_optional(metric))
         {
             // Set the has value byte to 0

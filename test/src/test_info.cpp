@@ -226,7 +226,7 @@ TEST(test_info, enum8)
 TEST(test_info, string)
 {
     {
-        uint8_t data[6];
+        uint8_t data[7];
         std::memset(data, 0, sizeof(data));
         data[0] = 1;
         abacus::string::set_value(data, "hello");

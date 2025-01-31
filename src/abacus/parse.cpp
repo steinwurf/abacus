@@ -6,20 +6,23 @@
 #include "parse.hpp"
 
 #include <cassert>
-#include <map>
-#include <vector>
+#include <optional>
 
 namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-auto parse::metadata(const uint8_t* metadata_data,
-                     std::size_t metadata_bytes) -> protobuf::MetricsMetadata
+auto parse::metadata(const uint8_t* metadata_data, std::size_t metadata_bytes)
+    -> std::optional<protobuf::MetricsMetadata>
 {
     assert(metadata_data != nullptr);
     assert(metadata_bytes > 0);
     protobuf::MetricsMetadata metadata;
-    metadata.ParseFromArray(metadata_data, metadata_bytes);
+    auto result = metadata.ParseFromArray(metadata_data, metadata_bytes);
+    if (!result)
+    {
+        return std::nullopt;
+    }
     return metadata;
 }
 }

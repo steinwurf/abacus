@@ -65,6 +65,21 @@ struct has_mutable_constant<
 template <typename T>
 inline constexpr bool has_mutable_constant_v = has_mutable_constant<T>::value;
 
+// Helper to detect the presence of offset function
+template <typename T, typename = void>
+struct has_offset : std::false_type
+{
+};
+
+template <typename T>
+struct has_offset<T, std::void_t<decltype(std::declval<T>().offset())>>
+    : std::true_type
+{
+};
+
+template <typename T>
+inline constexpr bool has_offset_v = has_offset<T>::value;
+
 // Helper to check if a type is in the variant
 template <typename T, typename Variant>
 struct is_in_variant;
@@ -151,6 +166,21 @@ static inline auto call_type(const protobuf::Metric& metric, const Func& func)
         return ReturnType();
     }
 }
+
+static inline std::size_t get_offset(const protobuf::Metric& m)
+{
+    return call_type(m,
+                     [](const auto& metric)
+                     {
+                         using Metric = std::decay_t<decltype(metric)>;
+                         if constexpr (has_offset_v<Metric>)
+                         {
+                             return metric.offset();
+                         }
+                         return 0U;
+                     });
+}
+
 }
 }
 }

@@ -20,7 +20,13 @@ auto to_json(const uint8_t* metadata_data, std::size_t metadata_bytes,
              bool minimal) -> std::string
 {
     view v;
-    if (v.set_metadata(parse::metadata(metadata_data, metadata_bytes)))
+    auto parsed = parse::metadata(metadata_data, metadata_bytes);
+    if (!parsed.has_value())
+    {
+        return "";
+    }
+
+    if (v.set_metadata(parsed.value()))
     {
         if (v.set_value_data(value_data, value_bytes))
         {
