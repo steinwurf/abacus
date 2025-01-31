@@ -12,7 +12,7 @@ inline namespace STEINWURF_ABACUS_VERSION
 {
 uint8_t protocol_version()
 {
-    return 1;
+    return 2;
 }
 }
 }

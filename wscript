@@ -8,10 +8,11 @@ from waflib.Build import BuildContext
 
 APPNAME = "abacus"
 VERSION = "6.0.1"
+NO_RECURSE = False
 
 
 def configure(conf):
-    conf.set_cxx_std(14)
+    conf.set_cxx_std(17)
 
 
 def build(bld):
@@ -42,7 +43,8 @@ def build(bld):
         # i.e. not when included as a dependency
         bld.program(
             features="cxx test",
-            source=bld.path.ant_glob("test/**/*.cpp") + bld.path.ant_glob("src/**/*.cc"),
+            source=bld.path.ant_glob("test/**/*.cpp")
+            + bld.path.ant_glob("src/**/*.cc"),
             target="abacus_tests",
             use=["abacus", "protobuf", "gtest"],
         )
@@ -53,6 +55,14 @@ def build(bld):
             target="metrics_simple",
             install_path=None,
             use=["abacus"],
+        )
+
+        bld.program(
+            features="cxx benchmark",
+            source=["benchmark/main.cpp"],
+            target="abacus_benchmark",
+            install_path=None,
+            use=["abacus", "gbenchmark"],
         )
 
         sourcepath = bld.path.find_node("src")
@@ -66,11 +76,14 @@ def build(bld):
 
         bld.install_files(dest="${PREFIX}/", files=bld.path.ant_glob("NEWS.rst"))
 
+
 def protogen(ctx):
     # check if protec is available
     protoc_location = "build_current/resolve_symlinks/protobuf/protoc"
     if not os.path.isfile(protoc_location):
-        ctx.fatal("protoc not found. Make sure to configure waf with `--with_protoc` to include protoc in build.")
+        ctx.fatal(
+            "protoc not found. Make sure to configure waf with `--with_protoc` to include protoc in build."
+        )
         return
     try:
         shutil.rmtree("src/abacus/protobuf")
@@ -85,6 +98,7 @@ def protogen(ctx):
     ctx.exec_command(
         "echo 'DisableFormat: true\nSortIncludes: false' > src/abacus/protobuf/.clang-format"
     )
+
 
 class ReleaseContext(BuildContext):
     cmd = "prepare_release"

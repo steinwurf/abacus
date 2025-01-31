@@ -3,40 +3,71 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include <cstring>
-#include <limits>
-
-#include "detail/raw.hpp"
 #include "view.hpp"
 
+#include "boolean.hpp"
+#include "detail/helpers.hpp"
+#include "enum8.hpp"
+#include "float32.hpp"
+#include "float64.hpp"
+#include "int32.hpp"
+#include "int64.hpp"
+#include "protocol_version.hpp"
+#include "uint32.hpp"
+#include "uint64.hpp"
+
+#include <cassert>
+#include <map>
+#include <vector>
+
 #include <endian/big_endian.hpp>
+#include <endian/is_big_endian.hpp>
 #include <endian/little_endian.hpp>
 
 namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-
-void view::set_meta_data(const uint8_t* meta_data)
+[[nodiscard]] auto
+view::set_metadata(const protobuf::MetricsMetadata& metadata) -> bool
 {
-    m_meta_data = meta_data;
-    m_value_data = nullptr;
-
-    for (std::size_t i = 0; i < count(); ++i)
+    assert(metadata.IsInitialized());
+    m_metadata = metadata;
+    if (m_metadata.protocol_version() != protocol_version())
     {
-        m_name_to_index.emplace(name(i), i);
+        m_metadata.Clear();
+        return false;
     }
+    return true;
 }
 
-void view::set_value_data(const uint8_t* value_data)
+[[nodiscard]] auto view::set_value_data(const uint8_t* value_data,
+                                        std::size_t value_bytes) -> bool
 {
-    assert(m_meta_data != nullptr);
+    assert(m_metadata.IsInitialized());
+    assert(value_data != nullptr);
+
+    // Check that the hash is correct
+    uint32_t value_data_hash = 0;
+    switch (m_metadata.endianness())
+    {
+    case protobuf::Endianness::BIG:
+        endian::big_endian::get(value_data_hash, value_data);
+        break;
+    case protobuf::Endianness::LITTLE:
+        endian::little_endian::get(value_data_hash, value_data);
+        break;
+    default:
+        assert(false);
+    }
+
+    if (m_metadata.sync_value() != value_data_hash)
+    {
+        return false;
+    }
     m_value_data = value_data;
-}
-
-const uint8_t* view::meta_data() const
-{
-    return m_meta_data;
+    m_value_bytes = value_bytes;
+    return true;
 }
 
 const uint8_t* view::value_data() const
@@ -44,128 +75,67 @@ const uint8_t* view::value_data() const
     return m_value_data;
 }
 
-std::size_t view::meta_bytes() const
-{
-    return detail::meta_bytes(m_meta_data);
-}
-
 std::size_t view::value_bytes() const
 {
-    return detail::value_bytes(m_meta_data);
+    return m_value_bytes;
 }
 
-auto view::count() const -> uint16_t
+auto view::metadata() const -> const protobuf::MetricsMetadata&
 {
-    return detail::metric_count(m_meta_data);
+    return m_metadata;
 }
 
-auto view::protocol_version() const -> uint8_t
+const protobuf::Metric& view::metric(const std::string& name) const
 {
-    return detail::protocol_version(m_meta_data);
+    assert(m_metadata.metrics().count(name) != 0);
+    return m_metadata.metrics().at(name);
 }
 
-auto view::is_initialized(std::size_t index) const -> bool
+template <class Metric>
+auto view::value(const std::string& name) const
+    -> std::optional<typename Metric::type>
 {
-    assert(index < count());
-    return detail::is_metric_initialized(m_meta_data, m_value_data, index);
-}
+    assert(m_metadata.IsInitialized());
+    assert(m_value_data != nullptr);
+    auto m = metric(name);
+    auto offset = detail::get_offset(m);
+    assert(offset < m_value_bytes);
 
-auto view::name(std::size_t index) const -> std::string
-{
-    return {detail::name(m_meta_data, index),
-            detail::name_size(m_meta_data, index)};
-}
-
-auto view::description(std::size_t index) const -> std::string
-{
-    return {detail::description(m_meta_data, index),
-            detail::description_size(m_meta_data, index)};
-}
-
-auto view::unit(std::size_t index) const -> std::string
-{
-    return {detail::unit(m_meta_data, index),
-            detail::unit_size(m_meta_data, index)};
-}
-
-auto view::type(std::size_t index) const -> abacus::type
-{
-    return detail::type(m_meta_data, index);
-}
-
-auto view::kind(std::size_t index) const -> abacus::kind
-{
-    return detail::kind(m_meta_data, index);
-}
-
-auto view::min(std::size_t index) const -> abacus::min
-{
-    switch (type(index))
+    if (m_value_data[offset] == 0)
     {
-    case abacus::type::boolean:
-        return detail::min_value<uint64_t>(m_meta_data, index);
-    case abacus::type::uint64:
-        return detail::min_value<uint64_t>(m_meta_data, index);
-    case abacus::type::int64:
-        return detail::min_value<int64_t>(m_meta_data, index);
-    case abacus::type::float64:
-        return detail::min_value<double>(m_meta_data, index);
-    default:
-        assert(false && "Unknown type");
-        return abacus::min{};
+        // Either the metric is unintialized or it's optional and has no value
+        return std::nullopt;
+    }
+
+    if (m_metadata.endianness() == protobuf::Endianness::BIG)
+    {
+        return endian::big_endian::get<typename Metric::type>(m_value_data +
+                                                              offset + 1);
+    }
+    else
+    {
+        assert(m_metadata.endianness() == protobuf::Endianness::LITTLE);
+        return endian::little_endian::get<typename Metric::type>(m_value_data +
+                                                                 offset + 1);
     }
 }
 
-auto view::max(std::size_t index) const -> abacus::max
-{
-    switch (type(index))
-    {
-    case abacus::type::boolean:
-        return detail::max_value<uint64_t>(m_meta_data, index);
-    case abacus::type::uint64:
-        return detail::max_value<uint64_t>(m_meta_data, index);
-    case abacus::type::int64:
-        return detail::max_value<int64_t>(m_meta_data, index);
-    case abacus::type::float64:
-        return detail::max_value<double>(m_meta_data, index);
-    default:
-        assert(false && "Unknown type");
-        return abacus::max{};
-    }
-}
-
-void view::value(std::size_t index, bool& value) const
-{
-    assert(is_initialized(index));
-    assert(type(index) == abacus::type::boolean);
-    value = detail::value<bool>(m_meta_data, m_value_data, index);
-}
-
-void view::value(std::size_t index, uint64_t& value) const
-{
-    assert(is_initialized(index));
-    assert(type(index) == abacus::type::uint64);
-    value = detail::value<uint64_t>(m_meta_data, m_value_data, index);
-}
-
-void view::value(std::size_t index, int64_t& value) const
-{
-    assert(is_initialized(index));
-    assert(type(index) == abacus::type::int64);
-    value = detail::value<int64_t>(m_meta_data, m_value_data, index);
-}
-
-void view::value(std::size_t index, double& value) const
-{
-    assert(is_initialized(index));
-    assert(type(index) == abacus::type::float64);
-    value = detail::value<double>(m_meta_data, m_value_data, index);
-}
-
-auto view::index(const std::string& name) const -> std::size_t
-{
-    return m_name_to_index.at(name);
-}
-
+// Explicit instantiations for the expected types
+template auto view::value<abacus::uint64>(const std::string& name) const
+    -> std::optional<abacus::uint64::type>;
+template auto view::value<abacus::int64>(const std::string& name) const
+    -> std::optional<abacus::int64::type>;
+template auto view::value<abacus::uint32>(const std::string& name) const
+    -> std::optional<abacus::uint32::type>;
+template auto view::value<abacus::int32>(const std::string& name) const
+    -> std::optional<abacus::int32::type>;
+template auto view::value<abacus::float64>(const std::string& name) const
+    -> std::optional<abacus::float64::type>;
+template auto view::value<abacus::float32>(const std::string& name) const
+    -> std::optional<abacus::float32::type>;
+template auto view::value<abacus::boolean>(const std::string& name) const
+    -> std::optional<abacus::boolean::type>;
+template auto view::value<abacus::enum8>(const std::string& name) const
+    -> std::optional<abacus::enum8::type>;
 }
 }

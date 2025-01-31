@@ -14,13 +14,25 @@ namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-
 /// @return a JSON-formatted string of a metrics views data.
-/// @param meta_data The meta data of the metrics view.
-/// @param value_data The value data of the metrics view.
+/// @param metadata_data The metadata data of the metrics.
+/// @param metadata_bytes The size of the metadata data.
+/// @param value_data The value data of the metrics.
+/// @param value_bytes The size of the value data.
 /// @param minimal If true, the JSON will be slimmed down to only contain the
 ///        the value data.
-auto to_json(const uint8_t* meta_data, const uint8_t* value_data,
+auto to_json(const uint8_t* metadata_data, std::size_t metadata_bytes,
+             const uint8_t* value_data, std::size_t value_bytes,
+             bool minimal = false) -> std::string;
+
+/// @return a JSON-formatted string of a metrics views data.
+/// @param metadata The metadata of the metrics.
+/// @param value_data The value data of the metrics.
+/// @param value_bytes The size of the value data.
+/// @param minimal If true, the JSON will be slimmed down to only contain the
+///        the value data.
+auto to_json(const protobuf::MetricsMetadata& metadata,
+             const uint8_t* value_data, std::size_t value_bytes,
              bool minimal = false) -> std::string;
 
 /// @return a JSON-formatted string of a single views data.
