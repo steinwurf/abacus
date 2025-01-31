@@ -16,23 +16,25 @@ int main()
 {
     std::map<abacus::name, abacus::info> infos = {
         {abacus::name{"fuel_consumption"},
-         abacus::float64{
-             abacus::constant{22.3},
+         abacus::constant{
+             abacus::value{22.3},
              abacus::description{"Fuel consumption in kilometers per liter"},
              abacus::unit{"km/l"}}},
         {abacus::name{"wheels"},
-         abacus::uint64{abacus::constant{4UL},
-                        abacus::description{"Wheels on the car"},
-                        abacus::unit{"wheels"}}},
+         abacus::constant{abacus::value{4UL},
+                          abacus::description{"Wheels on the car"},
+                          abacus::unit{"wheels"}}},
         {abacus::name{"days_until_maintenance"},
          abacus::int64{
-             abacus::gauge{abacus::required},
+             abacus::kind::gauge, abacus::required,
              abacus::description{"Days until next maintenance, if less than 0, "
                                  "maintenance is overdue"},
              abacus::unit{"days"}}},
         {abacus::name{"registered"},
-         abacus::boolean{abacus::gauge{abacus::optional},
-                         abacus::description{"Is the car registered"}}}};
+         abacus::boolean{abacus::optional,
+                         abacus::description{"Is the car registered"}}},
+        {abacus::name{"license_plate"},
+         abacus::constant{abacus::value{"ABC-1234"}}}};
 
     abacus::metrics car(infos);
 

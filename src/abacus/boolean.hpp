@@ -54,8 +54,8 @@ struct boolean
         return memory[1];
     }
 
-    /// The kind of the metric
-    std::variant<gauge, constant<type>> kind;
+    /// The availability of the metric
+    abacus::availability availability;
 
     /// The description of the metric
     abacus::description description;

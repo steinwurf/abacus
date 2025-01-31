@@ -60,7 +60,10 @@ struct float32
     }
 
     /// The metric kind
-    std::variant<gauge, counter, constant<type>> kind;
+    abacus::kind kind;
+
+    /// The availability of the metric
+    abacus::availability availability;
 
     /// The metric description
     abacus::description description;

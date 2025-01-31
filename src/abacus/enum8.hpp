@@ -93,8 +93,8 @@ struct enum8
         std::string description;
     };
 
-    /// The metric kind
-    std::variant<gauge, constant<uint8_t>> kind;
+    /// The availability of the metric
+    abacus::availability availability;
 
     /// The metric description
     abacus::description description;
