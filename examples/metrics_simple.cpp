@@ -26,7 +26,7 @@ int main()
                           abacus::unit{"wheels"}}},
         {abacus::name{"days_until_maintenance"},
          abacus::int64{
-             abacus::kind::gauge, abacus::required,
+             abacus::gauge, abacus::required,
              abacus::description{"Days until next maintenance, if less than 0, "
                                  "maintenance is overdue"},
              abacus::unit{"days"}}},
@@ -34,7 +34,8 @@ int main()
          abacus::boolean{abacus::optional,
                          abacus::description{"Is the car registered"}}},
         {abacus::name{"license_plate"},
-         abacus::constant{abacus::value{"ABC-1234"}}}};
+         abacus::constant{abacus::value{"ABC-1234"},
+                          abacus::description{"License plate"}}}};
 
     abacus::metrics car(infos);
 

@@ -222,14 +222,3 @@ TEST(test_info, enum8)
         EXPECT_EQ(r.value(), 3U);
     }
 }
-
-TEST(test_info, string)
-{
-    {
-        uint8_t data[7];
-        std::memset(data, 0, sizeof(data));
-        data[0] = 1;
-        abacus::string::set_value(data, "hello");
-        EXPECT_EQ(abacus::string::value(data), "hello");
-    }
-}

@@ -44,8 +44,7 @@ struct constant
     std::variant<abacus::value<uint64::type>, abacus::value<uint32::type>,
                  abacus::value<int64::type>, abacus::value<int32::type>,
                  abacus::value<float64::type>, abacus::value<float32::type>,
-                 abacus::value<boolean::type>, abacus::value<enum8::type>,
-                 abacus::value<std::string_view>>
+                 abacus::value<boolean::type>, abacus::value<std::string_view>>
         value;
     // The description of the constant
     abacus::description description;

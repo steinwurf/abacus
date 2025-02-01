@@ -30,6 +30,11 @@ static inline auto is_optional(const protobuf::Metric& metric) -> bool
                              { return metric.optional(); });
 }
 
+static inline auto get_kind(abacus::kind k) -> protobuf::Kind
+{
+    return std::visit([](auto&& k) { return k.kind; }, k);
+}
+
 metrics::metrics(metrics&& other) noexcept :
     m_metadata(std::move(other.m_metadata)), m_data(std::move(other.m_data)),
     m_metadata_bytes(other.m_metadata_bytes), m_hash(other.m_hash),
@@ -65,7 +70,7 @@ metrics::metrics(const std::map<name, abacus::info>& infos)
             typed_metric->set_offset(m_value_bytes);
             typed_metric->set_description(m->description.value);
             typed_metric->set_optional(is_optional(m->availability));
-            typed_metric->set_kind(static_cast<protobuf::Kind>(m->kind));
+            typed_metric->set_kind(get_kind(m->kind));
 
             if (!m->unit.empty())
             {
@@ -92,7 +97,7 @@ metrics::metrics(const std::map<name, abacus::info>& infos)
             typed_metric->set_offset(m_value_bytes);
             typed_metric->set_description(m->description.value);
             typed_metric->set_optional(is_optional(m->availability));
-            typed_metric->set_kind(static_cast<protobuf::Kind>(m->kind));
+            typed_metric->set_kind(get_kind(m->kind));
 
             if (!m->unit.empty())
             {
@@ -119,7 +124,7 @@ metrics::metrics(const std::map<name, abacus::info>& infos)
             typed_metric->set_offset(m_value_bytes);
             typed_metric->set_description(m->description.value);
             typed_metric->set_optional(is_optional(m->availability));
-            typed_metric->set_kind(static_cast<protobuf::Kind>(m->kind));
+            typed_metric->set_kind(get_kind(m->kind));
 
             if (!m->unit.empty())
             {
@@ -146,7 +151,7 @@ metrics::metrics(const std::map<name, abacus::info>& infos)
             typed_metric->set_offset(m_value_bytes);
             typed_metric->set_description(m->description.value);
             typed_metric->set_optional(is_optional(m->availability));
-            typed_metric->set_kind(static_cast<protobuf::Kind>(m->kind));
+            typed_metric->set_kind(get_kind(m->kind));
 
             if (!m->unit.empty())
             {
@@ -173,7 +178,7 @@ metrics::metrics(const std::map<name, abacus::info>& infos)
             typed_metric->set_offset(m_value_bytes);
             typed_metric->set_description(m->description.value);
             typed_metric->set_optional(is_optional(m->availability));
-            typed_metric->set_kind(static_cast<protobuf::Kind>(m->kind));
+            typed_metric->set_kind(get_kind(m->kind));
 
             if (!m->unit.empty())
             {
@@ -200,7 +205,7 @@ metrics::metrics(const std::map<name, abacus::info>& infos)
             typed_metric->set_offset(m_value_bytes);
             typed_metric->set_description(m->description.value);
             typed_metric->set_optional(is_optional(m->availability));
-            typed_metric->set_kind(static_cast<protobuf::Kind>(m->kind));
+            typed_metric->set_kind(get_kind(m->kind));
 
             if (!m->unit.empty())
             {
@@ -302,11 +307,6 @@ metrics::metrics(const std::map<name, abacus::info>& infos)
                     if constexpr (std::is_same_v<Type, boolean::type>)
                     {
                         typed_metric->set_boolean(value.value);
-                        return;
-                    }
-                    if constexpr (std::is_same_v<Type, enum8::type>)
-                    {
-                        typed_metric->set_enum8(value.value);
                         return;
                     }
                     if constexpr (std::is_same_v<Type, std::string_view>)
