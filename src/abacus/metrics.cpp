@@ -317,6 +317,7 @@ metrics::metrics(const std::map<name, abacus::info>& infos)
                     assert(false && "Unknown type");
                 },
                 m->value);
+            m_initialized[name.value] = true;
         }
 
         m_metadata.mutable_metrics()->insert({name.value, metric});
