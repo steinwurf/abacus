@@ -18,6 +18,17 @@ namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
+
+struct optional_value_type
+{
+};
+
+inline constexpr auto optional = optional_value_type{};
+
+struct required_value
+{
+};
+
 /// A 64-bit integer metric
 struct uint64
 {
@@ -29,29 +40,6 @@ struct uint64
 
     /// Optional uint64 metric
     using optional = optional_metric<uint64>;
-
-    /// Set the value of the metric
-    /// @param memory The memory to use for the metric, note that the memory
-    ///        must be at least sizeof(type) + 1 bytes long.
-    /// @param value The value to set
-    static inline auto set_value(uint8_t* memory, type value) -> void
-    {
-        assert(memory != nullptr);
-        std::memcpy(memory + 1, &value, sizeof(type));
-    }
-
-    /// Get the value of the metric
-    /// @param memory The memory to use for the metric, note that the memory
-    ///        must be at least sizeof(type) + 1 bytes long.
-    /// @return The value of the metric
-    static inline auto value(const uint8_t* memory) -> type
-    {
-        assert(memory != nullptr);
-        assert(memory[0] == 1);
-        type value;
-        std::memcpy(&value, memory + 1, sizeof(type));
-        return value;
-    }
 
     /// The metric kind
     abacus::kind kind;

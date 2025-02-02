@@ -18,9 +18,12 @@ namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-/// A 32-bit floating point metric
+/// A 64-bit floating point metric
 struct float64
 {
+    /// Ensure this is a 64 bit type
+    static_assert(sizeof(double) == 8, "double must be 64 bits");
+
     /// The primitive type of the metric
     using type = double;
 
@@ -29,33 +32,6 @@ struct float64
 
     /// Optional float64 metric
     using optional = optional_metric<float64>;
-
-    /// Set the value of the metric
-    /// @param memory The memory to use for the metric, note that the memory
-    ///        must be at least sizeof(type) + 1 bytes long.
-    /// @param value The value to set
-    static inline auto set_value(uint8_t* memory, type value) -> void
-    {
-        assert(memory != nullptr);
-
-        assert(!std::isnan(value) && "Cannot assign a NaN");
-        assert(!std::isinf(value) && "Cannot assign an Inf/-Inf value");
-
-        std::memcpy(memory + 1, &value, sizeof(type));
-    }
-
-    /// Get the value of the metric
-    /// @param memory The memory to use for the metric, note that the memory
-    ///        must be at least sizeof(type) + 1 bytes long.
-    /// @return The value of the metric
-    static inline auto value(const uint8_t* memory) -> type
-    {
-        assert(memory != nullptr);
-        assert(memory[0] == 1);
-        type value;
-        std::memcpy(&value, memory + 1, sizeof(type));
-        return value;
-    }
 
     /// The metric kind
     abacus::kind kind;

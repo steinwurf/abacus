@@ -30,29 +30,6 @@ struct int32
     /// Optional int32 metric
     using optional = optional_metric<int32>;
 
-    /// Set the value of the metric
-    /// @param memory The memory to use for the metric, note that the memory
-    ///        must be at least sizeof(type) + 1 bytes long.
-    /// @param value The value to set
-    static inline auto set_value(uint8_t* memory, type value) -> void
-    {
-        assert(memory != nullptr);
-        std::memcpy(memory + 1, &value, sizeof(type));
-    }
-
-    /// Get the value of the metric
-    /// @param memory The memory to use for the metric, note that the memory
-    ///        must be at least sizeof(type) + 1 bytes long.
-    /// @return The value of the metric
-    static inline auto value(const uint8_t* memory) -> type
-    {
-        assert(memory != nullptr);
-        assert(memory[0] == 1);
-        type value;
-        std::memcpy(&value, memory + 1, sizeof(type));
-        return value;
-    }
-
     /// The metric kind
     abacus::kind kind;
 

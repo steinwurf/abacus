@@ -43,7 +43,8 @@ void integer_test()
         std::memset(data, 0, sizeof(data));
         required r;
         EXPECT_FALSE(r.is_initialized());
-        r = required(data, 10U);
+        r = required(data);
+        r.set_value(10U);
         EXPECT_TRUE(r.is_initialized());
         EXPECT_EQ(r.value(), type{10});
         r += 12;
@@ -95,7 +96,8 @@ void floating_point_test()
         std::memset(data, 0, sizeof(data));
         required r;
         EXPECT_FALSE(r.is_initialized());
-        r = required(data, 10.0);
+        r = required(data);
+        r.set_value(10.0);
         EXPECT_TRUE(r.is_initialized());
         EXPECT_EQ(r.value(), type{10.0});
         r += 12.0;
@@ -137,7 +139,8 @@ TEST(test_info, boolean)
         std::memset(data, 0, sizeof(data));
         abacus::boolean::required r;
         EXPECT_FALSE(r.is_initialized());
-        r = abacus::boolean::required(data, true);
+        r = abacus::boolean::required(data);
+        r.set_value(true);
         EXPECT_TRUE(r.is_initialized());
         EXPECT_EQ(r.value(), true);
         r = false;
@@ -165,31 +168,24 @@ TEST(test_info, enum8)
         o = abacus::enum8::optional(data);
         EXPECT_TRUE(o.is_initialized());
         EXPECT_FALSE(o.has_value());
-        o = 10U;
-        EXPECT_TRUE(o.has_value());
-        EXPECT_EQ(o.value(), 10U);
-        o = 20U;
-        EXPECT_EQ(o.value(), 20U);
-        o.reset();
-        EXPECT_FALSE(o.has_value());
 
         o.set_value(test_enum::value0);
-        EXPECT_EQ(o.value(), 0U);
+        EXPECT_EQ(o.value<test_enum>(), test_enum::value0);
         o.set_value(test_enum::value1);
-        EXPECT_EQ(o.value(), 1U);
+        EXPECT_EQ(o.value<test_enum>(), test_enum::value1);
         o.set_value(test_enum::value2);
-        EXPECT_EQ(o.value(), 2U);
+        EXPECT_EQ(o.value<test_enum>(), test_enum::value2);
         o.set_value(test_enum::value3);
-        EXPECT_EQ(o.value(), 3U);
+        EXPECT_EQ(o.value<test_enum>(), test_enum::value3);
 
         o = test_enum::value0;
-        EXPECT_EQ(o.value(), 0U);
+        EXPECT_EQ(o.value<test_enum>(), test_enum::value0);
         o = test_enum::value1;
-        EXPECT_EQ(o.value(), 1U);
+        EXPECT_EQ(o.value<test_enum>(), test_enum::value1);
         o = test_enum::value2;
-        EXPECT_EQ(o.value(), 2U);
+        EXPECT_EQ(o.value<test_enum>(), test_enum::value2);
         o = test_enum::value3;
-        EXPECT_EQ(o.value(), 3U);
+        EXPECT_EQ(o.value<test_enum>(), test_enum::value3);
     }
 
     {
@@ -197,39 +193,26 @@ TEST(test_info, enum8)
         std::memset(data, 0, sizeof(data));
         abacus::enum8::required r;
         EXPECT_FALSE(r.is_initialized());
-        r = abacus::enum8::required(data, 10U);
+        r = abacus::enum8::required(data);
+
         EXPECT_TRUE(r.is_initialized());
-        EXPECT_EQ(r.value(), 10U);
-        r = 20U;
-        EXPECT_EQ(r.value(), 20U);
 
         r.set_value(test_enum::value0);
-        EXPECT_EQ(r.value(), 0U);
+        EXPECT_EQ(r.value<test_enum>(), test_enum::value0);
         r.set_value(test_enum::value1);
-        EXPECT_EQ(r.value(), 1U);
+        EXPECT_EQ(r.value<test_enum>(), test_enum::value1);
         r.set_value(test_enum::value2);
-        EXPECT_EQ(r.value(), 2U);
+        EXPECT_EQ(r.value<test_enum>(), test_enum::value2);
         r.set_value(test_enum::value3);
-        EXPECT_EQ(r.value(), 3U);
+        EXPECT_EQ(r.value<test_enum>(), test_enum::value3);
 
         r = test_enum::value0;
-        EXPECT_EQ(r.value(), 0U);
+        EXPECT_EQ(r.value<test_enum>(), test_enum::value0);
         r = test_enum::value1;
-        EXPECT_EQ(r.value(), 1U);
+        EXPECT_EQ(r.value<test_enum>(), test_enum::value1);
         r = test_enum::value2;
-        EXPECT_EQ(r.value(), 2U);
+        EXPECT_EQ(r.value<test_enum>(), test_enum::value2);
         r = test_enum::value3;
-        EXPECT_EQ(r.value(), 3U);
-    }
-}
-
-TEST(test_info, string)
-{
-    {
-        uint8_t data[7];
-        std::memset(data, 0, sizeof(data));
-        data[0] = 1;
-        abacus::string::set_value(data, "hello");
-        EXPECT_EQ(abacus::string::value(data), "hello");
+        EXPECT_EQ(r.value<test_enum>(), test_enum::value3);
     }
 }

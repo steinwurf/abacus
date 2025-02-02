@@ -570,17 +570,9 @@ const ::uint32_t TableStruct_abacus_2fprotobuf_2fmetrics_2eproto::offsets[] PROT
     ::_pbi::kInvalidFieldOffsetTag,
     ::_pbi::kInvalidFieldOffsetTag,
     ::_pbi::kInvalidFieldOffsetTag,
-    ::_pbi::kInvalidFieldOffsetTag,
-    ::_pbi::kInvalidFieldOffsetTag,
-    ::_pbi::kInvalidFieldOffsetTag,
-    ::_pbi::kInvalidFieldOffsetTag,
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Constant, _impl_.description_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Constant, _impl_.unit_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Constant, _impl_.value_),
-    ~0u,
-    ~0u,
-    ~0u,
-    ~0u,
     ~0u,
     ~0u,
     ~0u,
@@ -644,10 +636,10 @@ static const ::_pbi::MigrationSchema
         {148, 158, -1, sizeof(::abacus::protobuf::Enum8Metric_EnumValue)},
         {160, 170, -1, sizeof(::abacus::protobuf::Enum8Metric_ValuesEntry_DoNotUse)},
         {172, 185, -1, sizeof(::abacus::protobuf::Enum8Metric)},
-        {190, 210, -1, sizeof(::abacus::protobuf::Constant)},
-        {221, -1, -1, sizeof(::abacus::protobuf::Metric)},
-        {239, 249, -1, sizeof(::abacus::protobuf::MetricsMetadata_MetricsEntry_DoNotUse)},
-        {251, -1, -1, sizeof(::abacus::protobuf::MetricsMetadata)},
+        {190, 206, -1, sizeof(::abacus::protobuf::Constant)},
+        {213, -1, -1, sizeof(::abacus::protobuf::Metric)},
+        {231, 241, -1, sizeof(::abacus::protobuf::MetricsMetadata_MetricsEntry_DoNotUse)},
+        {243, -1, -1, sizeof(::abacus::protobuf::MetricsMetadata)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -706,39 +698,37 @@ const char descriptor_table_protodef_abacus_2fprotobuf_2fmetrics_2eproto[] PROTO
     "\022\014\n\004name\030\001 \001(\t\022\030\n\013description\030\002 \001(\tH\000\210\001\001"
     "B\016\n\014_description\032U\n\013ValuesEntry\022\013\n\003key\030\001"
     " \001(\r\0225\n\005value\030\002 \001(\0132&.abacus.protobuf.En"
-    "um8Metric.EnumValue:\0028\001B\007\n\005_unit\"\346\001\n\010Con"
+    "um8Metric.EnumValue:\0028\001B\007\n\005_unit\"\237\001\n\010Con"
     "stant\022\020\n\006uint64\030\001 \001(\004H\000\022\017\n\005int64\030\002 \001(\003H\000"
-    "\022\020\n\006uint32\030\003 \001(\rH\000\022\017\n\005int32\030\004 \001(\005H\000\022\021\n\007f"
-    "loat32\030\005 \001(\002H\000\022\021\n\007float64\030\006 \001(\001H\000\022\021\n\007boo"
-    "lean\030\007 \001(\010H\000\022\017\n\005enum8\030\010 \001(\rH\000\022\020\n\006string\030"
-    "\t \001(\tH\000\022\023\n\013description\030\n \001(\t\022\021\n\004unit\030\013 \001"
-    "(\tH\001\210\001\001B\007\n\005valueB\007\n\005_unit\"\304\003\n\006Metric\022-\n\010"
-    "constant\030\001 \001(\0132\031.abacus.protobuf.Constan"
-    "tH\000\022/\n\006uint64\030\002 \001(\0132\035.abacus.protobuf.UI"
-    "nt64MetricH\000\022-\n\005int64\030\003 \001(\0132\034.abacus.pro"
-    "tobuf.Int64MetricH\000\022/\n\006uint32\030\004 \001(\0132\035.ab"
-    "acus.protobuf.UInt32MetricH\000\022-\n\005int32\030\005 "
-    "\001(\0132\034.abacus.protobuf.Int32MetricH\000\0221\n\007f"
-    "loat64\030\006 \001(\0132\036.abacus.protobuf.Float64Me"
-    "tricH\000\0221\n\007float32\030\007 \001(\0132\036.abacus.protobu"
-    "f.Float32MetricH\000\022.\n\007boolean\030\010 \001(\0132\033.aba"
-    "cus.protobuf.BoolMetricH\000\022-\n\005enum8\030\t \001(\013"
-    "2\034.abacus.protobuf.Enum8MetricH\000B\006\n\004type"
-    "\"\371\001\n\017MetricsMetadata\022\030\n\020protocol_version"
-    "\030\001 \001(\r\022/\n\nendianness\030\002 \001(\0162\033.abacus.prot"
-    "obuf.Endianness\022\022\n\nsync_value\030\003 \001(\007\022>\n\007m"
-    "etrics\030\004 \003(\0132-.abacus.protobuf.MetricsMe"
-    "tadata.MetricsEntry\032G\n\014MetricsEntry\022\013\n\003k"
-    "ey\030\001 \001(\t\022&\n\005value\030\002 \001(\0132\027.abacus.protobu"
-    "f.Metric:\0028\001*!\n\nEndianness\022\n\n\006LITTLE\020\000\022\007"
-    "\n\003BIG\020\001*\036\n\004Kind\022\t\n\005GAUGE\020\000\022\013\n\007COUNTER\020\001B"
-    "\021Z\017abacus/protobufb\006proto3"
+    "\022\021\n\007float64\030\006 \001(\001H\000\022\021\n\007boolean\030\007 \001(\010H\000\022\020"
+    "\n\006string\030\t \001(\tH\000\022\023\n\013description\030\n \001(\t\022\021\n"
+    "\004unit\030\013 \001(\tH\001\210\001\001B\007\n\005valueB\007\n\005_unit\"\304\003\n\006M"
+    "etric\022-\n\010constant\030\001 \001(\0132\031.abacus.protobu"
+    "f.ConstantH\000\022/\n\006uint64\030\002 \001(\0132\035.abacus.pr"
+    "otobuf.UInt64MetricH\000\022-\n\005int64\030\003 \001(\0132\034.a"
+    "bacus.protobuf.Int64MetricH\000\022/\n\006uint32\030\004"
+    " \001(\0132\035.abacus.protobuf.UInt32MetricH\000\022-\n"
+    "\005int32\030\005 \001(\0132\034.abacus.protobuf.Int32Metr"
+    "icH\000\0221\n\007float64\030\006 \001(\0132\036.abacus.protobuf."
+    "Float64MetricH\000\0221\n\007float32\030\007 \001(\0132\036.abacu"
+    "s.protobuf.Float32MetricH\000\022.\n\007boolean\030\010 "
+    "\001(\0132\033.abacus.protobuf.BoolMetricH\000\022-\n\005en"
+    "um8\030\t \001(\0132\034.abacus.protobuf.Enum8MetricH"
+    "\000B\006\n\004type\"\371\001\n\017MetricsMetadata\022\030\n\020protoco"
+    "l_version\030\001 \001(\r\022/\n\nendianness\030\002 \001(\0162\033.ab"
+    "acus.protobuf.Endianness\022\022\n\nsync_value\030\003"
+    " \001(\007\022>\n\007metrics\030\004 \003(\0132-.abacus.protobuf."
+    "MetricsMetadata.MetricsEntry\032G\n\014MetricsE"
+    "ntry\022\013\n\003key\030\001 \001(\t\022&\n\005value\030\002 \001(\0132\027.abacu"
+    "s.protobuf.Metric:\0028\001*!\n\nEndianness\022\n\n\006L"
+    "ITTLE\020\000\022\007\n\003BIG\020\001*\036\n\004Kind\022\t\n\005GAUGE\020\000\022\013\n\007C"
+    "OUNTER\020\001B\021Z\017abacus/protobufb\006proto3"
 };
 static ::absl::once_flag descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto = {
     false,
     false,
-    2626,
+    2555,
     descriptor_table_protodef_abacus_2fprotobuf_2fmetrics_2eproto,
     "abacus/protobuf/metrics.proto",
     &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once,
@@ -4140,28 +4130,12 @@ Constant::Constant(const Constant& from) : ::google::protobuf::Message() {
       _this->_internal_set_int64(from._internal_int64());
       break;
     }
-    case kUint32: {
-      _this->_internal_set_uint32(from._internal_uint32());
-      break;
-    }
-    case kInt32: {
-      _this->_internal_set_int32(from._internal_int32());
-      break;
-    }
-    case kFloat32: {
-      _this->_internal_set_float32(from._internal_float32());
-      break;
-    }
     case kFloat64: {
       _this->_internal_set_float64(from._internal_float64());
       break;
     }
     case kBoolean: {
       _this->_internal_set_boolean(from._internal_boolean());
-      break;
-    }
-    case kEnum8: {
-      _this->_internal_set_enum8(from._internal_enum8());
       break;
     }
     case kString: {
@@ -4223,27 +4197,11 @@ void Constant::clear_value() {
       // No need to clear
       break;
     }
-    case kUint32: {
-      // No need to clear
-      break;
-    }
-    case kInt32: {
-      // No need to clear
-      break;
-    }
-    case kFloat32: {
-      // No need to clear
-      break;
-    }
     case kFloat64: {
       // No need to clear
       break;
     }
     case kBoolean: {
-      // No need to clear
-      break;
-    }
-    case kEnum8: {
       // No need to clear
       break;
     }
@@ -4283,15 +4241,15 @@ const char* Constant::_InternalParse(
 
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 11, 0, 62, 2> Constant::_table_ = {
+const ::_pbi::TcParseTable<1, 7, 0, 54, 2> Constant::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(Constant, _impl_._has_bits_),
     0, // no _extensions_
     11, 8,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294965248,  // skipmap
+    4294965404,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    11,  // num_field_entries
+    7,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     &_Constant_default_instance_._instance,
@@ -4312,24 +4270,12 @@ const ::_pbi::TcParseTable<1, 11, 0, 62, 2> Constant::_table_ = {
     // int64 int64 = 2;
     {PROTOBUF_FIELD_OFFSET(Constant, _impl_.value_.int64_), _Internal::kOneofCaseOffset + 0, 0,
     (0 | ::_fl::kFcOneof | ::_fl::kInt64)},
-    // uint32 uint32 = 3;
-    {PROTOBUF_FIELD_OFFSET(Constant, _impl_.value_.uint32_), _Internal::kOneofCaseOffset + 0, 0,
-    (0 | ::_fl::kFcOneof | ::_fl::kUInt32)},
-    // int32 int32 = 4;
-    {PROTOBUF_FIELD_OFFSET(Constant, _impl_.value_.int32_), _Internal::kOneofCaseOffset + 0, 0,
-    (0 | ::_fl::kFcOneof | ::_fl::kInt32)},
-    // float float32 = 5;
-    {PROTOBUF_FIELD_OFFSET(Constant, _impl_.value_.float32_), _Internal::kOneofCaseOffset + 0, 0,
-    (0 | ::_fl::kFcOneof | ::_fl::kFloat)},
     // double float64 = 6;
     {PROTOBUF_FIELD_OFFSET(Constant, _impl_.value_.float64_), _Internal::kOneofCaseOffset + 0, 0,
     (0 | ::_fl::kFcOneof | ::_fl::kDouble)},
     // bool boolean = 7;
     {PROTOBUF_FIELD_OFFSET(Constant, _impl_.value_.boolean_), _Internal::kOneofCaseOffset + 0, 0,
     (0 | ::_fl::kFcOneof | ::_fl::kBool)},
-    // uint32 enum8 = 8;
-    {PROTOBUF_FIELD_OFFSET(Constant, _impl_.value_.enum8_), _Internal::kOneofCaseOffset + 0, 0,
-    (0 | ::_fl::kFcOneof | ::_fl::kUInt32)},
     // string string = 9;
     {PROTOBUF_FIELD_OFFSET(Constant, _impl_.value_.string_), _Internal::kOneofCaseOffset + 0, 0,
     (0 | ::_fl::kFcOneof | ::_fl::kUtf8String | ::_fl::kRepAString)},
@@ -4342,7 +4288,7 @@ const ::_pbi::TcParseTable<1, 11, 0, 62, 2> Constant::_table_ = {
   }},
   // no aux_entries
   {{
-    "\30\0\0\0\0\0\0\0\0\6\13\4\0\0\0\0"
+    "\30\0\0\0\0\6\13\4"
     "abacus.protobuf.Constant"
     "string"
     "description"
@@ -4370,24 +4316,6 @@ const ::_pbi::TcParseTable<1, 11, 0, 62, 2> Constant::_table_ = {
               stream, this->_internal_int64(), target);
       break;
     }
-    case kUint32: {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
-          3, this->_internal_uint32(), target);
-      break;
-    }
-    case kInt32: {
-      target = ::google::protobuf::internal::WireFormatLite::
-          WriteInt32ToArrayWithField<4>(
-              stream, this->_internal_int32(), target);
-      break;
-    }
-    case kFloat32: {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteFloatToArray(
-          5, this->_internal_float32(), target);
-      break;
-    }
     case kFloat64: {
       target = stream->EnsureSpace(target);
       target = ::_pbi::WireFormatLite::WriteDoubleToArray(
@@ -4398,12 +4326,6 @@ const ::_pbi::TcParseTable<1, 11, 0, 62, 2> Constant::_table_ = {
       target = stream->EnsureSpace(target);
       target = ::_pbi::WireFormatLite::WriteBoolToArray(
           7, this->_internal_boolean(), target);
-      break;
-    }
-    case kEnum8: {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
-          8, this->_internal_enum8(), target);
       break;
     }
     case kString: {
@@ -4476,23 +4398,6 @@ const ::_pbi::TcParseTable<1, 11, 0, 62, 2> Constant::_table_ = {
           this->_internal_int64());
       break;
     }
-    // uint32 uint32 = 3;
-    case kUint32: {
-      total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
-          this->_internal_uint32());
-      break;
-    }
-    // int32 int32 = 4;
-    case kInt32: {
-      total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
-          this->_internal_int32());
-      break;
-    }
-    // float float32 = 5;
-    case kFloat32: {
-      total_size += 5;
-      break;
-    }
     // double float64 = 6;
     case kFloat64: {
       total_size += 9;
@@ -4501,12 +4406,6 @@ const ::_pbi::TcParseTable<1, 11, 0, 62, 2> Constant::_table_ = {
     // bool boolean = 7;
     case kBoolean: {
       total_size += 2;
-      break;
-    }
-    // uint32 enum8 = 8;
-    case kEnum8: {
-      total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
-          this->_internal_enum8());
       break;
     }
     // string string = 9;
@@ -4552,28 +4451,12 @@ void Constant::MergeImpl(::google::protobuf::Message& to_msg, const ::google::pr
       _this->_internal_set_int64(from._internal_int64());
       break;
     }
-    case kUint32: {
-      _this->_internal_set_uint32(from._internal_uint32());
-      break;
-    }
-    case kInt32: {
-      _this->_internal_set_int32(from._internal_int32());
-      break;
-    }
-    case kFloat32: {
-      _this->_internal_set_float32(from._internal_float32());
-      break;
-    }
     case kFloat64: {
       _this->_internal_set_float64(from._internal_float64());
       break;
     }
     case kBoolean: {
       _this->_internal_set_boolean(from._internal_boolean());
-      break;
-    }
-    case kEnum8: {
-      _this->_internal_set_enum8(from._internal_enum8());
       break;
     }
     case kString: {

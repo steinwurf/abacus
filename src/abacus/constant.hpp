@@ -23,32 +23,41 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-template <class T>
-struct value
-{
-    // The value of the constant
-    T value;
-};
-
-// Enable class template argument deduction (CTAD)
-template <class T>
-value(T) -> value<T>;
-
-// Special deduction guide for string literals to deduce std::string
-value(const char*) -> value<std::string_view>;
-
 /// Tag type representing a constant kind.
 struct constant
 {
+
+    struct int64
+    {
+        int64_t value;
+    };
+
+    struct uint64
+    {
+        uint64_t value;
+    };
+
+    struct boolean
+    {
+        bool value;
+    };
+
+    struct float64
+    {
+        double value;
+    };
+
+    struct str
+    {
+        std::string value;
+    };
+
     // The value of the constant
-    std::variant<abacus::value<uint64::type>, abacus::value<uint32::type>,
-                 abacus::value<int64::type>, abacus::value<int32::type>,
-                 abacus::value<float64::type>, abacus::value<float32::type>,
-                 abacus::value<boolean::type>, abacus::value<enum8::type>,
-                 abacus::value<std::string_view>>
-        value;
+    std::variant<int64, uint64, boolean, float64, str> value;
+
     // The description of the constant
     abacus::description description;
+
     // The unit of the constant
     abacus::unit unit{};
 };

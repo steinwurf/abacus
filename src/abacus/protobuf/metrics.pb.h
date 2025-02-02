@@ -2356,12 +2356,8 @@ class Constant final :
   enum ValueCase {
     kUint64 = 1,
     kInt64 = 2,
-    kUint32 = 3,
-    kInt32 = 4,
-    kFloat32 = 5,
     kFloat64 = 6,
     kBoolean = 7,
-    kEnum8 = 8,
     kString = 9,
     VALUE_NOT_SET = 0,
   };
@@ -2447,12 +2443,8 @@ class Constant final :
     kUnitFieldNumber = 11,
     kUint64FieldNumber = 1,
     kInt64FieldNumber = 2,
-    kUint32FieldNumber = 3,
-    kInt32FieldNumber = 4,
-    kFloat32FieldNumber = 5,
     kFloat64FieldNumber = 6,
     kBooleanFieldNumber = 7,
-    kEnum8FieldNumber = 8,
     kStringFieldNumber = 9,
   };
   // string description = 10;
@@ -2510,39 +2502,6 @@ class Constant final :
   void _internal_set_int64(::int64_t value);
 
   public:
-  // uint32 uint32 = 3;
-  bool has_uint32() const;
-  void clear_uint32() ;
-  ::uint32_t uint32() const;
-  void set_uint32(::uint32_t value);
-
-  private:
-  ::uint32_t _internal_uint32() const;
-  void _internal_set_uint32(::uint32_t value);
-
-  public:
-  // int32 int32 = 4;
-  bool has_int32() const;
-  void clear_int32() ;
-  ::int32_t int32() const;
-  void set_int32(::int32_t value);
-
-  private:
-  ::int32_t _internal_int32() const;
-  void _internal_set_int32(::int32_t value);
-
-  public:
-  // float float32 = 5;
-  bool has_float32() const;
-  void clear_float32() ;
-  float float32() const;
-  void set_float32(float value);
-
-  private:
-  float _internal_float32() const;
-  void _internal_set_float32(float value);
-
-  public:
   // double float64 = 6;
   bool has_float64() const;
   void clear_float64() ;
@@ -2563,17 +2522,6 @@ class Constant final :
   private:
   bool _internal_boolean() const;
   void _internal_set_boolean(bool value);
-
-  public:
-  // uint32 enum8 = 8;
-  bool has_enum8() const;
-  void clear_enum8() ;
-  ::uint32_t enum8() const;
-  void set_enum8(::uint32_t value);
-
-  private:
-  ::uint32_t _internal_enum8() const;
-  void _internal_set_enum8(::uint32_t value);
 
   public:
   // string string = 9;
@@ -2600,19 +2548,15 @@ class Constant final :
   class _Internal;
   void set_has_uint64();
   void set_has_int64();
-  void set_has_uint32();
-  void set_has_int32();
-  void set_has_float32();
   void set_has_float64();
   void set_has_boolean();
-  void set_has_enum8();
   void set_has_string();
 
   inline bool has_value() const;
   inline void clear_has_value();
 
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<1, 11, 0, 62, 2> _table_;
+  static const ::google::protobuf::internal::TcParseTable<1, 7, 0, 54, 2> _table_;
   template <typename T> friend class ::google::protobuf::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
@@ -2626,12 +2570,8 @@ class Constant final :
         ::google::protobuf::internal::ConstantInitialized _constinit_;
       ::uint64_t uint64_;
       ::int64_t int64_;
-      ::uint32_t uint32_;
-      ::int32_t int32_;
-      float float32_;
       double float64_;
       bool boolean_;
-      ::uint32_t enum8_;
       ::google::protobuf::internal::ArenaStringPtr string_;
     } value_;
     ::uint32_t _oneof_case_[1];
@@ -5278,111 +5218,6 @@ inline void Constant::_internal_set_int64(::int64_t value) {
   _impl_.value_.int64_ = value;
 }
 
-// uint32 uint32 = 3;
-inline bool Constant::has_uint32() const {
-  return value_case() == kUint32;
-}
-inline void Constant::set_has_uint32() {
-  _impl_._oneof_case_[0] = kUint32;
-}
-inline void Constant::clear_uint32() {
-  if (value_case() == kUint32) {
-    _impl_.value_.uint32_ = 0u;
-    clear_has_value();
-  }
-}
-inline ::uint32_t Constant::uint32() const {
-  // @@protoc_insertion_point(field_get:abacus.protobuf.Constant.uint32)
-  return _internal_uint32();
-}
-inline void Constant::set_uint32(::uint32_t value) {
-  _internal_set_uint32(value);
-  // @@protoc_insertion_point(field_set:abacus.protobuf.Constant.uint32)
-}
-inline ::uint32_t Constant::_internal_uint32() const {
-  if (value_case() == kUint32) {
-    return _impl_.value_.uint32_;
-  }
-  return 0u;
-}
-inline void Constant::_internal_set_uint32(::uint32_t value) {
-  if (value_case() != kUint32) {
-    clear_value();
-    set_has_uint32();
-  }
-  _impl_.value_.uint32_ = value;
-}
-
-// int32 int32 = 4;
-inline bool Constant::has_int32() const {
-  return value_case() == kInt32;
-}
-inline void Constant::set_has_int32() {
-  _impl_._oneof_case_[0] = kInt32;
-}
-inline void Constant::clear_int32() {
-  if (value_case() == kInt32) {
-    _impl_.value_.int32_ = 0;
-    clear_has_value();
-  }
-}
-inline ::int32_t Constant::int32() const {
-  // @@protoc_insertion_point(field_get:abacus.protobuf.Constant.int32)
-  return _internal_int32();
-}
-inline void Constant::set_int32(::int32_t value) {
-  _internal_set_int32(value);
-  // @@protoc_insertion_point(field_set:abacus.protobuf.Constant.int32)
-}
-inline ::int32_t Constant::_internal_int32() const {
-  if (value_case() == kInt32) {
-    return _impl_.value_.int32_;
-  }
-  return 0;
-}
-inline void Constant::_internal_set_int32(::int32_t value) {
-  if (value_case() != kInt32) {
-    clear_value();
-    set_has_int32();
-  }
-  _impl_.value_.int32_ = value;
-}
-
-// float float32 = 5;
-inline bool Constant::has_float32() const {
-  return value_case() == kFloat32;
-}
-inline void Constant::set_has_float32() {
-  _impl_._oneof_case_[0] = kFloat32;
-}
-inline void Constant::clear_float32() {
-  if (value_case() == kFloat32) {
-    _impl_.value_.float32_ = 0;
-    clear_has_value();
-  }
-}
-inline float Constant::float32() const {
-  // @@protoc_insertion_point(field_get:abacus.protobuf.Constant.float32)
-  return _internal_float32();
-}
-inline void Constant::set_float32(float value) {
-  _internal_set_float32(value);
-  // @@protoc_insertion_point(field_set:abacus.protobuf.Constant.float32)
-}
-inline float Constant::_internal_float32() const {
-  if (value_case() == kFloat32) {
-    return _impl_.value_.float32_;
-  }
-  return 0;
-}
-inline void Constant::_internal_set_float32(float value) {
-  if (value_case() != kFloat32) {
-    clear_value();
-    set_has_float32();
-  }
-  _impl_.value_.float32_ = value;
-}
-
 // double float64 = 6;
 inline bool Constant::has_float64() const {
   return value_case() == kFloat64;
@@ -5451,41 +5286,6 @@ inline void Constant::_internal_set_boolean(bool value) {
     set_has_boolean();
   }
   _impl_.value_.boolean_ = value;
-}
-
-// uint32 enum8 = 8;
-inline bool Constant::has_enum8() const {
-  return value_case() == kEnum8;
-}
-inline void Constant::set_has_enum8() {
-  _impl_._oneof_case_[0] = kEnum8;
-}
-inline void Constant::clear_enum8() {
-  if (value_case() == kEnum8) {
-    _impl_.value_.enum8_ = 0u;
-    clear_has_value();
-  }
-}
-inline ::uint32_t Constant::enum8() const {
-  // @@protoc_insertion_point(field_get:abacus.protobuf.Constant.enum8)
-  return _internal_enum8();
-}
-inline void Constant::set_enum8(::uint32_t value) {
-  _internal_set_enum8(value);
-  // @@protoc_insertion_point(field_set:abacus.protobuf.Constant.enum8)
-}
-inline ::uint32_t Constant::_internal_enum8() const {
-  if (value_case() == kEnum8) {
-    return _impl_.value_.enum8_;
-  }
-  return 0u;
-}
-inline void Constant::_internal_set_enum8(::uint32_t value) {
-  if (value_case() != kEnum8) {
-    clear_value();
-    set_has_enum8();
-  }
-  _impl_.value_.enum8_ = value;
 }
 
 // string string = 9;

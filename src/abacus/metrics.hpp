@@ -47,17 +47,78 @@ public:
     /// @param name The name of the metric
     /// @param value Optional initial value of the metric
     /// @return The metric object
-    template <class Metric>
-    [[nodiscard]] auto initialize_required(const std::string& name,
-                                           typename Metric::type value) ->
-        typename Metric::required;
+    template <class Metric, class Value>
+    [[nodiscard]] auto initialize_required(const std::string& name, Value value)
+        -> required_metric<Metric>
+    {
+        assert(!is_initialized(name));
+        required_metric<Metric> metric{metric_memory(name)};
+        metric.set_value(value);
+
+        // Store lambda to reset metric if needed
+        m_initialized.emplace(name, [metric, value]() mutable
+                              { metric.set_value(value); });
+
+        return metric
+    }
 
     /// Initialize a metric
     /// @param name The name of the metric
     /// @return The metric object
     template <class Metric>
-    [[nodiscard]] auto initialize_optional(const std::string& name) ->
-        typename Metric::optional;
+    [[nodiscard]] auto
+    initialize_optional(const std::string& name) -> optional_metric<Metric>
+    {
+        assert(!is_initialized(name));
+        optional_metric<Metric> metric{metric_memory(name)};
+
+        // Store lambda to reset metric if needed
+        m_initialized.emplace(name, [metric]() mutable { metric.reset(); });
+
+        return metric;
+    }
+
+    void initialize(const std::string_view& name,
+                    optional_metric<abacus::enum8>& metric);
+
+    void initialize(const std::string_view& name,
+                    optional_metric<abacus::boolean>& metric);
+
+    void initialize(const std::string_view& name,
+                    optional_metric<abacus::float32>& metric);
+
+    void initialize(const std::string_view& name,
+                    optional_metric<abacus::float64>& metric);
+
+    void initialize(const std::string_view& name,
+                    optional_metric<abacus::int32>& metric);
+
+    void initialize(const std::string_view& name,
+                    optional_metric<abacus::int64>& metric);
+
+    void initialize(const std::string_view& name,
+                    optional_metric<abacus::uint32>& metric);
+
+    void initialize(const std::string_view& name,
+                    optional_metric<abacus::uint64>& metric);
+
+    void initialize(const std::string_view& name,
+                    required_metric<abacus::enum8>& metric, uint8_t value);
+
+    void initialize(const std::string_view& name,
+                    required_metric<abacus::boolean>& metric, bool value);
+
+    void initialize(const std::string_view& name,
+                    required_metric<abacus::float32>& metric, float value);
+
+    void initialize(const std::string_view& name,
+                    required_metric<abacus::float64>& metric, double value);
+
+    void initialize(const std::string_view& name,
+                    required_metric<abacus::int32>& metric, int32_t value);
+
+    void initialize(const std::string_view& name,
+                    required_metric<abacus::int64>& metric, int64_t value);
 
     /// Check if a metric has been initialized
     /// @param name The name of the metric
@@ -114,11 +175,21 @@ private:
     /// The size of the value data in bytes
     std::size_t m_value_bytes;
 
-    /// A map of the metrics and whether they have been initialized
-    std::map<std::string, bool> m_initialized;
+    struct metric_state
+    {
+        /// The offset of the metric in the value data
+        std::size_t offset;
 
-    /// The initial values of the metrics
-    std::map<std::string, std::any> m_initial_values;
+        /// Is optional?
+        bool optional;
+
+        /// Reset function (will always be set if the metric is intialized
+        /// otherwise not)
+        std::function<void()> reset;
+    };
+
+    /// A vector of reset functions for the metrics
+    std::unordered_map<std::string, metric_info> m_initialized;
 };
 }
 }

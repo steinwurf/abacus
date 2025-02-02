@@ -106,12 +106,8 @@ message Constant{
     oneof value {
         uint64 uint64 = 1;    // Unsigned 64-bit constant value
         int64 int64 = 2;      // Signed 64-bit constant value
-        uint32 uint32 = 3;    // Unsigned 32-bit constant value
-        int32 int32 = 4;      // Signed 32-bit constant value
-        float float32 = 5;      // 32-bit floating-point constant value
         double float64 = 6;    // 64-bit floating-point constant value
         bool boolean = 7;     // Boolean constant value
-        uint32 enum8 = 8;     // Enumerated constant value
         string string = 9;    // String constant value
     }
     string description = 10;   // Metric description
