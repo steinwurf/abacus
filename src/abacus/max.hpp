@@ -5,34 +5,30 @@
 
 #pragma once
 
+#include <optional>
+
 #include "version.hpp"
 
 namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-union max
+/// Stronly typed max value for a metric
+template <typename T>
+struct max
 {
 
-    max(uint64_t value) : m_uint(value)
+    /// Default constructor
+    max() = default;
+
+    /// Constructor
+    /// @param value The maximum value
+    explicit max(T value) : value(value)
     {
     }
 
-    max(double value) : m_double(value)
-    {
-    }
-
-    max(int64_t value) : m_int(value)
-    {
-    }
-
-    max() : m_uint(0)
-    {
-    }
-
-    uint64_t m_uint;
-    double m_double;
-    int64_t m_int;
+    /// The maximum value
+    std::optional<T> value;
 };
 }
 }

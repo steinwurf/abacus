@@ -5,32 +5,49 @@
 
 #pragma once
 
+#include "protobuf/metrics.pb.h"
 #include "version.hpp"
-#include <cstdint>
 
 namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-/// Enum used for identifying various metric flags.
-enum class kind : uint8_t
+/// A tag type representing a gauge kind.
+struct gauge_
 {
-    /// A counter is a cumulative metric that represents a single monotonically
-    /// increasing counter whose value can only increase or be reset to zero on
-    /// restart. For example, you can use a counter to represent the number of
-    /// requests served, tasks completed, or errors.
-    counter = 0U,
-
-    /// A constant is a metric that represents a single numerical value that
-    /// never changes.
-    constant,
-
-    /// A gauge is a metric that represents a single numerical value that can
-    /// arbitrarily go up and down.
-    /// Gauges are typically used for measured values like temperatures or
-    /// current memory usage, but also "counts" that can go up and down, like
-    /// the number of concurrent requests.
-    gauge,
+    static constexpr abacus::protobuf::Kind kind = abacus::protobuf::GAUGE;
 };
+
+/// A constant instance of the gauge_ tag type.
+static const gauge_ gauge;
+
+/// A tag type representing an counter kind.
+struct counter_
+{
+    static constexpr abacus::protobuf::Kind kind = abacus::protobuf::COUNTER;
+};
+
+/// A constant instance of the counter_ tag type.
+static const counter_ counter;
+
+/// A variant type that can hold either a gauge_ or an counter_.
+using kind = std::variant<gauge_, counter_>;
+
+/// Check if the given kind is counter.
+/// @param k The kind to check.
+/// @return true if the kind is counter, false otherwise.
+static inline bool is_counter(const kind& k)
+{
+    return std::holds_alternative<counter_>(k);
+}
+
+/// Check if the given kind is gauge.
+/// @param a The kind to check.
+/// @return true if the kind is gauge, false otherwise.
+static inline bool is_gauge(const kind& k)
+{
+    return std::holds_alternative<gauge_>(k);
+}
+
 }
 }

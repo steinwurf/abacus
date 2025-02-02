@@ -3,42 +3,36 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-// Pragma needed to be able to compile code, that divides by literal zero with
-// MSVC
-#pragma fenv_access(on)
-
 #include <cmath>
 #include <cstdint>
 #include <cstring>
 #include <gtest/gtest.h>
 
-#include <abacus/metric.hpp>
+#include <abacus/info.hpp>
+
 TEST(test_metric, constructor)
 {
-    uint64_t uint_count = 10000U;
+    uint8_t data[9];
+    std::memset(data, 0, sizeof(data));
 
-    abacus::metric<abacus::type::uint64> uint_metric(&uint_count);
+    abacus::uint64::optional uint_metric(data);
 
     EXPECT_TRUE(uint_metric.is_initialized());
-
-    int64_t int_count = 10000;
-    abacus::metric<abacus::type::int64> int_metric(&int_count);
-    EXPECT_TRUE(int_metric.is_initialized());
-
-    double double_count = 1123.12;
-    abacus::metric<abacus::type::float64> double_metric(&double_count);
-    EXPECT_TRUE(double_metric.is_initialized());
-
-    bool bool_count = true;
-    abacus::metric<abacus::type::boolean> bool_metric(&bool_count);
-    EXPECT_TRUE(bool_metric.is_initialized());
+    EXPECT_FALSE(uint_metric.has_value());
+    uint_metric = 42U;
+    EXPECT_TRUE(uint_metric.has_value());
+    EXPECT_EQ(uint_metric.value(), 42U);
 }
 
 TEST(test_metric, float_assignment)
 {
-    double double_count = 1123.12;
-    abacus::metric<abacus::type::float64> double_metric(&double_count);
+    uint8_t data[9];
+    std::memset(data, 0, sizeof(data));
+
+    abacus::float64::optional double_metric(data);
     EXPECT_TRUE(double_metric.is_initialized());
+    EXPECT_FALSE(double_metric.has_value());
+    double_metric = 1123.12;
     EXPECT_DOUBLE_EQ(double_metric.value(), 1123.12);
 
     // Assignment

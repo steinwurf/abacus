@@ -12,55 +12,75 @@
 #include <abacus/view.hpp>
 
 // Simple example of metrics on a car.
-
 int main()
 {
-    std::string name0 = "fuel_consumption";
-    std::string name1 = "wheels";
-    std::string name2 = "days_until_maintenance";
-    std::string name3 = "registered";
-
-    abacus::metric_info infos[4] = {
-        abacus::metric_info{name0, "Fuel consumption in kilometers per liter",
-                            abacus::type::float64, abacus::kind::constant,
-                            abacus::unit{"km/l"}},
-        abacus::metric_info{name1, "Wheels on the car", abacus::type::uint64,
-                            abacus::kind::constant, abacus::unit{"wheels"}},
-        abacus::metric_info{name2,
-                            "Days until next maintenance, if less than 0, "
-                            "maintenance is overdue",
-                            abacus::type::int64, abacus::kind::gauge,
-                            abacus::unit{"days"}},
-        abacus::metric_info{name3, "Is the car registered",
-                            abacus::type::boolean, abacus::kind::gauge}};
+    std::map<abacus::name, abacus::info> infos = {
+        {abacus::name{"fuel_consumption"},
+         abacus::constant{
+             abacus::value{22.3},
+             abacus::description{"Fuel consumption in kilometers per liter"},
+             abacus::unit{"km/l"}}},
+        {abacus::name{"wheels"},
+         abacus::constant{abacus::value{4UL},
+                          abacus::description{"Wheels on the car"},
+                          abacus::unit{"wheels"}}},
+        {abacus::name{"days_until_maintenance"},
+         abacus::int64{
+             abacus::gauge, abacus::required,
+             abacus::description{"Days until next maintenance, if less than 0, "
+                                 "maintenance is overdue"},
+             abacus::unit{"days"}}},
+        {abacus::name{"registered"},
+         abacus::boolean{abacus::optional,
+                         abacus::description{"Is the car registered"}}},
+        {abacus::name{"license_plate"},
+         abacus::constant{abacus::value{"ABC-1234"},
+                          abacus::description{"License plate"}}}};
 
     abacus::metrics car(infos);
 
-    car.initialize_constant("fuel_consumption", (double)22.3);
-    car.initialize_constant("wheels", (uint64_t)4);
-    auto days_until_maintenance =
-        car.initialize_metric<abacus::type::int64>("days_until_maintenance");
-    auto registered =
-        car.initialize_metric<abacus::type::boolean>("registered");
+    // The car still has some time before maintenance.
+    abacus::int64::required days_until_maintenance =
+        car.initialize_required<abacus::int64>("days_until_maintenance", 10);
 
     // The car should be registered.
+    abacus::boolean::optional registered =
+        car.initialize_optional<abacus::boolean>("registered");
+
+    // The registration is initialized, but not set.
+    assert(registered.is_initialized());
+    assert(!registered.has_value());
+
+    // The car hasn't been registered.
+    registered = false;
+
+    // The registration is now set.
+    assert(registered.has_value());
+
+    // We can reset the registration.
+    registered.reset();
+    assert(!registered.has_value());
+
+    // The car is now registered.
     registered = true;
 
-    // The car is overdue maintenance.
+    // The car has been driven for a while, and now maintenance is overdue.
     days_until_maintenance = -10;
 
-    /// We want to export the metrics memory, so we need a new storage
-    std::vector<uint8_t> meta_data(car.meta_bytes());
+    // We want to export the metrics memory, so we need a new storage
+    auto metadata = car.metadata();
     std::vector<uint8_t> value_data(car.value_bytes());
 
-    /// Copy the memory into the new storage
-    std::memcpy(meta_data.data(), car.meta_data(), car.meta_bytes());
+    // Copy the memory into the new storage
     std::memcpy(value_data.data(), car.value_data(), car.value_bytes());
 
     abacus::view car_view;
 
-    car_view.set_meta_data(meta_data.data());
-    car_view.set_value_data(value_data.data());
+    auto success = car_view.set_metadata(metadata);
+    assert(success);
+    success = car_view.set_value_data(value_data.data(), value_data.size());
+    assert(success);
+    (void)success;
 
     std::cout << abacus::to_json(car_view) << std::endl;
 

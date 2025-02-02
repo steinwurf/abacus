@@ -3,465 +3,557 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include <cassert>
-#include <cstdint>
-#include <cstring>
-
-#include "detail/raw.hpp"
-#include "kind.hpp"
-#include "max.hpp"
-#include "metric_info.hpp"
 #include "metrics.hpp"
-#include "min.hpp"
+
+#include "detail/hash_function.hpp"
+#include "detail/size_of_type.hpp"
+
+#include "info.hpp"
 #include "protocol_version.hpp"
-#include "type.hpp"
+#include "version.hpp"
+
+#include "detail/helpers.hpp"
+#include "protobuf/metrics.pb.h"
 
 #include <endian/is_big_endian.hpp>
+
+#include <iostream>
 
 namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-metrics::metrics() : metrics(nullptr, 0)
+static inline auto is_optional(const protobuf::Metric& metric) -> bool
 {
+    return detail::call_type(metric, [](const auto& metric)
+                             { return metric.optional(); });
 }
 
-metrics::metrics(const metric_info* info, std::size_t count) :
-    m_info(info, count)
+static inline auto get_kind(abacus::kind k) -> protobuf::Kind
 {
-    assert(count <= std::numeric_limits<uint16_t>::max());
-    assert(count == 0 || info != nullptr);
-
-    std::size_t name_bytes = 0;
-    std::size_t description_bytes = 0;
-    std::size_t unit_bytes = 0;
-
-    // First calculate the total size of header
-    std::size_t meta_bytes = detail::header_bytes();
-    for (std::size_t i = 0; i < m_info.count(); i++)
-    {
-        const auto& info = m_info[i];
-        m_name_to_index.emplace(info.name, i);
-        name_bytes += info.name.size();
-        description_bytes += info.description.size();
-        unit_bytes += info.unit.value.size();
-
-        // name_size
-        meta_bytes += sizeof(uint16_t);
-        // description size
-        meta_bytes += sizeof(uint16_t);
-        // unit size
-        meta_bytes += sizeof(uint16_t);
-        // name
-        meta_bytes += info.name.size();
-        // description
-        meta_bytes += info.description.size();
-        // unit
-        meta_bytes += info.unit.value.size();
-        // type
-        meta_bytes += sizeof(uint8_t);
-        // kind
-        meta_bytes += sizeof(uint8_t);
-        // min
-        meta_bytes += sizeof(uint64_t);
-        // max
-        meta_bytes += sizeof(uint64_t);
-    }
-    // Add padding to ensure alignment for the values.
-    std::size_t alignment = detail::alignment_padding(meta_bytes);
-
-    std::size_t value_bytes = 0;
-    // Add the bytes needed for the values.
-    value_bytes +=
-        8 * m_info.eight_byte_metrics_count() + m_info.one_byte_metrics_count();
-
-    // Finally add the bytes needed for the initalized bitmap
-    value_bytes += (m_info.count() + 7) / 8;
-
-    std::size_t storage_bytes = meta_bytes + alignment + value_bytes;
-
-    // Allocate the memory needed.
-    m_meta_data = static_cast<uint8_t*>(::operator new(storage_bytes));
-
-    // Make sure that the data is 8-byte-aligned
-    assert(reinterpret_cast<uint64_t>(m_meta_data) % 8U == 0U);
-
-    // Zero out all memory
-    std::memset(m_meta_data, 0, storage_bytes);
-
-    // Write the header
-    // The endianness of the data, 0 for little-endian, 1 for big-endian
-    new (m_meta_data) uint8_t(endian::is_big_endian());
-    // The version of the data protocol
-    new (m_meta_data + 1) uint8_t(abacus::protocol_version());
-
-    // The total bytes used for names
-    assert(name_bytes <= std::numeric_limits<uint16_t>::max());
-    new (m_meta_data + 2) uint16_t((uint16_t)name_bytes);
-    // The total bytes used for descriptions
-    assert(description_bytes <= std::numeric_limits<uint16_t>::max());
-    new (m_meta_data + 4) uint16_t((uint16_t)description_bytes);
-    // The total bytes used for units
-    assert(unit_bytes <= std::numeric_limits<uint16_t>::max());
-    new (m_meta_data + 6) uint16_t((uint16_t)unit_bytes);
-    // The number of 8-byte metric values (uint64_t, int64_t and double types)
-    new (m_meta_data + 8) uint16_t((uint16_t)m_info.eight_byte_metrics_count());
-    // The number of 1-byte metric values (bool type)
-    new (m_meta_data + 10) uint16_t((uint16_t)m_info.one_byte_metrics_count());
-
-    // Write the name sizes into memory
-    uint8_t* name_sizes_ptr = m_meta_data + detail::name_sizes_offset();
-
-    // Write the description sizes into memory
-    uint8_t* description_sizes_ptr =
-        m_meta_data + detail::description_sizes_offset(m_meta_data);
-
-    // Write the unit sizes into memory
-    uint8_t* unit_sizes_ptr =
-        m_meta_data + detail::unit_sizes_offset(m_meta_data);
-
-    // Write the names into memory
-    uint8_t* names_ptr = m_meta_data + detail::names_offset(m_meta_data);
-
-    // Write the descriptions into memory
-    uint8_t* descriptions_ptr =
-        m_meta_data + detail::descriptions_offset(m_meta_data);
-
-    // Write the units into memory
-    uint8_t* units_ptr = m_meta_data + detail::units_offset(m_meta_data);
-
-    // Write the types into memory
-    uint8_t* types_ptr = m_meta_data + detail::types_offset(m_meta_data);
-
-    // Write the kind into memory
-    uint8_t* kind_ptr = m_meta_data + detail::kind_offset(m_meta_data);
-
-    // Write the min into memory
-    uint8_t* min_ptr = m_meta_data + detail::min_offset(m_meta_data);
-
-    // Write the max into memory
-    uint8_t* max_ptr = m_meta_data + detail::max_offset(m_meta_data);
-
-    for (std::size_t i = 0; i < m_info.count(); i++)
-    {
-        const auto& info = m_info[i];
-        uint16_t name_size = static_cast<uint16_t>(info.name.size());
-        uint16_t description_size =
-            static_cast<uint16_t>(info.description.size());
-        uint16_t unit_size = static_cast<uint16_t>(info.unit.value.size());
-
-        std::memcpy(name_sizes_ptr, &name_size, sizeof(name_size));
-        name_sizes_ptr += sizeof(name_size);
-
-        std::memcpy(description_sizes_ptr, &description_size,
-                    sizeof(description_size));
-        description_sizes_ptr += sizeof(description_size);
-
-        std::memcpy(unit_sizes_ptr, &unit_size, sizeof(unit_size));
-        unit_sizes_ptr += sizeof(unit_size);
-
-        std::memcpy(names_ptr, info.name.data(), info.name.size());
-        names_ptr += info.name.size();
-
-        std::memcpy(descriptions_ptr, info.description.data(),
-                    info.description.size());
-        descriptions_ptr += info.description.size();
-
-        std::memcpy(units_ptr, info.unit.value.data(), info.unit.value.size());
-        units_ptr += info.unit.value.size();
-
-        std::memcpy(kind_ptr, &info.kind, sizeof(info.kind));
-        kind_ptr += sizeof(info.kind);
-
-        std::memcpy(types_ptr, &info.type, sizeof(info.type));
-        types_ptr += sizeof(info.type);
-
-        std::memcpy(min_ptr, &info.min, sizeof(info.min));
-        min_ptr += sizeof(info.min);
-
-        std::memcpy(max_ptr, &info.max, sizeof(info.max));
-        max_ptr += sizeof(info.max);
-    }
-
-    m_value_data = m_meta_data + meta_bytes + alignment;
-
-    assert(storage_bytes ==
-           detail::meta_bytes(m_meta_data) +
-               detail::alignment_padding(detail::meta_bytes(m_meta_data)) +
-               detail::value_bytes(m_meta_data));
+    return std::visit([](auto&& k) { return k.kind; }, k);
 }
 
 metrics::metrics(metrics&& other) noexcept :
-    m_info(std::move(other.m_info)),
-    m_name_to_index(std::move(other.m_name_to_index)),
-    m_meta_data(other.m_meta_data), m_value_data(other.m_value_data)
+    m_metadata(std::move(other.m_metadata)), m_data(std::move(other.m_data)),
+    m_metadata_bytes(other.m_metadata_bytes), m_hash(other.m_hash),
+    m_value_bytes(other.m_value_bytes),
+    m_initialized(std::move(other.m_initialized))
 {
-    other.m_meta_data = nullptr;
-    other.m_value_data = nullptr;
+    other.m_metadata = protobuf::MetricsMetadata();
+    other.m_data.clear();
+    other.m_metadata_bytes = 0;
+    other.m_hash = 0;
+    other.m_value_bytes = 0;
+    other.m_initialized.clear();
 }
 
-auto metrics::operator=(metrics&& other) noexcept -> metrics&
+metrics::metrics(const std::map<name, abacus::info>& infos)
 {
-    if (this != &other)
+    m_metadata = protobuf::MetricsMetadata();
+    m_metadata.set_protocol_version(protocol_version());
+    m_metadata.set_endianness(endian::is_big_endian()
+                                  ? protobuf::Endianness::BIG
+                                  : protobuf::Endianness::LITTLE);
+
+    // The first byte is reserved for the sync value
+    m_value_bytes = sizeof(uint32_t);
+
+    for (auto [name, info] : infos)
     {
-        m_info = std::move(other.m_info);
-        m_name_to_index = std::move(other.m_name_to_index);
-        m_meta_data = other.m_meta_data;
-        m_value_data = other.m_value_data;
-        other.m_meta_data = nullptr;
-        other.m_value_data = nullptr;
+        protobuf::Metric metric;
+        m_initialized[name.value] = false;
+        if (auto* m = std::get_if<uint64>(&info))
+        {
+            auto* typed_metric = metric.mutable_uint64();
+            typed_metric->set_offset(m_value_bytes);
+            typed_metric->set_description(m->description.value);
+            typed_metric->set_optional(is_optional(m->availability));
+            typed_metric->set_kind(get_kind(m->kind));
+
+            if (!m->unit.empty())
+            {
+                typed_metric->set_unit(m->unit.value);
+            }
+            if (m->min.value.has_value())
+            {
+                typed_metric->set_min(m->min.value.value());
+            }
+            if (m->max.value.has_value())
+            {
+                typed_metric->set_max(m->max.value.value());
+            }
+            // The offset is incremented by the size of the type
+            m_value_bytes += detail::size_of_type<decltype(m)>();
+
+            // The offset is incremented by one byte which represents
+            // whether the metric is set or not.
+            m_value_bytes += 1;
+        }
+        else if (auto* m = std::get_if<int64>(&info))
+        {
+            auto* typed_metric = metric.mutable_int64();
+            typed_metric->set_offset(m_value_bytes);
+            typed_metric->set_description(m->description.value);
+            typed_metric->set_optional(is_optional(m->availability));
+            typed_metric->set_kind(get_kind(m->kind));
+
+            if (!m->unit.empty())
+            {
+                typed_metric->set_unit(m->unit.value);
+            }
+            if (m->min.value.has_value())
+            {
+                typed_metric->set_min(m->min.value.value());
+            }
+            if (m->max.value.has_value())
+            {
+                typed_metric->set_max(m->max.value.value());
+            }
+            // The offset is incremented by the size of the type
+            m_value_bytes += detail::size_of_type<decltype(m)>();
+
+            // The offset is incremented by one byte which represents
+            // whether the metric is set or not.
+            m_value_bytes += 1;
+        }
+        else if (auto* m = std::get_if<uint32>(&info))
+        {
+            auto* typed_metric = metric.mutable_uint32();
+            typed_metric->set_offset(m_value_bytes);
+            typed_metric->set_description(m->description.value);
+            typed_metric->set_optional(is_optional(m->availability));
+            typed_metric->set_kind(get_kind(m->kind));
+
+            if (!m->unit.empty())
+            {
+                typed_metric->set_unit(m->unit.value);
+            }
+            if (m->min.value.has_value())
+            {
+                typed_metric->set_min(m->min.value.value());
+            }
+            if (m->max.value.has_value())
+            {
+                typed_metric->set_max(m->max.value.value());
+            }
+            // The offset is incremented by the size of the type
+            m_value_bytes += detail::size_of_type<decltype(m)>();
+
+            // The offset is incremented by one byte which represents
+            // whether the metric is set or not.
+            m_value_bytes += 1;
+        }
+        else if (auto* m = std::get_if<int32>(&info))
+        {
+            auto* typed_metric = metric.mutable_int32();
+            typed_metric->set_offset(m_value_bytes);
+            typed_metric->set_description(m->description.value);
+            typed_metric->set_optional(is_optional(m->availability));
+            typed_metric->set_kind(get_kind(m->kind));
+
+            if (!m->unit.empty())
+            {
+                typed_metric->set_unit(m->unit.value);
+            }
+            if (m->min.value.has_value())
+            {
+                typed_metric->set_min(m->min.value.value());
+            }
+            if (m->max.value.has_value())
+            {
+                typed_metric->set_max(m->max.value.value());
+            }
+            // The offset is incremented by the size of the type
+            m_value_bytes += detail::size_of_type<decltype(m)>();
+
+            // The offset is incremented by one byte which represents
+            // whether the metric is set or not.
+            m_value_bytes += 1;
+        }
+        else if (auto* m = std::get_if<float64>(&info))
+        {
+            auto* typed_metric = metric.mutable_float64();
+            typed_metric->set_offset(m_value_bytes);
+            typed_metric->set_description(m->description.value);
+            typed_metric->set_optional(is_optional(m->availability));
+            typed_metric->set_kind(get_kind(m->kind));
+
+            if (!m->unit.empty())
+            {
+                typed_metric->set_unit(m->unit.value);
+            }
+            if (m->min.value.has_value())
+            {
+                typed_metric->set_min(m->min.value.value());
+            }
+            if (m->max.value.has_value())
+            {
+                typed_metric->set_max(m->max.value.value());
+            }
+            // The offset is incremented by the size of the type
+            m_value_bytes += detail::size_of_type<decltype(m)>();
+
+            // The offset is incremented by one byte which represents
+            // whether the metric is set or not.
+            m_value_bytes += 1;
+        }
+        else if (auto* m = std::get_if<float32>(&info))
+        {
+            auto* typed_metric = metric.mutable_float32();
+            typed_metric->set_offset(m_value_bytes);
+            typed_metric->set_description(m->description.value);
+            typed_metric->set_optional(is_optional(m->availability));
+            typed_metric->set_kind(get_kind(m->kind));
+
+            if (!m->unit.empty())
+            {
+                typed_metric->set_unit(m->unit.value);
+            }
+            if (m->min.value.has_value())
+            {
+                typed_metric->set_min(m->min.value.value());
+            }
+            if (m->max.value.has_value())
+            {
+                typed_metric->set_max(m->max.value.value());
+            }
+            // The offset is incremented by the size of the type
+            m_value_bytes += detail::size_of_type<decltype(m)>();
+
+            // The offset is incremented by one byte which represents
+            // whether the metric is set or not.
+            m_value_bytes += 1;
+        }
+        else if (auto* m = std::get_if<boolean>(&info))
+        {
+            auto* typed_metric = metric.mutable_boolean();
+            typed_metric->set_offset(m_value_bytes);
+            typed_metric->set_description(m->description.value);
+            typed_metric->set_optional(is_optional(m->availability));
+            m_value_bytes += detail::size_of_type<decltype(m)>();
+
+            // The offset is incremented by one byte which represents
+            // whether the metric is set or not.
+            m_value_bytes += 1;
+        }
+        else if (auto* m = std::get_if<enum8>(&info))
+        {
+            auto* typed_metric = metric.mutable_enum8();
+            typed_metric->set_offset(m_value_bytes);
+            typed_metric->set_description(m->description.value);
+            typed_metric->set_optional(is_optional(m->availability));
+            for (auto [key, value] : m->values)
+            {
+                auto enum_value = protobuf::Enum8Metric::EnumValue();
+                enum_value.set_name(value.name);
+                if (!value.description.empty())
+                {
+                    enum_value.set_description(value.description);
+                }
+
+                typed_metric->mutable_values()->insert({key, enum_value});
+            }
+            m_value_bytes += detail::size_of_type<decltype(m)>();
+
+            // The offset is incremented by one byte which represents
+            // whether the metric is set or not.
+            m_value_bytes += 1;
+        }
+        else if (auto* m = std::get_if<constant>(&info))
+        {
+            auto* typed_metric = metric.mutable_constant();
+            typed_metric->set_description(m->description.value);
+            if (!m->unit.empty())
+            {
+                typed_metric->set_unit(m->unit.value);
+            }
+            // We expect the metric to be a constant
+            std::visit(
+                [&typed_metric](auto&& value)
+                {
+                    using Type = decltype(value.value);
+                    if constexpr (std::is_same_v<Type, uint64::type>)
+                    {
+                        typed_metric->set_uint64(value.value);
+                        return;
+                    }
+                    if constexpr (std::is_same_v<Type, int64::type>)
+                    {
+                        typed_metric->set_int64(value.value);
+                        return;
+                    }
+                    if constexpr (std::is_same_v<Type, uint32::type>)
+                    {
+                        typed_metric->set_uint32(value.value);
+                        return;
+                    }
+                    if constexpr (std::is_same_v<Type, int32::type>)
+                    {
+                        typed_metric->set_int32(value.value);
+                        return;
+                    }
+                    if constexpr (std::is_same_v<Type, float64::type>)
+                    {
+                        typed_metric->set_float64(value.value);
+                        return;
+                    }
+                    if constexpr (std::is_same_v<Type, float32::type>)
+                    {
+                        typed_metric->set_float32(value.value);
+                        return;
+                    }
+                    if constexpr (std::is_same_v<Type, boolean::type>)
+                    {
+                        typed_metric->set_boolean(value.value);
+                        return;
+                    }
+                    if constexpr (std::is_same_v<Type, std::string_view>)
+                    {
+                        typed_metric->set_string(value.value);
+                        return;
+                    }
+                    assert(false && "Unknown type");
+                },
+                m->value);
+            m_initialized[name.value] = true;
+        }
+
+        m_metadata.mutable_metrics()->insert({name.value, metric});
     }
-    return *this;
+
+    // Set the sync value to 1 so that the size of the metadata is
+    // calculated correctly
+    m_metadata.set_sync_value(1);
+
+    m_metadata_bytes = metadata().ByteSizeLong();
+
+    m_data.resize(m_metadata_bytes + m_value_bytes);
+
+    // Serialize the metadata
+    metadata().SerializeToArray(m_data.data(), m_metadata_bytes);
+
+    // Calculate the hash of the metadata
+    m_hash = detail::hash_function(m_data.data(), m_metadata_bytes);
+
+    // Update the sync value
+    m_metadata.set_sync_value(m_hash);
+
+    // Serialize the metadata again to include the sync value
+    metadata().SerializeToArray(m_data.data(), m_metadata_bytes);
+
+    // Make sure the metadata didn't change unexpectedly
+    assert(metadata().ByteSizeLong() == m_metadata_bytes);
+
+    // Write the sync value to the first byte of the value data (this
+    // will be written as the endianess of the system) Consuming code
+    // can use the endianness field in the metadata to read the sync
+    // value
+    std::memcpy(value_data(0), &m_hash, sizeof(uint32_t));
 }
+
+template <class Metric>
+[[nodiscard]] auto metrics::initialize_optional(const std::string& name) ->
+    typename Metric::optional
+{
+    assert(m_initialized.find(name) != m_initialized.end());
+    assert(!m_initialized.at(name));
+    m_initialized[name] = true;
+    const protobuf::Metric& proto_metric = metadata().metrics().at(name);
+    assert(is_optional(proto_metric));
+
+    auto offset = detail::get_offset(proto_metric);
+
+    return {value_data(offset)};
+}
+
+// Explicit instantiations for the expected types
+template auto metrics::initialize_optional<uint64>(const std::string& name)
+    -> uint64::optional;
+template auto metrics::initialize_optional<int64>(const std::string& name)
+    -> int64::optional;
+template auto metrics::initialize_optional<uint32>(const std::string& name)
+    -> uint32::optional;
+template auto metrics::initialize_optional<int32>(const std::string& name)
+    -> int32::optional;
+template auto metrics::initialize_optional<float64>(const std::string& name)
+    -> float64::optional;
+template auto metrics::initialize_optional<float32>(const std::string& name)
+    -> float32::optional;
+template auto metrics::initialize_optional<boolean>(const std::string& name)
+    -> boolean::optional;
+template auto metrics::initialize_optional<enum8>(const std::string& name)
+    -> enum8::optional;
+
+template <class Metric>
+[[nodiscard]] auto metrics::initialize_required(const std::string& name,
+                                                typename Metric::type value) ->
+    typename Metric::required
+{
+    assert(m_initialized.find(name) != m_initialized.end());
+    assert(!m_initialized.at(name));
+    m_initialized[name] = true;
+    const protobuf::Metric& proto_metric = metadata().metrics().at(name);
+    assert(!is_optional(proto_metric));
+
+    auto offset = detail::get_offset(proto_metric);
+
+    m_initial_values[name] = value;
+    return {value_data(offset), value};
+}
+
+// Explicit instantiations for the expected types
+template auto metrics::initialize_required<uint64>(const std::string& name,
+                                                   uint64::type value)
+    -> uint64::required;
+template auto metrics::initialize_required<int64>(const std::string& name,
+                                                  int64::type value)
+    -> int64::required;
+template auto metrics::initialize_required<uint32>(const std::string& name,
+                                                   uint32::type value)
+    -> uint32::required;
+template auto metrics::initialize_required<int32>(const std::string& name,
+                                                  int32::type value)
+    -> int32::required;
+template auto metrics::initialize_required<float64>(const std::string& name,
+                                                    float64::type value)
+    -> float64::required;
+template auto metrics::initialize_required<float32>(const std::string& name,
+                                                    float32::type value)
+    -> float32::required;
+template auto metrics::initialize_required<boolean>(const std::string& name,
+                                                    boolean::type value)
+    -> boolean::required;
+template auto metrics::initialize_required<enum8>(const std::string& name,
+                                                  enum8::type value)
+    -> enum8::required;
 
 metrics::~metrics()
 {
-    if (m_meta_data != nullptr)
-    {
-        ::operator delete(m_meta_data);
-    }
-}
-
-auto metrics::meta_data() const -> const uint8_t*
-{
-    assert(m_meta_data != nullptr);
-    return m_meta_data;
-}
-
-auto metrics::meta_bytes() const -> std::size_t
-{
-    assert(m_meta_data != nullptr);
-    return detail::meta_bytes(m_meta_data);
 }
 
 auto metrics::value_data() const -> const uint8_t*
 {
-    assert(m_meta_data != nullptr);
-    return m_value_data;
+    return m_data.data() + m_metadata_bytes;
+}
+
+auto metrics::value_data(std::size_t offset) -> uint8_t*
+{
+    return m_data.data() + m_metadata_bytes + offset;
 }
 
 auto metrics::value_bytes() const -> std::size_t
 {
-    assert(m_meta_data != nullptr);
-    return detail::value_bytes(m_meta_data);
+    return m_value_bytes;
 }
 
-auto metrics::count() const -> std::size_t
+auto metrics::metadata() const -> const protobuf::MetricsMetadata&
 {
-    assert(m_meta_data != nullptr);
-    return m_info.count();
+    return m_metadata;
 }
 
-auto metrics::protocol_version() const -> uint8_t
+auto metrics::metadata_data() const -> const uint8_t*
 {
-    assert(m_meta_data != nullptr);
-    return detail::protocol_version(m_meta_data);
+    return m_data.data();
 }
 
-auto metrics::is_initialized(std::size_t index) const -> bool
+auto metrics::metadata_bytes() const -> std::size_t
 {
-    assert(m_meta_data != nullptr);
-    assert(index < count());
-    return detail::is_metric_initialized(m_meta_data, m_value_data, index);
+    return m_metadata_bytes;
 }
 
-auto metrics::name(std::size_t index) const -> std::string
+auto metrics::is_initialized(const std::string& name) const -> bool
 {
-    assert(m_meta_data != nullptr);
-    assert(index < count());
-    return m_info[index].name;
+    assert(m_initialized.find(name) != m_initialized.end());
+    return m_initialized.at(name);
 }
 
-auto metrics::description(std::size_t index) const -> std::string
+auto metrics::is_initialized() const -> bool
 {
-    assert(m_meta_data != nullptr);
-    assert(index < count());
-    return m_info[index].description;
-}
-
-auto metrics::unit(std::size_t index) const -> std::string
-{
-    assert(m_meta_data != nullptr);
-    assert(index < count());
-    return m_info[index].unit.value;
-}
-
-auto metrics::is_boolean(std::size_t index) const -> bool
-{
-    assert(m_meta_data != nullptr);
-    assert(index < count());
-    return m_info[index].type == abacus::type::boolean;
-}
-
-auto metrics::is_uint64(std::size_t index) const -> bool
-{
-    assert(m_meta_data != nullptr);
-    assert(index < count());
-    return m_info[index].type == abacus::type::uint64;
-}
-
-auto metrics::is_int64(std::size_t index) const -> bool
-{
-    assert(index < count());
-    return m_info[index].type == abacus::type::int64;
-}
-
-auto metrics::is_float64(std::size_t index) const -> bool
-{
-    assert(m_meta_data != nullptr);
-    assert(index < count());
-    return m_info[index].type == abacus::type::float64;
-}
-
-auto metrics::kind(std::size_t index) const -> abacus::kind
-{
-    assert(m_meta_data != nullptr);
-    assert(index < count());
-    return m_info[index].kind;
-}
-
-void metrics::initialize_constant(const std::string& name, uint64_t value) const
-{
-    assert(m_meta_data != nullptr);
-    auto index = metrics::index(name);
-    assert(kind(index) == abacus::kind::constant);
-    assert(is_uint64(index));
-    *static_cast<uint64_t*>(initialize(index)) = value;
-}
-
-void metrics::initialize_constant(const std::string& name, int64_t value) const
-{
-    assert(m_meta_data != nullptr);
-    auto index = metrics::index(name);
-    assert(kind(index) == abacus::kind::constant);
-    assert(is_int64(index));
-    *static_cast<int64_t*>(initialize(index)) = value;
-}
-
-void metrics::initialize_constant(const std::string& name, double value) const
-{
-    assert(m_meta_data != nullptr);
-    auto index = metrics::index(name);
-    assert(kind(index) == abacus::kind::constant);
-    assert(is_float64(index));
-    *static_cast<double*>(initialize(index)) = value;
-}
-
-void metrics::initialize_constant(const std::string& name, bool value) const
-{
-    assert(m_meta_data != nullptr);
-    auto index = metrics::index(name);
-    assert(kind(index) == abacus::kind::constant);
-    assert(is_boolean(index));
-    *static_cast<bool*>(initialize(index)) = value;
-}
-
-void metrics::value(std::size_t index, uint64_t& value) const
-{
-    assert(m_meta_data != nullptr);
-    assert(index < count());
-    assert(is_initialized(index));
-    assert(is_uint64(index));
-    value = *static_cast<uint64_t*>(
-        detail::value_ptr(m_meta_data, m_value_data, index));
-}
-
-void metrics::value(std::size_t index, int64_t& value) const
-{
-    assert(m_meta_data != nullptr);
-    assert(index < count());
-    assert(is_initialized(index));
-    assert(is_int64(index));
-    value = *static_cast<int64_t*>(
-        detail::value_ptr(m_meta_data, m_value_data, index));
-}
-
-void metrics::value(std::size_t index, double& value) const
-{
-    assert(m_meta_data != nullptr);
-    assert(index < count());
-    assert(is_initialized(index));
-    assert(is_float64(index));
-    value = *static_cast<double*>(
-        detail::value_ptr(m_meta_data, m_value_data, index));
-}
-
-void metrics::value(std::size_t index, bool& value) const
-{
-    assert(m_meta_data != nullptr);
-    assert(index < count());
-    assert(is_initialized(index));
-    assert(is_boolean(index));
-    value = *static_cast<bool*>(
-        detail::value_ptr(m_meta_data, m_value_data, index));
-}
-
-auto metrics::index(const std::string& name) const -> std::size_t
-{
-    assert(m_meta_data != nullptr);
-    auto it = m_name_to_index.find(name);
-    assert(it != m_name_to_index.end() && "metric name not found.");
-    return it->second;
-}
-
-void metrics::reset_metric(std::size_t index)
-{
-    assert(m_meta_data != nullptr);
-    assert(index < count());
-    assert(is_initialized(index));
-    assert(kind(index) != abacus::kind::constant);
-
-    switch (detail::type(m_meta_data, index))
+    for (auto [name, initialized] : m_initialized)
     {
-    case abacus::type::boolean:
-    {
-        bool* value_data = static_cast<bool*>(
-            detail::value_ptr(m_meta_data, m_value_data, index));
-        *value_data = false;
-        break;
+        if (!initialized)
+        {
+            return false;
+        }
     }
-    case abacus::type::uint64:
-    {
-        uint64_t* value_data = static_cast<uint64_t*>(
-            detail::value_ptr(m_meta_data, m_value_data, index));
-        *value_data = 0U;
-        break;
-    }
-    case abacus::type::int64:
-    {
-        int64_t* value_data = static_cast<int64_t*>(
-            detail::value_ptr(m_meta_data, m_value_data, index));
-        *value_data = 0;
-        break;
-    }
-    case abacus::type::float64:
-    {
-        double* value_data = static_cast<double*>(
-            detail::value_ptr(m_meta_data, m_value_data, index));
-        *value_data = 0.0;
-        break;
-    }
-    default:
-        assert(false && "Invalid metric type.");
-    }
+    return true;
 }
-
-void metrics::reset_metrics()
+auto metrics::reset() -> void
 {
-    assert(m_meta_data != nullptr);
-    memset(m_value_data, 0, detail::metrics_bytes(m_meta_data));
-}
+    for (const auto& [name, metric] : metadata().metrics())
+    {
+        if (metric.has_constant())
+        {
+            continue;
+        }
 
-auto metrics::initialize(std::size_t index) const -> void*
-{
-    assert(m_meta_data != nullptr);
-    assert(index < count());
-    assert(!is_initialized(index));
-    // Write that the metric has been initialized into memory
-    detail::set_metric_initialized(m_meta_data, m_value_data, index);
-    assert(is_initialized(index));
-    return detail::value_ptr(m_meta_data, m_value_data, index);
+        if (!is_initialized(name))
+        {
+            // Skip metrics that have not been initialized
+            continue;
+        }
+
+        auto offset = detail::get_offset(metric);
+        if (is_optional(metric))
+        {
+            // Set the has value byte to 0
+            value_data(offset)[0] = 0;
+        }
+        else
+        {
+            // Set the value to what it was initialized to
+            if (metric.has_uint64())
+            {
+                uint64::set_value(
+                    value_data(offset),
+                    std::any_cast<uint64::type>(m_initial_values.at(name)));
+            }
+            else if (metric.has_int64())
+            {
+                int64::set_value(
+                    value_data(offset),
+                    std::any_cast<int64::type>(m_initial_values.at(name)));
+            }
+            else if (metric.has_uint32())
+            {
+                uint32::set_value(
+                    value_data(offset),
+                    std::any_cast<uint32::type>(m_initial_values.at(name)));
+            }
+            else if (metric.has_int32())
+            {
+                int32::set_value(
+                    value_data(offset),
+                    std::any_cast<int32::type>(m_initial_values.at(name)));
+            }
+            else if (metric.has_float64())
+            {
+                float64::set_value(
+                    value_data(offset),
+                    std::any_cast<float64::type>(m_initial_values.at(name)));
+            }
+            else if (metric.has_float32())
+            {
+                float32::set_value(
+                    value_data(offset),
+                    std::any_cast<float32::type>(m_initial_values.at(name)));
+            }
+            else if (metric.has_boolean())
+            {
+                boolean::set_value(
+                    value_data(offset),
+                    std::any_cast<boolean::type>(m_initial_values.at(name)));
+            }
+            else if (metric.has_enum8())
+            {
+                enum8::set_value(
+                    value_data(offset),
+                    std::any_cast<enum8::type>(m_initial_values.at(name)));
+            }
+        }
+    }
 }
 }
 }
