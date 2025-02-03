@@ -10,7 +10,7 @@
 #include <google/protobuf/util/message_differencer.h>
 
 #include <abacus/metrics.hpp>
-#include <abacus/parse.hpp>
+#include <abacus/parse_metadata.hpp>
 #include <abacus/protocol_version.hpp>
 #include <abacus/view.hpp>
 
@@ -350,8 +350,8 @@ TEST(test_metrics, protocol_version)
         SCOPED_TRACE(::testing::Message() << "Meta data:\n"
                                           << meta_stream.str());
 
-        auto expected = abacus::parse::metadata(expected_metadata.data(),
-                                                expected_metadata.size());
+        auto expected = abacus::parse_metadata(expected_metadata.data(),
+                                               expected_metadata.size());
         ASSERT_TRUE(expected.has_value());
         auto actual = metrics.metadata();
 
