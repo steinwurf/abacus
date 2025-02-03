@@ -7,7 +7,6 @@
 
 #include <string>
 
-#include "availability.hpp"
 #include "description.hpp"
 #include "kind.hpp"
 #include "max.hpp"

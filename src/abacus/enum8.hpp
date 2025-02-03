@@ -11,7 +11,6 @@
 #include <map>
 #include <string>
 
-#include "availability.hpp"
 #include "description.hpp"
 #include "unit.hpp"
 

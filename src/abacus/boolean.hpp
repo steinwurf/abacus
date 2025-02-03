@@ -10,7 +10,6 @@
 #include <cstring>
 #include <string>
 
-#include "availability.hpp"
 #include "description.hpp"
 #include "kind.hpp"
 

@@ -5,7 +5,6 @@
 
 #pragma once
 
-#include "availability.hpp"
 #include "description.hpp"
 #include "kind.hpp"
 #include "max.hpp"
