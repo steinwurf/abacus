@@ -6,7 +6,6 @@
 #include "metrics.hpp"
 
 #include "detail/hash_function.hpp"
-#include "detail/size_of_type.hpp"
 
 #include "info.hpp"
 #include "protocol_version.hpp"
