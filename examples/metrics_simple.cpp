@@ -11,6 +11,14 @@
 #include <abacus/to_json.hpp>
 #include <abacus/view.hpp>
 
+enum class test_enum
+{
+    value0 = 0,
+    value1 = 1,
+    value2 = 2,
+    value3 = 3
+};
+
 // Simple example of metrics on a car.
 int main()
 {
@@ -34,7 +42,13 @@ int main()
          abacus::boolean{abacus::description{"Is the car registered"}}},
         {abacus::name{"license_plate"},
          abacus::constant{abacus::constant::str{"ABC-1234"},
-                          abacus::description{"License plate of the car"}}}};
+                          abacus::description{"License plate of the car"}}},
+        {abacus::name{"some_enum"},
+         abacus::enum8{abacus::description{"An enum metric"},
+                       {{test_enum::value0, {"value0", "The value for 0"}},
+                        {test_enum::value1, {"value1", "The value for 1"}},
+                        {test_enum::value2, {"value2", "The value for 2"}},
+                        {test_enum::value3, {"value3", "The value for 3"}}}}}};
 
     abacus::metrics car(infos);
 
@@ -49,6 +63,12 @@ int main()
     // The registration is initialized, but not set.
     assert(registered.is_initialized());
     assert(!registered.has_value());
+
+    abacus::metric<abacus::enum8> some_enum =
+        car.initialize<abacus::enum8>("some_enum").set_value(test_enum::value1);
+
+    // Change value
+    some_enum = test_enum::value2;
 
     // The car hasn't been registered.
     registered = false;
