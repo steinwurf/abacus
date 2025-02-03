@@ -36,10 +36,9 @@ PROTOBUF_CONSTEXPR UInt64Metric::UInt64Metric(::_pbi::ConstantInitialized)
           ::_pbi::ConstantInitialized{},
       },
       /*decltype(_impl_.offset_)*/ 0u,
-      /*decltype(_impl_.optional_)*/ false,
+      /*decltype(_impl_.kind_)*/ 0,
       /*decltype(_impl_.min_)*/ ::uint64_t{0u},
       /*decltype(_impl_.max_)*/ ::uint64_t{0u},
-      /*decltype(_impl_.kind_)*/ 0,
     } {}
 struct UInt64MetricDefaultTypeInternal {
   PROTOBUF_CONSTEXPR UInt64MetricDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
@@ -65,10 +64,9 @@ PROTOBUF_CONSTEXPR Int64Metric::Int64Metric(::_pbi::ConstantInitialized)
           ::_pbi::ConstantInitialized{},
       },
       /*decltype(_impl_.offset_)*/ 0u,
-      /*decltype(_impl_.optional_)*/ false,
+      /*decltype(_impl_.kind_)*/ 0,
       /*decltype(_impl_.min_)*/ ::int64_t{0},
       /*decltype(_impl_.max_)*/ ::int64_t{0},
-      /*decltype(_impl_.kind_)*/ 0,
     } {}
 struct Int64MetricDefaultTypeInternal {
   PROTOBUF_CONSTEXPR Int64MetricDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
@@ -94,7 +92,6 @@ PROTOBUF_CONSTEXPR UInt32Metric::UInt32Metric(::_pbi::ConstantInitialized)
           ::_pbi::ConstantInitialized{},
       },
       /*decltype(_impl_.offset_)*/ 0u,
-      /*decltype(_impl_.optional_)*/ false,
       /*decltype(_impl_.kind_)*/ 0,
       /*decltype(_impl_.min_)*/ 0u,
       /*decltype(_impl_.max_)*/ 0u,
@@ -123,7 +120,6 @@ PROTOBUF_CONSTEXPR Int32Metric::Int32Metric(::_pbi::ConstantInitialized)
           ::_pbi::ConstantInitialized{},
       },
       /*decltype(_impl_.offset_)*/ 0u,
-      /*decltype(_impl_.optional_)*/ false,
       /*decltype(_impl_.kind_)*/ 0,
       /*decltype(_impl_.min_)*/ 0,
       /*decltype(_impl_.max_)*/ 0,
@@ -152,10 +148,9 @@ PROTOBUF_CONSTEXPR Float64Metric::Float64Metric(::_pbi::ConstantInitialized)
           ::_pbi::ConstantInitialized{},
       },
       /*decltype(_impl_.offset_)*/ 0u,
-      /*decltype(_impl_.optional_)*/ false,
+      /*decltype(_impl_.kind_)*/ 0,
       /*decltype(_impl_.min_)*/ 0,
       /*decltype(_impl_.max_)*/ 0,
-      /*decltype(_impl_.kind_)*/ 0,
     } {}
 struct Float64MetricDefaultTypeInternal {
   PROTOBUF_CONSTEXPR Float64MetricDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
@@ -181,7 +176,6 @@ PROTOBUF_CONSTEXPR Float32Metric::Float32Metric(::_pbi::ConstantInitialized)
           ::_pbi::ConstantInitialized{},
       },
       /*decltype(_impl_.offset_)*/ 0u,
-      /*decltype(_impl_.optional_)*/ false,
       /*decltype(_impl_.kind_)*/ 0,
       /*decltype(_impl_.min_)*/ 0,
       /*decltype(_impl_.max_)*/ 0,
@@ -210,7 +204,6 @@ PROTOBUF_CONSTEXPR BoolMetric::BoolMetric(::_pbi::ConstantInitialized)
           ::_pbi::ConstantInitialized{},
       },
       /*decltype(_impl_.offset_)*/ 0u,
-      /*decltype(_impl_.optional_)*/ false,
     } {}
 struct BoolMetricDefaultTypeInternal {
   PROTOBUF_CONSTEXPR BoolMetricDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
@@ -273,7 +266,6 @@ PROTOBUF_CONSTEXPR Enum8Metric::Enum8Metric(::_pbi::ConstantInitialized)
           ::_pbi::ConstantInitialized{},
       },
       /*decltype(_impl_.offset_)*/ 0u,
-      /*decltype(_impl_.optional_)*/ false,
     } {}
 struct Enum8MetricDefaultTypeInternal {
   PROTOBUF_CONSTEXPR Enum8MetricDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
@@ -377,12 +369,10 @@ const ::uint32_t TableStruct_abacus_2fprotobuf_2fmetrics_2eproto::offsets[] PROT
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt64Metric, _impl_.offset_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt64Metric, _impl_.description_),
-    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt64Metric, _impl_.optional_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt64Metric, _impl_.kind_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt64Metric, _impl_.unit_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt64Metric, _impl_.min_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt64Metric, _impl_.max_),
-    ~0u,
     ~0u,
     ~0u,
     ~0u,
@@ -399,12 +389,10 @@ const ::uint32_t TableStruct_abacus_2fprotobuf_2fmetrics_2eproto::offsets[] PROT
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int64Metric, _impl_.offset_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int64Metric, _impl_.description_),
-    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int64Metric, _impl_.optional_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int64Metric, _impl_.kind_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int64Metric, _impl_.unit_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int64Metric, _impl_.min_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int64Metric, _impl_.max_),
-    ~0u,
     ~0u,
     ~0u,
     ~0u,
@@ -421,12 +409,10 @@ const ::uint32_t TableStruct_abacus_2fprotobuf_2fmetrics_2eproto::offsets[] PROT
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt32Metric, _impl_.offset_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt32Metric, _impl_.description_),
-    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt32Metric, _impl_.optional_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt32Metric, _impl_.kind_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt32Metric, _impl_.unit_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt32Metric, _impl_.min_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::UInt32Metric, _impl_.max_),
-    ~0u,
     ~0u,
     ~0u,
     ~0u,
@@ -443,12 +429,10 @@ const ::uint32_t TableStruct_abacus_2fprotobuf_2fmetrics_2eproto::offsets[] PROT
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int32Metric, _impl_.offset_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int32Metric, _impl_.description_),
-    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int32Metric, _impl_.optional_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int32Metric, _impl_.kind_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int32Metric, _impl_.unit_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int32Metric, _impl_.min_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Int32Metric, _impl_.max_),
-    ~0u,
     ~0u,
     ~0u,
     ~0u,
@@ -465,12 +449,10 @@ const ::uint32_t TableStruct_abacus_2fprotobuf_2fmetrics_2eproto::offsets[] PROT
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float64Metric, _impl_.offset_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float64Metric, _impl_.description_),
-    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float64Metric, _impl_.optional_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float64Metric, _impl_.kind_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float64Metric, _impl_.unit_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float64Metric, _impl_.min_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float64Metric, _impl_.max_),
-    ~0u,
     ~0u,
     ~0u,
     ~0u,
@@ -487,12 +469,10 @@ const ::uint32_t TableStruct_abacus_2fprotobuf_2fmetrics_2eproto::offsets[] PROT
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float32Metric, _impl_.offset_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float32Metric, _impl_.description_),
-    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float32Metric, _impl_.optional_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float32Metric, _impl_.kind_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float32Metric, _impl_.unit_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float32Metric, _impl_.min_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Float32Metric, _impl_.max_),
-    ~0u,
     ~0u,
     ~0u,
     ~0u,
@@ -509,9 +489,7 @@ const ::uint32_t TableStruct_abacus_2fprotobuf_2fmetrics_2eproto::offsets[] PROT
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::BoolMetric, _impl_.offset_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::BoolMetric, _impl_.description_),
-    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::BoolMetric, _impl_.optional_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::BoolMetric, _impl_.unit_),
-    ~0u,
     ~0u,
     ~0u,
     0,
@@ -549,10 +527,8 @@ const ::uint32_t TableStruct_abacus_2fprotobuf_2fmetrics_2eproto::offsets[] PROT
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Enum8Metric, _impl_.offset_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Enum8Metric, _impl_.description_),
-    PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Enum8Metric, _impl_.optional_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Enum8Metric, _impl_.values_),
     PROTOBUF_FIELD_OFFSET(::abacus::protobuf::Enum8Metric, _impl_.unit_),
-    ~0u,
     ~0u,
     ~0u,
     ~0u,
@@ -626,20 +602,20 @@ const ::uint32_t TableStruct_abacus_2fprotobuf_2fmetrics_2eproto::offsets[] PROT
 
 static const ::_pbi::MigrationSchema
     schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-        {0, 15, -1, sizeof(::abacus::protobuf::UInt64Metric)},
-        {22, 37, -1, sizeof(::abacus::protobuf::Int64Metric)},
-        {44, 59, -1, sizeof(::abacus::protobuf::UInt32Metric)},
-        {66, 81, -1, sizeof(::abacus::protobuf::Int32Metric)},
-        {88, 103, -1, sizeof(::abacus::protobuf::Float64Metric)},
-        {110, 125, -1, sizeof(::abacus::protobuf::Float32Metric)},
-        {132, 144, -1, sizeof(::abacus::protobuf::BoolMetric)},
-        {148, 158, -1, sizeof(::abacus::protobuf::Enum8Metric_EnumValue)},
-        {160, 170, -1, sizeof(::abacus::protobuf::Enum8Metric_ValuesEntry_DoNotUse)},
-        {172, 185, -1, sizeof(::abacus::protobuf::Enum8Metric)},
-        {190, 206, -1, sizeof(::abacus::protobuf::Constant)},
-        {213, -1, -1, sizeof(::abacus::protobuf::Metric)},
-        {231, 241, -1, sizeof(::abacus::protobuf::MetricsMetadata_MetricsEntry_DoNotUse)},
-        {243, -1, -1, sizeof(::abacus::protobuf::MetricsMetadata)},
+        {0, 14, -1, sizeof(::abacus::protobuf::UInt64Metric)},
+        {20, 34, -1, sizeof(::abacus::protobuf::Int64Metric)},
+        {40, 54, -1, sizeof(::abacus::protobuf::UInt32Metric)},
+        {60, 74, -1, sizeof(::abacus::protobuf::Int32Metric)},
+        {80, 94, -1, sizeof(::abacus::protobuf::Float64Metric)},
+        {100, 114, -1, sizeof(::abacus::protobuf::Float32Metric)},
+        {120, 131, -1, sizeof(::abacus::protobuf::BoolMetric)},
+        {134, 144, -1, sizeof(::abacus::protobuf::Enum8Metric_EnumValue)},
+        {146, 156, -1, sizeof(::abacus::protobuf::Enum8Metric_ValuesEntry_DoNotUse)},
+        {158, 170, -1, sizeof(::abacus::protobuf::Enum8Metric)},
+        {174, 190, -1, sizeof(::abacus::protobuf::Constant)},
+        {197, -1, -1, sizeof(::abacus::protobuf::Metric)},
+        {215, 225, -1, sizeof(::abacus::protobuf::MetricsMetadata_MetricsEntry_DoNotUse)},
+        {227, -1, -1, sizeof(::abacus::protobuf::MetricsMetadata)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -660,75 +636,72 @@ static const ::_pb::Message* const file_default_instances[] = {
 };
 const char descriptor_table_protodef_abacus_2fprotobuf_2fmetrics_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
     "\n\035abacus/protobuf/metrics.proto\022\017abacus."
-    "protobuf\"\272\001\n\014UInt64Metric\022\016\n\006offset\030\001 \001("
-    "\r\022\023\n\013description\030\002 \001(\t\022\020\n\010optional\030\003 \001(\010"
-    "\022#\n\004kind\030\004 \001(\0162\025.abacus.protobuf.Kind\022\021\n"
-    "\004unit\030\005 \001(\tH\000\210\001\001\022\020\n\003min\030\006 \001(\004H\001\210\001\001\022\020\n\003ma"
-    "x\030\007 \001(\004H\002\210\001\001B\007\n\005_unitB\006\n\004_minB\006\n\004_max\"\271\001"
-    "\n\013Int64Metric\022\016\n\006offset\030\001 \001(\r\022\023\n\013descrip"
-    "tion\030\002 \001(\t\022\020\n\010optional\030\003 \001(\010\022#\n\004kind\030\004 \001"
-    "(\0162\025.abacus.protobuf.Kind\022\021\n\004unit\030\005 \001(\tH"
-    "\000\210\001\001\022\020\n\003min\030\006 \001(\003H\001\210\001\001\022\020\n\003max\030\007 \001(\003H\002\210\001\001"
-    "B\007\n\005_unitB\006\n\004_minB\006\n\004_max\"\272\001\n\014UInt32Metr"
-    "ic\022\016\n\006offset\030\001 \001(\r\022\023\n\013description\030\002 \001(\t\022"
-    "\020\n\010optional\030\003 \001(\010\022#\n\004kind\030\004 \001(\0162\025.abacus"
-    ".protobuf.Kind\022\021\n\004unit\030\005 \001(\tH\000\210\001\001\022\020\n\003min"
-    "\030\006 \001(\rH\001\210\001\001\022\020\n\003max\030\007 \001(\rH\002\210\001\001B\007\n\005_unitB\006"
-    "\n\004_minB\006\n\004_max\"\271\001\n\013Int32Metric\022\016\n\006offset"
-    "\030\001 \001(\r\022\023\n\013description\030\002 \001(\t\022\020\n\010optional\030"
-    "\003 \001(\010\022#\n\004kind\030\004 \001(\0162\025.abacus.protobuf.Ki"
-    "nd\022\021\n\004unit\030\005 \001(\tH\000\210\001\001\022\020\n\003min\030\006 \001(\005H\001\210\001\001\022"
-    "\020\n\003max\030\007 \001(\005H\002\210\001\001B\007\n\005_unitB\006\n\004_minB\006\n\004_m"
-    "ax\"\273\001\n\rFloat64Metric\022\016\n\006offset\030\001 \001(\r\022\023\n\013"
-    "description\030\002 \001(\t\022\020\n\010optional\030\003 \001(\010\022#\n\004k"
-    "ind\030\004 \001(\0162\025.abacus.protobuf.Kind\022\021\n\004unit"
-    "\030\005 \001(\tH\000\210\001\001\022\020\n\003min\030\006 \001(\001H\001\210\001\001\022\020\n\003max\030\007 \001"
-    "(\001H\002\210\001\001B\007\n\005_unitB\006\n\004_minB\006\n\004_max\"\273\001\n\rFlo"
-    "at32Metric\022\016\n\006offset\030\001 \001(\r\022\023\n\013descriptio"
-    "n\030\002 \001(\t\022\020\n\010optional\030\003 \001(\010\022#\n\004kind\030\004 \001(\0162"
-    "\025.abacus.protobuf.Kind\022\021\n\004unit\030\005 \001(\tH\000\210\001"
-    "\001\022\020\n\003min\030\006 \001(\002H\001\210\001\001\022\020\n\003max\030\007 \001(\002H\002\210\001\001B\007\n"
-    "\005_unitB\006\n\004_minB\006\n\004_max\"_\n\nBoolMetric\022\016\n\006"
-    "offset\030\001 \001(\r\022\023\n\013description\030\002 \001(\t\022\020\n\010opt"
-    "ional\030\003 \001(\010\022\021\n\004unit\030\004 \001(\tH\000\210\001\001B\007\n\005_unit\""
-    "\266\002\n\013Enum8Metric\022\016\n\006offset\030\001 \001(\r\022\023\n\013descr"
-    "iption\030\002 \001(\t\022\020\n\010optional\030\003 \001(\010\0228\n\006values"
-    "\030\004 \003(\0132(.abacus.protobuf.Enum8Metric.Val"
-    "uesEntry\022\021\n\004unit\030\005 \001(\tH\000\210\001\001\032C\n\tEnumValue"
-    "\022\014\n\004name\030\001 \001(\t\022\030\n\013description\030\002 \001(\tH\000\210\001\001"
-    "B\016\n\014_description\032U\n\013ValuesEntry\022\013\n\003key\030\001"
-    " \001(\r\0225\n\005value\030\002 \001(\0132&.abacus.protobuf.En"
-    "um8Metric.EnumValue:\0028\001B\007\n\005_unit\"\237\001\n\010Con"
-    "stant\022\020\n\006uint64\030\001 \001(\004H\000\022\017\n\005int64\030\002 \001(\003H\000"
-    "\022\021\n\007float64\030\006 \001(\001H\000\022\021\n\007boolean\030\007 \001(\010H\000\022\020"
-    "\n\006string\030\t \001(\tH\000\022\023\n\013description\030\n \001(\t\022\021\n"
-    "\004unit\030\013 \001(\tH\001\210\001\001B\007\n\005valueB\007\n\005_unit\"\304\003\n\006M"
-    "etric\022-\n\010constant\030\001 \001(\0132\031.abacus.protobu"
-    "f.ConstantH\000\022/\n\006uint64\030\002 \001(\0132\035.abacus.pr"
-    "otobuf.UInt64MetricH\000\022-\n\005int64\030\003 \001(\0132\034.a"
-    "bacus.protobuf.Int64MetricH\000\022/\n\006uint32\030\004"
-    " \001(\0132\035.abacus.protobuf.UInt32MetricH\000\022-\n"
-    "\005int32\030\005 \001(\0132\034.abacus.protobuf.Int32Metr"
-    "icH\000\0221\n\007float64\030\006 \001(\0132\036.abacus.protobuf."
-    "Float64MetricH\000\0221\n\007float32\030\007 \001(\0132\036.abacu"
-    "s.protobuf.Float32MetricH\000\022.\n\007boolean\030\010 "
-    "\001(\0132\033.abacus.protobuf.BoolMetricH\000\022-\n\005en"
-    "um8\030\t \001(\0132\034.abacus.protobuf.Enum8MetricH"
-    "\000B\006\n\004type\"\371\001\n\017MetricsMetadata\022\030\n\020protoco"
-    "l_version\030\001 \001(\r\022/\n\nendianness\030\002 \001(\0162\033.ab"
-    "acus.protobuf.Endianness\022\022\n\nsync_value\030\003"
-    " \001(\007\022>\n\007metrics\030\004 \003(\0132-.abacus.protobuf."
-    "MetricsMetadata.MetricsEntry\032G\n\014MetricsE"
-    "ntry\022\013\n\003key\030\001 \001(\t\022&\n\005value\030\002 \001(\0132\027.abacu"
-    "s.protobuf.Metric:\0028\001*!\n\nEndianness\022\n\n\006L"
-    "ITTLE\020\000\022\007\n\003BIG\020\001*\036\n\004Kind\022\t\n\005GAUGE\020\000\022\013\n\007C"
-    "OUNTER\020\001B\021Z\017abacus/protobufb\006proto3"
+    "protobuf\"\250\001\n\014UInt64Metric\022\016\n\006offset\030\001 \001("
+    "\r\022\023\n\013description\030\002 \001(\t\022#\n\004kind\030\003 \001(\0162\025.a"
+    "bacus.protobuf.Kind\022\021\n\004unit\030\004 \001(\tH\000\210\001\001\022\020"
+    "\n\003min\030\005 \001(\004H\001\210\001\001\022\020\n\003max\030\006 \001(\004H\002\210\001\001B\007\n\005_u"
+    "nitB\006\n\004_minB\006\n\004_max\"\247\001\n\013Int64Metric\022\016\n\006o"
+    "ffset\030\001 \001(\r\022\023\n\013description\030\002 \001(\t\022#\n\004kind"
+    "\030\003 \001(\0162\025.abacus.protobuf.Kind\022\021\n\004unit\030\004 "
+    "\001(\tH\000\210\001\001\022\020\n\003min\030\005 \001(\003H\001\210\001\001\022\020\n\003max\030\006 \001(\003H"
+    "\002\210\001\001B\007\n\005_unitB\006\n\004_minB\006\n\004_max\"\250\001\n\014UInt32"
+    "Metric\022\016\n\006offset\030\001 \001(\r\022\023\n\013description\030\002 "
+    "\001(\t\022#\n\004kind\030\003 \001(\0162\025.abacus.protobuf.Kind"
+    "\022\021\n\004unit\030\004 \001(\tH\000\210\001\001\022\020\n\003min\030\005 \001(\rH\001\210\001\001\022\020\n"
+    "\003max\030\006 \001(\rH\002\210\001\001B\007\n\005_unitB\006\n\004_minB\006\n\004_max"
+    "\"\247\001\n\013Int32Metric\022\016\n\006offset\030\001 \001(\r\022\023\n\013desc"
+    "ription\030\002 \001(\t\022#\n\004kind\030\003 \001(\0162\025.abacus.pro"
+    "tobuf.Kind\022\021\n\004unit\030\004 \001(\tH\000\210\001\001\022\020\n\003min\030\005 \001"
+    "(\005H\001\210\001\001\022\020\n\003max\030\006 \001(\005H\002\210\001\001B\007\n\005_unitB\006\n\004_m"
+    "inB\006\n\004_max\"\251\001\n\rFloat64Metric\022\016\n\006offset\030\001"
+    " \001(\r\022\023\n\013description\030\002 \001(\t\022#\n\004kind\030\003 \001(\0162"
+    "\025.abacus.protobuf.Kind\022\021\n\004unit\030\004 \001(\tH\000\210\001"
+    "\001\022\020\n\003min\030\005 \001(\001H\001\210\001\001\022\020\n\003max\030\006 \001(\001H\002\210\001\001B\007\n"
+    "\005_unitB\006\n\004_minB\006\n\004_max\"\251\001\n\rFloat32Metric"
+    "\022\016\n\006offset\030\001 \001(\r\022\023\n\013description\030\002 \001(\t\022#\n"
+    "\004kind\030\003 \001(\0162\025.abacus.protobuf.Kind\022\021\n\004un"
+    "it\030\004 \001(\tH\000\210\001\001\022\020\n\003min\030\005 \001(\002H\001\210\001\001\022\020\n\003max\030\006"
+    " \001(\002H\002\210\001\001B\007\n\005_unitB\006\n\004_minB\006\n\004_max\"M\n\nBo"
+    "olMetric\022\016\n\006offset\030\001 \001(\r\022\023\n\013description\030"
+    "\002 \001(\t\022\021\n\004unit\030\003 \001(\tH\000\210\001\001B\007\n\005_unit\"\244\002\n\013En"
+    "um8Metric\022\016\n\006offset\030\001 \001(\r\022\023\n\013description"
+    "\030\002 \001(\t\0228\n\006values\030\004 \003(\0132(.abacus.protobuf"
+    ".Enum8Metric.ValuesEntry\022\021\n\004unit\030\005 \001(\tH\000"
+    "\210\001\001\032C\n\tEnumValue\022\014\n\004name\030\001 \001(\t\022\030\n\013descri"
+    "ption\030\002 \001(\tH\000\210\001\001B\016\n\014_description\032U\n\013Valu"
+    "esEntry\022\013\n\003key\030\001 \001(\r\0225\n\005value\030\002 \001(\0132&.ab"
+    "acus.protobuf.Enum8Metric.EnumValue:\0028\001B"
+    "\007\n\005_unit\"\237\001\n\010Constant\022\020\n\006uint64\030\001 \001(\004H\000\022"
+    "\017\n\005int64\030\002 \001(\003H\000\022\021\n\007float64\030\006 \001(\001H\000\022\021\n\007b"
+    "oolean\030\007 \001(\010H\000\022\020\n\006string\030\t \001(\tH\000\022\023\n\013desc"
+    "ription\030\n \001(\t\022\021\n\004unit\030\013 \001(\tH\001\210\001\001B\007\n\005valu"
+    "eB\007\n\005_unit\"\304\003\n\006Metric\022-\n\010constant\030\001 \001(\0132"
+    "\031.abacus.protobuf.ConstantH\000\022/\n\006uint64\030\002"
+    " \001(\0132\035.abacus.protobuf.UInt64MetricH\000\022-\n"
+    "\005int64\030\003 \001(\0132\034.abacus.protobuf.Int64Metr"
+    "icH\000\022/\n\006uint32\030\004 \001(\0132\035.abacus.protobuf.U"
+    "Int32MetricH\000\022-\n\005int32\030\005 \001(\0132\034.abacus.pr"
+    "otobuf.Int32MetricH\000\0221\n\007float64\030\006 \001(\0132\036."
+    "abacus.protobuf.Float64MetricH\000\0221\n\007float"
+    "32\030\007 \001(\0132\036.abacus.protobuf.Float32Metric"
+    "H\000\022.\n\007boolean\030\010 \001(\0132\033.abacus.protobuf.Bo"
+    "olMetricH\000\022-\n\005enum8\030\t \001(\0132\034.abacus.proto"
+    "buf.Enum8MetricH\000B\006\n\004type\"\371\001\n\017MetricsMet"
+    "adata\022\030\n\020protocol_version\030\001 \001(\r\022/\n\nendia"
+    "nness\030\002 \001(\0162\033.abacus.protobuf.Endianness"
+    "\022\022\n\nsync_value\030\003 \001(\007\022>\n\007metrics\030\004 \003(\0132-."
+    "abacus.protobuf.MetricsMetadata.MetricsE"
+    "ntry\032G\n\014MetricsEntry\022\013\n\003key\030\001 \001(\t\022&\n\005val"
+    "ue\030\002 \001(\0132\027.abacus.protobuf.Metric:\0028\001*!\n"
+    "\nEndianness\022\n\n\006LITTLE\020\000\022\007\n\003BIG\020\001*\036\n\004Kind"
+    "\022\t\n\005GAUGE\020\000\022\013\n\007COUNTER\020\001B\021Z\017abacus/proto"
+    "bufb\006proto3"
 };
 static ::absl::once_flag descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto = {
     false,
     false,
-    2555,
+    2411,
     descriptor_table_protodef_abacus_2fprotobuf_2fmetrics_2eproto,
     "abacus/protobuf/metrics.proto",
     &descriptor_table_abacus_2fprotobuf_2fmetrics_2eproto_once,
@@ -820,10 +793,9 @@ UInt64Metric::UInt64Metric(const UInt64Metric& from) : ::google::protobuf::Messa
       decltype(_impl_.description_){},
       decltype(_impl_.unit_){},
       decltype(_impl_.offset_){},
-      decltype(_impl_.optional_){},
+      decltype(_impl_.kind_){},
       decltype(_impl_.min_){},
       decltype(_impl_.max_){},
-      decltype(_impl_.kind_){},
   };
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
@@ -842,8 +814,8 @@ UInt64Metric::UInt64Metric(const UInt64Metric& from) : ::google::protobuf::Messa
     _this->_impl_.unit_.Set(from._internal_unit(), _this->GetArenaForAllocation());
   }
   ::memcpy(&_impl_.offset_, &from._impl_.offset_,
-    static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.kind_) -
-    reinterpret_cast<char*>(&_impl_.offset_)) + sizeof(_impl_.kind_));
+    static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.max_) -
+    reinterpret_cast<char*>(&_impl_.offset_)) + sizeof(_impl_.max_));
 
   // @@protoc_insertion_point(copy_constructor:abacus.protobuf.UInt64Metric)
 }
@@ -855,10 +827,9 @@ inline void UInt64Metric::SharedCtor(::_pb::Arena* arena) {
       decltype(_impl_.description_){},
       decltype(_impl_.unit_){},
       decltype(_impl_.offset_){0u},
-      decltype(_impl_.optional_){false},
+      decltype(_impl_.kind_){0},
       decltype(_impl_.min_){::uint64_t{0u}},
       decltype(_impl_.max_){::uint64_t{0u}},
-      decltype(_impl_.kind_){0},
   };
   _impl_.description_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
@@ -895,14 +866,13 @@ PROTOBUF_NOINLINE void UInt64Metric::Clear() {
     _impl_.unit_.ClearNonDefaultToEmpty();
   }
   ::memset(&_impl_.offset_, 0, static_cast<::size_t>(
-      reinterpret_cast<char*>(&_impl_.optional_) -
-      reinterpret_cast<char*>(&_impl_.offset_)) + sizeof(_impl_.optional_));
+      reinterpret_cast<char*>(&_impl_.kind_) -
+      reinterpret_cast<char*>(&_impl_.offset_)) + sizeof(_impl_.kind_));
   if (cached_has_bits & 0x00000006u) {
     ::memset(&_impl_.min_, 0, static_cast<::size_t>(
         reinterpret_cast<char*>(&_impl_.max_) -
         reinterpret_cast<char*>(&_impl_.min_)) + sizeof(_impl_.max_));
   }
-  _impl_.kind_ = 0;
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -915,15 +885,15 @@ const char* UInt64Metric::_InternalParse(
 
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 7, 0, 52, 2> UInt64Metric::_table_ = {
+const ::_pbi::TcParseTable<3, 6, 0, 52, 2> UInt64Metric::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_._has_bits_),
     0, // no _extensions_
-    7, 56,  // max_field_number, fast_idx_mask
+    6, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967168,  // skipmap
+    4294967232,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    7,  // num_field_entries
+    6,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     &_UInt64Metric_default_instance_._instance,
@@ -936,21 +906,19 @@ const ::_pbi::TcParseTable<3, 7, 0, 52, 2> UInt64Metric::_table_ = {
     // string description = 2;
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.description_)}},
-    // bool optional = 3;
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(UInt64Metric, _impl_.optional_), 63>(),
-     {24, 63, 0, PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.optional_)}},
-    // .abacus.protobuf.Kind kind = 4;
+    // .abacus.protobuf.Kind kind = 3;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UInt64Metric, _impl_.kind_), 63>(),
-     {32, 63, 0, PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.kind_)}},
-    // optional string unit = 5;
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.kind_)}},
+    // optional string unit = 4;
     {::_pbi::TcParser::FastUS1,
-     {42, 0, 0, PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.unit_)}},
-    // optional uint64 min = 6;
+     {34, 0, 0, PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.unit_)}},
+    // optional uint64 min = 5;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(UInt64Metric, _impl_.min_), 1>(),
-     {48, 1, 0, PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.min_)}},
-    // optional uint64 max = 7;
+     {40, 1, 0, PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.min_)}},
+    // optional uint64 max = 6;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(UInt64Metric, _impl_.max_), 2>(),
-     {56, 2, 0, PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.max_)}},
+     {48, 2, 0, PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.max_)}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
@@ -960,25 +928,22 @@ const ::_pbi::TcParseTable<3, 7, 0, 52, 2> UInt64Metric::_table_ = {
     // string description = 2;
     {PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.description_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // bool optional = 3;
-    {PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.optional_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
-    // .abacus.protobuf.Kind kind = 4;
+    // .abacus.protobuf.Kind kind = 3;
     {PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.kind_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-    // optional string unit = 5;
+    // optional string unit = 4;
     {PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.unit_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // optional uint64 min = 6;
+    // optional uint64 min = 5;
     {PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.min_), _Internal::kHasBitsOffset + 1, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUInt64)},
-    // optional uint64 max = 7;
+    // optional uint64 max = 6;
     {PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.max_), _Internal::kHasBitsOffset + 2, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUInt64)},
   }},
   // no aux_entries
   {{
-    "\34\0\13\0\0\4\0\0"
+    "\34\0\13\0\4\0\0\0"
     "abacus.protobuf.UInt64Metric"
     "description"
     "unit"
@@ -1007,41 +972,34 @@ const ::_pbi::TcParseTable<3, 7, 0, 52, 2> UInt64Metric::_table_ = {
     target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
-  // bool optional = 3;
-  if (this->_internal_optional() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(
-        3, this->_internal_optional(), target);
-  }
-
-  // .abacus.protobuf.Kind kind = 4;
+  // .abacus.protobuf.Kind kind = 3;
   if (this->_internal_kind() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteEnumToArray(
-        4, this->_internal_kind(), target);
+        3, this->_internal_kind(), target);
   }
 
   cached_has_bits = _impl_._has_bits_[0];
-  // optional string unit = 5;
+  // optional string unit = 4;
   if (cached_has_bits & 0x00000001u) {
     const std::string& _s = this->_internal_unit();
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
         _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "abacus.protobuf.UInt64Metric.unit");
-    target = stream->WriteStringMaybeAliased(5, _s, target);
+    target = stream->WriteStringMaybeAliased(4, _s, target);
   }
 
-  // optional uint64 min = 6;
+  // optional uint64 min = 5;
   if (cached_has_bits & 0x00000002u) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteUInt64ToArray(
-        6, this->_internal_min(), target);
+        5, this->_internal_min(), target);
   }
 
-  // optional uint64 max = 7;
+  // optional uint64 max = 6;
   if (cached_has_bits & 0x00000004u) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteUInt64ToArray(
-        7, this->_internal_max(), target);
+        6, this->_internal_max(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1067,7 +1025,7 @@ const ::_pbi::TcParseTable<3, 7, 0, 52, 2> UInt64Metric::_table_ = {
                                     this->_internal_description());
   }
 
-  // optional string unit = 5;
+  // optional string unit = 4;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -1080,31 +1038,26 @@ const ::_pbi::TcParseTable<3, 7, 0, 52, 2> UInt64Metric::_table_ = {
         this->_internal_offset());
   }
 
-  // bool optional = 3;
-  if (this->_internal_optional() != 0) {
-    total_size += 2;
+  // .abacus.protobuf.Kind kind = 3;
+  if (this->_internal_kind() != 0) {
+    total_size += 1 +
+                  ::_pbi::WireFormatLite::EnumSize(this->_internal_kind());
   }
 
   if (cached_has_bits & 0x00000006u) {
-    // optional uint64 min = 6;
+    // optional uint64 min = 5;
     if (cached_has_bits & 0x00000002u) {
       total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
           this->_internal_min());
     }
 
-    // optional uint64 max = 7;
+    // optional uint64 max = 6;
     if (cached_has_bits & 0x00000004u) {
       total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
           this->_internal_max());
     }
 
   }
-  // .abacus.protobuf.Kind kind = 4;
-  if (this->_internal_kind() != 0) {
-    total_size += 1 +
-                  ::_pbi::WireFormatLite::EnumSize(this->_internal_kind());
-  }
-
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
@@ -1132,8 +1085,8 @@ void UInt64Metric::MergeImpl(::google::protobuf::Message& to_msg, const ::google
   if (from._internal_offset() != 0) {
     _this->_internal_set_offset(from._internal_offset());
   }
-  if (from._internal_optional() != 0) {
-    _this->_internal_set_optional(from._internal_optional());
+  if (from._internal_kind() != 0) {
+    _this->_internal_set_kind(from._internal_kind());
   }
   cached_has_bits = from._impl_._has_bits_[0];
   if (cached_has_bits & 0x00000006u) {
@@ -1144,9 +1097,6 @@ void UInt64Metric::MergeImpl(::google::protobuf::Message& to_msg, const ::google
       _this->_impl_.max_ = from._impl_.max_;
     }
     _this->_impl_._has_bits_[0] |= cached_has_bits;
-  }
-  if (from._internal_kind() != 0) {
-    _this->_internal_set_kind(from._internal_kind());
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -1173,8 +1123,8 @@ void UInt64Metric::InternalSwap(UInt64Metric* other) {
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.unit_, lhs_arena,
                                        &other->_impl_.unit_, rhs_arena);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.kind_)
-      + sizeof(UInt64Metric::_impl_.kind_)
+      PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.max_)
+      + sizeof(UInt64Metric::_impl_.max_)
       - PROTOBUF_FIELD_OFFSET(UInt64Metric, _impl_.offset_)>(
           reinterpret_cast<char*>(&_impl_.offset_),
           reinterpret_cast<char*>(&other->_impl_.offset_));
@@ -1217,10 +1167,9 @@ Int64Metric::Int64Metric(const Int64Metric& from) : ::google::protobuf::Message(
       decltype(_impl_.description_){},
       decltype(_impl_.unit_){},
       decltype(_impl_.offset_){},
-      decltype(_impl_.optional_){},
+      decltype(_impl_.kind_){},
       decltype(_impl_.min_){},
       decltype(_impl_.max_){},
-      decltype(_impl_.kind_){},
   };
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
@@ -1239,8 +1188,8 @@ Int64Metric::Int64Metric(const Int64Metric& from) : ::google::protobuf::Message(
     _this->_impl_.unit_.Set(from._internal_unit(), _this->GetArenaForAllocation());
   }
   ::memcpy(&_impl_.offset_, &from._impl_.offset_,
-    static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.kind_) -
-    reinterpret_cast<char*>(&_impl_.offset_)) + sizeof(_impl_.kind_));
+    static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.max_) -
+    reinterpret_cast<char*>(&_impl_.offset_)) + sizeof(_impl_.max_));
 
   // @@protoc_insertion_point(copy_constructor:abacus.protobuf.Int64Metric)
 }
@@ -1252,10 +1201,9 @@ inline void Int64Metric::SharedCtor(::_pb::Arena* arena) {
       decltype(_impl_.description_){},
       decltype(_impl_.unit_){},
       decltype(_impl_.offset_){0u},
-      decltype(_impl_.optional_){false},
+      decltype(_impl_.kind_){0},
       decltype(_impl_.min_){::int64_t{0}},
       decltype(_impl_.max_){::int64_t{0}},
-      decltype(_impl_.kind_){0},
   };
   _impl_.description_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
@@ -1292,14 +1240,13 @@ PROTOBUF_NOINLINE void Int64Metric::Clear() {
     _impl_.unit_.ClearNonDefaultToEmpty();
   }
   ::memset(&_impl_.offset_, 0, static_cast<::size_t>(
-      reinterpret_cast<char*>(&_impl_.optional_) -
-      reinterpret_cast<char*>(&_impl_.offset_)) + sizeof(_impl_.optional_));
+      reinterpret_cast<char*>(&_impl_.kind_) -
+      reinterpret_cast<char*>(&_impl_.offset_)) + sizeof(_impl_.kind_));
   if (cached_has_bits & 0x00000006u) {
     ::memset(&_impl_.min_, 0, static_cast<::size_t>(
         reinterpret_cast<char*>(&_impl_.max_) -
         reinterpret_cast<char*>(&_impl_.min_)) + sizeof(_impl_.max_));
   }
-  _impl_.kind_ = 0;
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -1312,15 +1259,15 @@ const char* Int64Metric::_InternalParse(
 
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 7, 0, 51, 2> Int64Metric::_table_ = {
+const ::_pbi::TcParseTable<3, 6, 0, 51, 2> Int64Metric::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_._has_bits_),
     0, // no _extensions_
-    7, 56,  // max_field_number, fast_idx_mask
+    6, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967168,  // skipmap
+    4294967232,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    7,  // num_field_entries
+    6,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     &_Int64Metric_default_instance_._instance,
@@ -1333,21 +1280,19 @@ const ::_pbi::TcParseTable<3, 7, 0, 51, 2> Int64Metric::_table_ = {
     // string description = 2;
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.description_)}},
-    // bool optional = 3;
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(Int64Metric, _impl_.optional_), 63>(),
-     {24, 63, 0, PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.optional_)}},
-    // .abacus.protobuf.Kind kind = 4;
+    // .abacus.protobuf.Kind kind = 3;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Int64Metric, _impl_.kind_), 63>(),
-     {32, 63, 0, PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.kind_)}},
-    // optional string unit = 5;
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.kind_)}},
+    // optional string unit = 4;
     {::_pbi::TcParser::FastUS1,
-     {42, 0, 0, PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.unit_)}},
-    // optional int64 min = 6;
+     {34, 0, 0, PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.unit_)}},
+    // optional int64 min = 5;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(Int64Metric, _impl_.min_), 1>(),
-     {48, 1, 0, PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.min_)}},
-    // optional int64 max = 7;
+     {40, 1, 0, PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.min_)}},
+    // optional int64 max = 6;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(Int64Metric, _impl_.max_), 2>(),
-     {56, 2, 0, PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.max_)}},
+     {48, 2, 0, PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.max_)}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
@@ -1357,25 +1302,22 @@ const ::_pbi::TcParseTable<3, 7, 0, 51, 2> Int64Metric::_table_ = {
     // string description = 2;
     {PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.description_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // bool optional = 3;
-    {PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.optional_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
-    // .abacus.protobuf.Kind kind = 4;
+    // .abacus.protobuf.Kind kind = 3;
     {PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.kind_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-    // optional string unit = 5;
+    // optional string unit = 4;
     {PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.unit_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // optional int64 min = 6;
+    // optional int64 min = 5;
     {PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.min_), _Internal::kHasBitsOffset + 1, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
-    // optional int64 max = 7;
+    // optional int64 max = 6;
     {PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.max_), _Internal::kHasBitsOffset + 2, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
   }},
   // no aux_entries
   {{
-    "\33\0\13\0\0\4\0\0"
+    "\33\0\13\0\4\0\0\0"
     "abacus.protobuf.Int64Metric"
     "description"
     "unit"
@@ -1404,40 +1346,33 @@ const ::_pbi::TcParseTable<3, 7, 0, 51, 2> Int64Metric::_table_ = {
     target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
-  // bool optional = 3;
-  if (this->_internal_optional() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(
-        3, this->_internal_optional(), target);
-  }
-
-  // .abacus.protobuf.Kind kind = 4;
+  // .abacus.protobuf.Kind kind = 3;
   if (this->_internal_kind() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteEnumToArray(
-        4, this->_internal_kind(), target);
+        3, this->_internal_kind(), target);
   }
 
   cached_has_bits = _impl_._has_bits_[0];
-  // optional string unit = 5;
+  // optional string unit = 4;
   if (cached_has_bits & 0x00000001u) {
     const std::string& _s = this->_internal_unit();
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
         _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "abacus.protobuf.Int64Metric.unit");
-    target = stream->WriteStringMaybeAliased(5, _s, target);
+    target = stream->WriteStringMaybeAliased(4, _s, target);
   }
 
-  // optional int64 min = 6;
+  // optional int64 min = 5;
   if (cached_has_bits & 0x00000002u) {
     target = ::google::protobuf::internal::WireFormatLite::
-        WriteInt64ToArrayWithField<6>(
+        WriteInt64ToArrayWithField<5>(
             stream, this->_internal_min(), target);
   }
 
-  // optional int64 max = 7;
+  // optional int64 max = 6;
   if (cached_has_bits & 0x00000004u) {
     target = ::google::protobuf::internal::WireFormatLite::
-        WriteInt64ToArrayWithField<7>(
+        WriteInt64ToArrayWithField<6>(
             stream, this->_internal_max(), target);
   }
 
@@ -1464,7 +1399,7 @@ const ::_pbi::TcParseTable<3, 7, 0, 51, 2> Int64Metric::_table_ = {
                                     this->_internal_description());
   }
 
-  // optional string unit = 5;
+  // optional string unit = 4;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -1477,31 +1412,26 @@ const ::_pbi::TcParseTable<3, 7, 0, 51, 2> Int64Metric::_table_ = {
         this->_internal_offset());
   }
 
-  // bool optional = 3;
-  if (this->_internal_optional() != 0) {
-    total_size += 2;
+  // .abacus.protobuf.Kind kind = 3;
+  if (this->_internal_kind() != 0) {
+    total_size += 1 +
+                  ::_pbi::WireFormatLite::EnumSize(this->_internal_kind());
   }
 
   if (cached_has_bits & 0x00000006u) {
-    // optional int64 min = 6;
+    // optional int64 min = 5;
     if (cached_has_bits & 0x00000002u) {
       total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
           this->_internal_min());
     }
 
-    // optional int64 max = 7;
+    // optional int64 max = 6;
     if (cached_has_bits & 0x00000004u) {
       total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
           this->_internal_max());
     }
 
   }
-  // .abacus.protobuf.Kind kind = 4;
-  if (this->_internal_kind() != 0) {
-    total_size += 1 +
-                  ::_pbi::WireFormatLite::EnumSize(this->_internal_kind());
-  }
-
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
@@ -1529,8 +1459,8 @@ void Int64Metric::MergeImpl(::google::protobuf::Message& to_msg, const ::google:
   if (from._internal_offset() != 0) {
     _this->_internal_set_offset(from._internal_offset());
   }
-  if (from._internal_optional() != 0) {
-    _this->_internal_set_optional(from._internal_optional());
+  if (from._internal_kind() != 0) {
+    _this->_internal_set_kind(from._internal_kind());
   }
   cached_has_bits = from._impl_._has_bits_[0];
   if (cached_has_bits & 0x00000006u) {
@@ -1541,9 +1471,6 @@ void Int64Metric::MergeImpl(::google::protobuf::Message& to_msg, const ::google:
       _this->_impl_.max_ = from._impl_.max_;
     }
     _this->_impl_._has_bits_[0] |= cached_has_bits;
-  }
-  if (from._internal_kind() != 0) {
-    _this->_internal_set_kind(from._internal_kind());
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -1570,8 +1497,8 @@ void Int64Metric::InternalSwap(Int64Metric* other) {
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.unit_, lhs_arena,
                                        &other->_impl_.unit_, rhs_arena);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.kind_)
-      + sizeof(Int64Metric::_impl_.kind_)
+      PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.max_)
+      + sizeof(Int64Metric::_impl_.max_)
       - PROTOBUF_FIELD_OFFSET(Int64Metric, _impl_.offset_)>(
           reinterpret_cast<char*>(&_impl_.offset_),
           reinterpret_cast<char*>(&other->_impl_.offset_));
@@ -1614,7 +1541,6 @@ UInt32Metric::UInt32Metric(const UInt32Metric& from) : ::google::protobuf::Messa
       decltype(_impl_.description_){},
       decltype(_impl_.unit_){},
       decltype(_impl_.offset_){},
-      decltype(_impl_.optional_){},
       decltype(_impl_.kind_){},
       decltype(_impl_.min_){},
       decltype(_impl_.max_){},
@@ -1649,7 +1575,6 @@ inline void UInt32Metric::SharedCtor(::_pb::Arena* arena) {
       decltype(_impl_.description_){},
       decltype(_impl_.unit_){},
       decltype(_impl_.offset_){0u},
-      decltype(_impl_.optional_){false},
       decltype(_impl_.kind_){0},
       decltype(_impl_.min_){0u},
       decltype(_impl_.max_){0u},
@@ -1708,15 +1633,15 @@ const char* UInt32Metric::_InternalParse(
 
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 7, 0, 52, 2> UInt32Metric::_table_ = {
+const ::_pbi::TcParseTable<3, 6, 0, 52, 2> UInt32Metric::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_._has_bits_),
     0, // no _extensions_
-    7, 56,  // max_field_number, fast_idx_mask
+    6, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967168,  // skipmap
+    4294967232,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    7,  // num_field_entries
+    6,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     &_UInt32Metric_default_instance_._instance,
@@ -1729,21 +1654,19 @@ const ::_pbi::TcParseTable<3, 7, 0, 52, 2> UInt32Metric::_table_ = {
     // string description = 2;
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.description_)}},
-    // bool optional = 3;
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(UInt32Metric, _impl_.optional_), 63>(),
-     {24, 63, 0, PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.optional_)}},
-    // .abacus.protobuf.Kind kind = 4;
+    // .abacus.protobuf.Kind kind = 3;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UInt32Metric, _impl_.kind_), 63>(),
-     {32, 63, 0, PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.kind_)}},
-    // optional string unit = 5;
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.kind_)}},
+    // optional string unit = 4;
     {::_pbi::TcParser::FastUS1,
-     {42, 0, 0, PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.unit_)}},
-    // optional uint32 min = 6;
+     {34, 0, 0, PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.unit_)}},
+    // optional uint32 min = 5;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UInt32Metric, _impl_.min_), 1>(),
-     {48, 1, 0, PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.min_)}},
-    // optional uint32 max = 7;
+     {40, 1, 0, PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.min_)}},
+    // optional uint32 max = 6;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UInt32Metric, _impl_.max_), 2>(),
-     {56, 2, 0, PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.max_)}},
+     {48, 2, 0, PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.max_)}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
@@ -1753,25 +1676,22 @@ const ::_pbi::TcParseTable<3, 7, 0, 52, 2> UInt32Metric::_table_ = {
     // string description = 2;
     {PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.description_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // bool optional = 3;
-    {PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.optional_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
-    // .abacus.protobuf.Kind kind = 4;
+    // .abacus.protobuf.Kind kind = 3;
     {PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.kind_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-    // optional string unit = 5;
+    // optional string unit = 4;
     {PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.unit_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // optional uint32 min = 6;
+    // optional uint32 min = 5;
     {PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.min_), _Internal::kHasBitsOffset + 1, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUInt32)},
-    // optional uint32 max = 7;
+    // optional uint32 max = 6;
     {PROTOBUF_FIELD_OFFSET(UInt32Metric, _impl_.max_), _Internal::kHasBitsOffset + 2, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUInt32)},
   }},
   // no aux_entries
   {{
-    "\34\0\13\0\0\4\0\0"
+    "\34\0\13\0\4\0\0\0"
     "abacus.protobuf.UInt32Metric"
     "description"
     "unit"
@@ -1800,41 +1720,34 @@ const ::_pbi::TcParseTable<3, 7, 0, 52, 2> UInt32Metric::_table_ = {
     target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
-  // bool optional = 3;
-  if (this->_internal_optional() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(
-        3, this->_internal_optional(), target);
-  }
-
-  // .abacus.protobuf.Kind kind = 4;
+  // .abacus.protobuf.Kind kind = 3;
   if (this->_internal_kind() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteEnumToArray(
-        4, this->_internal_kind(), target);
+        3, this->_internal_kind(), target);
   }
 
   cached_has_bits = _impl_._has_bits_[0];
-  // optional string unit = 5;
+  // optional string unit = 4;
   if (cached_has_bits & 0x00000001u) {
     const std::string& _s = this->_internal_unit();
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
         _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "abacus.protobuf.UInt32Metric.unit");
-    target = stream->WriteStringMaybeAliased(5, _s, target);
+    target = stream->WriteStringMaybeAliased(4, _s, target);
   }
 
-  // optional uint32 min = 6;
+  // optional uint32 min = 5;
   if (cached_has_bits & 0x00000002u) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
-        6, this->_internal_min(), target);
+        5, this->_internal_min(), target);
   }
 
-  // optional uint32 max = 7;
+  // optional uint32 max = 6;
   if (cached_has_bits & 0x00000004u) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
-        7, this->_internal_max(), target);
+        6, this->_internal_max(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1860,7 +1773,7 @@ const ::_pbi::TcParseTable<3, 7, 0, 52, 2> UInt32Metric::_table_ = {
                                     this->_internal_description());
   }
 
-  // optional string unit = 5;
+  // optional string unit = 4;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -1873,25 +1786,20 @@ const ::_pbi::TcParseTable<3, 7, 0, 52, 2> UInt32Metric::_table_ = {
         this->_internal_offset());
   }
 
-  // bool optional = 3;
-  if (this->_internal_optional() != 0) {
-    total_size += 2;
-  }
-
-  // .abacus.protobuf.Kind kind = 4;
+  // .abacus.protobuf.Kind kind = 3;
   if (this->_internal_kind() != 0) {
     total_size += 1 +
                   ::_pbi::WireFormatLite::EnumSize(this->_internal_kind());
   }
 
   if (cached_has_bits & 0x00000006u) {
-    // optional uint32 min = 6;
+    // optional uint32 min = 5;
     if (cached_has_bits & 0x00000002u) {
       total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
           this->_internal_min());
     }
 
-    // optional uint32 max = 7;
+    // optional uint32 max = 6;
     if (cached_has_bits & 0x00000004u) {
       total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
           this->_internal_max());
@@ -1924,9 +1832,6 @@ void UInt32Metric::MergeImpl(::google::protobuf::Message& to_msg, const ::google
   }
   if (from._internal_offset() != 0) {
     _this->_internal_set_offset(from._internal_offset());
-  }
-  if (from._internal_optional() != 0) {
-    _this->_internal_set_optional(from._internal_optional());
   }
   if (from._internal_kind() != 0) {
     _this->_internal_set_kind(from._internal_kind());
@@ -2010,7 +1915,6 @@ Int32Metric::Int32Metric(const Int32Metric& from) : ::google::protobuf::Message(
       decltype(_impl_.description_){},
       decltype(_impl_.unit_){},
       decltype(_impl_.offset_){},
-      decltype(_impl_.optional_){},
       decltype(_impl_.kind_){},
       decltype(_impl_.min_){},
       decltype(_impl_.max_){},
@@ -2045,7 +1949,6 @@ inline void Int32Metric::SharedCtor(::_pb::Arena* arena) {
       decltype(_impl_.description_){},
       decltype(_impl_.unit_){},
       decltype(_impl_.offset_){0u},
-      decltype(_impl_.optional_){false},
       decltype(_impl_.kind_){0},
       decltype(_impl_.min_){0},
       decltype(_impl_.max_){0},
@@ -2104,15 +2007,15 @@ const char* Int32Metric::_InternalParse(
 
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 7, 0, 51, 2> Int32Metric::_table_ = {
+const ::_pbi::TcParseTable<3, 6, 0, 51, 2> Int32Metric::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_._has_bits_),
     0, // no _extensions_
-    7, 56,  // max_field_number, fast_idx_mask
+    6, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967168,  // skipmap
+    4294967232,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    7,  // num_field_entries
+    6,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     &_Int32Metric_default_instance_._instance,
@@ -2125,21 +2028,19 @@ const ::_pbi::TcParseTable<3, 7, 0, 51, 2> Int32Metric::_table_ = {
     // string description = 2;
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.description_)}},
-    // bool optional = 3;
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(Int32Metric, _impl_.optional_), 63>(),
-     {24, 63, 0, PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.optional_)}},
-    // .abacus.protobuf.Kind kind = 4;
+    // .abacus.protobuf.Kind kind = 3;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Int32Metric, _impl_.kind_), 63>(),
-     {32, 63, 0, PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.kind_)}},
-    // optional string unit = 5;
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.kind_)}},
+    // optional string unit = 4;
     {::_pbi::TcParser::FastUS1,
-     {42, 0, 0, PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.unit_)}},
-    // optional int32 min = 6;
+     {34, 0, 0, PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.unit_)}},
+    // optional int32 min = 5;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Int32Metric, _impl_.min_), 1>(),
-     {48, 1, 0, PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.min_)}},
-    // optional int32 max = 7;
+     {40, 1, 0, PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.min_)}},
+    // optional int32 max = 6;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Int32Metric, _impl_.max_), 2>(),
-     {56, 2, 0, PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.max_)}},
+     {48, 2, 0, PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.max_)}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
@@ -2149,25 +2050,22 @@ const ::_pbi::TcParseTable<3, 7, 0, 51, 2> Int32Metric::_table_ = {
     // string description = 2;
     {PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.description_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // bool optional = 3;
-    {PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.optional_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
-    // .abacus.protobuf.Kind kind = 4;
+    // .abacus.protobuf.Kind kind = 3;
     {PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.kind_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-    // optional string unit = 5;
+    // optional string unit = 4;
     {PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.unit_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // optional int32 min = 6;
+    // optional int32 min = 5;
     {PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.min_), _Internal::kHasBitsOffset + 1, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
-    // optional int32 max = 7;
+    // optional int32 max = 6;
     {PROTOBUF_FIELD_OFFSET(Int32Metric, _impl_.max_), _Internal::kHasBitsOffset + 2, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
   }},
   // no aux_entries
   {{
-    "\33\0\13\0\0\4\0\0"
+    "\33\0\13\0\4\0\0\0"
     "abacus.protobuf.Int32Metric"
     "description"
     "unit"
@@ -2196,40 +2094,33 @@ const ::_pbi::TcParseTable<3, 7, 0, 51, 2> Int32Metric::_table_ = {
     target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
-  // bool optional = 3;
-  if (this->_internal_optional() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(
-        3, this->_internal_optional(), target);
-  }
-
-  // .abacus.protobuf.Kind kind = 4;
+  // .abacus.protobuf.Kind kind = 3;
   if (this->_internal_kind() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteEnumToArray(
-        4, this->_internal_kind(), target);
+        3, this->_internal_kind(), target);
   }
 
   cached_has_bits = _impl_._has_bits_[0];
-  // optional string unit = 5;
+  // optional string unit = 4;
   if (cached_has_bits & 0x00000001u) {
     const std::string& _s = this->_internal_unit();
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
         _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "abacus.protobuf.Int32Metric.unit");
-    target = stream->WriteStringMaybeAliased(5, _s, target);
+    target = stream->WriteStringMaybeAliased(4, _s, target);
   }
 
-  // optional int32 min = 6;
+  // optional int32 min = 5;
   if (cached_has_bits & 0x00000002u) {
     target = ::google::protobuf::internal::WireFormatLite::
-        WriteInt32ToArrayWithField<6>(
+        WriteInt32ToArrayWithField<5>(
             stream, this->_internal_min(), target);
   }
 
-  // optional int32 max = 7;
+  // optional int32 max = 6;
   if (cached_has_bits & 0x00000004u) {
     target = ::google::protobuf::internal::WireFormatLite::
-        WriteInt32ToArrayWithField<7>(
+        WriteInt32ToArrayWithField<6>(
             stream, this->_internal_max(), target);
   }
 
@@ -2256,7 +2147,7 @@ const ::_pbi::TcParseTable<3, 7, 0, 51, 2> Int32Metric::_table_ = {
                                     this->_internal_description());
   }
 
-  // optional string unit = 5;
+  // optional string unit = 4;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -2269,25 +2160,20 @@ const ::_pbi::TcParseTable<3, 7, 0, 51, 2> Int32Metric::_table_ = {
         this->_internal_offset());
   }
 
-  // bool optional = 3;
-  if (this->_internal_optional() != 0) {
-    total_size += 2;
-  }
-
-  // .abacus.protobuf.Kind kind = 4;
+  // .abacus.protobuf.Kind kind = 3;
   if (this->_internal_kind() != 0) {
     total_size += 1 +
                   ::_pbi::WireFormatLite::EnumSize(this->_internal_kind());
   }
 
   if (cached_has_bits & 0x00000006u) {
-    // optional int32 min = 6;
+    // optional int32 min = 5;
     if (cached_has_bits & 0x00000002u) {
       total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
           this->_internal_min());
     }
 
-    // optional int32 max = 7;
+    // optional int32 max = 6;
     if (cached_has_bits & 0x00000004u) {
       total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
           this->_internal_max());
@@ -2320,9 +2206,6 @@ void Int32Metric::MergeImpl(::google::protobuf::Message& to_msg, const ::google:
   }
   if (from._internal_offset() != 0) {
     _this->_internal_set_offset(from._internal_offset());
-  }
-  if (from._internal_optional() != 0) {
-    _this->_internal_set_optional(from._internal_optional());
   }
   if (from._internal_kind() != 0) {
     _this->_internal_set_kind(from._internal_kind());
@@ -2406,10 +2289,9 @@ Float64Metric::Float64Metric(const Float64Metric& from) : ::google::protobuf::Me
       decltype(_impl_.description_){},
       decltype(_impl_.unit_){},
       decltype(_impl_.offset_){},
-      decltype(_impl_.optional_){},
+      decltype(_impl_.kind_){},
       decltype(_impl_.min_){},
       decltype(_impl_.max_){},
-      decltype(_impl_.kind_){},
   };
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
@@ -2428,8 +2310,8 @@ Float64Metric::Float64Metric(const Float64Metric& from) : ::google::protobuf::Me
     _this->_impl_.unit_.Set(from._internal_unit(), _this->GetArenaForAllocation());
   }
   ::memcpy(&_impl_.offset_, &from._impl_.offset_,
-    static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.kind_) -
-    reinterpret_cast<char*>(&_impl_.offset_)) + sizeof(_impl_.kind_));
+    static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.max_) -
+    reinterpret_cast<char*>(&_impl_.offset_)) + sizeof(_impl_.max_));
 
   // @@protoc_insertion_point(copy_constructor:abacus.protobuf.Float64Metric)
 }
@@ -2441,10 +2323,9 @@ inline void Float64Metric::SharedCtor(::_pb::Arena* arena) {
       decltype(_impl_.description_){},
       decltype(_impl_.unit_){},
       decltype(_impl_.offset_){0u},
-      decltype(_impl_.optional_){false},
+      decltype(_impl_.kind_){0},
       decltype(_impl_.min_){0},
       decltype(_impl_.max_){0},
-      decltype(_impl_.kind_){0},
   };
   _impl_.description_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
@@ -2481,14 +2362,13 @@ PROTOBUF_NOINLINE void Float64Metric::Clear() {
     _impl_.unit_.ClearNonDefaultToEmpty();
   }
   ::memset(&_impl_.offset_, 0, static_cast<::size_t>(
-      reinterpret_cast<char*>(&_impl_.optional_) -
-      reinterpret_cast<char*>(&_impl_.offset_)) + sizeof(_impl_.optional_));
+      reinterpret_cast<char*>(&_impl_.kind_) -
+      reinterpret_cast<char*>(&_impl_.offset_)) + sizeof(_impl_.kind_));
   if (cached_has_bits & 0x00000006u) {
     ::memset(&_impl_.min_, 0, static_cast<::size_t>(
         reinterpret_cast<char*>(&_impl_.max_) -
         reinterpret_cast<char*>(&_impl_.min_)) + sizeof(_impl_.max_));
   }
-  _impl_.kind_ = 0;
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -2501,15 +2381,15 @@ const char* Float64Metric::_InternalParse(
 
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 7, 0, 53, 2> Float64Metric::_table_ = {
+const ::_pbi::TcParseTable<3, 6, 0, 53, 2> Float64Metric::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_._has_bits_),
     0, // no _extensions_
-    7, 56,  // max_field_number, fast_idx_mask
+    6, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967168,  // skipmap
+    4294967232,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    7,  // num_field_entries
+    6,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     &_Float64Metric_default_instance_._instance,
@@ -2522,21 +2402,19 @@ const ::_pbi::TcParseTable<3, 7, 0, 53, 2> Float64Metric::_table_ = {
     // string description = 2;
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.description_)}},
-    // bool optional = 3;
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(Float64Metric, _impl_.optional_), 63>(),
-     {24, 63, 0, PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.optional_)}},
-    // .abacus.protobuf.Kind kind = 4;
+    // .abacus.protobuf.Kind kind = 3;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Float64Metric, _impl_.kind_), 63>(),
-     {32, 63, 0, PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.kind_)}},
-    // optional string unit = 5;
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.kind_)}},
+    // optional string unit = 4;
     {::_pbi::TcParser::FastUS1,
-     {42, 0, 0, PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.unit_)}},
-    // optional double min = 6;
+     {34, 0, 0, PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.unit_)}},
+    // optional double min = 5;
     {::_pbi::TcParser::FastF64S1,
-     {49, 1, 0, PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.min_)}},
-    // optional double max = 7;
+     {41, 1, 0, PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.min_)}},
+    // optional double max = 6;
     {::_pbi::TcParser::FastF64S1,
-     {57, 2, 0, PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.max_)}},
+     {49, 2, 0, PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.max_)}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
@@ -2546,25 +2424,22 @@ const ::_pbi::TcParseTable<3, 7, 0, 53, 2> Float64Metric::_table_ = {
     // string description = 2;
     {PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.description_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // bool optional = 3;
-    {PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.optional_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
-    // .abacus.protobuf.Kind kind = 4;
+    // .abacus.protobuf.Kind kind = 3;
     {PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.kind_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-    // optional string unit = 5;
+    // optional string unit = 4;
     {PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.unit_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // optional double min = 6;
+    // optional double min = 5;
     {PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.min_), _Internal::kHasBitsOffset + 1, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kDouble)},
-    // optional double max = 7;
+    // optional double max = 6;
     {PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.max_), _Internal::kHasBitsOffset + 2, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kDouble)},
   }},
   // no aux_entries
   {{
-    "\35\0\13\0\0\4\0\0"
+    "\35\0\13\0\4\0\0\0"
     "abacus.protobuf.Float64Metric"
     "description"
     "unit"
@@ -2593,41 +2468,34 @@ const ::_pbi::TcParseTable<3, 7, 0, 53, 2> Float64Metric::_table_ = {
     target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
-  // bool optional = 3;
-  if (this->_internal_optional() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(
-        3, this->_internal_optional(), target);
-  }
-
-  // .abacus.protobuf.Kind kind = 4;
+  // .abacus.protobuf.Kind kind = 3;
   if (this->_internal_kind() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteEnumToArray(
-        4, this->_internal_kind(), target);
+        3, this->_internal_kind(), target);
   }
 
   cached_has_bits = _impl_._has_bits_[0];
-  // optional string unit = 5;
+  // optional string unit = 4;
   if (cached_has_bits & 0x00000001u) {
     const std::string& _s = this->_internal_unit();
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
         _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "abacus.protobuf.Float64Metric.unit");
-    target = stream->WriteStringMaybeAliased(5, _s, target);
+    target = stream->WriteStringMaybeAliased(4, _s, target);
   }
 
-  // optional double min = 6;
+  // optional double min = 5;
   if (cached_has_bits & 0x00000002u) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteDoubleToArray(
-        6, this->_internal_min(), target);
+        5, this->_internal_min(), target);
   }
 
-  // optional double max = 7;
+  // optional double max = 6;
   if (cached_has_bits & 0x00000004u) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteDoubleToArray(
-        7, this->_internal_max(), target);
+        6, this->_internal_max(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2653,7 +2521,7 @@ const ::_pbi::TcParseTable<3, 7, 0, 53, 2> Float64Metric::_table_ = {
                                     this->_internal_description());
   }
 
-  // optional string unit = 5;
+  // optional string unit = 4;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -2666,29 +2534,24 @@ const ::_pbi::TcParseTable<3, 7, 0, 53, 2> Float64Metric::_table_ = {
         this->_internal_offset());
   }
 
-  // bool optional = 3;
-  if (this->_internal_optional() != 0) {
-    total_size += 2;
-  }
-
-  if (cached_has_bits & 0x00000006u) {
-    // optional double min = 6;
-    if (cached_has_bits & 0x00000002u) {
-      total_size += 9;
-    }
-
-    // optional double max = 7;
-    if (cached_has_bits & 0x00000004u) {
-      total_size += 9;
-    }
-
-  }
-  // .abacus.protobuf.Kind kind = 4;
+  // .abacus.protobuf.Kind kind = 3;
   if (this->_internal_kind() != 0) {
     total_size += 1 +
                   ::_pbi::WireFormatLite::EnumSize(this->_internal_kind());
   }
 
+  if (cached_has_bits & 0x00000006u) {
+    // optional double min = 5;
+    if (cached_has_bits & 0x00000002u) {
+      total_size += 9;
+    }
+
+    // optional double max = 6;
+    if (cached_has_bits & 0x00000004u) {
+      total_size += 9;
+    }
+
+  }
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
@@ -2716,8 +2579,8 @@ void Float64Metric::MergeImpl(::google::protobuf::Message& to_msg, const ::googl
   if (from._internal_offset() != 0) {
     _this->_internal_set_offset(from._internal_offset());
   }
-  if (from._internal_optional() != 0) {
-    _this->_internal_set_optional(from._internal_optional());
+  if (from._internal_kind() != 0) {
+    _this->_internal_set_kind(from._internal_kind());
   }
   cached_has_bits = from._impl_._has_bits_[0];
   if (cached_has_bits & 0x00000006u) {
@@ -2728,9 +2591,6 @@ void Float64Metric::MergeImpl(::google::protobuf::Message& to_msg, const ::googl
       _this->_impl_.max_ = from._impl_.max_;
     }
     _this->_impl_._has_bits_[0] |= cached_has_bits;
-  }
-  if (from._internal_kind() != 0) {
-    _this->_internal_set_kind(from._internal_kind());
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -2757,8 +2617,8 @@ void Float64Metric::InternalSwap(Float64Metric* other) {
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.unit_, lhs_arena,
                                        &other->_impl_.unit_, rhs_arena);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.kind_)
-      + sizeof(Float64Metric::_impl_.kind_)
+      PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.max_)
+      + sizeof(Float64Metric::_impl_.max_)
       - PROTOBUF_FIELD_OFFSET(Float64Metric, _impl_.offset_)>(
           reinterpret_cast<char*>(&_impl_.offset_),
           reinterpret_cast<char*>(&other->_impl_.offset_));
@@ -2801,7 +2661,6 @@ Float32Metric::Float32Metric(const Float32Metric& from) : ::google::protobuf::Me
       decltype(_impl_.description_){},
       decltype(_impl_.unit_){},
       decltype(_impl_.offset_){},
-      decltype(_impl_.optional_){},
       decltype(_impl_.kind_){},
       decltype(_impl_.min_){},
       decltype(_impl_.max_){},
@@ -2836,7 +2695,6 @@ inline void Float32Metric::SharedCtor(::_pb::Arena* arena) {
       decltype(_impl_.description_){},
       decltype(_impl_.unit_){},
       decltype(_impl_.offset_){0u},
-      decltype(_impl_.optional_){false},
       decltype(_impl_.kind_){0},
       decltype(_impl_.min_){0},
       decltype(_impl_.max_){0},
@@ -2895,15 +2753,15 @@ const char* Float32Metric::_InternalParse(
 
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 7, 0, 53, 2> Float32Metric::_table_ = {
+const ::_pbi::TcParseTable<3, 6, 0, 53, 2> Float32Metric::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_._has_bits_),
     0, // no _extensions_
-    7, 56,  // max_field_number, fast_idx_mask
+    6, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967168,  // skipmap
+    4294967232,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    7,  // num_field_entries
+    6,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     &_Float32Metric_default_instance_._instance,
@@ -2916,21 +2774,19 @@ const ::_pbi::TcParseTable<3, 7, 0, 53, 2> Float32Metric::_table_ = {
     // string description = 2;
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.description_)}},
-    // bool optional = 3;
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(Float32Metric, _impl_.optional_), 63>(),
-     {24, 63, 0, PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.optional_)}},
-    // .abacus.protobuf.Kind kind = 4;
+    // .abacus.protobuf.Kind kind = 3;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Float32Metric, _impl_.kind_), 63>(),
-     {32, 63, 0, PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.kind_)}},
-    // optional string unit = 5;
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.kind_)}},
+    // optional string unit = 4;
     {::_pbi::TcParser::FastUS1,
-     {42, 0, 0, PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.unit_)}},
-    // optional float min = 6;
+     {34, 0, 0, PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.unit_)}},
+    // optional float min = 5;
     {::_pbi::TcParser::FastF32S1,
-     {53, 1, 0, PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.min_)}},
-    // optional float max = 7;
+     {45, 1, 0, PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.min_)}},
+    // optional float max = 6;
     {::_pbi::TcParser::FastF32S1,
-     {61, 2, 0, PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.max_)}},
+     {53, 2, 0, PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.max_)}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
@@ -2940,25 +2796,22 @@ const ::_pbi::TcParseTable<3, 7, 0, 53, 2> Float32Metric::_table_ = {
     // string description = 2;
     {PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.description_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // bool optional = 3;
-    {PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.optional_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
-    // .abacus.protobuf.Kind kind = 4;
+    // .abacus.protobuf.Kind kind = 3;
     {PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.kind_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-    // optional string unit = 5;
+    // optional string unit = 4;
     {PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.unit_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // optional float min = 6;
+    // optional float min = 5;
     {PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.min_), _Internal::kHasBitsOffset + 1, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kFloat)},
-    // optional float max = 7;
+    // optional float max = 6;
     {PROTOBUF_FIELD_OFFSET(Float32Metric, _impl_.max_), _Internal::kHasBitsOffset + 2, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kFloat)},
   }},
   // no aux_entries
   {{
-    "\35\0\13\0\0\4\0\0"
+    "\35\0\13\0\4\0\0\0"
     "abacus.protobuf.Float32Metric"
     "description"
     "unit"
@@ -2987,41 +2840,34 @@ const ::_pbi::TcParseTable<3, 7, 0, 53, 2> Float32Metric::_table_ = {
     target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
-  // bool optional = 3;
-  if (this->_internal_optional() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(
-        3, this->_internal_optional(), target);
-  }
-
-  // .abacus.protobuf.Kind kind = 4;
+  // .abacus.protobuf.Kind kind = 3;
   if (this->_internal_kind() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteEnumToArray(
-        4, this->_internal_kind(), target);
+        3, this->_internal_kind(), target);
   }
 
   cached_has_bits = _impl_._has_bits_[0];
-  // optional string unit = 5;
+  // optional string unit = 4;
   if (cached_has_bits & 0x00000001u) {
     const std::string& _s = this->_internal_unit();
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
         _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "abacus.protobuf.Float32Metric.unit");
-    target = stream->WriteStringMaybeAliased(5, _s, target);
+    target = stream->WriteStringMaybeAliased(4, _s, target);
   }
 
-  // optional float min = 6;
+  // optional float min = 5;
   if (cached_has_bits & 0x00000002u) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteFloatToArray(
-        6, this->_internal_min(), target);
+        5, this->_internal_min(), target);
   }
 
-  // optional float max = 7;
+  // optional float max = 6;
   if (cached_has_bits & 0x00000004u) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteFloatToArray(
-        7, this->_internal_max(), target);
+        6, this->_internal_max(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -3047,7 +2893,7 @@ const ::_pbi::TcParseTable<3, 7, 0, 53, 2> Float32Metric::_table_ = {
                                     this->_internal_description());
   }
 
-  // optional string unit = 5;
+  // optional string unit = 4;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -3060,24 +2906,19 @@ const ::_pbi::TcParseTable<3, 7, 0, 53, 2> Float32Metric::_table_ = {
         this->_internal_offset());
   }
 
-  // bool optional = 3;
-  if (this->_internal_optional() != 0) {
-    total_size += 2;
-  }
-
-  // .abacus.protobuf.Kind kind = 4;
+  // .abacus.protobuf.Kind kind = 3;
   if (this->_internal_kind() != 0) {
     total_size += 1 +
                   ::_pbi::WireFormatLite::EnumSize(this->_internal_kind());
   }
 
   if (cached_has_bits & 0x00000006u) {
-    // optional float min = 6;
+    // optional float min = 5;
     if (cached_has_bits & 0x00000002u) {
       total_size += 5;
     }
 
-    // optional float max = 7;
+    // optional float max = 6;
     if (cached_has_bits & 0x00000004u) {
       total_size += 5;
     }
@@ -3109,9 +2950,6 @@ void Float32Metric::MergeImpl(::google::protobuf::Message& to_msg, const ::googl
   }
   if (from._internal_offset() != 0) {
     _this->_internal_set_offset(from._internal_offset());
-  }
-  if (from._internal_optional() != 0) {
-    _this->_internal_set_optional(from._internal_optional());
   }
   if (from._internal_kind() != 0) {
     _this->_internal_set_kind(from._internal_kind());
@@ -3189,7 +3027,6 @@ BoolMetric::BoolMetric(const BoolMetric& from) : ::google::protobuf::Message() {
       decltype(_impl_.description_){},
       decltype(_impl_.unit_){},
       decltype(_impl_.offset_){},
-      decltype(_impl_.optional_){},
   };
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
@@ -3207,9 +3044,7 @@ BoolMetric::BoolMetric(const BoolMetric& from) : ::google::protobuf::Message() {
   if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
     _this->_impl_.unit_.Set(from._internal_unit(), _this->GetArenaForAllocation());
   }
-  ::memcpy(&_impl_.offset_, &from._impl_.offset_,
-    static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.optional_) -
-    reinterpret_cast<char*>(&_impl_.offset_)) + sizeof(_impl_.optional_));
+  _this->_impl_.offset_ = from._impl_.offset_;
 
   // @@protoc_insertion_point(copy_constructor:abacus.protobuf.BoolMetric)
 }
@@ -3221,7 +3056,6 @@ inline void BoolMetric::SharedCtor(::_pb::Arena* arena) {
       decltype(_impl_.description_){},
       decltype(_impl_.unit_){},
       decltype(_impl_.offset_){0u},
-      decltype(_impl_.optional_){false},
   };
   _impl_.description_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
@@ -3257,9 +3091,7 @@ PROTOBUF_NOINLINE void BoolMetric::Clear() {
   if (cached_has_bits & 0x00000001u) {
     _impl_.unit_.ClearNonDefaultToEmpty();
   }
-  ::memset(&_impl_.offset_, 0, static_cast<::size_t>(
-      reinterpret_cast<char*>(&_impl_.optional_) -
-      reinterpret_cast<char*>(&_impl_.offset_)) + sizeof(_impl_.optional_));
+  _impl_.offset_ = 0u;
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -3272,32 +3104,30 @@ const char* BoolMetric::_InternalParse(
 
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 4, 0, 50, 2> BoolMetric::_table_ = {
+const ::_pbi::TcParseTable<2, 3, 0, 50, 2> BoolMetric::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(BoolMetric, _impl_._has_bits_),
     0, // no _extensions_
-    4, 24,  // max_field_number, fast_idx_mask
+    3, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967280,  // skipmap
+    4294967288,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    4,  // num_field_entries
+    3,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     &_BoolMetric_default_instance_._instance,
     ::_pbi::TcParser::GenericFallback,  // fallback
   }, {{
-    // optional string unit = 4;
-    {::_pbi::TcParser::FastUS1,
-     {34, 0, 0, PROTOBUF_FIELD_OFFSET(BoolMetric, _impl_.unit_)}},
+    {::_pbi::TcParser::MiniParse, {}},
     // uint32 offset = 1;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(BoolMetric, _impl_.offset_), 63>(),
      {8, 63, 0, PROTOBUF_FIELD_OFFSET(BoolMetric, _impl_.offset_)}},
     // string description = 2;
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(BoolMetric, _impl_.description_)}},
-    // bool optional = 3;
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(BoolMetric, _impl_.optional_), 63>(),
-     {24, 63, 0, PROTOBUF_FIELD_OFFSET(BoolMetric, _impl_.optional_)}},
+    // optional string unit = 3;
+    {::_pbi::TcParser::FastUS1,
+     {26, 0, 0, PROTOBUF_FIELD_OFFSET(BoolMetric, _impl_.unit_)}},
   }}, {{
     65535, 65535
   }}, {{
@@ -3307,16 +3137,13 @@ const ::_pbi::TcParseTable<2, 4, 0, 50, 2> BoolMetric::_table_ = {
     // string description = 2;
     {PROTOBUF_FIELD_OFFSET(BoolMetric, _impl_.description_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // bool optional = 3;
-    {PROTOBUF_FIELD_OFFSET(BoolMetric, _impl_.optional_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
-    // optional string unit = 4;
+    // optional string unit = 3;
     {PROTOBUF_FIELD_OFFSET(BoolMetric, _impl_.unit_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
   {{
-    "\32\0\13\0\4\0\0\0"
+    "\32\0\13\4\0\0\0\0"
     "abacus.protobuf.BoolMetric"
     "description"
     "unit"
@@ -3345,20 +3172,13 @@ const ::_pbi::TcParseTable<2, 4, 0, 50, 2> BoolMetric::_table_ = {
     target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
-  // bool optional = 3;
-  if (this->_internal_optional() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(
-        3, this->_internal_optional(), target);
-  }
-
   cached_has_bits = _impl_._has_bits_[0];
-  // optional string unit = 4;
+  // optional string unit = 3;
   if (cached_has_bits & 0x00000001u) {
     const std::string& _s = this->_internal_unit();
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
         _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "abacus.protobuf.BoolMetric.unit");
-    target = stream->WriteStringMaybeAliased(4, _s, target);
+    target = stream->WriteStringMaybeAliased(3, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -3384,7 +3204,7 @@ const ::_pbi::TcParseTable<2, 4, 0, 50, 2> BoolMetric::_table_ = {
                                     this->_internal_description());
   }
 
-  // optional string unit = 4;
+  // optional string unit = 3;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -3395,11 +3215,6 @@ const ::_pbi::TcParseTable<2, 4, 0, 50, 2> BoolMetric::_table_ = {
   if (this->_internal_offset() != 0) {
     total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
         this->_internal_offset());
-  }
-
-  // bool optional = 3;
-  if (this->_internal_optional() != 0) {
-    total_size += 2;
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
@@ -3429,9 +3244,6 @@ void BoolMetric::MergeImpl(::google::protobuf::Message& to_msg, const ::google::
   if (from._internal_offset() != 0) {
     _this->_internal_set_offset(from._internal_offset());
   }
-  if (from._internal_optional() != 0) {
-    _this->_internal_set_optional(from._internal_optional());
-  }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -3456,12 +3268,7 @@ void BoolMetric::InternalSwap(BoolMetric* other) {
                                        &other->_impl_.description_, rhs_arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.unit_, lhs_arena,
                                        &other->_impl_.unit_, rhs_arena);
-  ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(BoolMetric, _impl_.optional_)
-      + sizeof(BoolMetric::_impl_.optional_)
-      - PROTOBUF_FIELD_OFFSET(BoolMetric, _impl_.offset_)>(
-          reinterpret_cast<char*>(&_impl_.offset_),
-          reinterpret_cast<char*>(&other->_impl_.offset_));
+        swap(_impl_.offset_, other->_impl_.offset_);
 }
 
 ::google::protobuf::Metadata BoolMetric::GetMetadata() const {
@@ -3756,7 +3563,6 @@ Enum8Metric::Enum8Metric(const Enum8Metric& from) : ::google::protobuf::Message(
       decltype(_impl_.description_){},
       decltype(_impl_.unit_){},
       decltype(_impl_.offset_){},
-      decltype(_impl_.optional_){},
   };
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
@@ -3775,9 +3581,7 @@ Enum8Metric::Enum8Metric(const Enum8Metric& from) : ::google::protobuf::Message(
   if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
     _this->_impl_.unit_.Set(from._internal_unit(), _this->GetArenaForAllocation());
   }
-  ::memcpy(&_impl_.offset_, &from._impl_.offset_,
-    static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.optional_) -
-    reinterpret_cast<char*>(&_impl_.offset_)) + sizeof(_impl_.optional_));
+  _this->_impl_.offset_ = from._impl_.offset_;
 
   // @@protoc_insertion_point(copy_constructor:abacus.protobuf.Enum8Metric)
 }
@@ -3790,7 +3594,6 @@ inline void Enum8Metric::SharedCtor(::_pb::Arena* arena) {
       decltype(_impl_.description_){},
       decltype(_impl_.unit_){},
       decltype(_impl_.offset_){0u},
-      decltype(_impl_.optional_){false},
   };
   _impl_.description_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
@@ -3828,9 +3631,7 @@ PROTOBUF_NOINLINE void Enum8Metric::Clear() {
   if (cached_has_bits & 0x00000001u) {
     _impl_.unit_.ClearNonDefaultToEmpty();
   }
-  ::memset(&_impl_.offset_, 0, static_cast<::size_t>(
-      reinterpret_cast<char*>(&_impl_.optional_) -
-      reinterpret_cast<char*>(&_impl_.offset_)) + sizeof(_impl_.optional_));
+  _impl_.offset_ = 0u;
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -3843,15 +3644,15 @@ const char* Enum8Metric::_InternalParse(
 
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 5, 2, 51, 2> Enum8Metric::_table_ = {
+const ::_pbi::TcParseTable<3, 4, 2, 51, 2> Enum8Metric::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_._has_bits_),
     0, // no _extensions_
     5, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967264,  // skipmap
+    4294967268,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    5,  // num_field_entries
+    4,  // num_field_entries
     2,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     &_Enum8Metric_default_instance_._instance,
@@ -3864,9 +3665,7 @@ const ::_pbi::TcParseTable<3, 5, 2, 51, 2> Enum8Metric::_table_ = {
     // string description = 2;
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.description_)}},
-    // bool optional = 3;
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(Enum8Metric, _impl_.optional_), 63>(),
-     {24, 63, 0, PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.optional_)}},
+    {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
     // optional string unit = 5;
     {::_pbi::TcParser::FastUS1,
@@ -3882,9 +3681,6 @@ const ::_pbi::TcParseTable<3, 5, 2, 51, 2> Enum8Metric::_table_ = {
     // string description = 2;
     {PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.description_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // bool optional = 3;
-    {PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.optional_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
     // map<uint32, .abacus.protobuf.Enum8Metric.EnumValue> values = 4;
     {PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.values_), -1, 0,
     (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
@@ -3895,7 +3691,7 @@ const ::_pbi::TcParseTable<3, 5, 2, 51, 2> Enum8Metric::_table_ = {
     {::_pbi::TcParser::GetMapAuxInfo<decltype(Enum8Metric()._impl_.values_)>(1, 0, 0)},
     {::_pbi::TcParser::CreateInArenaStorageCb<::abacus::protobuf::Enum8Metric_EnumValue>},
   }}, {{
-    "\33\0\13\0\0\4\0\0"
+    "\33\0\13\0\4\0\0\0"
     "abacus.protobuf.Enum8Metric"
     "description"
     "unit"
@@ -3922,13 +3718,6 @@ const ::_pbi::TcParseTable<3, 5, 2, 51, 2> Enum8Metric::_table_ = {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
         _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "abacus.protobuf.Enum8Metric.description");
     target = stream->WriteStringMaybeAliased(2, _s, target);
-  }
-
-  // bool optional = 3;
-  if (this->_internal_optional() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(
-        3, this->_internal_optional(), target);
   }
 
   // map<uint32, .abacus.protobuf.Enum8Metric.EnumValue> values = 4;
@@ -4000,11 +3789,6 @@ const ::_pbi::TcParseTable<3, 5, 2, 51, 2> Enum8Metric::_table_ = {
         this->_internal_offset());
   }
 
-  // bool optional = 3;
-  if (this->_internal_optional() != 0) {
-    total_size += 2;
-  }
-
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
@@ -4033,9 +3817,6 @@ void Enum8Metric::MergeImpl(::google::protobuf::Message& to_msg, const ::google:
   if (from._internal_offset() != 0) {
     _this->_internal_set_offset(from._internal_offset());
   }
-  if (from._internal_optional() != 0) {
-    _this->_internal_set_optional(from._internal_optional());
-  }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -4061,12 +3842,7 @@ void Enum8Metric::InternalSwap(Enum8Metric* other) {
                                        &other->_impl_.description_, rhs_arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.unit_, lhs_arena,
                                        &other->_impl_.unit_, rhs_arena);
-  ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.optional_)
-      + sizeof(Enum8Metric::_impl_.optional_)
-      - PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.offset_)>(
-          reinterpret_cast<char*>(&_impl_.offset_),
-          reinterpret_cast<char*>(&other->_impl_.offset_));
+        swap(_impl_.offset_, other->_impl_.offset_);
 }
 
 ::google::protobuf::Metadata Enum8Metric::GetMetadata() const {

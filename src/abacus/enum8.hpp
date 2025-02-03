@@ -13,8 +13,6 @@
 
 #include "availability.hpp"
 #include "description.hpp"
-#include "optional_metric.hpp"
-#include "required_metric.hpp"
 #include "unit.hpp"
 
 namespace abacus
@@ -27,12 +25,6 @@ struct enum8
     /// The primitive type of the metric
     using type = uint8_t;
 
-    /// Required enum8 metric
-    using required = required_metric<enum8>;
-
-    /// Optional enum8 metric
-    using optional = optional_metric<enum8>;
-
     /// The enumeration value type
     struct value_info
     {
@@ -42,9 +34,6 @@ struct enum8
         /// The description of the value
         std::string description;
     };
-
-    /// The availability of the metric
-    abacus::availability availability;
 
     /// The metric description
     abacus::description description;

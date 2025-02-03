@@ -22,11 +22,11 @@ TEST(test_view, api)
 
     std::map<abacus::name, abacus::info> infos = {
         {abacus::name{name0},
-         abacus::uint64{abacus::kind::counter, abacus::availability::optional,
+         abacus::uint64{abacus::kind::counter,
                         abacus::description{"An unsigned integer metric"},
                         abacus::unit{"bytes"}}},
         {abacus::name{name1},
-         abacus::int64{abacus::kind::gauge, abacus::availability::optional,
+         abacus::int64{abacus::kind::gauge,
                        abacus::description{"A signed integer metric"},
                        abacus::unit{"USD"}}},
         {abacus::name{name2},
@@ -35,8 +35,7 @@ TEST(test_view, api)
              abacus::description{"A constant floating point metric"},
              abacus::unit{"ms"}}},
         {abacus::name{name3},
-         abacus::enum8{abacus::availability::optional,
-                       abacus::description{"An enum metric"},
+         abacus::enum8{abacus::description{"An enum metric"},
                        {{0, {"value0", "The value for 0"}},
                         {1, {"value1", "The value for 1"}},
                         {2, {"value2", "The value for 2"}},
@@ -44,11 +43,11 @@ TEST(test_view, api)
 
     abacus::metrics metrics(infos);
 
-    auto metric0 = metrics.initialize_optional<abacus::uint64>(name0);
+    auto metric0 = metrics.initialize<abacus::uint64>(name0);
 
-    auto metric1 = metrics.initialize_optional<abacus::int64>(name1);
+    auto metric1 = metrics.initialize<abacus::int64>(name1);
 
-    auto metric3 = metrics.initialize_optional<abacus::enum8>(name3);
+    auto metric3 = metrics.initialize<abacus::enum8>(name3);
 
     std::vector<uint8_t> value_data(metrics.value_bytes());
     std::memcpy(value_data.data(), metrics.value_data(), metrics.value_bytes());

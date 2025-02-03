@@ -10,28 +10,35 @@
 #include <cstdint>
 #include <cstring>
 
-#include "detail/has_arithmetic_operators.hpp"
-
+#include "boolean.hpp"
+#include "enum8.hpp"
+#include "float32.hpp"
+#include "float64.hpp"
+#include "int32.hpp"
+#include "int64.hpp"
+#include "uint32.hpp"
+#include "uint64.hpp"
 #include "version.hpp"
 
 namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
+
 /// An optional metric class for most metrics
 template <typename Metric>
-struct optional_metric
+struct metric
 {
     using value_type = typename Metric::type;
 
     /// Default constructor
-    optional_metric() = default;
+    metric() = default;
 
     /// Constructor
     /// @param memory The memory to use for the metric, note that the memory
     ///        must be at least sizeof(value_type) + 1 bytes long.
     /// @param value The initial value of the metric
-    optional_metric(uint8_t* memory)
+    metric(uint8_t* memory)
     {
         assert(memory != nullptr);
         m_memory = memory;
@@ -64,7 +71,7 @@ struct optional_metric
 
     /// Assign a new value to the metric
     /// @param value The value to assign
-    auto set_value(value_type value) -> void
+    auto set_value(value_type value) -> metric&
     {
         assert(is_initialized());
 
@@ -76,15 +83,16 @@ struct optional_metric
 
         m_memory[0] = 1;
         std::memcpy(&value, m_memory + 1, sizeof(value_type));
+
+        return *this;
     }
 
     /// Assign the metric a new value
     /// @param value The value to assign
     /// @return the metric with the new value
-    auto operator=(value_type value) -> optional_metric&
+    auto operator=(value_type value) -> metric&
     {
-        set_value(value);
-        return *this;
+        return set_value(value);
     }
 
     /// Reset the metric. This will cause the metric to not have a value
@@ -100,7 +108,7 @@ public:
     /// Increment the metric
     /// @param increment The value to add
     /// @return The result of the arithmetic
-    auto operator+=(value_type increment) -> optional_metric&
+    auto operator+=(value_type increment) -> metric&
     {
         set_value(value() + increment);
         return *this;
@@ -109,7 +117,7 @@ public:
     /// Decrement the metric
     /// @param decrement The value to subtract
     /// @return The result of the arithmetic
-    auto operator-=(value_type decrement) -> optional_metric&
+    auto operator-=(value_type decrement) -> metric&
     {
         set_value(value() - decrement);
         return *this;
@@ -117,7 +125,7 @@ public:
 
     /// Increment the value of the metric
     /// @return The result of the arithmetic
-    auto operator++() -> optional_metric&
+    auto operator++() -> metric&
     {
         set_value(value() + 1);
         return *this;
@@ -125,7 +133,7 @@ public:
 
     /// Decrement the value of the metric
     /// @return The result of the arithmetic
-    auto operator--() -> optional_metric&
+    auto operator--() -> metric&
     {
         set_value(value() - 1);
         return *this;
@@ -138,16 +146,16 @@ protected:
 
 /// Enum specializations
 template <>
-struct optional_metric<enum8>
+struct metric<enum8>
 {
     /// Default constructor
-    optional_metric() = default;
+    metric() = default;
 
     /// Constructor
     /// @param memory The memory to use for the metric, note that the memory
     ///        must be at least sizeof(value_type) + 1 bytes long.
     /// @param value The initial value of the metric
-    optional_metric(uint8_t* memory)
+    metric(uint8_t* memory)
     {
         assert(memory != nullptr);
         m_memory = memory;
@@ -183,7 +191,7 @@ struct optional_metric<enum8>
     /// Assign a new value to the metric
     /// @param value The value to assign
     template <typename T>
-    auto set_value(T value) -> void
+    auto set_value(T value) -> metric&
     {
         // @todo enable again
         // static_assert(std::is_enum_v<T>);
@@ -199,14 +207,15 @@ struct optional_metric<enum8>
 
         m_memory[0] = 1;
         m_memory[1] = static_cast<uint8_t>(value);
+
+        return *this;
     }
 
     /// Assign the metric a new value
     template <class T>
-    auto operator=(T value) -> optional_metric&
+    auto operator=(T value) -> metric&
     {
-        set_value(value);
-        return *this;
+        return set_value(value);
     }
 
     /// Reset the metric. This will cause the metric to not have a value
@@ -223,16 +232,16 @@ protected:
 
 /// Boolean specializations
 template <>
-struct optional_metric<boolean>
+struct metric<boolean>
 {
     /// Default constructor
-    optional_metric() = default;
+    metric() = default;
 
     /// Constructor
     /// @param memory The memory to use for the metric, note that the memory
     ///        must be at least sizeof(value_type) + 1 bytes long.
     /// @param value The initial value of the metric
-    optional_metric(uint8_t* memory)
+    metric(uint8_t* memory)
     {
         assert(memory != nullptr);
         m_memory = memory;
@@ -263,20 +272,21 @@ struct optional_metric<boolean>
 
     /// Assign a new value to the metric
     /// @param value The value to assign
-    auto set_value(bool value) -> void
+    auto set_value(bool value) -> metric&
     {
         assert(is_initialized());
         m_memory[0] = 1;
         m_memory[1] = static_cast<uint8_t>(value);
+
+        return *this;
     }
 
     /// Assign the metric a new value
     /// @param value The value to assign
     /// @return the metric with the new value
-    auto operator=(bool value) -> optional_metric&
+    auto operator=(bool value) -> metric&
     {
-        set_value(value);
-        return *this;
+        return set_value(value);
     }
 
     /// Reset the metric. This will cause the metric to not have a value

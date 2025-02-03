@@ -26,13 +26,12 @@ int main()
                           abacus::unit{"wheels"}}},
         {abacus::name{"days_until_maintenance"},
          abacus::int64{
-             abacus::kind::gauge, abacus::availability::required,
+             abacus::kind::gauge,
              abacus::description{"Days until next maintenance, if less than 0, "
                                  "maintenance is overdue"},
              abacus::unit{"days"}}},
         {abacus::name{"registered"},
-         abacus::boolean{abacus::availability::optional,
-                         abacus::description{"Is the car registered"}}},
+         abacus::boolean{abacus::description{"Is the car registered"}}},
         {abacus::name{"license_plate"},
          abacus::constant{abacus::constant::str{"ABC-1234"},
                           abacus::description{"License plate of the car"}}}};
@@ -40,12 +39,12 @@ int main()
     abacus::metrics car(infos);
 
     // The car still has some time before maintenance.
-    abacus::int64::required days_until_maintenance =
-        car.initialize_required<abacus::int64>("days_until_maintenance", 10);
+    abacus::metric<abacus::int64> days_until_maintenance =
+        car.initialize<abacus::int64>("days_until_maintenance");
 
     // The car should be registered.
-    abacus::boolean::optional registered =
-        car.initialize_optional<abacus::boolean>("registered");
+    abacus::metric<abacus::boolean> registered =
+        car.initialize<abacus::boolean>("registered");
 
     // The registration is initialized, but not set.
     assert(registered.is_initialized());

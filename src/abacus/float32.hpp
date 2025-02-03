@@ -12,8 +12,6 @@
 #include "kind.hpp"
 #include "max.hpp"
 #include "min.hpp"
-#include "optional_metric.hpp"
-#include "required_metric.hpp"
 #include "unit.hpp"
 
 namespace abacus
@@ -29,17 +27,8 @@ struct float32
     /// The primitive type of the metric
     using type = float;
 
-    /// Required float32 metric
-    using required = required_metric<float32>;
-
-    /// Optional float32 metric
-    using optional = optional_metric<float32>;
-
     /// The metric kind
     abacus::kind kind;
-
-    /// The availability of the metric
-    abacus::availability availability;
 
     /// The metric description
     abacus::description description;
