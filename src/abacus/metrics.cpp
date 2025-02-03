@@ -242,7 +242,7 @@ metrics::metrics(const std::map<name, abacus::info>& infos)
                         }
 
                         typed_metric->mutable_values()->insert(
-                            {key, enum_value});
+                            {key.value, enum_value});
                     }
                     m_value_bytes += sizeof(enum8::type);
 

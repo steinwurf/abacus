@@ -22,6 +22,21 @@ inline namespace STEINWURF_ABACUS_VERSION
 /// A enumeration metric
 struct enum8
 {
+    struct enum_value
+    {
+        template <typename T>
+        enum_value(T v) : value(static_cast<uint8_t>(v))
+        {
+        }
+
+        auto operator<(const enum_value& other) const -> bool
+        {
+            return value < other.value;
+        }
+
+        uint8_t value;
+    };
+
     /// The primitive type of the metric
     using type = uint8_t;
 
@@ -39,7 +54,7 @@ struct enum8
     abacus::description description;
 
     /// The enumeration value information
-    std::map<uint32_t, value_info> values;
+    std::map<enum_value, value_info> values;
 
     /// The unit of the metric
     abacus::unit unit{};
