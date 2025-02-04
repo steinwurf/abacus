@@ -55,6 +55,8 @@ auto to_json(const view& view, bool minimal) -> bourne::json
                 case protobuf::Constant::kString:
                     json[name] = metric.constant().string();
                     break;
+                case protobuf::Constant::VALUE_NOT_SET:
+                    break;
                 }
                 break;
             }
