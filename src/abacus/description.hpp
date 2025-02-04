@@ -26,16 +26,5 @@ struct description
     /// The description string
     std::string value;
 };
-
-inline bool operator==(const description& lhs, const description& rhs)
-{
-    return lhs.value == rhs.value;
-}
-
-inline bool operator<(const description& lhs, const description& rhs)
-{
-    return lhs.value < rhs.value;
-}
-
 }
 }

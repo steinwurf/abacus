@@ -22,8 +22,8 @@ extensions = [
 wurfapi = {
     "source_paths": [
         # API
-        "../src/abacus/availability.hpp",
         "../src/abacus/boolean.hpp",
+        "../src/abacus/constant.hpp",
         "../src/abacus/description.hpp",
         "../src/abacus/enum8.hpp",
         "../src/abacus/float32.hpp",
@@ -33,15 +33,17 @@ wurfapi = {
         "../src/abacus/int64.hpp",
         "../src/abacus/kind.hpp",
         "../src/abacus/max.hpp",
+        "../src/abacus/metric.hpp",
         "../src/abacus/metrics.hpp",
         "../src/abacus/min.hpp",
         "../src/abacus/name.hpp",
-        "../src/abacus/parse.hpp",
+        "../src/abacus/parse_metadata.hpp",
         "../src/abacus/protocol_version.hpp",
         "../src/abacus/to_json.hpp",
         "../src/abacus/uint32.hpp",
         "../src/abacus/uint64.hpp",
         "../src/abacus/unit.hpp",
+        "../src/abacus/version.hpp",
         "../src/abacus/view.hpp",
     ],
     "recursive": False,

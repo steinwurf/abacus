@@ -14,37 +14,51 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-/// Tag type representing a constant kind.
+/// A constant value stored in the metadata
 struct constant
 {
-
+    /// A 64-bit unsigned integer
     struct uint64
     {
+        /// The type used to store the value
         using type = uint64_t;
+        /// The value of the constant
         type value;
     };
 
+    /// A 64-bit signed integer
     struct int64
     {
+        /// The type used to store the value
         using type = int64_t;
+        /// The value of the constant
         type value;
     };
 
+    /// A 64-bit floating point number
     struct float64
     {
+        /// The type used to store the value
         using type = double;
+        /// The value of the constant
         type value;
     };
 
+    /// A boolean value
     struct boolean
     {
+        /// The type used to store the value
         using type = bool;
+        /// The value of the constant
         type value;
     };
 
+    /// A string value
     struct str
     {
+        /// The type used to store the value
         using type = std::string;
+        /// The value of the constant
         type value;
     };
 

@@ -12,10 +12,13 @@ namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-
+/// The kind of metric
 enum class kind
 {
+    /// A gauge metric. This is a metric can can be both incremented and
+    /// decremented.
     gauge = abacus::protobuf::GAUGE,
+    /// A counter metric. This is a metric that can only be incremented.
     counter = abacus::protobuf::COUNTER
 };
 

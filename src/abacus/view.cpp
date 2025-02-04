@@ -31,6 +31,40 @@ inline namespace STEINWURF_ABACUS_VERSION
 {
 namespace
 {
+static inline std::size_t get_offset(const protobuf::Metric& m)
+{
+    switch (m.type_case())
+    {
+    case protobuf::Metric::kUint64:
+        return m.uint64().offset();
+    case protobuf::Metric::kInt64:
+        return m.int64().offset();
+    case protobuf::Metric::kUint32:
+        return m.uint32().offset();
+    case protobuf::Metric::kInt32:
+        return m.int32().offset();
+    case protobuf::Metric::kFloat64:
+        return m.float64().offset();
+    case protobuf::Metric::kFloat32:
+        return m.float32().offset();
+    case protobuf::Metric::kBoolean:
+        return m.boolean().offset();
+    case protobuf::Metric::kEnum8:
+        return m.enum8().offset();
+    case protobuf::Metric::kConstant:
+        // This should never be reached
+        assert(false);
+        return 0;
+    case protobuf::Metric::TYPE_NOT_SET:
+        // This should never be reached
+        assert(false);
+        return 0;
+    default:
+        // This should never be reached
+        assert(false);
+        return 0;
+    }
+}
 template <class Metric>
 inline auto get_value(const uint8_t* data, bool is_big_endian)
     -> std::optional<typename Metric::type>
@@ -167,7 +201,7 @@ auto view::value(const std::string& name) const
     }
     else
     {
-        auto offset = detail::get_offset(m);
+        auto offset = get_offset(m);
         assert(offset < m_value_bytes);
         return get_value<Metric>(m_value_data + offset,
                                  m_metadata.endianness() ==

@@ -1,3 +1,2 @@
 .. wurfapi:: class_synopsis.rst
-    :selector: abacus::metrics
-
+    :selector: abacus::constant

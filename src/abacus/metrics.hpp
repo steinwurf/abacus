@@ -94,10 +94,10 @@ private:
     /// The size of the value data in bytes
     std::size_t m_value_bytes;
 
-    /// Map to offset
+    /// Map of metric offsets
     std::unordered_map<std::string, std::size_t> m_offsets;
 
-    /// Map to reset functions - only initialized metrics can be reset
+    /// Map of metrics initialization status
     std::unordered_map<std::string, bool> m_initialized;
 };
 }

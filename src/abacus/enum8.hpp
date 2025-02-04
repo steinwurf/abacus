@@ -21,18 +21,22 @@ inline namespace STEINWURF_ABACUS_VERSION
 /// A enumeration metric
 struct enum8
 {
+    /// The enumeration value information
     struct enum_value
     {
+        /// Constructor
         template <typename T>
         enum_value(T v) : value(static_cast<uint8_t>(v))
         {
         }
 
+        /// Compare two enumeration values
         auto operator<(const enum_value& other) const -> bool
         {
             return value < other.value;
         }
 
+        /// The value of the enumeration
         uint8_t value;
     };
 

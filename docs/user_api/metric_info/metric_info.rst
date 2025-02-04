@@ -10,6 +10,7 @@ Overview of the metric info types.
 .. toctree::
    :maxdepth: 2
 
+   constant
    uint64
    uint32
    int64

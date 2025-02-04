@@ -20,7 +20,7 @@ namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-/// A variant for all the supported metrics
+/// A variant for all the supported metric types
 using info = std::variant<constant, uint64, int64, uint32, int32, float64,
                           float32, boolean, enum8>;
 }
