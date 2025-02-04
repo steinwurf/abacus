@@ -66,8 +66,8 @@ public:
 
     /// Gets the value of a metric
     /// @param name The name of the metric
-    /// @return The value of the metric or std::nullopt if the metric has no
-    /// value
+    /// @return The value of the metric, if the metric is a constant the value
+    ///         is returned directly, otherwise an optional is returned
     template <class Metric>
     auto value(const std::string& name) const
         -> std::conditional_t<detail::is_constant_v<Metric>,

@@ -209,7 +209,8 @@ template auto view::value<abacus::boolean>(const std::string& name) const
     -> std::optional<abacus::boolean::type>;
 template auto view::value<abacus::enum8>(const std::string& name) const
     -> std::optional<abacus::enum8::type>;
-// Constants
+
+// Constants (no optional)
 template auto view::value<abacus::constant::uint64>(
     const std::string& name) const -> abacus::constant::uint64::type;
 template auto view::value<abacus::constant::int64>(
