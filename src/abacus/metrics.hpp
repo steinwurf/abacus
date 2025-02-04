@@ -100,7 +100,7 @@ private:
     std::unordered_map<std::string, std::size_t> m_offsets;
 
     /// Map to reset functions - only initialized metrics can be reset
-    std::unordered_map<std::string, std::function<void()>> m_resets;
+    std::unordered_map<std::string, bool> m_initialized;
 };
 }
 }

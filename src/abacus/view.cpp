@@ -6,6 +6,7 @@
 #include "view.hpp"
 
 #include "boolean.hpp"
+#include "constant.hpp"
 #include "detail/helpers.hpp"
 #include "enum8.hpp"
 #include "float32.hpp"
@@ -28,6 +29,65 @@ namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
+namespace
+{
+template <class Metric>
+inline auto get_value(const uint8_t* data, bool is_big_endian)
+    -> std::optional<typename Metric::type>
+{
+    assert(data != nullptr);
+    if (data[0] == 0)
+    {
+        // The metric is unset
+        return std::nullopt;
+    }
+
+    if (is_big_endian)
+    {
+        return endian::big_endian::get<typename Metric::type>(data + 1);
+    }
+    else
+    {
+        return endian::little_endian::get<typename Metric::type>(data + 1);
+    }
+}
+
+template <>
+inline auto get_value<constant::str>(const uint8_t*,
+                                     bool) -> std::optional<constant::str::type>
+{
+    assert(false);
+    return std::nullopt;
+}
+
+template <class Metric>
+inline auto get_constant_value(const protobuf::Constant& constant)
+    -> std::optional<typename Metric::type>
+{
+    switch (constant.value_case())
+    {
+    case protobuf::Constant::ValueCase::kUint64:
+        return constant.uint64();
+    case protobuf::Constant::ValueCase::kInt64:
+        return constant.int64();
+    case protobuf::Constant::ValueCase::kFloat64:
+        return constant.float64();
+    case protobuf::Constant::ValueCase::kBoolean:
+        return constant.boolean();
+    default:
+        assert(false);
+        return std::nullopt;
+    }
+}
+template <>
+inline auto get_constant_value<constant::str>(
+    const protobuf::Constant& constant) -> std::optional<constant::str::type>
+{
+    assert(constant.value_case() == protobuf::Constant::ValueCase::kString);
+    return constant.string();
+}
+}
+
 [[nodiscard]] auto
 view::set_metadata(const protobuf::MetricsMetadata& metadata) -> bool
 {
@@ -98,25 +158,19 @@ auto view::value(const std::string& name) const
     assert(m_metadata.IsInitialized());
     assert(m_value_data != nullptr);
     auto m = metric(name);
-    auto offset = detail::get_offset(m);
-    assert(offset < m_value_bytes);
-
-    if (m_value_data[offset] == 0)
+    if (m.has_constant())
     {
-        // Either the metric is unintialized or it's optional and has no value
-        return std::nullopt;
-    }
-
-    if (m_metadata.endianness() == protobuf::Endianness::BIG)
-    {
-        return endian::big_endian::get<typename Metric::type>(m_value_data +
-                                                              offset + 1);
+        // Check that Metric is one of the expected constant types
+        assert((detail::is_in_variant_v<Metric, decltype(constant::value)>));
+        return get_constant_value<Metric>(m.constant());
     }
     else
     {
-        assert(m_metadata.endianness() == protobuf::Endianness::LITTLE);
-        return endian::little_endian::get<typename Metric::type>(m_value_data +
-                                                                 offset + 1);
+        auto offset = detail::get_offset(m);
+        assert(offset < m_value_bytes);
+        return get_value<Metric>(m_value_data + offset,
+                                 m_metadata.endianness() ==
+                                     protobuf::Endianness::BIG);
     }
 }
 
@@ -137,5 +191,17 @@ template auto view::value<abacus::boolean>(const std::string& name) const
     -> std::optional<abacus::boolean::type>;
 template auto view::value<abacus::enum8>(const std::string& name) const
     -> std::optional<abacus::enum8::type>;
+// Constants
+template auto view::value<abacus::constant::uint64>(const std::string& name)
+    const -> std::optional<abacus::constant::uint64::type>;
+template auto view::value<abacus::constant::int64>(const std::string& name)
+    const -> std::optional<abacus::constant::int64::type>;
+template auto view::value<abacus::constant::float64>(const std::string& name)
+    const -> std::optional<abacus::constant::float64::type>;
+template auto view::value<abacus::constant::boolean>(const std::string& name)
+    const -> std::optional<abacus::constant::boolean::type>;
+template auto view::value<abacus::constant::str>(const std::string& name) const
+    -> std::optional<abacus::constant::str::type>;
+
 }
 }

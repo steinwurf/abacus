@@ -28,7 +28,7 @@ metrics::metrics(metrics&& other) noexcept :
     m_metadata(std::move(other.m_metadata)), m_data(std::move(other.m_data)),
     m_metadata_bytes(other.m_metadata_bytes), m_hash(other.m_hash),
     m_value_bytes(other.m_value_bytes), m_offsets(std::move(other.m_offsets)),
-    m_resets(std::move(other.m_resets))
+    m_initialized(std::move(other.m_initialized))
 {
     other.m_metadata = protobuf::MetricsMetadata();
     other.m_data.clear();
@@ -36,7 +36,7 @@ metrics::metrics(metrics&& other) noexcept :
     other.m_hash = 0;
     other.m_value_bytes = 0;
     other.m_offsets.clear();
-    other.m_resets.clear();
+    other.m_initialized.clear();
 }
 
 metrics::metrics(const std::map<name, abacus::info>& infos)
@@ -273,6 +273,7 @@ metrics::metrics(const std::map<name, abacus::info>& infos)
                             [](const auto&)
                             { assert(false && "Unsupported constant type"); }},
                         m.value);
+                    m_initialized[name.value] = true;
                 },
                 [&](const auto&)
                 { assert(false && "Unsupported metric type"); }},
@@ -315,13 +316,13 @@ template <class Metric>
 [[nodiscard]] auto
 metrics::initialize(const std::string& name) -> metric<Metric>
 {
-    assert(m_resets.find(name) == m_resets.end());
+    assert(m_initialized.find(name) == m_initialized.end());
     assert(m_offsets.find(name) != m_offsets.end());
 
     std::size_t offset = m_offsets.at(name);
     metric<Metric> m(m_data.data() + m_metadata_bytes + offset);
 
-    m_resets[name] = [m]() mutable { m.reset(); };
+    m_initialized[name] = true;
     return m;
 }
 
@@ -377,7 +378,7 @@ auto metrics::metadata_bytes() const -> std::size_t
 
 auto metrics::is_initialized(const std::string& name) const -> bool
 {
-    return m_resets.find(name) != m_resets.end();
+    return m_initialized.find(name) != m_initialized.end();
 }
 
 auto metrics::is_initialized() const -> bool
@@ -395,11 +396,9 @@ auto metrics::is_initialized() const -> bool
 
 auto metrics::reset() -> void
 {
-    for (const auto& [name, reset] : m_resets)
-    {
-        (void)name;
-        reset();
-    }
+    // Reset all metrics but keep the hash
+    std::memset(m_data.data() + m_metadata_bytes + sizeof(uint32_t), 0,
+                m_value_bytes - sizeof(uint32_t));
 }
 }
 }

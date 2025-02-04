@@ -36,6 +36,28 @@ auto to_json(const view& view, bool minimal) -> bourne::json
         {
             switch (metric.type_case())
             {
+            case protobuf::Metric::kConstant:
+            {
+                switch (metric.constant().value_case())
+                {
+                case protobuf::Constant::kUint64:
+                    json[name] = metric.constant().uint64();
+                    break;
+                case protobuf::Constant::kInt64:
+                    json[name] = metric.constant().int64();
+                    break;
+                case protobuf::Constant::kFloat64:
+                    json[name] = metric.constant().float64();
+                    break;
+                case protobuf::Constant::kBoolean:
+                    json[name] = metric.constant().boolean();
+                    break;
+                case protobuf::Constant::kString:
+                    json[name] = metric.constant().string();
+                    break;
+                }
+                break;
+            }
             case protobuf::Metric::kUint64:
             {
                 auto v = view.value<abacus::uint64>(name);

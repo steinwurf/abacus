@@ -215,7 +215,7 @@ TEST(test_metrics, value_and_metadata_bytes)
     (void)m0;
     (void)m1;
 
-    EXPECT_EQ(metrics.metadata().ByteSizeLong(), 112U);
+    EXPECT_EQ(metrics.metadata().ByteSizeLong(), 108U);
     EXPECT_EQ(metrics.value_bytes(),
               sizeof(uint32_t) +         // hash
                   1 + sizeof(uint64_t) + // metric0 has_value + value
@@ -269,22 +269,22 @@ TEST(test_metrics, reset_counters)
 }
 
 static const std::vector<uint8_t> expected_metadata = {
-    0x08, 0x02, 0x1d, 0xa6, 0xbc, 0x77, 0x0c, 0x22, 0x2d, 0x0a, 0x07, 0x6d,
-    0x65, 0x74, 0x72, 0x69, 0x63, 0x31, 0x12, 0x22, 0x1a, 0x20, 0x08, 0x0d,
-    0x12, 0x17, 0x41, 0x20, 0x73, 0x69, 0x67, 0x6e, 0x65, 0x64, 0x20, 0x69,
-    0x6e, 0x74, 0x65, 0x67, 0x65, 0x72, 0x20, 0x6d, 0x65, 0x74, 0x72, 0x69,
-    0x63, 0x2a, 0x03, 0x55, 0x53, 0x44, 0x22, 0x34, 0x0a, 0x07, 0x6d, 0x65,
-    0x74, 0x72, 0x69, 0x63, 0x30, 0x12, 0x29, 0x12, 0x27, 0x08, 0x04, 0x12,
-    0x1a, 0x41, 0x6e, 0x20, 0x75, 0x6e, 0x73, 0x69, 0x67, 0x6e, 0x65, 0x64,
-    0x20, 0x69, 0x6e, 0x74, 0x65, 0x67, 0x65, 0x72, 0x20, 0x6d, 0x65, 0x74,
-    0x72, 0x69, 0x63, 0x20, 0x01, 0x2a, 0x05, 0x62, 0x79, 0x74, 0x65, 0x73,
-    0x22, 0x21, 0x0a, 0x07, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x33, 0x12,
-    0x16, 0x42, 0x14, 0x08, 0x1f, 0x12, 0x10, 0x41, 0x20, 0x62, 0x6f, 0x6f,
-    0x6c, 0x65, 0x61, 0x6e, 0x20, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x22,
-    0x2c, 0x0a, 0x07, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x32, 0x12, 0x21,
-    0x32, 0x1f, 0x08, 0x16, 0x12, 0x17, 0x41, 0x20, 0x66, 0x6c, 0x6f, 0x61,
-    0x74, 0x69, 0x6e, 0x67, 0x20, 0x70, 0x6f, 0x69, 0x6e, 0x74, 0x20, 0x6d,
-    0x65, 0x74, 0x72, 0x69, 0x63, 0x2a, 0x02, 0x6d, 0x73,
+    0x08, 0x02, 0x1d, 0xb0, 0xd7, 0xc6, 0x24, 0x22, 0x21, 0x0a, 0x07, 0x6d,
+    0x65, 0x74, 0x72, 0x69, 0x63, 0x33, 0x12, 0x16, 0x42, 0x14, 0x08, 0x1f,
+    0x12, 0x10, 0x41, 0x20, 0x62, 0x6f, 0x6f, 0x6c, 0x65, 0x61, 0x6e, 0x20,
+    0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x22, 0x2c, 0x0a, 0x07, 0x6d, 0x65,
+    0x74, 0x72, 0x69, 0x63, 0x32, 0x12, 0x21, 0x32, 0x1f, 0x08, 0x16, 0x12,
+    0x17, 0x41, 0x20, 0x66, 0x6c, 0x6f, 0x61, 0x74, 0x69, 0x6e, 0x67, 0x20,
+    0x70, 0x6f, 0x69, 0x6e, 0x74, 0x20, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63,
+    0x22, 0x02, 0x6d, 0x73, 0x22, 0x2d, 0x0a, 0x07, 0x6d, 0x65, 0x74, 0x72,
+    0x69, 0x63, 0x31, 0x12, 0x22, 0x1a, 0x20, 0x08, 0x0d, 0x12, 0x17, 0x41,
+    0x20, 0x73, 0x69, 0x67, 0x6e, 0x65, 0x64, 0x20, 0x69, 0x6e, 0x74, 0x65,
+    0x67, 0x65, 0x72, 0x20, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63, 0x22, 0x03,
+    0x55, 0x53, 0x44, 0x22, 0x34, 0x0a, 0x07, 0x6d, 0x65, 0x74, 0x72, 0x69,
+    0x63, 0x30, 0x12, 0x29, 0x12, 0x27, 0x08, 0x04, 0x12, 0x1a, 0x41, 0x6e,
+    0x20, 0x75, 0x6e, 0x73, 0x69, 0x67, 0x6e, 0x65, 0x64, 0x20, 0x69, 0x6e,
+    0x74, 0x65, 0x67, 0x65, 0x72, 0x20, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x63,
+    0x18, 0x01, 0x22, 0x05, 0x62, 0x79, 0x74, 0x65, 0x73,
 };
 
 static const std::vector<uint8_t> expected_value_data = {
@@ -422,23 +422,17 @@ TEST(test_metrics, reset)
         {abacus::name{"uint64_constant"},
          abacus::constant{abacus::constant::uint64{1111},
                           abacus::description{""}}},
-        {abacus::name{"uint32_constant"},
-         abacus::constant{abacus::constant::uint64{2222},
-                          abacus::description{""}}},
         {abacus::name{"int64_constant"},
-         abacus::constant{abacus::constant::int64{3333},
-                          abacus::description{""}}},
-        {abacus::name{"int32_constant"},
-         abacus::constant{abacus::constant::uint64{4444},
+         abacus::constant{abacus::constant::int64{2222},
                           abacus::description{""}}},
         {abacus::name{"float64_constant"},
-         abacus::constant{abacus::constant::float64{5555.0},
-                          abacus::description{""}}},
-        {abacus::name{"float32_constant"},
-         abacus::constant{abacus::constant::float64{6666.0f},
+         abacus::constant{abacus::constant::float64{3333.0},
                           abacus::description{""}}},
         {abacus::name{"boolean_constant"},
          abacus::constant{abacus::constant::boolean{true},
+                          abacus::description{""}}},
+        {abacus::name{"string_constant"},
+         abacus::constant{abacus::constant::str{"fivefivefivefive"},
                           abacus::description{""}}},
         // Finally a metric that we do not initialize
         {abacus::name{"not_initialized_required"},
@@ -545,13 +539,16 @@ TEST(test_metrics, reset)
         view.set_value_data(metrics.value_data(), metrics.value_bytes()));
 
     // Check all constant values
-    EXPECT_EQ(view.value<abacus::uint64>("uint64_constant").value(), 1111U);
-    EXPECT_EQ(view.value<abacus::uint32>("uint32_constant").value(), 2222U);
-    EXPECT_EQ(view.value<abacus::int64>("int64_constant").value(), 3333);
-    EXPECT_EQ(view.value<abacus::int32>("int32_constant").value(), 4444);
-    EXPECT_EQ(view.value<abacus::float64>("float64_constant").value(), 5555.0);
-    EXPECT_EQ(view.value<abacus::float32>("float32_constant").value(), 6666.0);
-    EXPECT_EQ(view.value<abacus::boolean>("boolean_constant").value(), true);
+    EXPECT_EQ(view.value<abacus::constant::uint64>("uint64_constant").value(),
+              1111U);
+    EXPECT_EQ(view.value<abacus::constant::int64>("int64_constant").value(),
+              2222);
+    EXPECT_EQ(view.value<abacus::constant::float64>("float64_constant").value(),
+              3333.0);
+    EXPECT_EQ(view.value<abacus::constant::boolean>("boolean_constant").value(),
+              true);
+    EXPECT_EQ(view.value<abacus::constant::str>("string_constant").value(),
+              "fivefivefivefive");
 
     // While we are at it, let's check the other values as well
     EXPECT_EQ(view.value<abacus::uint64>("uint64_required").value(), 111U);
@@ -581,16 +578,6 @@ TEST(test_metrics, reset)
     // Reset all values
     metrics.reset();
 
-    // Check all required values
-    EXPECT_EQ(uint64_required.value(), 1U);
-    EXPECT_EQ(uint32_required.value(), 2U);
-    EXPECT_EQ(int64_required.value(), 3);
-    EXPECT_EQ(int32_required.value(), 4);
-    EXPECT_EQ(float64_required.value(), 5.0);
-    EXPECT_EQ(float32_required.value(), 6.0);
-    EXPECT_EQ(boolean_required.value(), true);
-    EXPECT_EQ(enum8_required.value<test_enum>(), test_enum::value0);
-
     // Check all optional values returns false for has_value
     EXPECT_FALSE(uint64_optional.has_value());
     EXPECT_FALSE(uint32_optional.has_value());
@@ -606,22 +593,13 @@ TEST(test_metrics, reset)
         view.set_value_data(metrics.value_data(), metrics.value_bytes()));
 
     // Check all constant values
-    EXPECT_EQ(view.value<abacus::uint64>("uint64_constant"), 1111U);
-    EXPECT_EQ(view.value<abacus::uint32>("uint32_constant"), 2222U);
-    EXPECT_EQ(view.value<abacus::int64>("int64_constant"), 3333);
-    EXPECT_EQ(view.value<abacus::int32>("int32_constant"), 4444);
-    EXPECT_EQ(view.value<abacus::float64>("float64_constant"), 5555.0);
-    EXPECT_EQ(view.value<abacus::float32>("float32_constant"), 6666.0);
-    EXPECT_EQ(view.value<abacus::boolean>("boolean_constant"), true);
-
-    EXPECT_EQ(view.value<abacus::uint64>("uint64_required").value(), 1U);
-    EXPECT_EQ(view.value<abacus::uint32>("uint32_required").value(), 2U);
-    EXPECT_EQ(view.value<abacus::int64>("int64_required").value(), 3);
-    EXPECT_EQ(view.value<abacus::int32>("int32_required").value(), 4);
-    EXPECT_EQ(view.value<abacus::float64>("float64_required").value(), 5.0);
-    EXPECT_EQ(view.value<abacus::float32>("float32_required").value(), 6.0);
-    EXPECT_EQ(view.value<abacus::boolean>("boolean_required").value(), true);
-    EXPECT_EQ(view.value<abacus::enum8>("enum8_required").value(), 0U);
+    EXPECT_EQ(view.value<abacus::constant::uint64>("uint64_constant"), 1111U);
+    EXPECT_EQ(view.value<abacus::constant::int64>("int64_constant"), 2222);
+    EXPECT_EQ(view.value<abacus::constant::float64>("float64_constant"),
+              3333.0);
+    EXPECT_EQ(view.value<abacus::constant::boolean>("boolean_constant"), true);
+    EXPECT_EQ(view.value<abacus::constant::str>("string_constant"),
+              "fivefivefivefive");
 
     EXPECT_FALSE(view.value<abacus::uint64>("uint64_optional").has_value());
     EXPECT_FALSE(view.value<abacus::uint32>("uint32_optional").has_value());

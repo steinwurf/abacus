@@ -82,7 +82,7 @@ struct metric
         }
 
         m_memory[0] = 1;
-        std::memcpy(&value, m_memory + 1, sizeof(value_type));
+        std::memcpy(m_memory + 1, &value, sizeof(value_type));
 
         return *this;
     }

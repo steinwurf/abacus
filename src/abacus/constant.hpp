@@ -18,33 +18,38 @@ inline namespace STEINWURF_ABACUS_VERSION
 struct constant
 {
 
-    struct int64
-    {
-        int64_t value;
-    };
-
     struct uint64
     {
-        uint64_t value;
+        using type = uint64_t;
+        type value;
     };
 
-    struct boolean
+    struct int64
     {
-        bool value;
+        using type = int64_t;
+        type value;
     };
 
     struct float64
     {
-        double value;
+        using type = double;
+        type value;
+    };
+
+    struct boolean
+    {
+        using type = bool;
+        type value;
     };
 
     struct str
     {
-        std::string value;
+        using type = std::string;
+        type value;
     };
 
     // The value of the constant
-    std::variant<int64, uint64, boolean, float64, str> value;
+    std::variant<uint64, int64, float64, boolean, str> value;
 
     // The description of the constant
     abacus::description description;

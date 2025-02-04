@@ -69,7 +69,8 @@ TEST(test_view, api)
 
     std::optional<uint64_t> view_value0 = view.value<abacus::uint64>(name0);
     std::optional<int64_t> view_value1 = view.value<abacus::int64>(name1);
-    std::optional<double> view_value2 = view.value<abacus::float64>(name2);
+    std::optional<double> view_value2 =
+        view.value<abacus::constant::float64>(name2);
     std::optional<uint8_t> view_value3 = view.value<abacus::enum8>(name3);
 
     EXPECT_FALSE(view_value0.has_value());

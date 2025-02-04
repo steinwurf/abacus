@@ -71,10 +71,8 @@ TEST(test_to_json, to_json_minimal)
 static const char* expected_json = R"({
   "metric0" : {
     "uint64" : {
-      "counter" : {
-        "optional" : false
-      },
       "description" : "An unsigned integer metric",
+      "kind" : "COUNTER",
       "max" : "100",
       "min" : "0",
       "offset" : 4,
@@ -85,9 +83,7 @@ static const char* expected_json = R"({
   "metric1" : {
     "int64" : {
       "description" : "A signed integer metric",
-      "gauge" : {
-        "optional" : false
-      },
+      "kind" : "GAUGE",
       "max" : "100",
       "min" : "-100",
       "offset" : 13,
@@ -96,22 +92,16 @@ static const char* expected_json = R"({
     "value" : -42
   },
   "metric2" : {
-    "boolean" : {
-      "constant" : {
-
-      },
-      "description" : "A boolean constant",
-      "offset" : 22
+    "constant" : {
+      "boolean" : true,
+      "description" : "A boolean constant"
     },
     "value" : true
   },
   "metric3" : {
     "enum8" : {
       "description" : "An enum metric",
-      "gauge" : {
-        "optional" : false
-      },
-      "offset" : 24,
+      "offset" : 22,
       "values" : {
         "0" : {
           "description" : "The value for 0",

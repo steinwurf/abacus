@@ -14,8 +14,10 @@ template <typename T>
 void integer_test()
 {
     using type = typename T::type;
-
     {
+        SCOPED_TRACE(::testing::Message()
+                     << "Testing integer metric: " << typeid(T).name());
+
         using optional = abacus::metric<T>;
         uint8_t data[sizeof(type) + 1];
         std::memset(data, 0, sizeof(data));
