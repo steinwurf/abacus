@@ -15,9 +15,8 @@
 #include "name.hpp"
 #include "version.hpp"
 
-#include "optional_metric.hpp"
+#include "metric.hpp"
 #include "protobuf/metrics.pb.h"
-#include "required_metric.hpp"
 
 namespace abacus
 {
@@ -40,24 +39,11 @@ public:
     /// @param info The info of the metrics to create.
     metrics(const std::map<name, abacus::info>& info);
 
-    /// Destructor
-    ~metrics();
-
-    /// Initialize a required metric
-    /// @param name The name of the metric
-    /// @param value Optional initial value of the metric
-    /// @return The metric object
-    template <class Metric>
-    [[nodiscard]] auto initialize_required(const std::string& name,
-                                           typename Metric::type value) ->
-        typename Metric::required;
-
     /// Initialize a metric
     /// @param name The name of the metric
     /// @return The metric object
     template <class Metric>
-    [[nodiscard]] auto initialize_optional(const std::string& name) ->
-        typename Metric::optional;
+    [[nodiscard]] auto initialize(const std::string& name) -> metric<Metric>;
 
     /// Check if a metric has been initialized
     /// @param name The name of the metric
@@ -88,10 +74,6 @@ public:
     auto metadata() const -> const protobuf::MetricsMetadata&;
 
 private:
-    /// @param offset The offset of the value data
-    /// @return the pointer to the value data of the metrics.
-    auto value_data(std::size_t offset) -> uint8_t*;
-
     /// No copy
     metrics(metrics&) = delete;
 
@@ -114,11 +96,11 @@ private:
     /// The size of the value data in bytes
     std::size_t m_value_bytes;
 
-    /// A map of the metrics and whether they have been initialized
-    std::map<std::string, bool> m_initialized;
+    /// Map to offset
+    std::unordered_map<std::string, std::size_t> m_offsets;
 
-    /// The initial values of the metrics
-    std::map<std::string, std::any> m_initial_values;
+    /// Map to reset functions - only initialized metrics can be reset
+    std::unordered_map<std::string, std::function<void()>> m_resets;
 };
 }
 }

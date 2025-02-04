@@ -309,12 +309,11 @@ class UInt64Metric final :
 
   enum : int {
     kDescriptionFieldNumber = 2,
-    kUnitFieldNumber = 5,
+    kUnitFieldNumber = 4,
     kOffsetFieldNumber = 1,
-    kOptionalFieldNumber = 3,
-    kMinFieldNumber = 6,
-    kMaxFieldNumber = 7,
-    kKindFieldNumber = 4,
+    kKindFieldNumber = 3,
+    kMinFieldNumber = 5,
+    kMaxFieldNumber = 6,
   };
   // string description = 2;
   void clear_description() ;
@@ -332,7 +331,7 @@ class UInt64Metric final :
   std::string* _internal_mutable_description();
 
   public:
-  // optional string unit = 5;
+  // optional string unit = 4;
   bool has_unit() const;
   void clear_unit() ;
   const std::string& unit() const;
@@ -359,17 +358,17 @@ class UInt64Metric final :
   void _internal_set_offset(::uint32_t value);
 
   public:
-  // bool optional = 3;
-  void clear_optional() ;
-  bool optional() const;
-  void set_optional(bool value);
+  // .abacus.protobuf.Kind kind = 3;
+  void clear_kind() ;
+  ::abacus::protobuf::Kind kind() const;
+  void set_kind(::abacus::protobuf::Kind value);
 
   private:
-  bool _internal_optional() const;
-  void _internal_set_optional(bool value);
+  ::abacus::protobuf::Kind _internal_kind() const;
+  void _internal_set_kind(::abacus::protobuf::Kind value);
 
   public:
-  // optional uint64 min = 6;
+  // optional uint64 min = 5;
   bool has_min() const;
   void clear_min() ;
   ::uint64_t min() const;
@@ -380,7 +379,7 @@ class UInt64Metric final :
   void _internal_set_min(::uint64_t value);
 
   public:
-  // optional uint64 max = 7;
+  // optional uint64 max = 6;
   bool has_max() const;
   void clear_max() ;
   ::uint64_t max() const;
@@ -391,22 +390,12 @@ class UInt64Metric final :
   void _internal_set_max(::uint64_t value);
 
   public:
-  // .abacus.protobuf.Kind kind = 4;
-  void clear_kind() ;
-  ::abacus::protobuf::Kind kind() const;
-  void set_kind(::abacus::protobuf::Kind value);
-
-  private:
-  ::abacus::protobuf::Kind _internal_kind() const;
-  void _internal_set_kind(::abacus::protobuf::Kind value);
-
-  public:
   // @@protoc_insertion_point(class_scope:abacus.protobuf.UInt64Metric)
  private:
   class _Internal;
 
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 7, 0, 52, 2> _table_;
+  static const ::google::protobuf::internal::TcParseTable<3, 6, 0, 52, 2> _table_;
   template <typename T> friend class ::google::protobuf::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
@@ -416,10 +405,9 @@ class UInt64Metric final :
     ::google::protobuf::internal::ArenaStringPtr description_;
     ::google::protobuf::internal::ArenaStringPtr unit_;
     ::uint32_t offset_;
-    bool optional_;
+    int kind_;
     ::uint64_t min_;
     ::uint64_t max_;
-    int kind_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -555,12 +543,11 @@ class Int64Metric final :
 
   enum : int {
     kDescriptionFieldNumber = 2,
-    kUnitFieldNumber = 5,
+    kUnitFieldNumber = 4,
     kOffsetFieldNumber = 1,
-    kOptionalFieldNumber = 3,
-    kMinFieldNumber = 6,
-    kMaxFieldNumber = 7,
-    kKindFieldNumber = 4,
+    kKindFieldNumber = 3,
+    kMinFieldNumber = 5,
+    kMaxFieldNumber = 6,
   };
   // string description = 2;
   void clear_description() ;
@@ -578,7 +565,7 @@ class Int64Metric final :
   std::string* _internal_mutable_description();
 
   public:
-  // optional string unit = 5;
+  // optional string unit = 4;
   bool has_unit() const;
   void clear_unit() ;
   const std::string& unit() const;
@@ -605,17 +592,17 @@ class Int64Metric final :
   void _internal_set_offset(::uint32_t value);
 
   public:
-  // bool optional = 3;
-  void clear_optional() ;
-  bool optional() const;
-  void set_optional(bool value);
+  // .abacus.protobuf.Kind kind = 3;
+  void clear_kind() ;
+  ::abacus::protobuf::Kind kind() const;
+  void set_kind(::abacus::protobuf::Kind value);
 
   private:
-  bool _internal_optional() const;
-  void _internal_set_optional(bool value);
+  ::abacus::protobuf::Kind _internal_kind() const;
+  void _internal_set_kind(::abacus::protobuf::Kind value);
 
   public:
-  // optional int64 min = 6;
+  // optional int64 min = 5;
   bool has_min() const;
   void clear_min() ;
   ::int64_t min() const;
@@ -626,7 +613,7 @@ class Int64Metric final :
   void _internal_set_min(::int64_t value);
 
   public:
-  // optional int64 max = 7;
+  // optional int64 max = 6;
   bool has_max() const;
   void clear_max() ;
   ::int64_t max() const;
@@ -637,22 +624,12 @@ class Int64Metric final :
   void _internal_set_max(::int64_t value);
 
   public:
-  // .abacus.protobuf.Kind kind = 4;
-  void clear_kind() ;
-  ::abacus::protobuf::Kind kind() const;
-  void set_kind(::abacus::protobuf::Kind value);
-
-  private:
-  ::abacus::protobuf::Kind _internal_kind() const;
-  void _internal_set_kind(::abacus::protobuf::Kind value);
-
-  public:
   // @@protoc_insertion_point(class_scope:abacus.protobuf.Int64Metric)
  private:
   class _Internal;
 
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 7, 0, 51, 2> _table_;
+  static const ::google::protobuf::internal::TcParseTable<3, 6, 0, 51, 2> _table_;
   template <typename T> friend class ::google::protobuf::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
@@ -662,10 +639,9 @@ class Int64Metric final :
     ::google::protobuf::internal::ArenaStringPtr description_;
     ::google::protobuf::internal::ArenaStringPtr unit_;
     ::uint32_t offset_;
-    bool optional_;
+    int kind_;
     ::int64_t min_;
     ::int64_t max_;
-    int kind_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -801,12 +777,11 @@ class UInt32Metric final :
 
   enum : int {
     kDescriptionFieldNumber = 2,
-    kUnitFieldNumber = 5,
+    kUnitFieldNumber = 4,
     kOffsetFieldNumber = 1,
-    kOptionalFieldNumber = 3,
-    kKindFieldNumber = 4,
-    kMinFieldNumber = 6,
-    kMaxFieldNumber = 7,
+    kKindFieldNumber = 3,
+    kMinFieldNumber = 5,
+    kMaxFieldNumber = 6,
   };
   // string description = 2;
   void clear_description() ;
@@ -824,7 +799,7 @@ class UInt32Metric final :
   std::string* _internal_mutable_description();
 
   public:
-  // optional string unit = 5;
+  // optional string unit = 4;
   bool has_unit() const;
   void clear_unit() ;
   const std::string& unit() const;
@@ -851,17 +826,7 @@ class UInt32Metric final :
   void _internal_set_offset(::uint32_t value);
 
   public:
-  // bool optional = 3;
-  void clear_optional() ;
-  bool optional() const;
-  void set_optional(bool value);
-
-  private:
-  bool _internal_optional() const;
-  void _internal_set_optional(bool value);
-
-  public:
-  // .abacus.protobuf.Kind kind = 4;
+  // .abacus.protobuf.Kind kind = 3;
   void clear_kind() ;
   ::abacus::protobuf::Kind kind() const;
   void set_kind(::abacus::protobuf::Kind value);
@@ -871,7 +836,7 @@ class UInt32Metric final :
   void _internal_set_kind(::abacus::protobuf::Kind value);
 
   public:
-  // optional uint32 min = 6;
+  // optional uint32 min = 5;
   bool has_min() const;
   void clear_min() ;
   ::uint32_t min() const;
@@ -882,7 +847,7 @@ class UInt32Metric final :
   void _internal_set_min(::uint32_t value);
 
   public:
-  // optional uint32 max = 7;
+  // optional uint32 max = 6;
   bool has_max() const;
   void clear_max() ;
   ::uint32_t max() const;
@@ -898,7 +863,7 @@ class UInt32Metric final :
   class _Internal;
 
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 7, 0, 52, 2> _table_;
+  static const ::google::protobuf::internal::TcParseTable<3, 6, 0, 52, 2> _table_;
   template <typename T> friend class ::google::protobuf::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
@@ -908,7 +873,6 @@ class UInt32Metric final :
     ::google::protobuf::internal::ArenaStringPtr description_;
     ::google::protobuf::internal::ArenaStringPtr unit_;
     ::uint32_t offset_;
-    bool optional_;
     int kind_;
     ::uint32_t min_;
     ::uint32_t max_;
@@ -1047,12 +1011,11 @@ class Int32Metric final :
 
   enum : int {
     kDescriptionFieldNumber = 2,
-    kUnitFieldNumber = 5,
+    kUnitFieldNumber = 4,
     kOffsetFieldNumber = 1,
-    kOptionalFieldNumber = 3,
-    kKindFieldNumber = 4,
-    kMinFieldNumber = 6,
-    kMaxFieldNumber = 7,
+    kKindFieldNumber = 3,
+    kMinFieldNumber = 5,
+    kMaxFieldNumber = 6,
   };
   // string description = 2;
   void clear_description() ;
@@ -1070,7 +1033,7 @@ class Int32Metric final :
   std::string* _internal_mutable_description();
 
   public:
-  // optional string unit = 5;
+  // optional string unit = 4;
   bool has_unit() const;
   void clear_unit() ;
   const std::string& unit() const;
@@ -1097,17 +1060,7 @@ class Int32Metric final :
   void _internal_set_offset(::uint32_t value);
 
   public:
-  // bool optional = 3;
-  void clear_optional() ;
-  bool optional() const;
-  void set_optional(bool value);
-
-  private:
-  bool _internal_optional() const;
-  void _internal_set_optional(bool value);
-
-  public:
-  // .abacus.protobuf.Kind kind = 4;
+  // .abacus.protobuf.Kind kind = 3;
   void clear_kind() ;
   ::abacus::protobuf::Kind kind() const;
   void set_kind(::abacus::protobuf::Kind value);
@@ -1117,7 +1070,7 @@ class Int32Metric final :
   void _internal_set_kind(::abacus::protobuf::Kind value);
 
   public:
-  // optional int32 min = 6;
+  // optional int32 min = 5;
   bool has_min() const;
   void clear_min() ;
   ::int32_t min() const;
@@ -1128,7 +1081,7 @@ class Int32Metric final :
   void _internal_set_min(::int32_t value);
 
   public:
-  // optional int32 max = 7;
+  // optional int32 max = 6;
   bool has_max() const;
   void clear_max() ;
   ::int32_t max() const;
@@ -1144,7 +1097,7 @@ class Int32Metric final :
   class _Internal;
 
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 7, 0, 51, 2> _table_;
+  static const ::google::protobuf::internal::TcParseTable<3, 6, 0, 51, 2> _table_;
   template <typename T> friend class ::google::protobuf::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
@@ -1154,7 +1107,6 @@ class Int32Metric final :
     ::google::protobuf::internal::ArenaStringPtr description_;
     ::google::protobuf::internal::ArenaStringPtr unit_;
     ::uint32_t offset_;
-    bool optional_;
     int kind_;
     ::int32_t min_;
     ::int32_t max_;
@@ -1293,12 +1245,11 @@ class Float64Metric final :
 
   enum : int {
     kDescriptionFieldNumber = 2,
-    kUnitFieldNumber = 5,
+    kUnitFieldNumber = 4,
     kOffsetFieldNumber = 1,
-    kOptionalFieldNumber = 3,
-    kMinFieldNumber = 6,
-    kMaxFieldNumber = 7,
-    kKindFieldNumber = 4,
+    kKindFieldNumber = 3,
+    kMinFieldNumber = 5,
+    kMaxFieldNumber = 6,
   };
   // string description = 2;
   void clear_description() ;
@@ -1316,7 +1267,7 @@ class Float64Metric final :
   std::string* _internal_mutable_description();
 
   public:
-  // optional string unit = 5;
+  // optional string unit = 4;
   bool has_unit() const;
   void clear_unit() ;
   const std::string& unit() const;
@@ -1343,17 +1294,17 @@ class Float64Metric final :
   void _internal_set_offset(::uint32_t value);
 
   public:
-  // bool optional = 3;
-  void clear_optional() ;
-  bool optional() const;
-  void set_optional(bool value);
+  // .abacus.protobuf.Kind kind = 3;
+  void clear_kind() ;
+  ::abacus::protobuf::Kind kind() const;
+  void set_kind(::abacus::protobuf::Kind value);
 
   private:
-  bool _internal_optional() const;
-  void _internal_set_optional(bool value);
+  ::abacus::protobuf::Kind _internal_kind() const;
+  void _internal_set_kind(::abacus::protobuf::Kind value);
 
   public:
-  // optional double min = 6;
+  // optional double min = 5;
   bool has_min() const;
   void clear_min() ;
   double min() const;
@@ -1364,7 +1315,7 @@ class Float64Metric final :
   void _internal_set_min(double value);
 
   public:
-  // optional double max = 7;
+  // optional double max = 6;
   bool has_max() const;
   void clear_max() ;
   double max() const;
@@ -1375,22 +1326,12 @@ class Float64Metric final :
   void _internal_set_max(double value);
 
   public:
-  // .abacus.protobuf.Kind kind = 4;
-  void clear_kind() ;
-  ::abacus::protobuf::Kind kind() const;
-  void set_kind(::abacus::protobuf::Kind value);
-
-  private:
-  ::abacus::protobuf::Kind _internal_kind() const;
-  void _internal_set_kind(::abacus::protobuf::Kind value);
-
-  public:
   // @@protoc_insertion_point(class_scope:abacus.protobuf.Float64Metric)
  private:
   class _Internal;
 
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 7, 0, 53, 2> _table_;
+  static const ::google::protobuf::internal::TcParseTable<3, 6, 0, 53, 2> _table_;
   template <typename T> friend class ::google::protobuf::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
@@ -1400,10 +1341,9 @@ class Float64Metric final :
     ::google::protobuf::internal::ArenaStringPtr description_;
     ::google::protobuf::internal::ArenaStringPtr unit_;
     ::uint32_t offset_;
-    bool optional_;
+    int kind_;
     double min_;
     double max_;
-    int kind_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -1539,12 +1479,11 @@ class Float32Metric final :
 
   enum : int {
     kDescriptionFieldNumber = 2,
-    kUnitFieldNumber = 5,
+    kUnitFieldNumber = 4,
     kOffsetFieldNumber = 1,
-    kOptionalFieldNumber = 3,
-    kKindFieldNumber = 4,
-    kMinFieldNumber = 6,
-    kMaxFieldNumber = 7,
+    kKindFieldNumber = 3,
+    kMinFieldNumber = 5,
+    kMaxFieldNumber = 6,
   };
   // string description = 2;
   void clear_description() ;
@@ -1562,7 +1501,7 @@ class Float32Metric final :
   std::string* _internal_mutable_description();
 
   public:
-  // optional string unit = 5;
+  // optional string unit = 4;
   bool has_unit() const;
   void clear_unit() ;
   const std::string& unit() const;
@@ -1589,17 +1528,7 @@ class Float32Metric final :
   void _internal_set_offset(::uint32_t value);
 
   public:
-  // bool optional = 3;
-  void clear_optional() ;
-  bool optional() const;
-  void set_optional(bool value);
-
-  private:
-  bool _internal_optional() const;
-  void _internal_set_optional(bool value);
-
-  public:
-  // .abacus.protobuf.Kind kind = 4;
+  // .abacus.protobuf.Kind kind = 3;
   void clear_kind() ;
   ::abacus::protobuf::Kind kind() const;
   void set_kind(::abacus::protobuf::Kind value);
@@ -1609,7 +1538,7 @@ class Float32Metric final :
   void _internal_set_kind(::abacus::protobuf::Kind value);
 
   public:
-  // optional float min = 6;
+  // optional float min = 5;
   bool has_min() const;
   void clear_min() ;
   float min() const;
@@ -1620,7 +1549,7 @@ class Float32Metric final :
   void _internal_set_min(float value);
 
   public:
-  // optional float max = 7;
+  // optional float max = 6;
   bool has_max() const;
   void clear_max() ;
   float max() const;
@@ -1636,7 +1565,7 @@ class Float32Metric final :
   class _Internal;
 
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 7, 0, 53, 2> _table_;
+  static const ::google::protobuf::internal::TcParseTable<3, 6, 0, 53, 2> _table_;
   template <typename T> friend class ::google::protobuf::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
@@ -1646,7 +1575,6 @@ class Float32Metric final :
     ::google::protobuf::internal::ArenaStringPtr description_;
     ::google::protobuf::internal::ArenaStringPtr unit_;
     ::uint32_t offset_;
-    bool optional_;
     int kind_;
     float min_;
     float max_;
@@ -1785,9 +1713,8 @@ class BoolMetric final :
 
   enum : int {
     kDescriptionFieldNumber = 2,
-    kUnitFieldNumber = 4,
+    kUnitFieldNumber = 3,
     kOffsetFieldNumber = 1,
-    kOptionalFieldNumber = 3,
   };
   // string description = 2;
   void clear_description() ;
@@ -1805,7 +1732,7 @@ class BoolMetric final :
   std::string* _internal_mutable_description();
 
   public:
-  // optional string unit = 4;
+  // optional string unit = 3;
   bool has_unit() const;
   void clear_unit() ;
   const std::string& unit() const;
@@ -1832,22 +1759,12 @@ class BoolMetric final :
   void _internal_set_offset(::uint32_t value);
 
   public:
-  // bool optional = 3;
-  void clear_optional() ;
-  bool optional() const;
-  void set_optional(bool value);
-
-  private:
-  bool _internal_optional() const;
-  void _internal_set_optional(bool value);
-
-  public:
   // @@protoc_insertion_point(class_scope:abacus.protobuf.BoolMetric)
  private:
   class _Internal;
 
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<2, 4, 0, 50, 2> _table_;
+  static const ::google::protobuf::internal::TcParseTable<2, 3, 0, 50, 2> _table_;
   template <typename T> friend class ::google::protobuf::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
@@ -1857,7 +1774,6 @@ class BoolMetric final :
     ::google::protobuf::internal::ArenaStringPtr description_;
     ::google::protobuf::internal::ArenaStringPtr unit_;
     ::uint32_t offset_;
-    bool optional_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -2206,7 +2122,6 @@ class Enum8Metric final :
     kDescriptionFieldNumber = 2,
     kUnitFieldNumber = 5,
     kOffsetFieldNumber = 1,
-    kOptionalFieldNumber = 3,
   };
   // map<uint32, .abacus.protobuf.Enum8Metric.EnumValue> values = 4;
   int values_size() const;
@@ -2266,22 +2181,12 @@ class Enum8Metric final :
   void _internal_set_offset(::uint32_t value);
 
   public:
-  // bool optional = 3;
-  void clear_optional() ;
-  bool optional() const;
-  void set_optional(bool value);
-
-  private:
-  bool _internal_optional() const;
-  void _internal_set_optional(bool value);
-
-  public:
   // @@protoc_insertion_point(class_scope:abacus.protobuf.Enum8Metric)
  private:
   class _Internal;
 
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 5, 2, 51, 2> _table_;
+  static const ::google::protobuf::internal::TcParseTable<3, 4, 2, 51, 2> _table_;
   template <typename T> friend class ::google::protobuf::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
@@ -2295,7 +2200,6 @@ class Enum8Metric final :
     ::google::protobuf::internal::ArenaStringPtr description_;
     ::google::protobuf::internal::ArenaStringPtr unit_;
     ::uint32_t offset_;
-    bool optional_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -2356,12 +2260,8 @@ class Constant final :
   enum ValueCase {
     kUint64 = 1,
     kInt64 = 2,
-    kUint32 = 3,
-    kInt32 = 4,
-    kFloat32 = 5,
     kFloat64 = 6,
     kBoolean = 7,
-    kEnum8 = 8,
     kString = 9,
     VALUE_NOT_SET = 0,
   };
@@ -2447,12 +2347,8 @@ class Constant final :
     kUnitFieldNumber = 11,
     kUint64FieldNumber = 1,
     kInt64FieldNumber = 2,
-    kUint32FieldNumber = 3,
-    kInt32FieldNumber = 4,
-    kFloat32FieldNumber = 5,
     kFloat64FieldNumber = 6,
     kBooleanFieldNumber = 7,
-    kEnum8FieldNumber = 8,
     kStringFieldNumber = 9,
   };
   // string description = 10;
@@ -2510,39 +2406,6 @@ class Constant final :
   void _internal_set_int64(::int64_t value);
 
   public:
-  // uint32 uint32 = 3;
-  bool has_uint32() const;
-  void clear_uint32() ;
-  ::uint32_t uint32() const;
-  void set_uint32(::uint32_t value);
-
-  private:
-  ::uint32_t _internal_uint32() const;
-  void _internal_set_uint32(::uint32_t value);
-
-  public:
-  // int32 int32 = 4;
-  bool has_int32() const;
-  void clear_int32() ;
-  ::int32_t int32() const;
-  void set_int32(::int32_t value);
-
-  private:
-  ::int32_t _internal_int32() const;
-  void _internal_set_int32(::int32_t value);
-
-  public:
-  // float float32 = 5;
-  bool has_float32() const;
-  void clear_float32() ;
-  float float32() const;
-  void set_float32(float value);
-
-  private:
-  float _internal_float32() const;
-  void _internal_set_float32(float value);
-
-  public:
   // double float64 = 6;
   bool has_float64() const;
   void clear_float64() ;
@@ -2563,17 +2426,6 @@ class Constant final :
   private:
   bool _internal_boolean() const;
   void _internal_set_boolean(bool value);
-
-  public:
-  // uint32 enum8 = 8;
-  bool has_enum8() const;
-  void clear_enum8() ;
-  ::uint32_t enum8() const;
-  void set_enum8(::uint32_t value);
-
-  private:
-  ::uint32_t _internal_enum8() const;
-  void _internal_set_enum8(::uint32_t value);
 
   public:
   // string string = 9;
@@ -2600,19 +2452,15 @@ class Constant final :
   class _Internal;
   void set_has_uint64();
   void set_has_int64();
-  void set_has_uint32();
-  void set_has_int32();
-  void set_has_float32();
   void set_has_float64();
   void set_has_boolean();
-  void set_has_enum8();
   void set_has_string();
 
   inline bool has_value() const;
   inline void clear_has_value();
 
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<1, 11, 0, 62, 2> _table_;
+  static const ::google::protobuf::internal::TcParseTable<1, 7, 0, 54, 2> _table_;
   template <typename T> friend class ::google::protobuf::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
@@ -2626,12 +2474,8 @@ class Constant final :
         ::google::protobuf::internal::ConstantInitialized _constinit_;
       ::uint64_t uint64_;
       ::int64_t int64_;
-      ::uint32_t uint32_;
-      ::int32_t int32_;
-      float float32_;
       double float64_;
       bool boolean_;
-      ::uint32_t enum8_;
       ::google::protobuf::internal::ArenaStringPtr string_;
     } value_;
     ::uint32_t _oneof_case_[1];
@@ -3328,29 +3172,7 @@ inline void UInt64Metric::set_allocated_description(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.UInt64Metric.description)
 }
 
-// bool optional = 3;
-inline void UInt64Metric::clear_optional() {
-  _impl_.optional_ = false;
-}
-inline bool UInt64Metric::optional() const {
-  // @@protoc_insertion_point(field_get:abacus.protobuf.UInt64Metric.optional)
-  return _internal_optional();
-}
-inline void UInt64Metric::set_optional(bool value) {
-  _internal_set_optional(value);
-  // @@protoc_insertion_point(field_set:abacus.protobuf.UInt64Metric.optional)
-}
-inline bool UInt64Metric::_internal_optional() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.optional_;
-}
-inline void UInt64Metric::_internal_set_optional(bool value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.optional_ = value;
-}
-
-// .abacus.protobuf.Kind kind = 4;
+// .abacus.protobuf.Kind kind = 3;
 inline void UInt64Metric::clear_kind() {
   _impl_.kind_ = 0;
 }
@@ -3372,7 +3194,7 @@ inline void UInt64Metric::_internal_set_kind(::abacus::protobuf::Kind value) {
   _impl_.kind_ = value;
 }
 
-// optional string unit = 5;
+// optional string unit = 4;
 inline bool UInt64Metric::has_unit() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -3441,7 +3263,7 @@ inline void UInt64Metric::set_allocated_unit(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.UInt64Metric.unit)
 }
 
-// optional uint64 min = 6;
+// optional uint64 min = 5;
 inline bool UInt64Metric::has_min() const {
   bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   return value;
@@ -3468,7 +3290,7 @@ inline void UInt64Metric::_internal_set_min(::uint64_t value) {
   _impl_.min_ = value;
 }
 
-// optional uint64 max = 7;
+// optional uint64 max = 6;
 inline bool UInt64Metric::has_max() const {
   bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
   return value;
@@ -3572,29 +3394,7 @@ inline void Int64Metric::set_allocated_description(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Int64Metric.description)
 }
 
-// bool optional = 3;
-inline void Int64Metric::clear_optional() {
-  _impl_.optional_ = false;
-}
-inline bool Int64Metric::optional() const {
-  // @@protoc_insertion_point(field_get:abacus.protobuf.Int64Metric.optional)
-  return _internal_optional();
-}
-inline void Int64Metric::set_optional(bool value) {
-  _internal_set_optional(value);
-  // @@protoc_insertion_point(field_set:abacus.protobuf.Int64Metric.optional)
-}
-inline bool Int64Metric::_internal_optional() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.optional_;
-}
-inline void Int64Metric::_internal_set_optional(bool value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.optional_ = value;
-}
-
-// .abacus.protobuf.Kind kind = 4;
+// .abacus.protobuf.Kind kind = 3;
 inline void Int64Metric::clear_kind() {
   _impl_.kind_ = 0;
 }
@@ -3616,7 +3416,7 @@ inline void Int64Metric::_internal_set_kind(::abacus::protobuf::Kind value) {
   _impl_.kind_ = value;
 }
 
-// optional string unit = 5;
+// optional string unit = 4;
 inline bool Int64Metric::has_unit() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -3685,7 +3485,7 @@ inline void Int64Metric::set_allocated_unit(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Int64Metric.unit)
 }
 
-// optional int64 min = 6;
+// optional int64 min = 5;
 inline bool Int64Metric::has_min() const {
   bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   return value;
@@ -3712,7 +3512,7 @@ inline void Int64Metric::_internal_set_min(::int64_t value) {
   _impl_.min_ = value;
 }
 
-// optional int64 max = 7;
+// optional int64 max = 6;
 inline bool Int64Metric::has_max() const {
   bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
   return value;
@@ -3816,29 +3616,7 @@ inline void UInt32Metric::set_allocated_description(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.UInt32Metric.description)
 }
 
-// bool optional = 3;
-inline void UInt32Metric::clear_optional() {
-  _impl_.optional_ = false;
-}
-inline bool UInt32Metric::optional() const {
-  // @@protoc_insertion_point(field_get:abacus.protobuf.UInt32Metric.optional)
-  return _internal_optional();
-}
-inline void UInt32Metric::set_optional(bool value) {
-  _internal_set_optional(value);
-  // @@protoc_insertion_point(field_set:abacus.protobuf.UInt32Metric.optional)
-}
-inline bool UInt32Metric::_internal_optional() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.optional_;
-}
-inline void UInt32Metric::_internal_set_optional(bool value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.optional_ = value;
-}
-
-// .abacus.protobuf.Kind kind = 4;
+// .abacus.protobuf.Kind kind = 3;
 inline void UInt32Metric::clear_kind() {
   _impl_.kind_ = 0;
 }
@@ -3860,7 +3638,7 @@ inline void UInt32Metric::_internal_set_kind(::abacus::protobuf::Kind value) {
   _impl_.kind_ = value;
 }
 
-// optional string unit = 5;
+// optional string unit = 4;
 inline bool UInt32Metric::has_unit() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -3929,7 +3707,7 @@ inline void UInt32Metric::set_allocated_unit(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.UInt32Metric.unit)
 }
 
-// optional uint32 min = 6;
+// optional uint32 min = 5;
 inline bool UInt32Metric::has_min() const {
   bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   return value;
@@ -3956,7 +3734,7 @@ inline void UInt32Metric::_internal_set_min(::uint32_t value) {
   _impl_.min_ = value;
 }
 
-// optional uint32 max = 7;
+// optional uint32 max = 6;
 inline bool UInt32Metric::has_max() const {
   bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
   return value;
@@ -4060,29 +3838,7 @@ inline void Int32Metric::set_allocated_description(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Int32Metric.description)
 }
 
-// bool optional = 3;
-inline void Int32Metric::clear_optional() {
-  _impl_.optional_ = false;
-}
-inline bool Int32Metric::optional() const {
-  // @@protoc_insertion_point(field_get:abacus.protobuf.Int32Metric.optional)
-  return _internal_optional();
-}
-inline void Int32Metric::set_optional(bool value) {
-  _internal_set_optional(value);
-  // @@protoc_insertion_point(field_set:abacus.protobuf.Int32Metric.optional)
-}
-inline bool Int32Metric::_internal_optional() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.optional_;
-}
-inline void Int32Metric::_internal_set_optional(bool value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.optional_ = value;
-}
-
-// .abacus.protobuf.Kind kind = 4;
+// .abacus.protobuf.Kind kind = 3;
 inline void Int32Metric::clear_kind() {
   _impl_.kind_ = 0;
 }
@@ -4104,7 +3860,7 @@ inline void Int32Metric::_internal_set_kind(::abacus::protobuf::Kind value) {
   _impl_.kind_ = value;
 }
 
-// optional string unit = 5;
+// optional string unit = 4;
 inline bool Int32Metric::has_unit() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -4173,7 +3929,7 @@ inline void Int32Metric::set_allocated_unit(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Int32Metric.unit)
 }
 
-// optional int32 min = 6;
+// optional int32 min = 5;
 inline bool Int32Metric::has_min() const {
   bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   return value;
@@ -4200,7 +3956,7 @@ inline void Int32Metric::_internal_set_min(::int32_t value) {
   _impl_.min_ = value;
 }
 
-// optional int32 max = 7;
+// optional int32 max = 6;
 inline bool Int32Metric::has_max() const {
   bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
   return value;
@@ -4304,29 +4060,7 @@ inline void Float64Metric::set_allocated_description(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Float64Metric.description)
 }
 
-// bool optional = 3;
-inline void Float64Metric::clear_optional() {
-  _impl_.optional_ = false;
-}
-inline bool Float64Metric::optional() const {
-  // @@protoc_insertion_point(field_get:abacus.protobuf.Float64Metric.optional)
-  return _internal_optional();
-}
-inline void Float64Metric::set_optional(bool value) {
-  _internal_set_optional(value);
-  // @@protoc_insertion_point(field_set:abacus.protobuf.Float64Metric.optional)
-}
-inline bool Float64Metric::_internal_optional() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.optional_;
-}
-inline void Float64Metric::_internal_set_optional(bool value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.optional_ = value;
-}
-
-// .abacus.protobuf.Kind kind = 4;
+// .abacus.protobuf.Kind kind = 3;
 inline void Float64Metric::clear_kind() {
   _impl_.kind_ = 0;
 }
@@ -4348,7 +4082,7 @@ inline void Float64Metric::_internal_set_kind(::abacus::protobuf::Kind value) {
   _impl_.kind_ = value;
 }
 
-// optional string unit = 5;
+// optional string unit = 4;
 inline bool Float64Metric::has_unit() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -4417,7 +4151,7 @@ inline void Float64Metric::set_allocated_unit(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Float64Metric.unit)
 }
 
-// optional double min = 6;
+// optional double min = 5;
 inline bool Float64Metric::has_min() const {
   bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   return value;
@@ -4444,7 +4178,7 @@ inline void Float64Metric::_internal_set_min(double value) {
   _impl_.min_ = value;
 }
 
-// optional double max = 7;
+// optional double max = 6;
 inline bool Float64Metric::has_max() const {
   bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
   return value;
@@ -4548,29 +4282,7 @@ inline void Float32Metric::set_allocated_description(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Float32Metric.description)
 }
 
-// bool optional = 3;
-inline void Float32Metric::clear_optional() {
-  _impl_.optional_ = false;
-}
-inline bool Float32Metric::optional() const {
-  // @@protoc_insertion_point(field_get:abacus.protobuf.Float32Metric.optional)
-  return _internal_optional();
-}
-inline void Float32Metric::set_optional(bool value) {
-  _internal_set_optional(value);
-  // @@protoc_insertion_point(field_set:abacus.protobuf.Float32Metric.optional)
-}
-inline bool Float32Metric::_internal_optional() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.optional_;
-}
-inline void Float32Metric::_internal_set_optional(bool value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.optional_ = value;
-}
-
-// .abacus.protobuf.Kind kind = 4;
+// .abacus.protobuf.Kind kind = 3;
 inline void Float32Metric::clear_kind() {
   _impl_.kind_ = 0;
 }
@@ -4592,7 +4304,7 @@ inline void Float32Metric::_internal_set_kind(::abacus::protobuf::Kind value) {
   _impl_.kind_ = value;
 }
 
-// optional string unit = 5;
+// optional string unit = 4;
 inline bool Float32Metric::has_unit() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -4661,7 +4373,7 @@ inline void Float32Metric::set_allocated_unit(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Float32Metric.unit)
 }
 
-// optional float min = 6;
+// optional float min = 5;
 inline bool Float32Metric::has_min() const {
   bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   return value;
@@ -4688,7 +4400,7 @@ inline void Float32Metric::_internal_set_min(float value) {
   _impl_.min_ = value;
 }
 
-// optional float max = 7;
+// optional float max = 6;
 inline bool Float32Metric::has_max() const {
   bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
   return value;
@@ -4792,29 +4504,7 @@ inline void BoolMetric::set_allocated_description(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.BoolMetric.description)
 }
 
-// bool optional = 3;
-inline void BoolMetric::clear_optional() {
-  _impl_.optional_ = false;
-}
-inline bool BoolMetric::optional() const {
-  // @@protoc_insertion_point(field_get:abacus.protobuf.BoolMetric.optional)
-  return _internal_optional();
-}
-inline void BoolMetric::set_optional(bool value) {
-  _internal_set_optional(value);
-  // @@protoc_insertion_point(field_set:abacus.protobuf.BoolMetric.optional)
-}
-inline bool BoolMetric::_internal_optional() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.optional_;
-}
-inline void BoolMetric::_internal_set_optional(bool value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.optional_ = value;
-}
-
-// optional string unit = 4;
+// optional string unit = 3;
 inline bool BoolMetric::has_unit() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -5086,28 +4776,6 @@ inline void Enum8Metric::set_allocated_description(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Enum8Metric.description)
 }
 
-// bool optional = 3;
-inline void Enum8Metric::clear_optional() {
-  _impl_.optional_ = false;
-}
-inline bool Enum8Metric::optional() const {
-  // @@protoc_insertion_point(field_get:abacus.protobuf.Enum8Metric.optional)
-  return _internal_optional();
-}
-inline void Enum8Metric::set_optional(bool value) {
-  _internal_set_optional(value);
-  // @@protoc_insertion_point(field_set:abacus.protobuf.Enum8Metric.optional)
-}
-inline bool Enum8Metric::_internal_optional() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.optional_;
-}
-inline void Enum8Metric::_internal_set_optional(bool value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.optional_ = value;
-}
-
 // map<uint32, .abacus.protobuf.Enum8Metric.EnumValue> values = 4;
 inline int Enum8Metric::_internal_values_size() const {
   return _internal_values().size();
@@ -5278,111 +4946,6 @@ inline void Constant::_internal_set_int64(::int64_t value) {
   _impl_.value_.int64_ = value;
 }
 
-// uint32 uint32 = 3;
-inline bool Constant::has_uint32() const {
-  return value_case() == kUint32;
-}
-inline void Constant::set_has_uint32() {
-  _impl_._oneof_case_[0] = kUint32;
-}
-inline void Constant::clear_uint32() {
-  if (value_case() == kUint32) {
-    _impl_.value_.uint32_ = 0u;
-    clear_has_value();
-  }
-}
-inline ::uint32_t Constant::uint32() const {
-  // @@protoc_insertion_point(field_get:abacus.protobuf.Constant.uint32)
-  return _internal_uint32();
-}
-inline void Constant::set_uint32(::uint32_t value) {
-  _internal_set_uint32(value);
-  // @@protoc_insertion_point(field_set:abacus.protobuf.Constant.uint32)
-}
-inline ::uint32_t Constant::_internal_uint32() const {
-  if (value_case() == kUint32) {
-    return _impl_.value_.uint32_;
-  }
-  return 0u;
-}
-inline void Constant::_internal_set_uint32(::uint32_t value) {
-  if (value_case() != kUint32) {
-    clear_value();
-    set_has_uint32();
-  }
-  _impl_.value_.uint32_ = value;
-}
-
-// int32 int32 = 4;
-inline bool Constant::has_int32() const {
-  return value_case() == kInt32;
-}
-inline void Constant::set_has_int32() {
-  _impl_._oneof_case_[0] = kInt32;
-}
-inline void Constant::clear_int32() {
-  if (value_case() == kInt32) {
-    _impl_.value_.int32_ = 0;
-    clear_has_value();
-  }
-}
-inline ::int32_t Constant::int32() const {
-  // @@protoc_insertion_point(field_get:abacus.protobuf.Constant.int32)
-  return _internal_int32();
-}
-inline void Constant::set_int32(::int32_t value) {
-  _internal_set_int32(value);
-  // @@protoc_insertion_point(field_set:abacus.protobuf.Constant.int32)
-}
-inline ::int32_t Constant::_internal_int32() const {
-  if (value_case() == kInt32) {
-    return _impl_.value_.int32_;
-  }
-  return 0;
-}
-inline void Constant::_internal_set_int32(::int32_t value) {
-  if (value_case() != kInt32) {
-    clear_value();
-    set_has_int32();
-  }
-  _impl_.value_.int32_ = value;
-}
-
-// float float32 = 5;
-inline bool Constant::has_float32() const {
-  return value_case() == kFloat32;
-}
-inline void Constant::set_has_float32() {
-  _impl_._oneof_case_[0] = kFloat32;
-}
-inline void Constant::clear_float32() {
-  if (value_case() == kFloat32) {
-    _impl_.value_.float32_ = 0;
-    clear_has_value();
-  }
-}
-inline float Constant::float32() const {
-  // @@protoc_insertion_point(field_get:abacus.protobuf.Constant.float32)
-  return _internal_float32();
-}
-inline void Constant::set_float32(float value) {
-  _internal_set_float32(value);
-  // @@protoc_insertion_point(field_set:abacus.protobuf.Constant.float32)
-}
-inline float Constant::_internal_float32() const {
-  if (value_case() == kFloat32) {
-    return _impl_.value_.float32_;
-  }
-  return 0;
-}
-inline void Constant::_internal_set_float32(float value) {
-  if (value_case() != kFloat32) {
-    clear_value();
-    set_has_float32();
-  }
-  _impl_.value_.float32_ = value;
-}
-
 // double float64 = 6;
 inline bool Constant::has_float64() const {
   return value_case() == kFloat64;
@@ -5451,41 +5014,6 @@ inline void Constant::_internal_set_boolean(bool value) {
     set_has_boolean();
   }
   _impl_.value_.boolean_ = value;
-}
-
-// uint32 enum8 = 8;
-inline bool Constant::has_enum8() const {
-  return value_case() == kEnum8;
-}
-inline void Constant::set_has_enum8() {
-  _impl_._oneof_case_[0] = kEnum8;
-}
-inline void Constant::clear_enum8() {
-  if (value_case() == kEnum8) {
-    _impl_.value_.enum8_ = 0u;
-    clear_has_value();
-  }
-}
-inline ::uint32_t Constant::enum8() const {
-  // @@protoc_insertion_point(field_get:abacus.protobuf.Constant.enum8)
-  return _internal_enum8();
-}
-inline void Constant::set_enum8(::uint32_t value) {
-  _internal_set_enum8(value);
-  // @@protoc_insertion_point(field_set:abacus.protobuf.Constant.enum8)
-}
-inline ::uint32_t Constant::_internal_enum8() const {
-  if (value_case() == kEnum8) {
-    return _impl_.value_.enum8_;
-  }
-  return 0u;
-}
-inline void Constant::_internal_set_enum8(::uint32_t value) {
-  if (value_case() != kEnum8) {
-    clear_value();
-    set_has_enum8();
-  }
-  _impl_.value_.enum8_ = value;
 }
 
 // string string = 9;

@@ -15,76 +15,69 @@ enum Kind {
 
 // Metadata for unsigned 64-bit metrics
 message UInt64Metric {
-    uint32 offset = 1;              // Offset into packed memory for the value
+    uint32 offset = 1;        // Offset into packed memory for the value
     string description = 2;   // Metric description
-    bool optional = 3;        // Whether the metric is optional
-    Kind kind = 4;            // The kind of metric
-    optional string unit = 5; // Unit of measurement
-    optional uint64 min = 6;  // Minimum allowable value
-    optional uint64 max = 7;  // Maximum allowable value
+    Kind kind = 3;            // The kind of metric
+    optional string unit = 4; // Unit of measurement
+    optional uint64 min = 5;  // Minimum allowable value
+    optional uint64 max = 6;  // Maximum allowable value
 }
 
 // Metadata for signed 64-bit metrics
 message Int64Metric {
-    uint32 offset = 1;              // Offset into packed memory for the value
+    uint32 offset = 1;        // Offset into packed memory for the value
     string description = 2;   // Metric description
-    bool optional = 3;        // Whether the metric is optional
-    Kind kind = 4;            // The kind of metric
-    optional string unit = 5; // Unit of measurement
-    optional int64 min = 6;   // Minimum allowable value
-    optional int64 max = 7;   // Maximum allowable value
+    Kind kind = 3;            // The kind of metric
+    optional string unit = 4; // Unit of measurement
+    optional int64 min = 5;   // Minimum allowable value
+    optional int64 max = 6;   // Maximum allowable value
 }
 
 // Metadata for unsigned 32-bit metrics
 message UInt32Metric {
-    uint32 offset = 1;              // Offset into packed memory for the value
+    uint32 offset = 1;        // Offset into packed memory for the value
     string description = 2;   // Metric description
-    bool optional = 3;        // Whether the metric is optional
-    Kind kind = 4;            // The kind of metric
-    optional string unit = 5; // Unit of measurement
-    optional uint32 min = 6;  // Minimum allowable value
-    optional uint32 max = 7;  // Maximum allowable value
+    Kind kind = 3;            // The kind of metric
+    optional string unit = 4; // Unit of measurement
+    optional uint32 min = 5;  // Minimum allowable value
+    optional uint32 max = 6;  // Maximum allowable value
 }
 
 // Metadata for signed 32-bit metrics
 message Int32Metric {
-    uint32 offset = 1;              // Offset into packed memory for the value
+    uint32 offset = 1;        // Offset into packed memory for the value
     string description = 2;   // Metric description
-    bool optional = 3;        // Whether the metric is optional
-    Kind kind = 4;            // The kind of metric
-    optional string unit = 5; // Unit of measurement
-    optional int32 min = 6;   // Minimum allowable value
-    optional int32 max = 7;   // Maximum allowable value
+    Kind kind = 3;            // The kind of metric
+    optional string unit = 4; // Unit of measurement
+    optional int32 min = 5;   // Minimum allowable value
+    optional int32 max = 6;   // Maximum allowable value
 }
 
 // Metadata for 64-bit floating-point metrics
 message Float64Metric {
-    uint32 offset = 1;              // Offset into packed memory for the value
+    uint32 offset = 1;        // Offset into packed memory for the value
     string description = 2;   // Metric description
-    bool optional = 3;        // Whether the metric is optional
-    Kind kind = 4;            // The kind of metric
-    optional string unit = 5; // Unit of measurement
-    optional double min = 6;  // Minimum allowable value
-    optional double max = 7;  // Maximum allowable value
+    Kind kind = 3;            // The kind of metric
+    optional string unit = 4; // Unit of measurement
+    optional double min = 5;  // Minimum allowable value
+    optional double max = 6;  // Maximum allowable value
 }
 
 // Metadata for 32-bit floating-point metrics
 message Float32Metric {
-    uint32 offset = 1;              // Offset into packed memory for the value
+    uint32 offset = 1;        // Offset into packed memory for the value
     string description = 2;   // Metric description
-    bool optional = 3;        // Whether the metric is optional
-    Kind kind = 4;            // The kind of metric
-    optional string unit = 5; // Unit of measurement
-    optional float min = 6;   // Minimum allowable value
-    optional float max = 7;   // Maximum allowable value
+    Kind kind = 3;            // The kind of metric
+    optional string unit = 4; // Unit of measurement
+    optional float min = 5;   // Minimum allowable value
+    optional float max = 6;   // Maximum allowable value
 }
 
 // Metadata for boolean metrics
 message BoolMetric {
     uint32 offset = 1;              // Offset into packed memory for the value
     string description = 2;   // Metric description
-    bool optional = 3;        // Whether the metric is optional
-    optional string unit = 4; // Unit of measurement
+    optional string unit = 3; // Unit of measurement
 }
 
 // Metadata for enumerated metrics
@@ -95,7 +88,6 @@ message Enum8Metric {
     }
     uint32 offset = 1;                 // Offset into packed memory for the value
     string description = 2;            // Metric description
-    bool optional = 3;        // Whether the metric is optional
     map<uint32, EnumValue> values = 4; // Mapping from packed index to enum info
     optional string unit = 5;          // Unit of measurement
 }
@@ -106,12 +98,8 @@ message Constant{
     oneof value {
         uint64 uint64 = 1;    // Unsigned 64-bit constant value
         int64 int64 = 2;      // Signed 64-bit constant value
-        uint32 uint32 = 3;    // Unsigned 32-bit constant value
-        int32 int32 = 4;      // Signed 32-bit constant value
-        float float32 = 5;      // 32-bit floating-point constant value
         double float64 = 6;    // 64-bit floating-point constant value
         bool boolean = 7;     // Boolean constant value
-        uint32 enum8 = 8;     // Enumerated constant value
         string string = 9;    // String constant value
     }
     string description = 10;   // Metric description

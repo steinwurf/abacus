@@ -6,13 +6,13 @@
 #include "metrics.hpp"
 
 #include "detail/hash_function.hpp"
-#include "detail/size_of_type.hpp"
 
 #include "info.hpp"
 #include "protocol_version.hpp"
 #include "version.hpp"
 
 #include "detail/helpers.hpp"
+#include "detail/overload.hpp"
 #include "protobuf/metrics.pb.h"
 
 #include <endian/is_big_endian.hpp>
@@ -24,29 +24,19 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-static inline auto is_optional(const protobuf::Metric& metric) -> bool
-{
-    return detail::call_type(metric, [](const auto& metric)
-                             { return metric.optional(); });
-}
-
-static inline auto get_kind(abacus::kind k) -> protobuf::Kind
-{
-    return std::visit([](auto&& k) { return k.kind; }, k);
-}
-
 metrics::metrics(metrics&& other) noexcept :
     m_metadata(std::move(other.m_metadata)), m_data(std::move(other.m_data)),
     m_metadata_bytes(other.m_metadata_bytes), m_hash(other.m_hash),
-    m_value_bytes(other.m_value_bytes),
-    m_initialized(std::move(other.m_initialized))
+    m_value_bytes(other.m_value_bytes), m_offsets(std::move(other.m_offsets)),
+    m_resets(std::move(other.m_resets))
 {
     other.m_metadata = protobuf::MetricsMetadata();
     other.m_data.clear();
     other.m_metadata_bytes = 0;
     other.m_hash = 0;
     other.m_value_bytes = 0;
-    other.m_initialized.clear();
+    other.m_offsets.clear();
+    other.m_resets.clear();
 }
 
 metrics::metrics(const std::map<name, abacus::info>& infos)
@@ -63,262 +53,230 @@ metrics::metrics(const std::map<name, abacus::info>& infos)
     for (auto [name, info] : infos)
     {
         protobuf::Metric metric;
-        m_initialized[name.value] = false;
-        if (auto* m = std::get_if<uint64>(&info))
-        {
-            auto* typed_metric = metric.mutable_uint64();
-            typed_metric->set_offset(m_value_bytes);
-            typed_metric->set_description(m->description.value);
-            typed_metric->set_optional(is_optional(m->availability));
-            typed_metric->set_kind(get_kind(m->kind));
 
-            if (!m->unit.empty())
-            {
-                typed_metric->set_unit(m->unit.value);
-            }
-            if (m->min.value.has_value())
-            {
-                typed_metric->set_min(m->min.value.value());
-            }
-            if (m->max.value.has_value())
-            {
-                typed_metric->set_max(m->max.value.value());
-            }
-            // The offset is incremented by the size of the type
-            m_value_bytes += detail::size_of_type<decltype(m)>();
+        // Save the offset of the metric
+        m_offsets.emplace(name.value, m_value_bytes);
 
-            // The offset is incremented by one byte which represents
-            // whether the metric is set or not.
-            m_value_bytes += 1;
-        }
-        else if (auto* m = std::get_if<int64>(&info))
-        {
-            auto* typed_metric = metric.mutable_int64();
-            typed_metric->set_offset(m_value_bytes);
-            typed_metric->set_description(m->description.value);
-            typed_metric->set_optional(is_optional(m->availability));
-            typed_metric->set_kind(get_kind(m->kind));
-
-            if (!m->unit.empty())
-            {
-                typed_metric->set_unit(m->unit.value);
-            }
-            if (m->min.value.has_value())
-            {
-                typed_metric->set_min(m->min.value.value());
-            }
-            if (m->max.value.has_value())
-            {
-                typed_metric->set_max(m->max.value.value());
-            }
-            // The offset is incremented by the size of the type
-            m_value_bytes += detail::size_of_type<decltype(m)>();
-
-            // The offset is incremented by one byte which represents
-            // whether the metric is set or not.
-            m_value_bytes += 1;
-        }
-        else if (auto* m = std::get_if<uint32>(&info))
-        {
-            auto* typed_metric = metric.mutable_uint32();
-            typed_metric->set_offset(m_value_bytes);
-            typed_metric->set_description(m->description.value);
-            typed_metric->set_optional(is_optional(m->availability));
-            typed_metric->set_kind(get_kind(m->kind));
-
-            if (!m->unit.empty())
-            {
-                typed_metric->set_unit(m->unit.value);
-            }
-            if (m->min.value.has_value())
-            {
-                typed_metric->set_min(m->min.value.value());
-            }
-            if (m->max.value.has_value())
-            {
-                typed_metric->set_max(m->max.value.value());
-            }
-            // The offset is incremented by the size of the type
-            m_value_bytes += detail::size_of_type<decltype(m)>();
-
-            // The offset is incremented by one byte which represents
-            // whether the metric is set or not.
-            m_value_bytes += 1;
-        }
-        else if (auto* m = std::get_if<int32>(&info))
-        {
-            auto* typed_metric = metric.mutable_int32();
-            typed_metric->set_offset(m_value_bytes);
-            typed_metric->set_description(m->description.value);
-            typed_metric->set_optional(is_optional(m->availability));
-            typed_metric->set_kind(get_kind(m->kind));
-
-            if (!m->unit.empty())
-            {
-                typed_metric->set_unit(m->unit.value);
-            }
-            if (m->min.value.has_value())
-            {
-                typed_metric->set_min(m->min.value.value());
-            }
-            if (m->max.value.has_value())
-            {
-                typed_metric->set_max(m->max.value.value());
-            }
-            // The offset is incremented by the size of the type
-            m_value_bytes += detail::size_of_type<decltype(m)>();
-
-            // The offset is incremented by one byte which represents
-            // whether the metric is set or not.
-            m_value_bytes += 1;
-        }
-        else if (auto* m = std::get_if<float64>(&info))
-        {
-            auto* typed_metric = metric.mutable_float64();
-            typed_metric->set_offset(m_value_bytes);
-            typed_metric->set_description(m->description.value);
-            typed_metric->set_optional(is_optional(m->availability));
-            typed_metric->set_kind(get_kind(m->kind));
-
-            if (!m->unit.empty())
-            {
-                typed_metric->set_unit(m->unit.value);
-            }
-            if (m->min.value.has_value())
-            {
-                typed_metric->set_min(m->min.value.value());
-            }
-            if (m->max.value.has_value())
-            {
-                typed_metric->set_max(m->max.value.value());
-            }
-            // The offset is incremented by the size of the type
-            m_value_bytes += detail::size_of_type<decltype(m)>();
-
-            // The offset is incremented by one byte which represents
-            // whether the metric is set or not.
-            m_value_bytes += 1;
-        }
-        else if (auto* m = std::get_if<float32>(&info))
-        {
-            auto* typed_metric = metric.mutable_float32();
-            typed_metric->set_offset(m_value_bytes);
-            typed_metric->set_description(m->description.value);
-            typed_metric->set_optional(is_optional(m->availability));
-            typed_metric->set_kind(get_kind(m->kind));
-
-            if (!m->unit.empty())
-            {
-                typed_metric->set_unit(m->unit.value);
-            }
-            if (m->min.value.has_value())
-            {
-                typed_metric->set_min(m->min.value.value());
-            }
-            if (m->max.value.has_value())
-            {
-                typed_metric->set_max(m->max.value.value());
-            }
-            // The offset is incremented by the size of the type
-            m_value_bytes += detail::size_of_type<decltype(m)>();
-
-            // The offset is incremented by one byte which represents
-            // whether the metric is set or not.
-            m_value_bytes += 1;
-        }
-        else if (auto* m = std::get_if<boolean>(&info))
-        {
-            auto* typed_metric = metric.mutable_boolean();
-            typed_metric->set_offset(m_value_bytes);
-            typed_metric->set_description(m->description.value);
-            typed_metric->set_optional(is_optional(m->availability));
-            m_value_bytes += detail::size_of_type<decltype(m)>();
-
-            // The offset is incremented by one byte which represents
-            // whether the metric is set or not.
-            m_value_bytes += 1;
-        }
-        else if (auto* m = std::get_if<enum8>(&info))
-        {
-            auto* typed_metric = metric.mutable_enum8();
-            typed_metric->set_offset(m_value_bytes);
-            typed_metric->set_description(m->description.value);
-            typed_metric->set_optional(is_optional(m->availability));
-            for (auto [key, value] : m->values)
-            {
-                auto enum_value = protobuf::Enum8Metric::EnumValue();
-                enum_value.set_name(value.name);
-                if (!value.description.empty())
+        std::visit(
+            detail::overload{
+                [&](const uint64& m)
                 {
-                    enum_value.set_description(value.description);
-                }
+                    auto* typed_metric = metric.mutable_uint64();
+                    typed_metric->set_offset(m_value_bytes);
+                    typed_metric->set_description(m.description.value);
+                    typed_metric->set_kind(static_cast<protobuf::Kind>(m.kind));
 
-                typed_metric->mutable_values()->insert({key, enum_value});
-            }
-            m_value_bytes += detail::size_of_type<decltype(m)>();
+                    if (!m.unit.empty())
+                    {
+                        typed_metric->set_unit(m.unit.value);
+                    }
+                    if (m.min.value.has_value())
+                    {
+                        typed_metric->set_min(m.min.value.value());
+                    }
+                    if (m.max.value.has_value())
+                    {
+                        typed_metric->set_max(m.max.value.value());
+                    }
+                    // The offset is incremented by the size of the type
+                    m_value_bytes += sizeof(uint64::type);
 
-            // The offset is incremented by one byte which represents
-            // whether the metric is set or not.
-            m_value_bytes += 1;
-        }
-        else if (auto* m = std::get_if<constant>(&info))
-        {
-            auto* typed_metric = metric.mutable_constant();
-            typed_metric->set_description(m->description.value);
-            if (!m->unit.empty())
-            {
-                typed_metric->set_unit(m->unit.value);
-            }
-            // We expect the metric to be a constant
-            std::visit(
-                [&typed_metric](auto&& value)
-                {
-                    using Type = decltype(value.value);
-                    if constexpr (std::is_same_v<Type, uint64::type>)
-                    {
-                        typed_metric->set_uint64(value.value);
-                        return;
-                    }
-                    if constexpr (std::is_same_v<Type, int64::type>)
-                    {
-                        typed_metric->set_int64(value.value);
-                        return;
-                    }
-                    if constexpr (std::is_same_v<Type, uint32::type>)
-                    {
-                        typed_metric->set_uint32(value.value);
-                        return;
-                    }
-                    if constexpr (std::is_same_v<Type, int32::type>)
-                    {
-                        typed_metric->set_int32(value.value);
-                        return;
-                    }
-                    if constexpr (std::is_same_v<Type, float64::type>)
-                    {
-                        typed_metric->set_float64(value.value);
-                        return;
-                    }
-                    if constexpr (std::is_same_v<Type, float32::type>)
-                    {
-                        typed_metric->set_float32(value.value);
-                        return;
-                    }
-                    if constexpr (std::is_same_v<Type, boolean::type>)
-                    {
-                        typed_metric->set_boolean(value.value);
-                        return;
-                    }
-                    if constexpr (std::is_same_v<Type, std::string_view>)
-                    {
-                        typed_metric->set_string(value.value);
-                        return;
-                    }
-                    assert(false && "Unknown type");
+                    // The offset is incremented by one byte which
+                    // represents whether the metric is set or not.
+                    m_value_bytes += 1;
                 },
-                m->value);
-            m_initialized[name.value] = true;
-        }
+                [&](const int64& m)
+                {
+                    auto* typed_metric = metric.mutable_int64();
+                    typed_metric->set_offset(m_value_bytes);
+                    typed_metric->set_description(m.description.value);
+                    typed_metric->set_kind(static_cast<protobuf::Kind>(m.kind));
+
+                    if (!m.unit.empty())
+                    {
+                        typed_metric->set_unit(m.unit.value);
+                    }
+                    if (m.min.value.has_value())
+                    {
+                        typed_metric->set_min(m.min.value.value());
+                    }
+                    if (m.max.value.has_value())
+                    {
+                        typed_metric->set_max(m.max.value.value());
+                    }
+                    // The offset is incremented by the size of the type
+                    m_value_bytes += sizeof(int64::type);
+
+                    // The offset is incremented by one byte which
+                    // represents whether the metric is set or not.
+                    m_value_bytes += 1;
+                },
+                [&](const uint32& m)
+                {
+                    auto* typed_metric = metric.mutable_uint32();
+                    typed_metric->set_offset(m_value_bytes);
+                    typed_metric->set_description(m.description.value);
+                    typed_metric->set_kind(static_cast<protobuf::Kind>(m.kind));
+
+                    if (!m.unit.empty())
+                    {
+                        typed_metric->set_unit(m.unit.value);
+                    }
+                    if (m.min.value.has_value())
+                    {
+                        typed_metric->set_min(m.min.value.value());
+                    }
+                    if (m.max.value.has_value())
+                    {
+                        typed_metric->set_max(m.max.value.value());
+                    }
+                    // The offset is incremented by the size of the type
+                    m_value_bytes += sizeof(uint32::type);
+
+                    // The offset is incremented by one byte which
+                    // represents whether the metric is set or not.
+                    m_value_bytes += 1;
+                },
+                [&](const int32& m)
+                {
+                    auto* typed_metric = metric.mutable_int32();
+                    typed_metric->set_offset(m_value_bytes);
+                    typed_metric->set_description(m.description.value);
+                    typed_metric->set_kind(static_cast<protobuf::Kind>(m.kind));
+
+                    if (!m.unit.empty())
+                    {
+                        typed_metric->set_unit(m.unit.value);
+                    }
+                    if (m.min.value.has_value())
+                    {
+                        typed_metric->set_min(m.min.value.value());
+                    }
+                    if (m.max.value.has_value())
+                    {
+                        typed_metric->set_max(m.max.value.value());
+                    }
+                    // The offset is incremented by the size of the type
+                    m_value_bytes += sizeof(int32::type);
+
+                    // The offset is incremented by one byte which
+                    // represents whether the metric is set or not.
+                    m_value_bytes += 1;
+                },
+                [&](const float64& m)
+                {
+                    auto* typed_metric = metric.mutable_float64();
+                    typed_metric->set_offset(m_value_bytes);
+                    typed_metric->set_description(m.description.value);
+                    typed_metric->set_kind(static_cast<protobuf::Kind>(m.kind));
+
+                    if (!m.unit.empty())
+                    {
+                        typed_metric->set_unit(m.unit.value);
+                    }
+                    if (m.min.value.has_value())
+                    {
+                        typed_metric->set_min(m.min.value.value());
+                    }
+                    if (m.max.value.has_value())
+                    {
+                        typed_metric->set_max(m.max.value.value());
+                    }
+                    // The offset is incremented by the size of the type
+                    m_value_bytes += sizeof(float64::type);
+
+                    // The offset is incremented by one byte which
+                    // represents whether the metric is set or not.
+                    m_value_bytes += 1;
+                },
+                [&](const float32& m)
+                {
+                    auto* typed_metric = metric.mutable_float32();
+                    typed_metric->set_offset(m_value_bytes);
+                    typed_metric->set_description(m.description.value);
+                    typed_metric->set_kind(static_cast<protobuf::Kind>(m.kind));
+
+                    if (!m.unit.empty())
+                    {
+                        typed_metric->set_unit(m.unit.value);
+                    }
+                    if (m.min.value.has_value())
+                    {
+                        typed_metric->set_min(m.min.value.value());
+                    }
+                    if (m.max.value.has_value())
+                    {
+                        typed_metric->set_max(m.max.value.value());
+                    }
+                    // The offset is incremented by the size of the type
+                    m_value_bytes += sizeof(float32::type);
+
+                    // The offset is incremented by one byte which
+                    // represents whether the metric is set or not.
+                    m_value_bytes += 1;
+                },
+                [&](const boolean& m)
+                {
+                    auto* typed_metric = metric.mutable_boolean();
+                    typed_metric->set_offset(m_value_bytes);
+                    typed_metric->set_description(m.description.value);
+                    m_value_bytes += sizeof(boolean::type);
+
+                    // The offset is incremented by one byte which
+                    // represents whether the metric is set or not.
+                    m_value_bytes += 1;
+                },
+                [&](const enum8& m)
+                {
+                    auto* typed_metric = metric.mutable_enum8();
+                    typed_metric->set_offset(m_value_bytes);
+                    typed_metric->set_description(m.description.value);
+                    for (auto [key, value] : m.values)
+                    {
+                        auto enum_value = protobuf::Enum8Metric::EnumValue();
+                        enum_value.set_name(value.name);
+                        if (!value.description.empty())
+                        {
+                            enum_value.set_description(value.description);
+                        }
+
+                        typed_metric->mutable_values()->insert(
+                            {key.value, enum_value});
+                    }
+                    m_value_bytes += sizeof(enum8::type);
+
+                    // The offset is incremented by one byte which
+                    // represents whether the metric is set or not.
+                    m_value_bytes += 1;
+                },
+                [&](const constant& m)
+                {
+                    auto* typed_metric = metric.mutable_constant();
+                    typed_metric->set_description(m.description.value);
+                    if (!m.unit.empty())
+                    {
+                        typed_metric->set_unit(m.unit.value);
+                    }
+                    // We expect the metric to be a constant
+                    std::visit(
+                        detail::overload{
+                            [typed_metric](constant::uint64 c)
+                            { typed_metric->set_uint64(c.value); },
+                            [typed_metric](constant::int64 c)
+                            { typed_metric->set_int64(c.value); },
+                            [typed_metric](constant::float64 c)
+                            { typed_metric->set_float64(c.value); },
+                            [typed_metric](constant::str c)
+                            { typed_metric->set_string(c.value); },
+                            [typed_metric](constant::boolean c)
+                            { typed_metric->set_boolean(c.value); },
+                            [](const auto&)
+                            { assert(false && "Unsupported constant type"); }},
+                        m.value);
+                },
+                [&](const auto&)
+                { assert(false && "Unsupported metric type"); }},
+            info);
 
         m_metadata.mutable_metrics()->insert({name.value, metric});
     }
@@ -350,97 +308,51 @@ metrics::metrics(const std::map<name, abacus::info>& infos)
     // will be written as the endianess of the system) Consuming code
     // can use the endianness field in the metadata to read the sync
     // value
-    std::memcpy(value_data(0), &m_hash, sizeof(uint32_t));
+    std::memcpy(m_data.data() + m_metadata_bytes, &m_hash, sizeof(uint32_t));
 }
 
 template <class Metric>
-[[nodiscard]] auto metrics::initialize_optional(const std::string& name) ->
-    typename Metric::optional
+[[nodiscard]] auto
+metrics::initialize(const std::string& name) -> metric<Metric>
 {
-    assert(m_initialized.find(name) != m_initialized.end());
-    assert(!m_initialized.at(name));
-    m_initialized[name] = true;
-    const protobuf::Metric& proto_metric = metadata().metrics().at(name);
-    assert(is_optional(proto_metric));
+    assert(m_resets.find(name) == m_resets.end());
+    assert(m_offsets.find(name) != m_offsets.end());
 
-    auto offset = detail::get_offset(proto_metric);
+    std::size_t offset = m_offsets.at(name);
+    metric<Metric> m(m_data.data() + m_metadata_bytes + offset);
 
-    return {value_data(offset)};
+    m_resets[name] = [m]() mutable { m.reset(); };
+    return m;
 }
 
 // Explicit instantiations for the expected types
-template auto metrics::initialize_optional<uint64>(const std::string& name)
-    -> uint64::optional;
-template auto metrics::initialize_optional<int64>(const std::string& name)
-    -> int64::optional;
-template auto metrics::initialize_optional<uint32>(const std::string& name)
-    -> uint32::optional;
-template auto metrics::initialize_optional<int32>(const std::string& name)
-    -> int32::optional;
-template auto metrics::initialize_optional<float64>(const std::string& name)
-    -> float64::optional;
-template auto metrics::initialize_optional<float32>(const std::string& name)
-    -> float32::optional;
-template auto metrics::initialize_optional<boolean>(const std::string& name)
-    -> boolean::optional;
-template auto metrics::initialize_optional<enum8>(const std::string& name)
-    -> enum8::optional;
+template auto
+metrics::initialize<uint64>(const std::string& name) -> metric<uint64>;
 
-template <class Metric>
-[[nodiscard]] auto metrics::initialize_required(const std::string& name,
-                                                typename Metric::type value) ->
-    typename Metric::required
-{
-    assert(m_initialized.find(name) != m_initialized.end());
-    assert(!m_initialized.at(name));
-    m_initialized[name] = true;
-    const protobuf::Metric& proto_metric = metadata().metrics().at(name);
-    assert(!is_optional(proto_metric));
+template auto
+metrics::initialize<int64>(const std::string& name) -> metric<int64>;
 
-    auto offset = detail::get_offset(proto_metric);
+template auto
+metrics::initialize<uint32>(const std::string& name) -> metric<uint32>;
 
-    m_initial_values[name] = value;
-    return {value_data(offset), value};
-}
+template auto
+metrics::initialize<int32>(const std::string& name) -> metric<int32>;
 
-// Explicit instantiations for the expected types
-template auto metrics::initialize_required<uint64>(const std::string& name,
-                                                   uint64::type value)
-    -> uint64::required;
-template auto metrics::initialize_required<int64>(const std::string& name,
-                                                  int64::type value)
-    -> int64::required;
-template auto metrics::initialize_required<uint32>(const std::string& name,
-                                                   uint32::type value)
-    -> uint32::required;
-template auto metrics::initialize_required<int32>(const std::string& name,
-                                                  int32::type value)
-    -> int32::required;
-template auto metrics::initialize_required<float64>(const std::string& name,
-                                                    float64::type value)
-    -> float64::required;
-template auto metrics::initialize_required<float32>(const std::string& name,
-                                                    float32::type value)
-    -> float32::required;
-template auto metrics::initialize_required<boolean>(const std::string& name,
-                                                    boolean::type value)
-    -> boolean::required;
-template auto metrics::initialize_required<enum8>(const std::string& name,
-                                                  enum8::type value)
-    -> enum8::required;
+template auto
+metrics::initialize<float64>(const std::string& name) -> metric<float64>;
 
-metrics::~metrics()
-{
-}
+template auto
+metrics::initialize<float32>(const std::string& name) -> metric<float32>;
+
+template auto
+metrics::initialize<boolean>(const std::string& name) -> metric<boolean>;
+
+template auto
+metrics::initialize<enum8>(const std::string& name) -> metric<enum8>;
 
 auto metrics::value_data() const -> const uint8_t*
 {
     return m_data.data() + m_metadata_bytes;
-}
-
-auto metrics::value_data(std::size_t offset) -> uint8_t*
-{
-    return m_data.data() + m_metadata_bytes + offset;
 }
 
 auto metrics::value_bytes() const -> std::size_t
@@ -465,94 +377,28 @@ auto metrics::metadata_bytes() const -> std::size_t
 
 auto metrics::is_initialized(const std::string& name) const -> bool
 {
-    assert(m_initialized.find(name) != m_initialized.end());
-    return m_initialized.at(name);
+    return m_resets.find(name) != m_resets.end();
 }
 
 auto metrics::is_initialized() const -> bool
 {
-    for (auto [name, initialized] : m_initialized)
+    for (const auto& [name, offset] : m_offsets)
     {
-        if (!initialized)
+        (void)offset;
+        if (!is_initialized(name))
         {
             return false;
         }
     }
     return true;
 }
+
 auto metrics::reset() -> void
 {
-    for (const auto& [name, metric] : metadata().metrics())
+    for (const auto& [name, reset] : m_resets)
     {
-        if (metric.has_constant())
-        {
-            continue;
-        }
-
-        if (!is_initialized(name))
-        {
-            // Skip metrics that have not been initialized
-            continue;
-        }
-
-        auto offset = detail::get_offset(metric);
-        if (is_optional(metric))
-        {
-            // Set the has value byte to 0
-            value_data(offset)[0] = 0;
-        }
-        else
-        {
-            // Set the value to what it was initialized to
-            if (metric.has_uint64())
-            {
-                uint64::set_value(
-                    value_data(offset),
-                    std::any_cast<uint64::type>(m_initial_values.at(name)));
-            }
-            else if (metric.has_int64())
-            {
-                int64::set_value(
-                    value_data(offset),
-                    std::any_cast<int64::type>(m_initial_values.at(name)));
-            }
-            else if (metric.has_uint32())
-            {
-                uint32::set_value(
-                    value_data(offset),
-                    std::any_cast<uint32::type>(m_initial_values.at(name)));
-            }
-            else if (metric.has_int32())
-            {
-                int32::set_value(
-                    value_data(offset),
-                    std::any_cast<int32::type>(m_initial_values.at(name)));
-            }
-            else if (metric.has_float64())
-            {
-                float64::set_value(
-                    value_data(offset),
-                    std::any_cast<float64::type>(m_initial_values.at(name)));
-            }
-            else if (metric.has_float32())
-            {
-                float32::set_value(
-                    value_data(offset),
-                    std::any_cast<float32::type>(m_initial_values.at(name)));
-            }
-            else if (metric.has_boolean())
-            {
-                boolean::set_value(
-                    value_data(offset),
-                    std::any_cast<boolean::type>(m_initial_values.at(name)));
-            }
-            else if (metric.has_enum8())
-            {
-                enum8::set_value(
-                    value_data(offset),
-                    std::any_cast<enum8::type>(m_initial_values.at(name)));
-            }
-        }
+        (void)name;
+        reset();
     }
 }
 }

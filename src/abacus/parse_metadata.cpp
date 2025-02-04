@@ -3,7 +3,7 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include "parse.hpp"
+#include "parse_metadata.hpp"
 
 #include <cassert>
 #include <optional>
@@ -12,7 +12,7 @@ namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-auto parse::metadata(const uint8_t* metadata_data, std::size_t metadata_bytes)
+auto parse_metadata(const uint8_t* metadata_data, std::size_t metadata_bytes)
     -> std::optional<protobuf::MetricsMetadata>
 {
     assert(metadata_data != nullptr);

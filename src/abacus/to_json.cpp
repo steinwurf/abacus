@@ -6,7 +6,7 @@
 #include <bourne/json.hpp>
 
 #include "detail/to_json.hpp"
-#include "parse.hpp"
+#include "parse_metadata.hpp"
 #include "protobuf/metrics.pb.h"
 #include "to_json.hpp"
 
@@ -20,7 +20,7 @@ auto to_json(const uint8_t* metadata_data, std::size_t metadata_bytes,
              bool minimal) -> std::string
 {
     view v;
-    auto parsed = parse::metadata(metadata_data, metadata_bytes);
+    auto parsed = parse_metadata(metadata_data, metadata_bytes);
     if (!parsed.has_value())
     {
         return "";

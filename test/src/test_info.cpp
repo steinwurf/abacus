@@ -8,8 +8,7 @@
 #include <gtest/gtest.h>
 
 #include <abacus/info.hpp>
-#include <abacus/optional_metric.hpp>
-#include <abacus/required_metric.hpp>
+#include <abacus/metric.hpp>
 
 template <typename T>
 void integer_test()
@@ -17,7 +16,7 @@ void integer_test()
     using type = typename T::type;
 
     {
-        using optional = typename T::optional;
+        using optional = abacus::metric<T>;
         uint8_t data[sizeof(type) + 1];
         std::memset(data, 0, sizeof(data));
         optional o;
@@ -37,22 +36,6 @@ void integer_test()
         o.reset();
         EXPECT_FALSE(o.has_value());
     }
-    {
-        using required = typename T::required;
-        uint8_t data[sizeof(type) + 1];
-        std::memset(data, 0, sizeof(data));
-        required r;
-        EXPECT_FALSE(r.is_initialized());
-        r = required(data, 10U);
-        EXPECT_TRUE(r.is_initialized());
-        EXPECT_EQ(r.value(), type{10});
-        r += 12;
-        r -= 2;
-        ++r;
-        --r;
-
-        EXPECT_EQ(r.value(), type{20});
-    }
 }
 
 TEST(test_info, integer)
@@ -69,7 +52,7 @@ void floating_point_test()
     using type = typename T::type;
 
     {
-        using optional = typename T::optional;
+        using optional = abacus::metric<T>;
         uint8_t data[sizeof(type) + 1];
         std::memset(data, 0, sizeof(data));
         optional o;
@@ -89,22 +72,6 @@ void floating_point_test()
         o.reset();
         EXPECT_FALSE(o.has_value());
     }
-    {
-        using required = typename T::required;
-        uint8_t data[sizeof(type) + 1];
-        std::memset(data, 0, sizeof(data));
-        required r;
-        EXPECT_FALSE(r.is_initialized());
-        r = required(data, 10.0);
-        EXPECT_TRUE(r.is_initialized());
-        EXPECT_EQ(r.value(), type{10.0});
-        r += 12.0;
-        r -= 2.0;
-        ++r;
-        --r;
-
-        EXPECT_EQ(r.value(), type{20.0});
-    }
 }
 
 TEST(test_info, floating_point)
@@ -119,9 +86,9 @@ TEST(test_info, boolean)
     {
         uint8_t data[sizeof(bool) + 1];
         std::memset(data, 0, sizeof(data));
-        abacus::boolean::optional o;
+        abacus::metric<abacus::boolean> o;
         EXPECT_FALSE(o.is_initialized());
-        o = abacus::boolean::optional(data);
+        o = abacus::metric<abacus::boolean>(data);
         EXPECT_TRUE(o.is_initialized());
         EXPECT_FALSE(o.has_value());
         o = true;
@@ -131,17 +98,6 @@ TEST(test_info, boolean)
         EXPECT_EQ(o.value(), false);
         o.reset();
         EXPECT_FALSE(o.has_value());
-    }
-    {
-        uint8_t data[sizeof(bool) + 1];
-        std::memset(data, 0, sizeof(data));
-        abacus::boolean::required r;
-        EXPECT_FALSE(r.is_initialized());
-        r = abacus::boolean::required(data, true);
-        EXPECT_TRUE(r.is_initialized());
-        EXPECT_EQ(r.value(), true);
-        r = false;
-        EXPECT_EQ(r.value(), false);
     }
 }
 namespace
@@ -160,65 +116,28 @@ TEST(test_info, enum8)
     {
         uint8_t data[sizeof(uint8_t) + 1];
         std::memset(data, 0, sizeof(data));
-        abacus::enum8::optional o;
+        abacus::metric<abacus::enum8> o;
         EXPECT_FALSE(o.is_initialized());
-        o = abacus::enum8::optional(data);
+        o = abacus::metric<abacus::enum8>(data);
         EXPECT_TRUE(o.is_initialized());
-        EXPECT_FALSE(o.has_value());
-        o = 10U;
-        EXPECT_TRUE(o.has_value());
-        EXPECT_EQ(o.value(), 10U);
-        o = 20U;
-        EXPECT_EQ(o.value(), 20U);
-        o.reset();
         EXPECT_FALSE(o.has_value());
 
         o.set_value(test_enum::value0);
-        EXPECT_EQ(o.value(), 0U);
+        EXPECT_EQ(o.value<test_enum>(), test_enum::value0);
         o.set_value(test_enum::value1);
-        EXPECT_EQ(o.value(), 1U);
+        EXPECT_EQ(o.value<test_enum>(), test_enum::value1);
         o.set_value(test_enum::value2);
-        EXPECT_EQ(o.value(), 2U);
+        EXPECT_EQ(o.value<test_enum>(), test_enum::value2);
         o.set_value(test_enum::value3);
-        EXPECT_EQ(o.value(), 3U);
+        EXPECT_EQ(o.value<test_enum>(), test_enum::value3);
 
         o = test_enum::value0;
-        EXPECT_EQ(o.value(), 0U);
+        EXPECT_EQ(o.value<test_enum>(), test_enum::value0);
         o = test_enum::value1;
-        EXPECT_EQ(o.value(), 1U);
+        EXPECT_EQ(o.value<test_enum>(), test_enum::value1);
         o = test_enum::value2;
-        EXPECT_EQ(o.value(), 2U);
+        EXPECT_EQ(o.value<test_enum>(), test_enum::value2);
         o = test_enum::value3;
-        EXPECT_EQ(o.value(), 3U);
-    }
-
-    {
-        uint8_t data[sizeof(uint8_t) + 1];
-        std::memset(data, 0, sizeof(data));
-        abacus::enum8::required r;
-        EXPECT_FALSE(r.is_initialized());
-        r = abacus::enum8::required(data, 10U);
-        EXPECT_TRUE(r.is_initialized());
-        EXPECT_EQ(r.value(), 10U);
-        r = 20U;
-        EXPECT_EQ(r.value(), 20U);
-
-        r.set_value(test_enum::value0);
-        EXPECT_EQ(r.value(), 0U);
-        r.set_value(test_enum::value1);
-        EXPECT_EQ(r.value(), 1U);
-        r.set_value(test_enum::value2);
-        EXPECT_EQ(r.value(), 2U);
-        r.set_value(test_enum::value3);
-        EXPECT_EQ(r.value(), 3U);
-
-        r = test_enum::value0;
-        EXPECT_EQ(r.value(), 0U);
-        r = test_enum::value1;
-        EXPECT_EQ(r.value(), 1U);
-        r = test_enum::value2;
-        EXPECT_EQ(r.value(), 2U);
-        r = test_enum::value3;
-        EXPECT_EQ(r.value(), 3U);
+        EXPECT_EQ(o.value<test_enum>(), test_enum::value3);
     }
 }

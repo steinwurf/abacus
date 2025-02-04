@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include <cstdint>
+
 #include "protobuf/metrics.pb.h"
 #include "version.hpp"
 
@@ -13,11 +15,10 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-enum class kind
-{
-    gauge = abacus::protobuf::GAUGE,
-    counter = abacus::protobuf::COUNTER
-};
+/// @param metadata_data The meta data pointer
+/// @param metadata_bytes The meta data size in bytes
+auto parse_metadata(const uint8_t* metadata_data, std::size_t metadata_bytes)
+    -> std::optional<protobuf::MetricsMetadata>;
 
 }
 }

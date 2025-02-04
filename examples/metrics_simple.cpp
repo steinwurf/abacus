@@ -11,45 +11,64 @@
 #include <abacus/to_json.hpp>
 #include <abacus/view.hpp>
 
+enum class test_enum
+{
+    value0 = 0,
+    value1 = 1,
+    value2 = 2,
+    value3 = 3
+};
+
 // Simple example of metrics on a car.
 int main()
 {
     std::map<abacus::name, abacus::info> infos = {
         {abacus::name{"fuel_consumption"},
          abacus::constant{
-             abacus::value{22.3},
+             abacus::constant::float64{22.3},
              abacus::description{"Fuel consumption in kilometers per liter"},
              abacus::unit{"km/l"}}},
         {abacus::name{"wheels"},
-         abacus::constant{abacus::value{4UL},
+         abacus::constant{abacus::constant::uint64{4},
                           abacus::description{"Wheels on the car"},
                           abacus::unit{"wheels"}}},
         {abacus::name{"days_until_maintenance"},
          abacus::int64{
-             abacus::gauge, abacus::required,
+             abacus::kind::gauge,
              abacus::description{"Days until next maintenance, if less than 0, "
                                  "maintenance is overdue"},
              abacus::unit{"days"}}},
         {abacus::name{"registered"},
-         abacus::boolean{abacus::optional,
-                         abacus::description{"Is the car registered"}}},
+         abacus::boolean{abacus::description{"Is the car registered"}}},
         {abacus::name{"license_plate"},
-         abacus::constant{abacus::value{"ABC-1234"},
-                          abacus::description{"License plate"}}}};
+         abacus::constant{abacus::constant::str{"ABC-1234"},
+                          abacus::description{"License plate of the car"}}},
+        {abacus::name{"some_enum"},
+         abacus::enum8{abacus::description{"An enum metric"},
+                       {{test_enum::value0, {"value0", "The value for 0"}},
+                        {test_enum::value1, {"value1", "The value for 1"}},
+                        {test_enum::value2, {"value2", "The value for 2"}},
+                        {test_enum::value3, {"value3", "The value for 3"}}}}}};
 
     abacus::metrics car(infos);
 
     // The car still has some time before maintenance.
-    abacus::int64::required days_until_maintenance =
-        car.initialize_required<abacus::int64>("days_until_maintenance", 10);
+    abacus::metric<abacus::int64> days_until_maintenance =
+        car.initialize<abacus::int64>("days_until_maintenance");
 
     // The car should be registered.
-    abacus::boolean::optional registered =
-        car.initialize_optional<abacus::boolean>("registered");
+    abacus::metric<abacus::boolean> registered =
+        car.initialize<abacus::boolean>("registered");
 
     // The registration is initialized, but not set.
     assert(registered.is_initialized());
     assert(!registered.has_value());
+
+    abacus::metric<abacus::enum8> some_enum =
+        car.initialize<abacus::enum8>("some_enum").set_value(test_enum::value1);
+
+    // Change value
+    some_enum = test_enum::value2;
 
     // The car hasn't been registered.
     registered = false;

@@ -3,27 +3,33 @@
 #include <map>
 #include <string>
 
+enum class test_enum
+{
+    value0 = 0,
+    value1 = 1,
+    value2 = 2,
+    value3 = 3
+};
+
 // Helper function to create metric definitions
 std::map<abacus::name, abacus::info> create_metric_infos()
 {
     return {
-        {abacus::name{"0"},
-         abacus::boolean{abacus::required, abacus::description{""}}},
-        {abacus::name{"1"}, abacus::uint64{abacus::gauge, abacus::required,
-                                           abacus::description{""}}},
-        {abacus::name{"2"}, abacus::int64{abacus::gauge, abacus::required,
-                                          abacus::description{""}}},
-        {abacus::name{"3"}, abacus::float64{abacus::gauge, abacus::required,
-                                            abacus::description{""}}},
-        {abacus::name{"4"},
-         abacus::boolean{abacus::required, abacus::description{""}}},
-        {abacus::name{"5"}, abacus::float64{abacus::gauge, abacus::required,
-                                            abacus::description{""}}},
-        {abacus::name{"6"},
-         abacus::enum8{
-             abacus::required,
-             abacus::description{""},
-             {{0, {"", ""}}, {1, {"", ""}}, {2, {"", ""}}, {3, {"", ""}}}}}};
+        {abacus::name{"0"}, abacus::boolean{abacus::description{""}}},
+        {abacus::name{"1"},
+         abacus::uint64{abacus::kind::gauge, abacus::description{""}}},
+        {abacus::name{"2"},
+         abacus::int64{abacus::kind::gauge, abacus::description{""}}},
+        {abacus::name{"3"},
+         abacus::float64{abacus::kind::gauge, abacus::description{""}}},
+        {abacus::name{"4"}, abacus::boolean{abacus::description{""}}},
+        {abacus::name{"5"},
+         abacus::float64{abacus::kind::gauge, abacus::description{""}}},
+        {abacus::name{"6"}, abacus::enum8{abacus::description{""},
+                                          {{test_enum::value0, {"", ""}},
+                                           {test_enum::value1, {"", ""}},
+                                           {test_enum::value2, {"", ""}},
+                                           {test_enum::value3, {"", ""}}}}}};
 }
 
 // Benchmark for metric initialization
@@ -33,13 +39,14 @@ static void BM_MetricInitialization(benchmark::State& state)
     for (auto _ : state)
     {
         abacus::metrics metrics(create_metric_infos());
-        auto m0 = metrics.initialize_required<abacus::boolean>("0", false);
-        auto m1 = metrics.initialize_required<abacus::uint64>("1", 0);
-        auto m2 = metrics.initialize_required<abacus::int64>("2", 0);
-        auto m3 = metrics.initialize_required<abacus::float64>("3", 0.0);
-        auto m4 = metrics.initialize_required<abacus::boolean>("4", true);
-        auto m5 = metrics.initialize_required<abacus::float64>("5", 3.14);
-        auto m6 = metrics.initialize_required<abacus::enum8>("6", 1);
+        auto m0 = metrics.initialize<abacus::boolean>("0").set_value(false);
+        auto m1 = metrics.initialize<abacus::uint64>("1").set_value(0);
+        auto m2 = metrics.initialize<abacus::int64>("2").set_value(0);
+        auto m3 = metrics.initialize<abacus::float64>("3").set_value(0.0);
+        auto m4 = metrics.initialize<abacus::boolean>("4").set_value(true);
+        auto m5 = metrics.initialize<abacus::float64>("5").set_value(3.14);
+        auto m6 =
+            metrics.initialize<abacus::enum8>("6").set_value(test_enum::value1);
 
         (void)m0;
         (void)m1;
@@ -57,13 +64,14 @@ static void BM_AssignMetrics(benchmark::State& state)
 {
     state.SetLabel("Assign Metrics");
     abacus::metrics metrics(create_metric_infos());
-    auto m0 = metrics.initialize_required<abacus::boolean>("0", false);
-    auto m1 = metrics.initialize_required<abacus::uint64>("1", 0);
-    auto m2 = metrics.initialize_required<abacus::int64>("2", 0);
-    auto m3 = metrics.initialize_required<abacus::float64>("3", 0.0);
-    auto m4 = metrics.initialize_required<abacus::boolean>("4", true);
-    auto m5 = metrics.initialize_required<abacus::float64>("5", 3.14);
-    auto m6 = metrics.initialize_required<abacus::enum8>("6", 1);
+    auto m0 = metrics.initialize<abacus::boolean>("0").set_value(false);
+    auto m1 = metrics.initialize<abacus::uint64>("1").set_value(0);
+    auto m2 = metrics.initialize<abacus::int64>("2").set_value(0);
+    auto m3 = metrics.initialize<abacus::float64>("3").set_value(0.0);
+    auto m4 = metrics.initialize<abacus::boolean>("4").set_value(true);
+    auto m5 = metrics.initialize<abacus::float64>("5").set_value(3.14);
+    auto m6 =
+        metrics.initialize<abacus::enum8>("6").set_value(test_enum::value1);
 
     for (auto _ : state)
     {
@@ -84,10 +92,10 @@ static void BM_AccessMetrics(benchmark::State& state)
 {
     state.SetLabel("Access Metrics");
     abacus::metrics metrics(create_metric_infos());
-    auto m0 = metrics.initialize_required<abacus::boolean>("0", false);
-    auto m1 = metrics.initialize_required<abacus::uint64>("1", 0);
-    auto m2 = metrics.initialize_required<abacus::int64>("2", 0);
-    auto m3 = metrics.initialize_required<abacus::float64>("3", 0.0);
+    auto m0 = metrics.initialize<abacus::boolean>("0");
+    auto m1 = metrics.initialize<abacus::uint64>("1");
+    auto m2 = metrics.initialize<abacus::int64>("2");
+    auto m3 = metrics.initialize<abacus::float64>("3");
 
     for (auto _ : state)
     {
@@ -110,7 +118,7 @@ static void BM_IncrementUint64(benchmark::State& state)
 {
     state.SetLabel("Increment Uint64 Metric");
     abacus::metrics metrics(create_metric_infos());
-    auto m1 = metrics.initialize_required<abacus::uint64>("1", 0);
+    auto m1 = metrics.initialize<abacus::uint64>("1");
 
     for (auto _ : state)
     {
