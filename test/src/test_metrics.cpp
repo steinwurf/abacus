@@ -385,39 +385,22 @@ TEST(test_metrics, protocol_version)
 
 TEST(test_metrics, reset)
 {
-    // Create one of each metric both required and optional
+    // Create one of each metric
     std::map<abacus::name, abacus::info> infos = {
-        {abacus::name{"uint64_required"},
+        {abacus::name{"uint64"},
          abacus::uint64{abacus::kind::counter, abacus::description{""}}},
-        {abacus::name{"uint64_optional"},
-         abacus::uint64{abacus::kind::counter, abacus::description{""}}},
-        {abacus::name{"uint32_required"},
+        {abacus::name{"uint32"},
          abacus::uint32{abacus::kind::counter, abacus::description{""}}},
-        {abacus::name{"uint32_optional"},
-         abacus::uint32{abacus::kind::counter, abacus::description{""}}},
-        {abacus::name{"int64_required"},
+        {abacus::name{"int64"},
          abacus::int64{abacus::kind::gauge, abacus::description{""}}},
-        {abacus::name{"int64_optional"},
-         abacus::int64{abacus::kind::gauge, abacus::description{""}}},
-        {abacus::name{"int32_required"},
+        {abacus::name{"int32"},
          abacus::int32{abacus::kind::gauge, abacus::description{""}}},
-        {abacus::name{"int32_optional"},
-         abacus::int32{abacus::kind::gauge, abacus::description{""}}},
-        {abacus::name{"float64_required"},
+        {abacus::name{"float64"},
          abacus::float64{abacus::kind::gauge, abacus::description{""}}},
-        {abacus::name{"float64_optional"},
-         abacus::float64{abacus::kind::gauge, abacus::description{""}}},
-        {abacus::name{"float32_required"},
+        {abacus::name{"float32"},
          abacus::float32{abacus::kind::gauge, abacus::description{""}}},
-        {abacus::name{"float32_optional"},
-         abacus::float32{abacus::kind::gauge, abacus::description{""}}},
-        {abacus::name{"boolean_required"},
-         abacus::boolean{abacus::description{""}}},
-        {abacus::name{"boolean_optional"},
-         abacus::boolean{abacus::description{""}}},
-        {abacus::name{"enum8_required"},
-         abacus::enum8{abacus::description{""}, {{0, {"", ""}}}}},
-        {abacus::name{"enum8_optional"},
+        {abacus::name{"boolean"}, abacus::boolean{abacus::description{""}}},
+        {abacus::name{"enum8"},
          abacus::enum8{abacus::description{""}, {{0, {"", ""}}}}},
         {abacus::name{"uint64_constant"},
          abacus::constant{abacus::constant::uint64{1111},
@@ -435,102 +418,69 @@ TEST(test_metrics, reset)
          abacus::constant{abacus::constant::str{"fivefivefivefive"},
                           abacus::description{""}}},
         // Finally a metric that we do not initialize
-        {abacus::name{"not_initialized_required"},
-         abacus::uint64{abacus::kind::counter, abacus::description{""}}},
-        {abacus::name{"not_initialized_optional"},
+        {abacus::name{"not_initialized"},
          abacus::uint64{abacus::kind::counter, abacus::description{""}}}};
 
     abacus::metrics metrics(infos);
 
-    // Inirialize metrics
-    auto uint64_required =
-        metrics.initialize<abacus::uint64>("uint64_required").set_value(1U);
-    auto uint64_optional =
-        metrics.initialize<abacus::uint64>("uint64_optional");
-    auto uint32_required =
-        metrics.initialize<abacus::uint32>("uint32_required").set_value(2U);
-    auto uint32_optional =
-        metrics.initialize<abacus::uint32>("uint32_optional");
-    auto int64_required =
-        metrics.initialize<abacus::int64>("int64_required").set_value(3);
-    auto int64_optional = metrics.initialize<abacus::int64>("int64_optional");
-    auto int32_required =
-        metrics.initialize<abacus::int32>("int32_required").set_value(4);
-    auto int32_optional = metrics.initialize<abacus::int32>("int32_optional");
-    auto float64_required =
-        metrics.initialize<abacus::float64>("float64_required").set_value(5.0);
-    auto float64_optional =
-        metrics.initialize<abacus::float64>("float64_optional");
-    auto float32_required =
-        metrics.initialize<abacus::float32>("float32_required").set_value(6.0);
-    auto float32_optional =
-        metrics.initialize<abacus::float32>("float32_optional");
-    auto boolean_required =
-        metrics.initialize<abacus::boolean>("boolean_required").set_value(true);
-    auto boolean_optional =
-        metrics.initialize<abacus::boolean>("boolean_optional");
-    auto enum8_required = metrics.initialize<abacus::enum8>("enum8_required")
-                              .set_value(test_enum::value0);
-    auto enum8_optional = metrics.initialize<abacus::enum8>("enum8_optional");
+    // Initialize metrics
+    auto uint64 = metrics.initialize<abacus::uint64>("uint64");
+    auto uint32 = metrics.initialize<abacus::uint32>("uint32");
+    auto int64 = metrics.initialize<abacus::int64>("int64");
+    auto int32 = metrics.initialize<abacus::int32>("int32");
+    auto float64 = metrics.initialize<abacus::float64>("float64");
+    auto float32 = metrics.initialize<abacus::float32>("float32");
+    auto boolean = metrics.initialize<abacus::boolean>("boolean");
+    auto enum8 = metrics.initialize<abacus::enum8>("enum8");
 
-    // Check all required values
-    EXPECT_EQ(uint64_required.value(), 1U);
-    EXPECT_EQ(uint32_required.value(), 2U);
-    EXPECT_EQ(int64_required.value(), 3);
-    EXPECT_EQ(int32_required.value(), 4);
-    EXPECT_EQ(float64_required.value(), 5.0);
-    EXPECT_EQ(float32_required.value(), 6.0);
-    EXPECT_EQ(boolean_required.value(), true);
-    EXPECT_EQ(enum8_required.value<test_enum>(), test_enum::value0);
+    // Check that all metric returns false for has_value
+    EXPECT_FALSE(uint64.has_value());
+    EXPECT_FALSE(uint32.has_value());
+    EXPECT_FALSE(int64.has_value());
+    EXPECT_FALSE(int32.has_value());
+    EXPECT_FALSE(float64.has_value());
+    EXPECT_FALSE(float32.has_value());
+    EXPECT_FALSE(boolean.has_value());
+    EXPECT_FALSE(enum8.has_value());
 
-    // Check all optional values returns false for has_value
-    EXPECT_FALSE(uint64_optional.has_value());
-    EXPECT_FALSE(uint32_optional.has_value());
-    EXPECT_FALSE(int64_optional.has_value());
-    EXPECT_FALSE(int32_optional.has_value());
-    EXPECT_FALSE(float64_optional.has_value());
-    EXPECT_FALSE(float32_optional.has_value());
-    EXPECT_FALSE(boolean_optional.has_value());
-    EXPECT_FALSE(enum8_optional.has_value());
+    // Set all values to some value
+    uint64 = 11U;
+    uint32 = 22U;
+    int64 = 33;
+    int32 = 44;
+    float64 = 55.0;
+    float32 = 66.0;
+    boolean = false;
+    enum8 = test_enum::value1;
 
-    // Set all optional values to some value
-    uint64_optional = 11U;
-    uint32_optional = 22U;
-    int64_optional = 33;
-    int32_optional = 44;
-    float64_optional = 55.0;
-    float32_optional = 66.0;
-    boolean_optional = false;
-    enum8_optional = test_enum::value1;
+    // Check all values
+    EXPECT_EQ(uint64.value(), 11U);
+    EXPECT_EQ(uint32.value(), 22U);
+    EXPECT_EQ(int64.value(), 33);
+    EXPECT_EQ(int32.value(), 44);
+    EXPECT_EQ(float64.value(), 55.0);
+    EXPECT_EQ(float32.value(), 66.0);
+    EXPECT_EQ(boolean.value(), false);
+    EXPECT_EQ(enum8.value<test_enum>(), test_enum::value1);
 
-    // Check all optional values
-    EXPECT_EQ(uint64_optional.value(), 11U);
-    EXPECT_EQ(uint32_optional.value(), 22U);
-    EXPECT_EQ(int64_optional.value(), 33);
-    EXPECT_EQ(int32_optional.value(), 44);
-    EXPECT_EQ(float64_optional.value(), 55.0);
-    EXPECT_EQ(float32_optional.value(), 66.0);
-    EXPECT_EQ(boolean_optional.value(), false);
-    EXPECT_EQ(enum8_optional.value<test_enum>(), test_enum::value1);
+    // Change and check all values (now using set_value function)
+    uint64.set_value(111U);
+    uint32.set_value(222U);
+    int64.set_value(333);
+    int32.set_value(444);
+    float64.set_value(555.0);
+    float32.set_value(666.0);
+    boolean.set_value(true);
+    enum8.set_value(test_enum::value2);
 
-    // Change and check all required values
-    uint64_required = 111U;
-    uint32_required = 222U;
-    int64_required = 333;
-    int32_required = 444;
-    float64_required = 555.0;
-    float32_required = 666.0;
-    boolean_required = false;
-    enum8_required = test_enum::value2;
-
-    EXPECT_EQ(uint64_required.value(), 111U);
-    EXPECT_EQ(uint32_required.value(), 222U);
-    EXPECT_EQ(int64_required.value(), 333);
-    EXPECT_EQ(int32_required.value(), 444);
-    EXPECT_EQ(float64_required.value(), 555.0);
-    EXPECT_EQ(float32_required.value(), 666.0);
-    EXPECT_EQ(boolean_required.value(), false);
-    EXPECT_EQ(enum8_required.value<test_enum>(), test_enum::value2);
+    EXPECT_EQ(uint64.value(), 111U);
+    EXPECT_EQ(uint32.value(), 222U);
+    EXPECT_EQ(int64.value(), 333);
+    EXPECT_EQ(int32.value(), 444);
+    EXPECT_EQ(float64.value(), 555.0);
+    EXPECT_EQ(float32.value(), 666.0);
+    EXPECT_EQ(boolean.value(), true);
+    EXPECT_EQ(enum8.value<test_enum>(), test_enum::value2);
 
     // Create a view to see the constants
     abacus::view view;
@@ -551,42 +501,30 @@ TEST(test_metrics, reset)
               "fivefivefivefive");
 
     // While we are at it, let's check the other values as well
-    EXPECT_EQ(view.value<abacus::uint64>("uint64_required").value(), 111U);
-    EXPECT_EQ(view.value<abacus::uint32>("uint32_required").value(), 222U);
-    EXPECT_EQ(view.value<abacus::int64>("int64_required").value(), 333);
-    EXPECT_EQ(view.value<abacus::int32>("int32_required").value(), 444);
-    EXPECT_EQ(view.value<abacus::float64>("float64_required").value(), 555.0);
-    EXPECT_EQ(view.value<abacus::float32>("float32_required").value(), 666.0);
-    EXPECT_EQ(view.value<abacus::boolean>("boolean_required").value(), false);
-    EXPECT_EQ(view.value<abacus::enum8>("enum8_required").value(), 2U);
-
-    EXPECT_EQ(view.value<abacus::uint64>("uint64_optional").value(), 11U);
-    EXPECT_EQ(view.value<abacus::uint32>("uint32_optional").value(), 22U);
-    EXPECT_EQ(view.value<abacus::int64>("int64_optional").value(), 33);
-    EXPECT_EQ(view.value<abacus::int32>("int32_optional").value(), 44);
-    EXPECT_EQ(view.value<abacus::float64>("float64_optional").value(), 55.0);
-    EXPECT_EQ(view.value<abacus::float32>("float32_optional").value(), 66.0);
-    EXPECT_EQ(view.value<abacus::boolean>("boolean_optional").value(), false);
-    EXPECT_EQ(view.value<abacus::enum8>("enum8_optional").value(), 1U);
+    EXPECT_EQ(view.value<abacus::uint64>("uint64").value(), 111U);
+    EXPECT_EQ(view.value<abacus::uint32>("uint32").value(), 222U);
+    EXPECT_EQ(view.value<abacus::int64>("int64").value(), 333);
+    EXPECT_EQ(view.value<abacus::int32>("int32").value(), 444);
+    EXPECT_EQ(view.value<abacus::float64>("float64").value(), 555.0);
+    EXPECT_EQ(view.value<abacus::float32>("float32").value(), 666.0);
+    EXPECT_EQ(view.value<abacus::boolean>("boolean").value(), true);
+    EXPECT_EQ(view.value<abacus::enum8>("enum8").value(), 2U);
 
     // And finally the not initialized value
-    EXPECT_FALSE(
-        view.value<abacus::uint64>("not_initialized_required").has_value());
-    EXPECT_FALSE(
-        view.value<abacus::uint64>("not_initialized_optional").has_value());
+    EXPECT_FALSE(view.value<abacus::uint64>("not_initialized").has_value());
 
     // Reset all values
     metrics.reset();
 
-    // Check all optional values returns false for has_value
-    EXPECT_FALSE(uint64_optional.has_value());
-    EXPECT_FALSE(uint32_optional.has_value());
-    EXPECT_FALSE(int64_optional.has_value());
-    EXPECT_FALSE(int32_optional.has_value());
-    EXPECT_FALSE(float64_optional.has_value());
-    EXPECT_FALSE(float32_optional.has_value());
-    EXPECT_FALSE(boolean_optional.has_value());
-    EXPECT_FALSE(enum8_optional.has_value());
+    // Check all values returns false for has_value
+    EXPECT_FALSE(uint64.has_value());
+    EXPECT_FALSE(uint32.has_value());
+    EXPECT_FALSE(int64.has_value());
+    EXPECT_FALSE(int32.has_value());
+    EXPECT_FALSE(float64.has_value());
+    EXPECT_FALSE(float32.has_value());
+    EXPECT_FALSE(boolean.has_value());
+    EXPECT_FALSE(enum8.has_value());
 
     // Update view and check all constant values
     ASSERT_TRUE(
@@ -601,17 +539,14 @@ TEST(test_metrics, reset)
     EXPECT_EQ(view.value<abacus::constant::str>("string_constant"),
               "fivefivefivefive");
 
-    EXPECT_FALSE(view.value<abacus::uint64>("uint64_optional").has_value());
-    EXPECT_FALSE(view.value<abacus::uint32>("uint32_optional").has_value());
-    EXPECT_FALSE(view.value<abacus::int64>("int64_optional").has_value());
-    EXPECT_FALSE(view.value<abacus::int32>("int32_optional").has_value());
-    EXPECT_FALSE(view.value<abacus::float64>("float64_optional").has_value());
-    EXPECT_FALSE(view.value<abacus::float32>("float32_optional").has_value());
-    EXPECT_FALSE(view.value<abacus::boolean>("boolean_optional").has_value());
-    EXPECT_FALSE(view.value<abacus::enum8>("enum8_optional").has_value());
+    EXPECT_FALSE(view.value<abacus::uint64>("uint64").has_value());
+    EXPECT_FALSE(view.value<abacus::uint32>("uint32").has_value());
+    EXPECT_FALSE(view.value<abacus::int64>("int64").has_value());
+    EXPECT_FALSE(view.value<abacus::int32>("int32").has_value());
+    EXPECT_FALSE(view.value<abacus::float64>("float64").has_value());
+    EXPECT_FALSE(view.value<abacus::float32>("float32").has_value());
+    EXPECT_FALSE(view.value<abacus::boolean>("boolean").has_value());
+    EXPECT_FALSE(view.value<abacus::enum8>("enum8").has_value());
 
-    EXPECT_FALSE(
-        view.value<abacus::uint64>("not_initialized_required").has_value());
-    EXPECT_FALSE(
-        view.value<abacus::uint64>("not_initialized_optional").has_value());
+    EXPECT_FALSE(view.value<abacus::uint64>("not_initialized").has_value());
 }
