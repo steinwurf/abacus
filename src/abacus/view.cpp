@@ -56,13 +56,15 @@ template <>
 inline auto get_value<constant::str>(const uint8_t*,
                                      bool) -> std::optional<constant::str::type>
 {
+    // This function should never be called, but we need it to silence the
+    // compiler
     assert(false);
     return std::nullopt;
 }
 
 template <class Metric>
-inline auto get_constant_value(const protobuf::Constant& constant)
-    -> std::optional<typename Metric::type>
+inline auto get_constant_value(const protobuf::Constant& constant) ->
+    typename Metric::type
 {
     switch (constant.value_case())
     {
@@ -75,13 +77,12 @@ inline auto get_constant_value(const protobuf::Constant& constant)
     case protobuf::Constant::ValueCase::kBoolean:
         return constant.boolean();
     default:
-        assert(false);
-        return std::nullopt;
+        throw std::runtime_error("Invalid constant type");
     }
 }
 template <>
 inline auto get_constant_value<constant::str>(
-    const protobuf::Constant& constant) -> std::optional<constant::str::type>
+    const protobuf::Constant& constant) -> constant::str::type
 {
     assert(constant.value_case() == protobuf::Constant::ValueCase::kString);
     return constant.string();

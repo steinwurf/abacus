@@ -25,7 +25,7 @@ namespace abacus
 inline namespace STEINWURF_ABACUS_VERSION
 {
 
-/// An optional metric class for most metrics
+/// A class that can be used to store and manipulate the memory of a metric.
 template <typename Metric>
 struct metric
 {

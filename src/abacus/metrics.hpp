@@ -53,9 +53,7 @@ public:
     /// @return true if all metrics have been initialized
     auto is_initialized() const -> bool;
 
-    /// Reset all metrics to their initial values
-    /// Optional values will be reset to std::nullopt unless they were set
-    /// during initialization.
+    /// Reset all metrics to be unset
     auto reset() -> void;
 
     /// @return the pointer to the metadata part of the metrics.
