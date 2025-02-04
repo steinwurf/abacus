@@ -135,6 +135,10 @@ auto to_json(const view& view, bool minimal) -> bourne::json
             default:
                 break;
             }
+            if (!json.has_key(name))
+            {
+                json[name] = nullptr;
+            }
         }
     }
     else

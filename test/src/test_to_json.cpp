@@ -17,7 +17,8 @@ static const char* expected_json_minimal = R"({
   "metric0" : 42,
   "metric1" : -42,
   "metric2" : true,
-  "metric3" : 2
+  "metric3" : 2,
+  "metric4" : null
 })";
 
 TEST(test_to_json, to_json_minimal)
@@ -26,6 +27,7 @@ TEST(test_to_json, to_json_minimal)
     std::string name1 = "metric1";
     std::string name2 = "metric2";
     std::string name3 = "metric3";
+    std::string name4 = "metric4";
 
     std::map<abacus::name, abacus::info> infos = {
         {abacus::name{name0},
@@ -46,7 +48,9 @@ TEST(test_to_json, to_json_minimal)
                        {{0, {"value0", "The value for 0"}},
                         {1, {"value1", "The value for 1"}},
                         {2, {"value2", "The value for 2"}},
-                        {3, {"value3", "The value for 3"}}}}}};
+                        {3, {"value3", "The value for 3"}}}}},
+        {abacus::name{name4},
+         abacus::boolean{abacus::description{"An unset boolean metric"}}}};
 
     abacus::metrics metrics(infos);
 
@@ -122,6 +126,13 @@ static const char* expected_json = R"({
       }
     },
     "value" : 2
+  },
+  "metric4" : {
+    "boolean" : {
+      "description" : "An unset boolean metric",
+      "offset" : 24
+    },
+    "value" : null
   }
 })";
 
@@ -142,6 +153,7 @@ TEST(test_to_json, to_json)
     std::string name1 = "metric1";
     std::string name2 = "metric2";
     std::string name3 = "metric3";
+    std::string name4 = "metric4";
 
     std::map<abacus::name, abacus::info> infos = {
         {abacus::name{name0},
@@ -162,7 +174,9 @@ TEST(test_to_json, to_json)
                        {{0, {"value0", "The value for 0"}},
                         {1, {"value1", "The value for 1"}},
                         {2, {"value2", "The value for 2"}},
-                        {3, {"value3", "The value for 3"}}}}}};
+                        {3, {"value3", "The value for 3"}}}}},
+        {abacus::name{name4},
+         abacus::boolean{abacus::description{"An unset boolean metric"}}}};
 
     abacus::metrics metrics(infos);
 

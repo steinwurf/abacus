@@ -92,10 +92,10 @@ static void BM_AccessMetrics(benchmark::State& state)
 {
     state.SetLabel("Access Metrics");
     abacus::metrics metrics(create_metric_infos());
-    auto m0 = metrics.initialize<abacus::boolean>("0");
-    auto m1 = metrics.initialize<abacus::uint64>("1");
-    auto m2 = metrics.initialize<abacus::int64>("2");
-    auto m3 = metrics.initialize<abacus::float64>("3");
+    auto m0 = metrics.initialize<abacus::boolean>("0").set_value(false);
+    auto m1 = metrics.initialize<abacus::uint64>("1").set_value(0);
+    auto m2 = metrics.initialize<abacus::int64>("2").set_value(0);
+    auto m3 = metrics.initialize<abacus::float64>("3").set_value(0.0);
 
     for (auto _ : state)
     {
@@ -118,7 +118,7 @@ static void BM_IncrementUint64(benchmark::State& state)
 {
     state.SetLabel("Increment Uint64 Metric");
     abacus::metrics metrics(create_metric_infos());
-    auto m1 = metrics.initialize<abacus::uint64>("1");
+    auto m1 = metrics.initialize<abacus::uint64>("1").set_value(0);
 
     for (auto _ : state)
     {
