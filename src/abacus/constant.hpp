@@ -62,13 +62,13 @@ struct constant
         type value;
     };
 
-    // The value of the constant
+    /// The value of the constant
     std::variant<uint64, int64, float64, boolean, str> value;
 
-    // The description of the constant
+    /// The description of the constant
     abacus::description description;
 
-    // The unit of the constant
+    /// The unit of the constant
     abacus::unit unit{};
 };
 }
