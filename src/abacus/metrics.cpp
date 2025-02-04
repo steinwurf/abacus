@@ -11,7 +11,6 @@
 #include "protocol_version.hpp"
 #include "version.hpp"
 
-#include "detail/helpers.hpp"
 #include "detail/overload.hpp"
 #include "protobuf/metrics.pb.h"
 

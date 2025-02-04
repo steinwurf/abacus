@@ -8,6 +8,7 @@
 #include <type_traits>
 #include <variant>
 
+#include "../constant.hpp"
 #include "../version.hpp"
 
 namespace abacus
@@ -16,18 +17,20 @@ inline namespace STEINWURF_ABACUS_VERSION
 {
 namespace detail
 {
-// Helper to check if a type is in the variant
-template <typename T, typename Variant>
-struct is_in_variant;
+// Helper to check if a metric is a constant
+
+template <typename Metric, typename Variant>
+struct is_constant_;
 
 template <typename T, typename... Types>
-struct is_in_variant<T, std::variant<Types...>>
+struct is_constant_<T, std::variant<Types...>>
     : std::disjunction<std::is_same<T, Types>...>
 {
 };
 
-template <typename T, typename Variant>
-constexpr bool is_in_variant_v = is_in_variant<T, Variant>::value;
+template <typename T>
+constexpr bool is_constant_v =
+    is_constant_<T, decltype(constant::value)>::value;
 
 }
 }

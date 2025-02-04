@@ -9,6 +9,7 @@
 #include <optional>
 #include <string>
 
+#include "detail/is_constant.hpp"
 #include "protobuf/metrics.pb.h"
 #include "version.hpp"
 
@@ -69,7 +70,9 @@ public:
     /// value
     template <class Metric>
     auto value(const std::string& name) const
-        -> std::optional<typename Metric::type>;
+        -> std::conditional_t<detail::is_constant_v<Metric>,
+                              typename Metric::type,
+                              std::optional<typename Metric::type>>;
 
 private:
     /// The meta data

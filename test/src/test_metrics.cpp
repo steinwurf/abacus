@@ -489,15 +489,12 @@ TEST(test_metrics, reset)
         view.set_value_data(metrics.value_data(), metrics.value_bytes()));
 
     // Check all constant values
-    EXPECT_EQ(view.value<abacus::constant::uint64>("uint64_constant").value(),
-              1111U);
-    EXPECT_EQ(view.value<abacus::constant::int64>("int64_constant").value(),
-              2222);
-    EXPECT_EQ(view.value<abacus::constant::float64>("float64_constant").value(),
+    EXPECT_EQ(view.value<abacus::constant::uint64>("uint64_constant"), 1111U);
+    EXPECT_EQ(view.value<abacus::constant::int64>("int64_constant"), 2222);
+    EXPECT_EQ(view.value<abacus::constant::float64>("float64_constant"),
               3333.0);
-    EXPECT_EQ(view.value<abacus::constant::boolean>("boolean_constant").value(),
-              true);
-    EXPECT_EQ(view.value<abacus::constant::str>("string_constant").value(),
+    EXPECT_EQ(view.value<abacus::constant::boolean>("boolean_constant"), true);
+    EXPECT_EQ(view.value<abacus::constant::str>("string_constant"),
               "fivefivefivefive");
 
     // While we are at it, let's check the other values as well

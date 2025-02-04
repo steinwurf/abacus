@@ -7,7 +7,7 @@
 
 #include "boolean.hpp"
 #include "constant.hpp"
-#include "detail/helpers.hpp"
+#include "detail/is_constant.hpp"
 #include "enum8.hpp"
 #include "float32.hpp"
 #include "float64.hpp"
@@ -64,62 +64,6 @@ static inline std::size_t get_offset(const protobuf::Metric& m)
         assert(false);
         return 0;
     }
-}
-template <class Metric>
-inline auto get_value(const uint8_t* data, bool is_big_endian)
-    -> std::optional<typename Metric::type>
-{
-    assert(data != nullptr);
-    if (data[0] == 0)
-    {
-        // The metric is unset
-        return std::nullopt;
-    }
-
-    if (is_big_endian)
-    {
-        return endian::big_endian::get<typename Metric::type>(data + 1);
-    }
-    else
-    {
-        return endian::little_endian::get<typename Metric::type>(data + 1);
-    }
-}
-
-template <>
-inline auto get_value<constant::str>(const uint8_t*,
-                                     bool) -> std::optional<constant::str::type>
-{
-    // This function should never be called, but we need it to silence the
-    // compiler
-    assert(false);
-    return std::nullopt;
-}
-
-template <class Metric>
-inline auto get_constant_value(const protobuf::Constant& constant) ->
-    typename Metric::type
-{
-    switch (constant.value_case())
-    {
-    case protobuf::Constant::ValueCase::kUint64:
-        return constant.uint64();
-    case protobuf::Constant::ValueCase::kInt64:
-        return constant.int64();
-    case protobuf::Constant::ValueCase::kFloat64:
-        return constant.float64();
-    case protobuf::Constant::ValueCase::kBoolean:
-        return constant.boolean();
-    default:
-        throw std::runtime_error("Invalid constant type");
-    }
-}
-template <>
-inline auto get_constant_value<constant::str>(
-    const protobuf::Constant& constant) -> constant::str::type
-{
-    assert(constant.value_case() == protobuf::Constant::ValueCase::kString);
-    return constant.string();
 }
 }
 
@@ -188,24 +132,63 @@ const protobuf::Metric& view::metric(const std::string& name) const
 
 template <class Metric>
 auto view::value(const std::string& name) const
-    -> std::optional<typename Metric::type>
+    -> std::conditional_t<detail::is_constant_v<Metric>, typename Metric::type,
+                          std::optional<typename Metric::type>>
 {
     assert(m_metadata.IsInitialized());
     assert(m_value_data != nullptr);
     auto m = metric(name);
-    if (m.has_constant())
+    if constexpr (detail::is_constant_v<Metric>)
     {
-        // Check that Metric is one of the expected constant types
-        assert((detail::is_in_variant_v<Metric, decltype(constant::value)>));
-        return get_constant_value<Metric>(m.constant());
+        // Check that Metric is constant
+        assert(m.has_constant());
+        auto constant = m.constant();
+        if constexpr (std::is_same_v<Metric, constant::str>)
+        {
+            if (constant.value_case() != protobuf::Constant::ValueCase::kString)
+            {
+                throw std::runtime_error("Invalid constant type");
+            }
+            return constant.string();
+        }
+        if constexpr (!std::is_same_v<Metric, constant::str>)
+        {
+            auto constant = m.constant();
+            switch (constant.value_case())
+            {
+            case protobuf::Constant::ValueCase::kUint64:
+                return constant.uint64();
+            case protobuf::Constant::ValueCase::kInt64:
+                return constant.int64();
+            case protobuf::Constant::ValueCase::kFloat64:
+                return constant.float64();
+            case protobuf::Constant::ValueCase::kBoolean:
+                return constant.boolean();
+            default:
+                throw std::runtime_error("Invalid constant type");
+            }
+        }
     }
-    else
+    if constexpr (!detail::is_constant_v<Metric>)
     {
         auto offset = get_offset(m);
         assert(offset < m_value_bytes);
-        return get_value<Metric>(m_value_data + offset,
-                                 m_metadata.endianness() ==
-                                     protobuf::Endianness::BIG);
+        auto data = m_value_data + offset;
+        assert(data != nullptr);
+        if (data[0] == 0)
+        {
+            // The metric is unset
+            return std::nullopt;
+        }
+
+        if (m_metadata.endianness() == protobuf::Endianness::BIG)
+        {
+            return endian::big_endian::get<typename Metric::type>(data + 1);
+        }
+        else
+        {
+            return endian::little_endian::get<typename Metric::type>(data + 1);
+        }
     }
 }
 
@@ -227,16 +210,15 @@ template auto view::value<abacus::boolean>(const std::string& name) const
 template auto view::value<abacus::enum8>(const std::string& name) const
     -> std::optional<abacus::enum8::type>;
 // Constants
-template auto view::value<abacus::constant::uint64>(const std::string& name)
-    const -> std::optional<abacus::constant::uint64::type>;
-template auto view::value<abacus::constant::int64>(const std::string& name)
-    const -> std::optional<abacus::constant::int64::type>;
-template auto view::value<abacus::constant::float64>(const std::string& name)
-    const -> std::optional<abacus::constant::float64::type>;
-template auto view::value<abacus::constant::boolean>(const std::string& name)
-    const -> std::optional<abacus::constant::boolean::type>;
+template auto view::value<abacus::constant::uint64>(
+    const std::string& name) const -> abacus::constant::uint64::type;
+template auto view::value<abacus::constant::int64>(
+    const std::string& name) const -> abacus::constant::int64::type;
+template auto view::value<abacus::constant::float64>(
+    const std::string& name) const -> abacus::constant::float64::type;
+template auto view::value<abacus::constant::boolean>(
+    const std::string& name) const -> abacus::constant::boolean::type;
 template auto view::value<abacus::constant::str>(const std::string& name) const
-    -> std::optional<abacus::constant::str::type>;
-
+    -> abacus::constant::str::type;
 }
 }
