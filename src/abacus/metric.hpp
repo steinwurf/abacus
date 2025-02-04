@@ -29,6 +29,7 @@ inline namespace STEINWURF_ABACUS_VERSION
 template <typename Metric>
 struct metric
 {
+    /// The type used to store the value
     using value_type = typename Metric::type;
 
     /// Default constructor
@@ -37,7 +38,6 @@ struct metric
     /// Constructor
     /// @param memory The memory to use for the metric, note that the memory
     ///        must be at least sizeof(value_type) + 1 bytes long.
-    /// @param value The initial value of the metric
     metric(uint8_t* memory)
     {
         assert(memory != nullptr);
@@ -154,7 +154,6 @@ struct metric<enum8>
     /// Constructor
     /// @param memory The memory to use for the metric, note that the memory
     ///        must be at least sizeof(value_type) + 1 bytes long.
-    /// @param value The initial value of the metric
     metric(uint8_t* memory)
     {
         assert(memory != nullptr);
@@ -240,7 +239,6 @@ struct metric<boolean>
     /// Constructor
     /// @param memory The memory to use for the metric, note that the memory
     ///        must be at least sizeof(value_type) + 1 bytes long.
-    /// @param value The initial value of the metric
     metric(uint8_t* memory)
     {
         assert(memory != nullptr);
