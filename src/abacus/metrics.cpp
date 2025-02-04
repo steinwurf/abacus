@@ -249,7 +249,7 @@ metrics::metrics(const std::map<name, abacus::info>& infos)
                     // represents whether the metric is set or not.
                     m_value_bytes += 1;
                 },
-                [&](const constant& m)
+                [this, &metric, name](const constant& m)
                 {
                     auto* typed_metric = metric.mutable_constant();
                     typed_metric->set_description(m.description.value);
