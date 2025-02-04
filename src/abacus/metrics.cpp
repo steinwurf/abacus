@@ -53,9 +53,9 @@ metrics::metrics(const std::map<name, abacus::info>& infos)
     for (auto [name, info] : infos)
     {
         protobuf::Metric metric;
-
+        std::string name_str = name.value;
         // Save the offset of the metric
-        m_offsets.emplace(name.value, m_value_bytes);
+        m_offsets.emplace(name_str, m_value_bytes);
 
         std::visit(
             detail::overload{
@@ -249,7 +249,7 @@ metrics::metrics(const std::map<name, abacus::info>& infos)
                     // represents whether the metric is set or not.
                     m_value_bytes += 1;
                 },
-                [this, &metric, name](const constant& m)
+                [&](const constant& m)
                 {
                     auto* typed_metric = metric.mutable_constant();
                     typed_metric->set_description(m.description.value);
@@ -273,7 +273,7 @@ metrics::metrics(const std::map<name, abacus::info>& infos)
                             [](const auto&)
                             { assert(false && "Unsupported constant type"); }},
                         m.value);
-                    m_initialized[name.value] = true;
+                    m_initialized[name_str] = true;
                 },
                 [&](const auto&)
                 { assert(false && "Unsupported metric type"); }},
