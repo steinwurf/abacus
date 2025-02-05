@@ -35,7 +35,7 @@ void integer_test()
     EXPECT_FALSE(m.has_value());
 }
 
-TEST(test_info, integer)
+TEST(test_metric, integer)
 {
     integer_test<abacus::uint64>();
     integer_test<abacus::int64>();
@@ -67,14 +67,14 @@ void floating_point_test()
     EXPECT_FALSE(m.has_value());
 }
 
-TEST(test_info, floating_point)
+TEST(test_metric, floating_point)
 {
 
     floating_point_test<abacus::float64>();
     floating_point_test<abacus::float32>();
 }
 
-TEST(test_info, boolean)
+TEST(test_metric, boolean)
 {
 
     uint8_t data[sizeof(bool) + 1];
@@ -103,7 +103,7 @@ enum class test_enum
 };
 }
 
-TEST(test_info, enum8)
+TEST(test_metric, enum8)
 {
     uint8_t data[sizeof(uint8_t) + 1];
     std::memset(data, 0, sizeof(data));
