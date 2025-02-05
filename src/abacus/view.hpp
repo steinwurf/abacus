@@ -5,14 +5,12 @@
 
 #pragma once
 
-#include <cassert>
-#include <map>
-#include <vector>
+#include <cstdint>
+#include <optional>
+#include <string>
 
-#include "kind.hpp"
-#include "max.hpp"
-#include "min.hpp"
-#include "type.hpp"
+#include "detail/is_constant.hpp"
+#include "protobuf/metrics.pb.h"
 #include "version.hpp"
 
 namespace abacus
@@ -26,162 +24,65 @@ inline namespace STEINWURF_ABACUS_VERSION
 /// copied to a data buffer. abacus::view can then be used to extract the
 /// information from the metrics-data.
 ///
-/// The class cannot manipulate the memory, only access the
-/// pointed to values
+/// The class cannot manipulate the memory, only access the values.
 ///
 /// Note that this class has no constructor, so it can only be declared and
-/// then view.set_meta_data() can be called to initialize the view with the
+/// then view.set_metadata() can be called to initialize the view with the
 /// meta data, subsequently view.set_value_data() can be called to populate
 /// the view with the value data. To update the view with new value data
 /// view.set_value_data() can be called again.
 class view
 {
-
 public:
-    /// Sets the meta data pointer
-    /// @param meta_data The meta data pointer
-    void set_meta_data(const uint8_t* meta_data);
+    /// Sets the meta data
+    /// @param metadata The meta data
+    /// @return true if the meta data was unpacked correctly otherwise false
+    [[nodiscard]]
+    auto set_metadata(const protobuf::MetricsMetadata& metadata) -> bool;
 
     /// Sets the value data pointer
     /// @param value_data The value data pointer
-    void set_value_data(const uint8_t* value_data);
-
-    /// Gets the meta data pointer
-    /// @return The meta data pointer
-    const uint8_t* meta_data() const;
+    /// @param value_bytes The value data size in bytes
+    /// @return true if the hash is correct otherwise false
+    [[nodiscard]] auto set_value_data(const uint8_t* value_data,
+                                      std::size_t value_bytes) -> bool;
 
     /// Gets the value data pointer
     /// @return The value data pointer
     const uint8_t* value_data() const;
 
-    /// Gets the meta data size in bytes
-    /// @return The meta data size in bytes
-    std::size_t meta_bytes() const;
-
     /// Gets the value data size in bytes
     /// @return The value data size in bytes
     std::size_t value_bytes() const;
 
-    /// @return the number of metrics from in a metrics data pointer
-    auto count() const -> uint16_t;
+    /// Gets the metric
+    /// @param name The name of the metric
+    /// @return The metric
+    const protobuf::Metric& metric(const std::string& name) const;
 
-    /// Gets the protocol version of the metrics
-    /// @return The protocol version of the metrics
-    auto protocol_version() const -> uint8_t;
+    /// Gets the meta data
+    /// @return The meta data
+    auto metadata() const -> const protobuf::MetricsMetadata&;
 
-    /// @returns true if the metric is initialized, that is if
-    /// initialize_metric() has been called for the given index.
-    /// @param index The index of the metric to check. Must be less than
-    /// count().
-    auto is_initialized(std::size_t index) const -> bool;
-
-    /// @returns the name of the metric at the given index.
-    /// The name is not written into memory until the metric is initialized with
-    /// either initialize_metric<>() or initialize_constant().
-    /// @param index The index of the metric to check. Must be less than
-    /// count().
-    auto name(std::size_t index) const -> std::string;
-
-    /// @returns the description of the metric at the given index.
-    /// @param index The index of the metric to check. Must be less than
-    /// count() and initialized with initialize_metric<>() or
-    /// initialize_constant().
-    auto description(std::size_t index) const -> std::string;
-
-    /// @returns the unit of the metric at the given index.
-    /// @param index The index of the metric to check. Must be less than
-    /// count() and initialized with initialize_metric<>() or
-    /// initialize_constant().
-    auto unit(std::size_t index) const -> std::string;
-
-    /// @returns the type of the metric at the given index.
-    /// @param index The index of the metric to check. Must be less than
-    /// count().
-    auto type(std::size_t index) const -> abacus::type;
-
-    /// @returns true if the metric at the given index is a constant, otherwise
-    /// false.
-    /// @param index The index of the metric to check. Must be less than
-    /// count().
-    auto kind(std::size_t index) const -> abacus::kind;
-
-    /// @returns the minimum value of the metric at the given index.
-    /// @param index The index of the metric to check. Must be less than
-    /// count() and initialized with initialize_metric<>() or
-    /// initialize_constant().
-    auto min(std::size_t index) const -> abacus::min;
-
-    /// @returns the maximum value of the metric at the given index.
-    /// @param index The index of the metric to check. Must be less than
-    /// count() and initialized with initialize_metric<>() or
-    /// initialize_constant().
-    auto max(std::size_t index) const -> abacus::max;
-
-    /// Copy the value of the uint64_t metric into a passed reference. This is
-    /// used to extract the values during runtime.
-    ///
-    /// Make sure that the type and index are correct using type()
-    /// and index() to get the correct index and
-    /// type. Please do not hard-code these values, as this may break with
-    /// changes to your code.
-    ///
-    /// @param index The index of the metric to copy. Must be less than
-    /// count().
-    /// @param value The variable to copy the value into. A uint64_t reference.
-    void value(std::size_t index, uint64_t& value) const;
-
-    /// Copy the value of the int64_t metric into a passed reference. This is
-    /// used to extract the values during runtime.
-    ///
-    /// Make sure that the type and index are correct using type()
-    /// and index() to get the correct index and
-    /// type. Please do not hard-code these values, as this may break with
-    /// changes to your code.
-    ///
-    /// @param index The index of the metric to copy. Must be less than
-    /// count().
-    /// @param value The variable to copy the value into. A int64_t reference.
-    void value(std::size_t index, int64_t& value) const;
-
-    /// Copy the value of the double metric into a passed reference. This is
-    /// used to extract the values during runtime.
-    ///
-    /// Make sure that the type and index are correct using type()
-    /// and index() to get the correct index and
-    /// type. Please do not hard-code these values, as this may break with
-    /// changes to your code.
-    ///
-    /// @param index The index of the metric to copy. Must be less than
-    /// count().
-    /// @param value The variable to copy the value into. A double reference.
-    void value(std::size_t index, double& value) const;
-
-    /// Copy the value of the bool metric into a passed reference. This is used
-    /// to extract the values during runtime.
-    ///
-    /// Make sure that the type and index are correct using type()
-    /// and index() to get the correct index and
-    /// type. Please do not hard-code these values, as this may break with
-    /// changes to your code.
-    ///
-    /// @param index The index of the metric to copy. Must be less than
-    /// count().
-    /// @param value The variable to copy the value into. A bool reference.
-    void value(std::size_t index, bool& value) const;
-
-    /// @param name The name of the counter to get the index of
-    /// @return The index of the counter with the given name
-    auto index(const std::string& name) const -> std::size_t;
+    /// Gets the value of a metric
+    /// @param name The name of the metric
+    /// @return The value of the metric, if the metric is a constant the value
+    ///         is returned directly, otherwise an optional is returned
+    template <class Metric>
+    auto value(const std::string& name) const
+        -> std::conditional_t<detail::is_constant_v<Metric>,
+                              typename Metric::type,
+                              std::optional<typename Metric::type>>;
 
 private:
-    /// The meta data pointer
-    const uint8_t* m_meta_data;
+    /// The meta data
+    protobuf::MetricsMetadata m_metadata;
 
     /// The value data pointer
     const uint8_t* m_value_data;
 
-    /// Map to get index from names
-    std::map<std::string, std::size_t> m_name_to_index;
+    /// The value data size in bytes
+    std::size_t m_value_bytes;
 };
 }
 }

@@ -6,25 +6,56 @@
 #include <bourne/json.hpp>
 
 #include "detail/to_json.hpp"
+#include "parse_metadata.hpp"
+#include "protobuf/metrics.pb.h"
 #include "to_json.hpp"
 
 namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
+
+auto to_json(const uint8_t* metadata_data, std::size_t metadata_bytes,
+             const uint8_t* value_data, std::size_t value_bytes,
+             bool minimal) -> std::string
+{
+    view v;
+    auto parsed = parse_metadata(metadata_data, metadata_bytes);
+    if (!parsed.has_value())
+    {
+        return "";
+    }
+
+    if (v.set_metadata(parsed.value()))
+    {
+        if (v.set_value_data(value_data, value_bytes))
+        {
+            return to_json(v, minimal);
+        }
+    }
+    return "";
+}
+
+auto to_json(const protobuf::MetricsMetadata& metadata,
+             const uint8_t* value_data, std::size_t value_bytes,
+             bool minimal) -> std::string
+{
+    view v;
+    if (v.set_metadata(metadata))
+    {
+        if (v.set_value_data(value_data, value_bytes))
+        {
+            return to_json(v, minimal);
+        }
+    }
+    return "";
+}
+
 auto to_json(const view& view, bool minimal) -> std::string
 {
     bourne::json json = detail::to_json(view, minimal);
     return json.dump();
 }
 
-auto to_json(const uint8_t* meta_data, const uint8_t* value_data, bool minimal)
-    -> std::string
-{
-    view v;
-    v.set_meta_data(meta_data);
-    v.set_value_data(value_data);
-    return to_json(v, minimal);
-}
 }
 }

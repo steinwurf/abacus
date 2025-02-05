@@ -81,6 +81,7 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
   # Build executables
   add_executable(metrics_simple examples/metrics_simple.cpp)
   target_link_libraries(metrics_simple abacus)
+  target_link_libraries(metrics_simple steinwurf::endian)
   target_link_libraries(metrics_simple steinwurf::protobuf)
 
   enable_testing()
@@ -107,4 +108,23 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
     steinwurf::protobuf)
 
   add_test(abacus_tests abacus_tests)
+
+  # Google Benchmark dependency
+  set(BENCHMARK_ENABLE_TESTING
+    OFF
+    CACHE INTERNAL "Disable gbenchmark test" FORCE)
+
+  if(NOT TARGET benchmark)
+    add_subdirectory("${STEINWURF_RESOLVE}/gbenchmark-source")
+  endif()
+
+  # Build benchmark executable
+  file(GLOB_RECURSE abacus_benchmark_sources ./benchmark/main.cpp)
+  add_executable(abacus_benchmark ${abacus_benchmark_sources})
+  target_link_libraries(abacus_benchmark benchmark)
+  target_link_libraries(abacus_benchmark
+    steinwurf::abacus
+    steinwurf::endian
+    steinwurf::bourne
+    steinwurf::protobuf)
 endif()

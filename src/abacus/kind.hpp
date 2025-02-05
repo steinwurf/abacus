@@ -5,32 +5,22 @@
 
 #pragma once
 
+#include "protobuf/metrics.pb.h"
 #include "version.hpp"
-#include <cstdint>
 
 namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-/// Enum used for identifying various metric flags.
-enum class kind : uint8_t
+/// The kind of metric
+enum class kind
 {
-    /// A counter is a cumulative metric that represents a single monotonically
-    /// increasing counter whose value can only increase or be reset to zero on
-    /// restart. For example, you can use a counter to represent the number of
-    /// requests served, tasks completed, or errors.
-    counter = 0U,
-
-    /// A constant is a metric that represents a single numerical value that
-    /// never changes.
-    constant,
-
-    /// A gauge is a metric that represents a single numerical value that can
-    /// arbitrarily go up and down.
-    /// Gauges are typically used for measured values like temperatures or
-    /// current memory usage, but also "counts" that can go up and down, like
-    /// the number of concurrent requests.
-    gauge,
+    /// A gauge metric. This is a metric can can be both incremented and
+    /// decremented.
+    gauge = abacus::protobuf::GAUGE,
+    /// A counter metric. This is a metric that can only be incremented.
+    counter = abacus::protobuf::COUNTER
 };
+
 }
 }

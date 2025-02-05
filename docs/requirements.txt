@@ -115,5 +115,5 @@ versjon==2.3.0
     # via -r docs/requirements.in
 virtualenv==20.17.1
     # via giit
-wurfapi==9.0.0
+wurfapi==9.1.1
     # via -r docs/requirements.in
