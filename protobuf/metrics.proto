@@ -88,8 +88,8 @@ message Enum8Metric {
     }
     uint32 offset = 1;                 // Offset into packed memory for the value
     string description = 2;            // Metric description
-    map<uint32, EnumValue> values = 4; // Mapping from packed index to enum info
-    optional string unit = 5;          // Unit of measurement
+    map<uint32, EnumValue> values = 3; // Mapping from packed index to enum info
+    optional string unit = 4;          // Unit of measurement
 }
 
 
@@ -98,12 +98,12 @@ message Constant{
     oneof value {
         uint64 uint64 = 1;    // Unsigned 64-bit constant value
         int64 int64 = 2;      // Signed 64-bit constant value
-        double float64 = 6;    // 64-bit floating-point constant value
-        bool boolean = 7;     // Boolean constant value
-        string string = 9;    // String constant value
+        double float64 = 3;    // 64-bit floating-point constant value
+        bool boolean = 4;     // Boolean constant value
+        string string = 5;    // String constant value
     }
-    string description = 10;   // Metric description
-    optional string unit = 11; // Unit of measurement
+    string description = 6;   // Metric description
+    optional string unit = 7; // Unit of measurement
 }
 
 // Metadata for a single metric

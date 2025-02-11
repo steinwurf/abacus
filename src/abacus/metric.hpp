@@ -87,6 +87,31 @@ struct metric
         return *this;
     }
 
+    /// Assign an optional value to the metric
+    /// @param value The value to assign, if the value is not set the metric
+    ///        will be reset.
+    auto set_value(std::optional<value_type> value) -> metric&
+    {
+        if (value)
+        {
+            return set_value(*value);
+        }
+        else
+        {
+            reset();
+        }
+
+        return *this;
+    }
+
+    /// Assign the metric a new optional value
+    /// @param value The value to assign if the value is not set the metric
+    ///        will be reset.
+    auto operator=(std::optional<value_type> value) -> metric&
+    {
+        return set_value(value);
+    }
+
     /// Assign the metric a new value
     /// @param value The value to assign
     /// @return the metric with the new value
@@ -192,8 +217,7 @@ struct metric<enum8>
     template <typename T>
     auto set_value(T value) -> metric&
     {
-        // @todo enable again
-        // static_assert(std::is_enum_v<T>);
+        static_assert(std::is_enum_v<T>);
 
         assert(static_cast<int64_t>(value) <=
                    std::numeric_limits<uint8_t>::max() &&
@@ -213,6 +237,33 @@ struct metric<enum8>
     /// Assign the metric a new value
     template <class T>
     auto operator=(T value) -> metric&
+    {
+        return set_value(value);
+    }
+
+    /// Assign an optional value to the metric
+    /// @param value The value to assign, if the value is not set the metric
+    ///        will be reset.
+    template <typename T>
+    auto set_value(std::optional<T> value) -> metric&
+    {
+        if (value)
+        {
+            return set_value(*value);
+        }
+        else
+        {
+            reset();
+        }
+
+        return *this;
+    }
+
+    /// Assign the metric a new optional value
+    /// @param value The value to assign if the value is not set the metric
+    ///        will be reset.
+    template <typename T>
+    auto operator=(std::optional<T> value) -> metric&
     {
         return set_value(value);
     }
@@ -283,6 +334,31 @@ struct metric<boolean>
     /// @param value The value to assign
     /// @return the metric with the new value
     auto operator=(bool value) -> metric&
+    {
+        return set_value(value);
+    }
+
+    /// Assign an optional value to the metric
+    /// @param value The value to assign, if the value is not set the metric
+    ///        will be reset.
+    auto set_value(std::optional<bool> value) -> metric&
+    {
+        if (value)
+        {
+            return set_value(*value);
+        }
+        else
+        {
+            reset();
+        }
+
+        return *this;
+    }
+
+    /// Assign the metric a new optional value
+    /// @param value The value to assign if the value is not set the metric
+    ///        will be reset.
+    auto operator=(std::optional<bool> value) -> metric&
     {
         return set_value(value);
     }

@@ -13,6 +13,17 @@
 
 #include <google/protobuf/util/message_differencer.h>
 
+namespace
+{
+enum class test_enum
+{
+    value0 = 0,
+    value1 = 1,
+    value2 = 2,
+    value3 = 3
+};
+}
+
 TEST(test_view, api)
 {
     std::string name0 = "metric0";
@@ -82,7 +93,7 @@ TEST(test_view, api)
     // Update metrics
     metric0 = 9000U;
     metric1 = -1000;
-    metric3 = 2;
+    metric3 = test_enum::value2;
 
     // Check that the view is not updated
     EXPECT_FALSE(view_value0.has_value());
@@ -107,5 +118,5 @@ TEST(test_view, api)
     view_value3 = view.value<abacus::enum8>(name3);
 
     EXPECT_TRUE(view_value3.has_value());
-    EXPECT_EQ(2, view_value3.value());
+    EXPECT_EQ(test_enum::value2, (test_enum)view_value3.value());
 }

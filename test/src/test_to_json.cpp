@@ -13,6 +13,17 @@
 
 #include <bourne/json.hpp>
 
+namespace
+{
+enum class test_enum
+{
+    value0 = 0,
+    value1 = 1,
+    value2 = 2,
+    value3 = 3
+};
+}
+
 static const char* expected_json_minimal = R"({
   "metric0" : 42,
   "metric1" : -42,
@@ -56,7 +67,8 @@ TEST(test_to_json, to_json_minimal)
 
     auto m0 = metrics.initialize<abacus::uint64>(name0).set_value(42);
     auto m1 = metrics.initialize<abacus::int64>(name1).set_value(-42);
-    auto m3 = metrics.initialize<abacus::enum8>(name3).set_value(2);
+    auto m3 =
+        metrics.initialize<abacus::enum8>(name3).set_value(test_enum::value2);
 
     (void)m0;
     (void)m1;
@@ -135,17 +147,6 @@ static const char* expected_json = R"({
     "value" : null
   }
 })";
-
-namespace
-{
-enum class test_enum
-{
-    value0 = 0,
-    value1 = 1,
-    value2 = 2,
-    value3 = 3
-};
-}
 
 TEST(test_to_json, to_json)
 {

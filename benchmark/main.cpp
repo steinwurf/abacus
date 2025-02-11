@@ -81,7 +81,7 @@ static void BM_AssignMetrics(benchmark::State& state)
         ++m3;
         m4 = false;
         --m5;
-        m6 = 4;
+        m6 = test_enum::value2;
     }
 
     state.SetItemsProcessed(state.iterations());

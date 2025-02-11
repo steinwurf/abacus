@@ -33,6 +33,15 @@ void integer_test()
     EXPECT_EQ(m.value(), type{20});
     m.reset();
     EXPECT_FALSE(m.has_value());
+
+    std::optional<type> new_value = 10;
+    m = new_value;
+    EXPECT_TRUE(m.has_value());
+    EXPECT_EQ(m.value(), type{10});
+
+    new_value.reset();
+    m = new_value;
+    EXPECT_FALSE(m.has_value());
 }
 
 TEST(test_metric, integer)
@@ -65,6 +74,15 @@ void floating_point_test()
     EXPECT_EQ(m.value(), 20.0);
     m.reset();
     EXPECT_FALSE(m.has_value());
+
+    std::optional<type> new_value = 10.0;
+    m = new_value;
+    EXPECT_TRUE(m.has_value());
+    EXPECT_EQ(m.value(), type{10.0});
+
+    new_value.reset();
+    m = new_value;
+    EXPECT_FALSE(m.has_value());
 }
 
 TEST(test_metric, floating_point)
@@ -90,6 +108,15 @@ TEST(test_metric, boolean)
     m = false;
     EXPECT_EQ(m.value(), false);
     m.reset();
+    EXPECT_FALSE(m.has_value());
+
+    std::optional<bool> new_value = true;
+    m = new_value;
+    EXPECT_TRUE(m.has_value());
+    EXPECT_TRUE(m.value());
+
+    new_value.reset();
+    m = new_value;
     EXPECT_FALSE(m.has_value());
 }
 namespace
@@ -130,6 +157,19 @@ TEST(test_metric, enum8)
     EXPECT_EQ(m.value<test_enum>(), test_enum::value2);
     m = test_enum::value3;
     EXPECT_EQ(m.value<test_enum>(), test_enum::value3);
+
+    m.reset();
+    EXPECT_FALSE(m.has_value());
+
+    std::optional<test_enum> new_value = test_enum::value0;
+
+    m = new_value;
+    EXPECT_TRUE(m.has_value());
+    EXPECT_EQ(m.value<test_enum>(), test_enum::value0);
+
+    new_value.reset();
+    m = new_value;
+    EXPECT_FALSE(m.has_value());
 }
 
 TEST(test_metric, float_death1)
