@@ -8,6 +8,8 @@
 #include <cstring>
 #include <gtest/gtest.h>
 
+#include <platform/config.hpp>
+
 #include <abacus/info.hpp>
 #include <abacus/metric.hpp>
 
@@ -172,6 +174,10 @@ TEST(test_metric, enum8)
     EXPECT_FALSE(m.has_value());
 }
 
+/// Disable these tests on windows as they produce the compile error C2124
+/// "divide or mod by zero"
+#ifndef PLATFORM_WINDOWS
+
 TEST(test_metric, float_death1)
 {
     uint8_t data[9];
@@ -291,3 +297,5 @@ TEST(test_metric, float_death12)
     // Check that that assignment to -Inf is not allowed
     EXPECT_DEATH(double_metric -= 1 / -0.0, "");
 }
+
+#endif
