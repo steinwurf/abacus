@@ -2118,12 +2118,12 @@ class Enum8Metric final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kValuesFieldNumber = 4,
+    kValuesFieldNumber = 3,
     kDescriptionFieldNumber = 2,
-    kUnitFieldNumber = 5,
+    kUnitFieldNumber = 4,
     kOffsetFieldNumber = 1,
   };
-  // map<uint32, .abacus.protobuf.Enum8Metric.EnumValue> values = 4;
+  // map<uint32, .abacus.protobuf.Enum8Metric.EnumValue> values = 3;
   int values_size() const;
   private:
   int _internal_values_size() const;
@@ -2154,7 +2154,7 @@ class Enum8Metric final :
   std::string* _internal_mutable_description();
 
   public:
-  // optional string unit = 5;
+  // optional string unit = 4;
   bool has_unit() const;
   void clear_unit() ;
   const std::string& unit() const;
@@ -2186,7 +2186,7 @@ class Enum8Metric final :
   class _Internal;
 
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<3, 4, 2, 51, 2> _table_;
+  static const ::google::protobuf::internal::TcParseTable<2, 4, 2, 51, 2> _table_;
   template <typename T> friend class ::google::protobuf::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
@@ -2260,9 +2260,9 @@ class Constant final :
   enum ValueCase {
     kUint64 = 1,
     kInt64 = 2,
-    kFloat64 = 6,
-    kBoolean = 7,
-    kString = 9,
+    kFloat64 = 3,
+    kBoolean = 4,
+    kString = 5,
     VALUE_NOT_SET = 0,
   };
 
@@ -2343,15 +2343,15 @@ class Constant final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kDescriptionFieldNumber = 10,
-    kUnitFieldNumber = 11,
+    kDescriptionFieldNumber = 6,
+    kUnitFieldNumber = 7,
     kUint64FieldNumber = 1,
     kInt64FieldNumber = 2,
-    kFloat64FieldNumber = 6,
-    kBooleanFieldNumber = 7,
-    kStringFieldNumber = 9,
+    kFloat64FieldNumber = 3,
+    kBooleanFieldNumber = 4,
+    kStringFieldNumber = 5,
   };
-  // string description = 10;
+  // string description = 6;
   void clear_description() ;
   const std::string& description() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -2367,7 +2367,7 @@ class Constant final :
   std::string* _internal_mutable_description();
 
   public:
-  // optional string unit = 11;
+  // optional string unit = 7;
   bool has_unit() const;
   void clear_unit() ;
   const std::string& unit() const;
@@ -2406,7 +2406,7 @@ class Constant final :
   void _internal_set_int64(::int64_t value);
 
   public:
-  // double float64 = 6;
+  // double float64 = 3;
   bool has_float64() const;
   void clear_float64() ;
   double float64() const;
@@ -2417,7 +2417,7 @@ class Constant final :
   void _internal_set_float64(double value);
 
   public:
-  // bool boolean = 7;
+  // bool boolean = 4;
   bool has_boolean() const;
   void clear_boolean() ;
   bool boolean() const;
@@ -2428,7 +2428,7 @@ class Constant final :
   void _internal_set_boolean(bool value);
 
   public:
-  // string string = 9;
+  // string string = 5;
   bool has_string() const;
   void clear_string() ;
   const std::string& string() const;
@@ -4776,7 +4776,7 @@ inline void Enum8Metric::set_allocated_description(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Enum8Metric.description)
 }
 
-// map<uint32, .abacus.protobuf.Enum8Metric.EnumValue> values = 4;
+// map<uint32, .abacus.protobuf.Enum8Metric.EnumValue> values = 3;
 inline int Enum8Metric::_internal_values_size() const {
   return _internal_values().size();
 }
@@ -4803,7 +4803,7 @@ inline ::google::protobuf::Map<::uint32_t, ::abacus::protobuf::Enum8Metric_EnumV
   return _internal_mutable_values();
 }
 
-// optional string unit = 5;
+// optional string unit = 4;
 inline bool Enum8Metric::has_unit() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -4946,7 +4946,7 @@ inline void Constant::_internal_set_int64(::int64_t value) {
   _impl_.value_.int64_ = value;
 }
 
-// double float64 = 6;
+// double float64 = 3;
 inline bool Constant::has_float64() const {
   return value_case() == kFloat64;
 }
@@ -4981,7 +4981,7 @@ inline void Constant::_internal_set_float64(double value) {
   _impl_.value_.float64_ = value;
 }
 
-// bool boolean = 7;
+// bool boolean = 4;
 inline bool Constant::has_boolean() const {
   return value_case() == kBoolean;
 }
@@ -5016,7 +5016,7 @@ inline void Constant::_internal_set_boolean(bool value) {
   _impl_.value_.boolean_ = value;
 }
 
-// string string = 9;
+// string string = 5;
 inline bool Constant::has_string() const {
   return value_case() == kString;
 }
@@ -5099,7 +5099,7 @@ inline void Constant::set_allocated_string(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Constant.string)
 }
 
-// string description = 10;
+// string description = 6;
 inline void Constant::clear_description() {
   _impl_.description_.ClearToEmpty();
 }
@@ -5150,7 +5150,7 @@ inline void Constant::set_allocated_description(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:abacus.protobuf.Constant.description)
 }
 
-// optional string unit = 11;
+// optional string unit = 7;
 inline bool Constant::has_unit() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;

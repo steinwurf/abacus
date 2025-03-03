@@ -8,8 +8,6 @@
 #include <cstring>
 #include <gtest/gtest.h>
 
-#include <platform/config.hpp>
-
 #include <abacus/info.hpp>
 #include <abacus/metric.hpp>
 
@@ -176,7 +174,7 @@ TEST(test_metric, enum8)
 
 /// Disable these tests on windows as they produce the compile error C2124
 /// "divide or mod by zero"
-#ifndef PLATFORM_WINDOWS
+#ifndef _WIN32
 
 TEST(test_metric, float_death1)
 {

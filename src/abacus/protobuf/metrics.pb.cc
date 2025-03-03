@@ -665,16 +665,16 @@ const char descriptor_table_protodef_abacus_2fprotobuf_2fmetrics_2eproto[] PROTO
     "olMetric\022\016\n\006offset\030\001 \001(\r\022\023\n\013description\030"
     "\002 \001(\t\022\021\n\004unit\030\003 \001(\tH\000\210\001\001B\007\n\005_unit\"\244\002\n\013En"
     "um8Metric\022\016\n\006offset\030\001 \001(\r\022\023\n\013description"
-    "\030\002 \001(\t\0228\n\006values\030\004 \003(\0132(.abacus.protobuf"
-    ".Enum8Metric.ValuesEntry\022\021\n\004unit\030\005 \001(\tH\000"
+    "\030\002 \001(\t\0228\n\006values\030\003 \003(\0132(.abacus.protobuf"
+    ".Enum8Metric.ValuesEntry\022\021\n\004unit\030\004 \001(\tH\000"
     "\210\001\001\032C\n\tEnumValue\022\014\n\004name\030\001 \001(\t\022\030\n\013descri"
     "ption\030\002 \001(\tH\000\210\001\001B\016\n\014_description\032U\n\013Valu"
     "esEntry\022\013\n\003key\030\001 \001(\r\0225\n\005value\030\002 \001(\0132&.ab"
     "acus.protobuf.Enum8Metric.EnumValue:\0028\001B"
     "\007\n\005_unit\"\237\001\n\010Constant\022\020\n\006uint64\030\001 \001(\004H\000\022"
-    "\017\n\005int64\030\002 \001(\003H\000\022\021\n\007float64\030\006 \001(\001H\000\022\021\n\007b"
-    "oolean\030\007 \001(\010H\000\022\020\n\006string\030\t \001(\tH\000\022\023\n\013desc"
-    "ription\030\n \001(\t\022\021\n\004unit\030\013 \001(\tH\001\210\001\001B\007\n\005valu"
+    "\017\n\005int64\030\002 \001(\003H\000\022\021\n\007float64\030\003 \001(\001H\000\022\021\n\007b"
+    "oolean\030\004 \001(\010H\000\022\020\n\006string\030\005 \001(\tH\000\022\023\n\013desc"
+    "ription\030\006 \001(\t\022\021\n\004unit\030\007 \001(\tH\001\210\001\001B\007\n\005valu"
     "eB\007\n\005_unit\"\304\003\n\006Metric\022-\n\010constant\030\001 \001(\0132"
     "\031.abacus.protobuf.ConstantH\000\022/\n\006uint64\030\002"
     " \001(\0132\035.abacus.protobuf.UInt64MetricH\000\022-\n"
@@ -3644,13 +3644,13 @@ const char* Enum8Metric::_InternalParse(
 
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 4, 2, 51, 2> Enum8Metric::_table_ = {
+const ::_pbi::TcParseTable<2, 4, 2, 51, 2> Enum8Metric::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_._has_bits_),
     0, // no _extensions_
-    5, 56,  // max_field_number, fast_idx_mask
+    4, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967268,  // skipmap
+    4294967280,  // skipmap
     offsetof(decltype(_table_), field_entries),
     4,  // num_field_entries
     2,  // num_aux_entries
@@ -3658,19 +3658,15 @@ const ::_pbi::TcParseTable<3, 4, 2, 51, 2> Enum8Metric::_table_ = {
     &_Enum8Metric_default_instance_._instance,
     ::_pbi::TcParser::GenericFallback,  // fallback
   }, {{
-    {::_pbi::TcParser::MiniParse, {}},
+    // optional string unit = 4;
+    {::_pbi::TcParser::FastUS1,
+     {34, 0, 0, PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.unit_)}},
     // uint32 offset = 1;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Enum8Metric, _impl_.offset_), 63>(),
      {8, 63, 0, PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.offset_)}},
     // string description = 2;
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.description_)}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
-    // optional string unit = 5;
-    {::_pbi::TcParser::FastUS1,
-     {42, 0, 0, PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.unit_)}},
-    {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
@@ -3681,10 +3677,10 @@ const ::_pbi::TcParseTable<3, 4, 2, 51, 2> Enum8Metric::_table_ = {
     // string description = 2;
     {PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.description_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // map<uint32, .abacus.protobuf.Enum8Metric.EnumValue> values = 4;
+    // map<uint32, .abacus.protobuf.Enum8Metric.EnumValue> values = 3;
     {PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.values_), -1, 0,
     (0 | ::_fl::kFcRepeated | ::_fl::kMap)},
-    // optional string unit = 5;
+    // optional string unit = 4;
     {PROTOBUF_FIELD_OFFSET(Enum8Metric, _impl_.unit_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }}, {{
@@ -3720,7 +3716,7 @@ const ::_pbi::TcParseTable<3, 4, 2, 51, 2> Enum8Metric::_table_ = {
     target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
-  // map<uint32, .abacus.protobuf.Enum8Metric.EnumValue> values = 4;
+  // map<uint32, .abacus.protobuf.Enum8Metric.EnumValue> values = 3;
   if (!_internal_values().empty()) {
     using MapType = ::google::protobuf::Map<::uint32_t, ::abacus::protobuf::Enum8Metric_EnumValue>;
     using WireHelper = Enum8Metric_ValuesEntry_DoNotUse::Funcs;
@@ -3729,23 +3725,23 @@ const ::_pbi::TcParseTable<3, 4, 2, 51, 2> Enum8Metric::_table_ = {
     if (stream->IsSerializationDeterministic() && field.size() > 1) {
       for (const auto& entry : ::google::protobuf::internal::MapSorterFlat<MapType>(field)) {
         target = WireHelper::InternalSerialize(
-            4, entry.first, entry.second, target, stream);
+            3, entry.first, entry.second, target, stream);
       }
     } else {
       for (const auto& entry : field) {
         target = WireHelper::InternalSerialize(
-            4, entry.first, entry.second, target, stream);
+            3, entry.first, entry.second, target, stream);
       }
     }
   }
 
   cached_has_bits = _impl_._has_bits_[0];
-  // optional string unit = 5;
+  // optional string unit = 4;
   if (cached_has_bits & 0x00000001u) {
     const std::string& _s = this->_internal_unit();
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
         _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "abacus.protobuf.Enum8Metric.unit");
-    target = stream->WriteStringMaybeAliased(5, _s, target);
+    target = stream->WriteStringMaybeAliased(4, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -3765,7 +3761,7 @@ const ::_pbi::TcParseTable<3, 4, 2, 51, 2> Enum8Metric::_table_ = {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // map<uint32, .abacus.protobuf.Enum8Metric.EnumValue> values = 4;
+  // map<uint32, .abacus.protobuf.Enum8Metric.EnumValue> values = 3;
   total_size += 1 * ::google::protobuf::internal::FromIntSize(_internal_values_size());
   for (const auto& entry : _internal_values()) {
     total_size += Enum8Metric_ValuesEntry_DoNotUse::Funcs::ByteSizeLong(entry.first, entry.second);
@@ -3776,7 +3772,7 @@ const ::_pbi::TcParseTable<3, 4, 2, 51, 2> Enum8Metric::_table_ = {
                                     this->_internal_description());
   }
 
-  // optional string unit = 5;
+  // optional string unit = 4;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -4021,9 +4017,9 @@ const ::_pbi::TcParseTable<1, 7, 0, 54, 2> Constant::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(Constant, _impl_._has_bits_),
     0, // no _extensions_
-    11, 8,  // max_field_number, fast_idx_mask
+    7, 8,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294965404,  // skipmap
+    4294967168,  // skipmap
     offsetof(decltype(_table_), field_entries),
     7,  // num_field_entries
     0,  // num_aux_entries
@@ -4031,12 +4027,12 @@ const ::_pbi::TcParseTable<1, 7, 0, 54, 2> Constant::_table_ = {
     &_Constant_default_instance_._instance,
     ::_pbi::TcParser::GenericFallback,  // fallback
   }, {{
-    // string description = 10;
+    // string description = 6;
     {::_pbi::TcParser::FastUS1,
-     {82, 63, 0, PROTOBUF_FIELD_OFFSET(Constant, _impl_.description_)}},
-    // optional string unit = 11;
+     {50, 63, 0, PROTOBUF_FIELD_OFFSET(Constant, _impl_.description_)}},
+    // optional string unit = 7;
     {::_pbi::TcParser::FastUS1,
-     {90, 0, 0, PROTOBUF_FIELD_OFFSET(Constant, _impl_.unit_)}},
+     {58, 0, 0, PROTOBUF_FIELD_OFFSET(Constant, _impl_.unit_)}},
   }}, {{
     65535, 65535
   }}, {{
@@ -4046,19 +4042,19 @@ const ::_pbi::TcParseTable<1, 7, 0, 54, 2> Constant::_table_ = {
     // int64 int64 = 2;
     {PROTOBUF_FIELD_OFFSET(Constant, _impl_.value_.int64_), _Internal::kOneofCaseOffset + 0, 0,
     (0 | ::_fl::kFcOneof | ::_fl::kInt64)},
-    // double float64 = 6;
+    // double float64 = 3;
     {PROTOBUF_FIELD_OFFSET(Constant, _impl_.value_.float64_), _Internal::kOneofCaseOffset + 0, 0,
     (0 | ::_fl::kFcOneof | ::_fl::kDouble)},
-    // bool boolean = 7;
+    // bool boolean = 4;
     {PROTOBUF_FIELD_OFFSET(Constant, _impl_.value_.boolean_), _Internal::kOneofCaseOffset + 0, 0,
     (0 | ::_fl::kFcOneof | ::_fl::kBool)},
-    // string string = 9;
+    // string string = 5;
     {PROTOBUF_FIELD_OFFSET(Constant, _impl_.value_.string_), _Internal::kOneofCaseOffset + 0, 0,
     (0 | ::_fl::kFcOneof | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // string description = 10;
+    // string description = 6;
     {PROTOBUF_FIELD_OFFSET(Constant, _impl_.description_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // optional string unit = 11;
+    // optional string unit = 7;
     {PROTOBUF_FIELD_OFFSET(Constant, _impl_.unit_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
@@ -4095,40 +4091,40 @@ const ::_pbi::TcParseTable<1, 7, 0, 54, 2> Constant::_table_ = {
     case kFloat64: {
       target = stream->EnsureSpace(target);
       target = ::_pbi::WireFormatLite::WriteDoubleToArray(
-          6, this->_internal_float64(), target);
+          3, this->_internal_float64(), target);
       break;
     }
     case kBoolean: {
       target = stream->EnsureSpace(target);
       target = ::_pbi::WireFormatLite::WriteBoolToArray(
-          7, this->_internal_boolean(), target);
+          4, this->_internal_boolean(), target);
       break;
     }
     case kString: {
       const std::string& _s = this->_internal_string();
       ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
           _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "abacus.protobuf.Constant.string");
-      target = stream->WriteStringMaybeAliased(9, _s, target);
+      target = stream->WriteStringMaybeAliased(5, _s, target);
       break;
     }
     default:
       break;
   }
-  // string description = 10;
+  // string description = 6;
   if (!this->_internal_description().empty()) {
     const std::string& _s = this->_internal_description();
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
         _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "abacus.protobuf.Constant.description");
-    target = stream->WriteStringMaybeAliased(10, _s, target);
+    target = stream->WriteStringMaybeAliased(6, _s, target);
   }
 
   cached_has_bits = _impl_._has_bits_[0];
-  // optional string unit = 11;
+  // optional string unit = 7;
   if (cached_has_bits & 0x00000001u) {
     const std::string& _s = this->_internal_unit();
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
         _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "abacus.protobuf.Constant.unit");
-    target = stream->WriteStringMaybeAliased(11, _s, target);
+    target = stream->WriteStringMaybeAliased(7, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -4148,13 +4144,13 @@ const ::_pbi::TcParseTable<1, 7, 0, 54, 2> Constant::_table_ = {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string description = 10;
+  // string description = 6;
   if (!this->_internal_description().empty()) {
     total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                     this->_internal_description());
   }
 
-  // optional string unit = 11;
+  // optional string unit = 7;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -4174,17 +4170,17 @@ const ::_pbi::TcParseTable<1, 7, 0, 54, 2> Constant::_table_ = {
           this->_internal_int64());
       break;
     }
-    // double float64 = 6;
+    // double float64 = 3;
     case kFloat64: {
       total_size += 9;
       break;
     }
-    // bool boolean = 7;
+    // bool boolean = 4;
     case kBoolean: {
       total_size += 2;
       break;
     }
-    // string string = 9;
+    // string string = 5;
     case kString: {
       total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                       this->_internal_string());
