@@ -1,4 +1,3 @@
-
 // Copyright (c) Steinwurf ApS 2020.
 // All Rights Reserved
 //
@@ -6,8 +5,8 @@
 
 #pragma once
 
-#include "../protobuf/metrics.pb.h"
-#include "../view.hpp"
+#include <cstdint>
+#include <type_traits>
 
 #include "../version.hpp"
 
@@ -15,10 +14,16 @@ namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-using metrics_message = abacus::protobuf::Metrics;
 namespace detail
 {
-auto to_protobuf(const view& view) -> metrics_message;
+// Variant overload visit helper
+template <typename... Ts>
+struct overload : Ts...
+{
+    using Ts::operator()...;
+};
+template <class... Ts>
+overload(Ts...) -> overload<Ts...>;
 }
 }
 }

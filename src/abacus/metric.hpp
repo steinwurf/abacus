@@ -8,354 +8,371 @@
 #include <cassert>
 #include <cmath>
 #include <cstdint>
+#include <cstring>
 
-#include "type.hpp"
+#include "boolean.hpp"
+#include "enum8.hpp"
+#include "float32.hpp"
+#include "float64.hpp"
+#include "int32.hpp"
+#include "int64.hpp"
+#include "uint32.hpp"
+#include "uint64.hpp"
 #include "version.hpp"
 
 namespace abacus
 {
 inline namespace STEINWURF_ABACUS_VERSION
 {
-/// Wrapper for the value of a counter.
-///
-/// See metric<abacus::type::uint64>,
-/// metric<abacus::type::int64>, metric<abacus::type::float64> and
-/// metric<abacus::type::boolean> for template specializations.
-template <abacus::type MetricType>
-class metric;
 
-/// Metric wrapping uint64_t value.
-template <>
-class metric<abacus::type::uint64>
+/// A class that can be used to store and manipulate the memory of a metric.
+template <typename Metric>
+struct metric
 {
-public:
-    /// The underlying data type
-    using value_type = uint64_t;
+    /// The type used to store the value
+    using value_type = typename Metric::type;
 
-public:
     /// Default constructor
     metric() = default;
 
-    /// Create a new counter value from the pointer
-    /// @param memory A pointer to a value
-
-    metric(uint64_t* memory) : m_memory(memory)
+    /// Constructor
+    /// @param memory The memory to use for the metric, note that the memory
+    ///        must be at least sizeof(value_type) + 1 bytes long.
+    metric(uint8_t* memory)
     {
-        assert(m_memory != nullptr);
+        assert(memory != nullptr);
+        m_memory = memory;
     }
 
-    /// Assign the counter a new value
-    /// @param value The value to assign
-    /// @return a counter with the new value
-    auto operator=(uint64_t value) -> metric<abacus::type::uint64>&
-    {
-        assert(is_initialized());
-        *m_memory = value;
-        return *this;
-    }
-
-    /// Increment the counter
-    /// @param value The value to add
-    /// @return The result of the arithmetic
-    auto operator+=(uint64_t value) -> metric<abacus::type::uint64>&
-    {
-        assert(is_initialized());
-        *m_memory += value;
-        return *this;
-    }
-
-    /// Decrement the counter
-    /// @param value The value to subtract
-    /// @return The result of the arithmetic
-    auto operator-=(uint64_t value) -> metric<abacus::type::uint64>&
-    {
-        assert(is_initialized());
-        *m_memory -= value;
-        return *this;
-    }
-
-    /// Increment the value of the counter
-    /// @return The result of the arithmetic
-    auto operator++() -> metric<abacus::type::uint64>&
-    {
-        assert(is_initialized());
-        *m_memory += 1;
-        return *this;
-    }
-
-    /// Decrement the value of the counter
-    /// @return The result of the arithmetic
-    auto operator--() -> metric<abacus::type::uint64>&
-    {
-        assert(is_initialized());
-        *m_memory -= 1;
-        return *this;
-    }
-
-    /// @return True if the metric has been assigned memory. False otherwise
+    /// Check if the metric is initialized
+    /// @return true if the metric is initialized
     auto is_initialized() const -> bool
     {
         return m_memory != nullptr;
     }
 
-    /// @return The value of the counter
-    auto value() const -> uint64_t
+    /// Check if the metric has a value
+    /// @return true if the metric has a value
+    auto has_value() const -> bool
     {
         assert(is_initialized());
-        return *m_memory;
+        return m_memory[0] == 1;
     }
 
-private:
+    /// Get the value of the metric
+    /// @return The value of the metric
+    auto value() const -> value_type
+    {
+        assert(has_value());
+        value_type value;
+        std::memcpy(&value, m_memory + 1, sizeof(value_type));
+        return value;
+    }
+
+    /// Assign a new value to the metric
+    /// @param value The value to assign
+    auto set_value(value_type value) -> metric&
+    {
+        assert(is_initialized());
+
+        if constexpr (std::is_floating_point_v<value_type>)
+        {
+            assert(!std::isnan(value) && "Cannot assign a NaN");
+            assert(!std::isinf(value) && "Cannot assign an Inf/-Inf value");
+        }
+
+        m_memory[0] = 1;
+        std::memcpy(m_memory + 1, &value, sizeof(value_type));
+
+        return *this;
+    }
+
+    /// Assign an optional value to the metric
+    /// @param value The value to assign, if the value is not set the metric
+    ///        will be reset.
+    auto set_value(std::optional<value_type> value) -> metric&
+    {
+        if (value)
+        {
+            return set_value(*value);
+        }
+        else
+        {
+            reset();
+        }
+
+        return *this;
+    }
+
+    /// Assign the metric a new optional value
+    /// @param value The value to assign if the value is not set the metric
+    ///        will be reset.
+    auto operator=(std::optional<value_type> value) -> metric&
+    {
+        return set_value(value);
+    }
+
+    /// Assign the metric a new value
+    /// @param value The value to assign
+    /// @return the metric with the new value
+    auto operator=(value_type value) -> metric&
+    {
+        return set_value(value);
+    }
+
+    /// Reset the metric. This will cause the metric to not have a value
+    auto reset() -> void
+    {
+        assert(is_initialized());
+        m_memory[0] = 0;
+    }
+
+public:
+    /// Arithmetic operators
+
+    /// Increment the metric
+    /// @param increment The value to add
+    /// @return The result of the arithmetic
+    auto operator+=(value_type increment) -> metric&
+    {
+        set_value(value() + increment);
+        return *this;
+    }
+
+    /// Decrement the metric
+    /// @param decrement The value to subtract
+    /// @return The result of the arithmetic
+    auto operator-=(value_type decrement) -> metric&
+    {
+        set_value(value() - decrement);
+        return *this;
+    }
+
+    /// Increment the value of the metric
+    /// @return The result of the arithmetic
+    auto operator++() -> metric&
+    {
+        set_value(value() + 1);
+        return *this;
+    }
+
+    /// Decrement the value of the metric
+    /// @return The result of the arithmetic
+    auto operator--() -> metric&
+    {
+        set_value(value() - 1);
+        return *this;
+    }
+
+protected:
     /// The metric memory
-    uint64_t* m_memory = nullptr;
+    uint8_t* m_memory = nullptr;
 };
 
-/// Metric wrapping int64_t value.
+/// Enum specializations
 template <>
-class metric<abacus::type::int64>
+struct metric<enum8>
 {
-public:
-    /// The underlying data type
-    using value_type = int64_t;
-
-public:
     /// Default constructor
     metric() = default;
 
-    /// Create a new counter value from the pointer
-    /// @param memory A pointer to a value
-    metric(int64_t* memory) : m_memory(memory)
+    /// Constructor
+    /// @param memory The memory to use for the metric, note that the memory
+    ///        must be at least sizeof(value_type) + 1 bytes long.
+    metric(uint8_t* memory)
     {
-        assert(m_memory != nullptr);
+        assert(memory != nullptr);
+        m_memory = memory;
     }
 
-    /// Assign the counter a new value
-    /// @param value The value to assign
-    /// @return a counter with the new value
-    auto operator=(int64_t value) -> metric<abacus::type::int64>&
-    {
-        assert(is_initialized());
-        *m_memory = value;
-        return *this;
-    }
-
-    /// Increment the counter
-    /// @param value The value to add
-    /// @return The result of the arithmetic
-    auto operator+=(int64_t value) -> metric<abacus::type::int64>&
-    {
-        assert(is_initialized());
-        *m_memory += value;
-        return *this;
-    }
-
-    /// Decrement the counter
-    /// @param value The value to subtract
-    /// @return The result of the arithmetic
-    auto operator-=(int64_t value) -> metric<abacus::type::int64>&
-    {
-        assert(is_initialized());
-        *m_memory -= value;
-        return *this;
-    }
-
-    /// Increment the value of the counter
-    /// @return The result of the arithmetic
-    auto operator++() -> metric<abacus::type::int64>&
-    {
-        assert(is_initialized());
-        *m_memory += 1;
-        return *this;
-    }
-
-    /// Decrement the value of the counter
-    /// @return The result of the arithmetic
-    auto operator--() -> metric<abacus::type::int64>&
-    {
-        assert(is_initialized());
-        *m_memory -= 1;
-        return *this;
-    }
-
-    /// @return True if the metric has been assigned memory. False otherwise
+    /// Check if the metric is initialized
+    /// @return true if the metric is initialized
     auto is_initialized() const -> bool
     {
         return m_memory != nullptr;
     }
 
-    /// @return The value of the counter
-    auto value() const -> int64_t
+    /// Check if the metric has a value
+    /// @return true if the metric has a value
+    auto has_value() const -> bool
     {
         assert(is_initialized());
-        return *m_memory;
+        return m_memory[0] == 1;
     }
 
-private:
+    /// The the value as a specific enum type
+    /// @return The value of the metric as the enum type
+    template <typename T>
+    auto value() const -> T
+    {
+        static_assert(std::is_enum_v<T>);
+
+        assert(has_value());
+
+        return static_cast<T>(m_memory[1]);
+    }
+
+    /// Assign a new value to the metric
+    /// @param value The value to assign
+    template <typename T>
+    auto set_value(T value) -> metric&
+    {
+        static_assert(std::is_enum_v<T>);
+
+        assert(static_cast<int64_t>(value) <=
+                   std::numeric_limits<uint8_t>::max() &&
+               "The value is too large to fit in the enum");
+        assert(static_cast<int64_t>(value) >=
+                   std::numeric_limits<uint8_t>::min() &&
+               "The value is too small to fit in the enum");
+
+        assert(is_initialized());
+
+        m_memory[0] = 1;
+        m_memory[1] = static_cast<uint8_t>(value);
+
+        return *this;
+    }
+
+    /// Assign the metric a new value
+    template <class T>
+    auto operator=(T value) -> metric&
+    {
+        return set_value(value);
+    }
+
+    /// Assign an optional value to the metric
+    /// @param value The value to assign, if the value is not set the metric
+    ///        will be reset.
+    template <typename T>
+    auto set_value(std::optional<T> value) -> metric&
+    {
+        if (value)
+        {
+            return set_value(*value);
+        }
+        else
+        {
+            reset();
+        }
+
+        return *this;
+    }
+
+    /// Assign the metric a new optional value
+    /// @param value The value to assign if the value is not set the metric
+    ///        will be reset.
+    template <typename T>
+    auto operator=(std::optional<T> value) -> metric&
+    {
+        return set_value(value);
+    }
+
+    /// Reset the metric. This will cause the metric to not have a value
+    auto reset() -> void
+    {
+        assert(is_initialized());
+        m_memory[0] = 0;
+    }
+
+protected:
     /// The metric memory
-    value_type* m_memory = nullptr;
+    uint8_t* m_memory = nullptr;
 };
 
-/// Metric wrapping double value.
+/// Boolean specializations
 template <>
-class metric<abacus::type::float64>
+struct metric<boolean>
 {
-public:
-    /// The underlying data type
-    using value_type = double;
-
-public:
     /// Default constructor
     metric() = default;
 
-    /// Create a new counter value from the pointer
-    /// @param memory A pointer to a value
-
-    metric(double* memory) : m_memory(memory)
+    /// Constructor
+    /// @param memory The memory to use for the metric, note that the memory
+    ///        must be at least sizeof(value_type) + 1 bytes long.
+    metric(uint8_t* memory)
     {
-        assert(m_memory != nullptr);
+        assert(memory != nullptr);
+        m_memory = memory;
     }
 
-    /// Assign the counter a new value
-    /// @param value The value to assign
-    /// @return a counter with the new value
-    auto operator=(double value) -> metric<abacus::type::float64>&
-    {
-        assert(is_initialized());
-        // We don't allow assignment to NaN or Inf/-Inf
-        assert(!std::isnan(value) && "Cannot assign a "
-                                     "NaN "
-                                     "value to a "
-                                     "float metric");
-        assert(!std::isinf(value) && "Cannot assign an "
-                                     "Inf/-Inf "
-                                     "value to a "
-                                     "float metric");
-        *m_memory = value;
-        return *this;
-    }
-
-    /// Increment the counter
-    /// @param value The value to add
-    /// @return The result of the arithmetic
-    auto operator+=(double value) -> metric<abacus::type::float64>&
-    {
-        assert(is_initialized());
-        // We don't allow assignment to NaN or Inf/-Inf
-        assert(!std::isnan(value) && "Cannot assign a "
-                                     "NaN "
-                                     "value to a "
-                                     "float metric");
-        assert(!std::isinf(value) && "Cannot assign an "
-                                     "Inf/-Inf "
-                                     "value to a "
-                                     "float metric");
-        *m_memory += value;
-        return *this;
-    }
-
-    /// Decrement the counter
-    /// @param value The value to subtract
-    /// @return The result of the arithmetic
-    auto operator-=(double value) -> metric<abacus::type::float64>&
-    {
-        assert(is_initialized());
-        // We don't allow assignment to NaN or Inf/-Inf
-        assert(!std::isnan(value) && "Cannot assign a "
-                                     "NaN "
-                                     "value to a "
-                                     "float metric");
-        assert(!std::isinf(value) && "Cannot assign an "
-                                     "Inf/-Inf "
-                                     "value to a "
-                                     "float metric");
-
-        *m_memory -= value;
-        return *this;
-    }
-
-    /// Increment the value of the counter
-    /// @return The result of the arithmetic
-    auto operator++() -> metric<abacus::type::float64>&
-    {
-        assert(is_initialized());
-        *m_memory += 1;
-        return *this;
-    }
-
-    /// Decrement the value of the counter
-    /// @return The result of the arithmetic
-    auto operator--() -> metric<abacus::type::float64>&
-    {
-        assert(is_initialized());
-        *m_memory -= 1;
-        return *this;
-    }
-
-    /// @return True if the metric has been assigned memory. False otherwise
+    /// Check if the metric is initialized
+    /// @return true if the metric is initialized
     auto is_initialized() const -> bool
     {
         return m_memory != nullptr;
     }
 
-    /// @return The value of the counter
-    auto value() const -> double
+    /// Check if the metric has a value
+    /// @return true if the metric has a value
+    auto has_value() const -> bool
     {
         assert(is_initialized());
-        return *m_memory;
+        return m_memory[0] == 1;
     }
 
-private:
-    /// The metric memory
-    double* m_memory = nullptr;
-};
-
-/// Metric wrapping bool value.
-template <>
-class metric<abacus::type::boolean>
-{
-public:
-    /// The underlying data type
-    using value_type = bool;
-
-public:
-    /// Default constructor
-    metric() = default;
-
-    /// Create a new counter value from the pointer
-    /// @param memory A pointer to a value
-
-    metric(bool* memory) : m_memory(memory)
-    {
-        assert(m_memory != nullptr);
-    }
-
-    /// Assign the counter a new value
-    /// @param value The value to assign
-    /// @return a counter with the new value
-    auto operator=(bool value) -> metric<abacus::type::boolean>&
-    {
-        assert(is_initialized());
-        *m_memory = value;
-        return *this;
-    }
-
-    /// @return True if the metric has been assigned memory. False otherwise
-    auto is_initialized() const -> bool
-    {
-        return m_memory != nullptr;
-    }
-
-    /// @return The value of the counter
+    /// Get the value of the metric
+    /// @return The value of the metric
     auto value() const -> bool
     {
+        assert(has_value());
+        return static_cast<bool>(m_memory[1]);
+    }
+
+    /// Assign a new value to the metric
+    /// @param value The value to assign
+    auto set_value(bool value) -> metric&
+    {
         assert(is_initialized());
-        return *m_memory;
+        m_memory[0] = 1;
+        m_memory[1] = static_cast<uint8_t>(value);
+
+        return *this;
+    }
+
+    /// Assign the metric a new value
+    /// @param value The value to assign
+    /// @return the metric with the new value
+    auto operator=(bool value) -> metric&
+    {
+        return set_value(value);
+    }
+
+    /// Assign an optional value to the metric
+    /// @param value The value to assign, if the value is not set the metric
+    ///        will be reset.
+    auto set_value(std::optional<bool> value) -> metric&
+    {
+        if (value)
+        {
+            return set_value(*value);
+        }
+        else
+        {
+            reset();
+        }
+
+        return *this;
+    }
+
+    /// Assign the metric a new optional value
+    /// @param value The value to assign if the value is not set the metric
+    ///        will be reset.
+    auto operator=(std::optional<bool> value) -> metric&
+    {
+        return set_value(value);
+    }
+
+    /// Reset the metric. This will cause the metric to not have a value
+    auto reset() -> void
+    {
+        assert(is_initialized());
+        m_memory[0] = 0;
     }
 
 private:
     /// The metric memory
-    bool* m_memory = nullptr;
+    uint8_t* m_memory = nullptr;
 };
-
 }
 }

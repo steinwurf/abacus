@@ -2,56 +2,130 @@ syntax = "proto3";
 package abacus.protobuf;
 option go_package = "abacus/protobuf";
 
-enum Kind
-{
-    COUNTER = 0;
-    CONSTANT = 1;
-    GAUGE = 2;
+// Specifies the endianness for multi-byte values
+enum Endianness {
+    LITTLE = 0;  // Little-endian byte order
+    BIG = 1;     // Big-endian byte order
 }
 
-enum Type
-{
-    UINT64 = 0;
-    INT64 = 1;
-    FLOAT64 = 2;
-    BOOL = 3;
+enum Kind {
+    GAUGE = 0;    // Gauge metric
+    COUNTER = 1;  // Counter metric
 }
 
-message Info
-{
-    string name = 1;
-    string description = 2;
-    Type type = 3;
-    Kind kind = 4;
-    string unit = 5;
-    oneof min
-    {
-        uint64 uint64_min = 6;
-        int64 int64_min = 7;
-        double float64_min = 8;
+// Metadata for unsigned 64-bit metrics
+message UInt64Metric {
+    uint32 offset = 1;        // Offset into packed memory for the value
+    string description = 2;   // Metric description
+    Kind kind = 3;            // The kind of metric
+    optional string unit = 4; // Unit of measurement
+    optional uint64 min = 5;  // Minimum allowable value
+    optional uint64 max = 6;  // Maximum allowable value
+}
+
+// Metadata for signed 64-bit metrics
+message Int64Metric {
+    uint32 offset = 1;        // Offset into packed memory for the value
+    string description = 2;   // Metric description
+    Kind kind = 3;            // The kind of metric
+    optional string unit = 4; // Unit of measurement
+    optional int64 min = 5;   // Minimum allowable value
+    optional int64 max = 6;   // Maximum allowable value
+}
+
+// Metadata for unsigned 32-bit metrics
+message UInt32Metric {
+    uint32 offset = 1;        // Offset into packed memory for the value
+    string description = 2;   // Metric description
+    Kind kind = 3;            // The kind of metric
+    optional string unit = 4; // Unit of measurement
+    optional uint32 min = 5;  // Minimum allowable value
+    optional uint32 max = 6;  // Maximum allowable value
+}
+
+// Metadata for signed 32-bit metrics
+message Int32Metric {
+    uint32 offset = 1;        // Offset into packed memory for the value
+    string description = 2;   // Metric description
+    Kind kind = 3;            // The kind of metric
+    optional string unit = 4; // Unit of measurement
+    optional int32 min = 5;   // Minimum allowable value
+    optional int32 max = 6;   // Maximum allowable value
+}
+
+// Metadata for 64-bit floating-point metrics
+message Float64Metric {
+    uint32 offset = 1;        // Offset into packed memory for the value
+    string description = 2;   // Metric description
+    Kind kind = 3;            // The kind of metric
+    optional string unit = 4; // Unit of measurement
+    optional double min = 5;  // Minimum allowable value
+    optional double max = 6;  // Maximum allowable value
+}
+
+// Metadata for 32-bit floating-point metrics
+message Float32Metric {
+    uint32 offset = 1;        // Offset into packed memory for the value
+    string description = 2;   // Metric description
+    Kind kind = 3;            // The kind of metric
+    optional string unit = 4; // Unit of measurement
+    optional float min = 5;   // Minimum allowable value
+    optional float max = 6;   // Maximum allowable value
+}
+
+// Metadata for boolean metrics
+message BoolMetric {
+    uint32 offset = 1;              // Offset into packed memory for the value
+    string description = 2;   // Metric description
+    optional string unit = 3; // Unit of measurement
+}
+
+// Metadata for enumerated metrics
+message Enum8Metric {
+    message EnumValue {
+        string name = 1;                   // Enum name
+        optional string description = 2;   // Enum description
     }
-    oneof max
-    {
-        uint64 uint64_max = 9;
-        int64 int64_max = 10;
-        double float64_max = 11;
-    }
+    uint32 offset = 1;                 // Offset into packed memory for the value
+    string description = 2;            // Metric description
+    map<uint32, EnumValue> values = 3; // Mapping from packed index to enum info
+    optional string unit = 4;          // Unit of measurement
 }
 
+
+// A constant used when the value is fixed
+message Constant{
+    oneof value {
+        uint64 uint64 = 1;    // Unsigned 64-bit constant value
+        int64 int64 = 2;      // Signed 64-bit constant value
+        double float64 = 3;    // 64-bit floating-point constant value
+        bool boolean = 4;     // Boolean constant value
+        string string = 5;    // String constant value
+    }
+    string description = 6;   // Metric description
+    optional string unit = 7; // Unit of measurement
+}
+
+// Metadata for a single metric
 message Metric
 {
-    optional Info info = 1;
-    oneof value
-    {
-        uint64 uint64_value = 2;
-        int64 int64_value = 3;
-        double float64_value = 4;
-        bool bool_value = 5;
+    oneof type {
+        Constant constant = 1;     // Metadata for constant metrics
+        UInt64Metric uint64 = 2;    // Metadata for unsigned 64-bit metrics
+        Int64Metric int64 = 3;      // Metadata for signed 64-bit metrics
+        UInt32Metric uint32 = 4;    // Metadata for unsigned 32-bit metrics
+        Int32Metric int32 = 5;      // Metadata for signed 32-bit metrics
+        Float64Metric float64 = 6;  // Metadata for 64-bit floating-point metrics
+        Float32Metric float32 = 7;  // Metadata for 32-bit floating-point metrics
+        BoolMetric boolean = 8;     // Metadata for boolean metrics
+        Enum8Metric enum8 = 9;     // Metadata for enumerated metrics
     }
 }
 
-message Metrics
-{
-    uint32 protocol_version = 1;
-    repeated Metric metric = 2;
+// Metadata collection for all metrics
+message MetricsMetadata {
+    uint32 protocol_version = 1;        // Protocol version for compatibility
+    Endianness endianness = 2;          // Endianness of packed memory
+    fixed32 sync_value = 3;             // Synchronization value
+    map<string, Metric> metrics = 4;    // Mapping from metric name to metadata
 }

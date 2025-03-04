@@ -44,5 +44,15 @@
         "sources": [
             "github.com/steinwurf/endian.git"
         ]
+    },
+    {
+        "name": "gbenchmark",
+        "internal": true,
+        "resolver": "git",
+        "method": "semver",
+        "major": 2,
+        "sources": [
+            "github.com/steinwurf/gbenchmark.git"
+        ]
     }
 ]

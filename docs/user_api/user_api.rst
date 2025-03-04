@@ -10,12 +10,13 @@ Overview of the public API.
 .. toctree::
    :maxdepth: 3
 
-   metric
-   metric_specializations/metric_specializations
-   metric_info
-   type
-   kind
-   unit
    metrics
+   name
+   metric_info/metric_info
+   kind
+   description
+   unit
+   min
+   max
    view
    functions

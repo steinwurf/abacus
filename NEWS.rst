@@ -6,7 +6,14 @@ every change, see the Git log.
 
 Latest
 ------
-* tbd
+* Major: Changed protocol format to version 2.
+* Minor: Added benchmark.
+* Major: Changed the metadata to be specified using protobuf.
+* Major: Changed API of how metrics are specified. All attributes are now
+  strongly typed, and specified using a std::map of abacus::name to abacus::info.
+* Minor: Added support for enums.
+* Minor: Added support for constants.
+* Minor: Added support for more metric types: int32, uint32, float32, and enum8.
 
 6.0.1
 -----
