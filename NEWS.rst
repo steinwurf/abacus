@@ -6,6 +6,10 @@ every change, see the Git log.
 
 Latest
 ------
+* tbd
+
+7.0.0
+-----
 * Major: Changed protocol format to version 2.
 * Minor: Added benchmark.
 * Major: Changed the metadata to be specified using protobuf.
