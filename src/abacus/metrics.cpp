@@ -50,7 +50,7 @@ metrics::metrics(const std::map<name, abacus::info>& info) : m_info(info)
     // The first byte is reserved for the sync value
     m_value_bytes = sizeof(uint32_t);
 
-    for (auto [name, info] : infos)
+    for (auto [name, info] : m_info)
     {
         protobuf::Metric metric;
         std::string name_str = name.value;
