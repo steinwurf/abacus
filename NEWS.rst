@@ -6,7 +6,8 @@ every change, see the Git log.
 
 Latest
 ------
-* Major: Fix a bug where metrics may be initialized with the wrong type.
+* Major: Fix a bug where metrics may be initialized with the wrong type. The
+  check is now performed on initialization.
 
 7.0.0
 -----
