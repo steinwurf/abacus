@@ -6,7 +6,7 @@ every change, see the Git log.
 
 Latest
 ------
-* tbd
+* Major: Fix a bug where metrics may be initialized with the wrong type.
 
 7.0.0
 -----

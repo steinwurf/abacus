@@ -24,9 +24,10 @@ inline namespace STEINWURF_ABACUS_VERSION
 {
 
 metrics::metrics(metrics&& other) noexcept :
-    m_metadata(std::move(other.m_metadata)), m_data(std::move(other.m_data)),
-    m_metadata_bytes(other.m_metadata_bytes), m_hash(other.m_hash),
-    m_value_bytes(other.m_value_bytes), m_offsets(std::move(other.m_offsets)),
+    m_info(std::move(other.m_info)), m_metadata(std::move(other.m_metadata)),
+    m_data(std::move(other.m_data)), m_metadata_bytes(other.m_metadata_bytes),
+    m_hash(other.m_hash), m_value_bytes(other.m_value_bytes),
+    m_offsets(std::move(other.m_offsets)),
     m_initialized(std::move(other.m_initialized))
 {
     other.m_metadata = protobuf::MetricsMetadata();
@@ -38,7 +39,7 @@ metrics::metrics(metrics&& other) noexcept :
     other.m_initialized.clear();
 }
 
-metrics::metrics(const std::map<name, abacus::info>& infos)
+metrics::metrics(const std::map<name, abacus::info>& info) : m_info(info)
 {
     m_metadata = protobuf::MetricsMetadata();
     m_metadata.set_protocol_version(protocol_version());
@@ -317,6 +318,7 @@ metrics::initialize(const std::string& name) -> metric<Metric>
 {
     assert(m_initialized.find(name) == m_initialized.end());
     assert(m_offsets.find(name) != m_offsets.end());
+    assert(std::holds_alternative<Metric>(m_info.at(name)));
 
     std::size_t offset = m_offsets.at(name);
     metric<Metric> m(m_data.data() + m_metadata_bytes + offset);
