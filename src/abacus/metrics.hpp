@@ -79,6 +79,9 @@ private:
     metrics& operator=(metrics&) = delete;
 
 private:
+    /// The metrics metadata
+    std::map<name, abacus::info> m_info;
+
     /// The info of the metrics separated by byte-sizes
     protobuf::MetricsMetadata m_metadata;
 

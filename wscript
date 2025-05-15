@@ -3,78 +3,32 @@
 
 import os
 import shutil
-from waflib.Build import BuildContext
-
+import waflib
 
 APPNAME = "abacus"
 VERSION = "7.0.0"
-NO_RECURSE = False
 
 
-def configure(conf):
-    conf.set_cxx_std(17)
+def options(ctx):
+    ctx.load("cmake")
 
 
-def build(bld):
-    # Build static library if this is top-level, otherwise just .o files
-    features = ["cxx"]
-    if bld.is_toplevel():
-        features += ["cxxstlib"]
+def configure(ctx):
 
-    # Fix MSVC error C2131 about expression not being constexpr
-    cxxflags = []
-    compiler_binary = bld.env.get_flat("CXX").lower()
-    if "cl.exe" in compiler_binary:
-        cxxflags += ["/constexpr:steps10000000"]
+    ctx.load("cmake")
 
-    bld(
-        features=features,
-        source=bld.path.ant_glob("src/**/*.cpp") + bld.path.ant_glob("src/**/*.cc"),
-        target="abacus",
-        use=["protobuf", "endian_includes", "bourne"],
-        install_path="${PREFIX}/lib",
-        cxxflags=cxxflags,
-        includes=["src"],
-        export_includes=["src"],
-    )
 
-    if bld.is_toplevel():
-        # Only build tests when executed from the top-level wscript,
-        # i.e. not when included as a dependency
-        bld.program(
-            features="cxx test",
-            source=bld.path.ant_glob("test/**/*.cpp")
-            + bld.path.ant_glob("src/**/*.cc"),
-            target="abacus_tests",
-            use=["abacus", "protobuf", "gtest"],
-        )
+def build(ctx):
 
-        bld.program(
-            features="cxx",
-            source="examples/metrics_simple.cpp",
-            target="metrics_simple",
-            install_path=None,
-            use=["abacus"],
-        )
+    ctx.load("cmake")
 
-        bld.program(
-            features="cxx benchmark",
-            source=["benchmark/main.cpp"],
-            target="abacus_benchmark",
-            install_path=None,
-            use=["abacus", "gbenchmark"],
-        )
 
-        sourcepath = bld.path.find_node("src")
+def clean(ctx):
 
-        bld.install_files(
-            dest="${PREFIX}/include",
-            files=sourcepath.ant_glob("**/*.hpp"),
-            cwd=sourcepath,
-            relative_trick=True,
-        )
+    ctx.load("cmake")
 
-        bld.install_files(dest="${PREFIX}/", files=bld.path.ant_glob("NEWS.rst"))
+    # Set the default clean paths
+    ctx.clean_paths = ["build", "build_current"]
 
 
 def protogen(ctx):
@@ -100,7 +54,7 @@ def protogen(ctx):
     )
 
 
-class ReleaseContext(BuildContext):
+class ReleaseContext(waflib.Build.BuildContext):
     cmd = "prepare_release"
     fun = "prepare_release"
 
