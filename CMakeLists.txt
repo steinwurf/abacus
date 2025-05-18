@@ -27,7 +27,7 @@ if(NOT TARGET steinwurf::bourne)
 endif()
 
 # endian dependency
-if(NOT TARGET nanoping::endian)
+if(NOT TARGET steinwurf::endian)
 
   add_subdirectory("${STEINWURF_RESOLVE}/endian" 
   ${CMAKE_CURRENT_BINARY_DIR}/endian 
@@ -35,7 +35,7 @@ if(NOT TARGET nanoping::endian)
 endif()
 
 # protobuf
-if(NOT TARGET nanoping::protobuf)
+if(NOT TARGET steinwurf::protobuf)
   add_subdirectory(
     "${STEINWURF_RESOLVE}/protobuf" 
     ${CMAKE_CURRENT_BINARY_DIR}/protobuf 
@@ -69,8 +69,8 @@ else()
   target_link_libraries(abacus PRIVATE steinwurf::bourne)
 endif()
 
-target_link_libraries(abacus PRIVATE nanoping::endian)
-target_link_libraries(abacus PUBLIC nanoping::protobuf)
+target_link_libraries(abacus PRIVATE steinwurf::endian)
+target_link_libraries(abacus PUBLIC steinwurf::protobuf)
 
 target_include_directories(abacus PUBLIC src)
 target_compile_features(abacus PUBLIC cxx_std_14)
@@ -89,8 +89,8 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
   # Build executables
   add_executable(metrics_simple examples/metrics_simple.cpp)
   target_link_libraries(metrics_simple abacus)
-  target_link_libraries(metrics_simple nanoping::endian)
-  target_link_libraries(metrics_simple nanoping::protobuf)
+  target_link_libraries(metrics_simple steinwurf::endian)
+  target_link_libraries(metrics_simple steinwurf::protobuf)
 
   enable_testing()
 
@@ -111,9 +111,9 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
   target_link_libraries(abacus_tests gtest_main)
   target_link_libraries(abacus_tests
     steinwurf::abacus
-    nanoping::endian
+    steinwurf::endian
     steinwurf::bourne
-    nanoping::protobuf)
+    steinwurf::protobuf)
 
   add_test(abacus_tests abacus_tests)
 
@@ -132,7 +132,7 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
   target_link_libraries(abacus_benchmark benchmark)
   target_link_libraries(abacus_benchmark
     steinwurf::abacus
-    nanoping::endian
+    steinwurf::endian
     steinwurf::bourne
-    nanoping::protobuf)
+    steinwurf::protobuf)
 endif()
