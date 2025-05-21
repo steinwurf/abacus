@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.12)
 project(abacus)
 
 find_package(Python COMPONENTS Interpreter)
+include(FetchContent)
 
 # Use waf to resolve dependencies
 if(NOT DEFINED STEINWURF_RESOLVE)
@@ -16,29 +17,35 @@ if(NOT DEFINED STEINWURF_RESOLVE)
   endif()
 
   set(STEINWURF_RESOLVE "${CMAKE_CURRENT_SOURCE_DIR}/resolve_symlinks")
-  set(STEINWURF_TOP_NAME abacus)
 endif()
 
 # bourne dependency
 if(NOT TARGET steinwurf::bourne)
-  add_subdirectory("${STEINWURF_RESOLVE}/bourne" bourne EXCLUDE_FROM_ALL)
+  add_subdirectory("${STEINWURF_RESOLVE}/bourne" 
+  ${CMAKE_CURRENT_BINARY_DIR}/bourne 
+  EXCLUDE_FROM_ALL)
 endif()
 
 # endian dependency
 if(NOT TARGET steinwurf::endian)
-  add_subdirectory("${STEINWURF_RESOLVE}/endian" endian EXCLUDE_FROM_ALL)
+
+  add_subdirectory("${STEINWURF_RESOLVE}/endian" 
+  ${CMAKE_CURRENT_BINARY_DIR}/endian 
+  EXCLUDE_FROM_ALL)
 endif()
 
 # protobuf
-if(NOT TARGET steinwurf::protobuf)
-  add_subdirectory("${STEINWURF_RESOLVE}/protobuf" protobuf EXCLUDE_FROM_ALL)
+if(NOT TARGET protobuf::libprotobuf)
+  add_subdirectory(
+    "${STEINWURF_RESOLVE}/protobuf" 
+    ${CMAKE_CURRENT_BINARY_DIR}/protobuf)
 endif()
 
 # Define library
 file(GLOB_RECURSE abacus_sources ./src/*.cpp ./src/*.cc)
 
 # Is this the top-level steinwurf project?
-if(${PROJECT_NAME} STREQUAL ${STEINWURF_TOP_NAME})
+if(${PROJECT_NAME} STREQUAL ${CMAKE_PROJECT_NAME})
   # Create static library
   add_library(abacus STATIC ${abacus_sources})
 
@@ -62,7 +69,7 @@ else()
 endif()
 
 target_link_libraries(abacus PRIVATE steinwurf::endian)
-target_link_libraries(abacus PUBLIC steinwurf::protobuf)
+target_link_libraries(abacus PUBLIC protobuf::libprotobuf)
 
 target_include_directories(abacus PUBLIC src)
 target_compile_features(abacus PUBLIC cxx_std_14)
@@ -82,30 +89,23 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
   add_executable(metrics_simple examples/metrics_simple.cpp)
   target_link_libraries(metrics_simple abacus)
   target_link_libraries(metrics_simple steinwurf::endian)
-  target_link_libraries(metrics_simple steinwurf::protobuf)
+  target_link_libraries(metrics_simple protobuf::libprotobuf)
 
   enable_testing()
 
-  if(CMAKE_C_COMPILER_ID MATCHES "MSVC")
-    # For Windows: Prevent overriding the parent project's compiler/linker
-    # settings
-    set(gtest_force_shared_crt
-      ON
-      CACHE BOOL "" FORCE)
-  endif()
 
   # Google Test dependency
-  add_subdirectory("${STEINWURF_RESOLVE}/gtest-source")
+  add_subdirectory("${STEINWURF_RESOLVE}/gtest")
 
   # Build test executable
   file(GLOB_RECURSE abacus_tests_sources ./test/*.cpp)
   add_executable(abacus_tests ${abacus_tests_sources})
-  target_link_libraries(abacus_tests gtest_main)
+  target_link_libraries(abacus_tests steinwurf::gtest)
   target_link_libraries(abacus_tests
     steinwurf::abacus
     steinwurf::endian
     steinwurf::bourne
-    steinwurf::protobuf)
+    protobuf::libprotobuf)
 
   add_test(abacus_tests abacus_tests)
 
@@ -126,5 +126,5 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
     steinwurf::abacus
     steinwurf::endian
     steinwurf::bourne
-    steinwurf::protobuf)
+    protobuf::libprotobuf)
 endif()

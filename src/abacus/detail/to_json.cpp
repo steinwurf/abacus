@@ -145,7 +145,7 @@ auto to_json(const view& view, bool minimal) -> bourne::json
     {
         std::string metadata_json;
         google::protobuf::util::JsonPrintOptions options;
-        options.always_print_primitive_fields = true;
+        options.always_print_fields_with_no_presence = true;
         auto status = google::protobuf::util::MessageToJsonString(
             view.metadata(), &metadata_json, options);
         if (!status.ok())

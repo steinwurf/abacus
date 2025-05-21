@@ -1,19 +1,10 @@
 [
     {
-        "name": "waf-tools",
-        "resolver": "git",
-        "method": "semver",
-        "major": 5,
-        "sources": [
-            "github.com/steinwurf/waf-tools.git"
-        ]
-    },
-    {
         "name": "gtest",
         "internal": true,
         "resolver": "git",
         "method": "semver",
-        "major": 5,
+        "major": 6,
         "sources": [
             "github.com/steinwurf/gtest.git"
         ]
@@ -22,7 +13,7 @@
         "name": "bourne",
         "resolver": "git",
         "method": "semver",
-        "major": 10,
+        "major": 11,
         "sources": [
             "github.com/steinwurf/bourne.git"
         ]
@@ -31,7 +22,7 @@
         "name": "protobuf",
         "resolver": "git",
         "method": "semver",
-        "major": 2,
+        "major": 3,
         "sources": [
             "github.com/steinwurf/protobuf.git"
         ]
@@ -40,19 +31,29 @@
         "name": "endian",
         "resolver": "git",
         "method": "semver",
-        "major": 13,
+        "major": 14,
         "sources": [
             "github.com/steinwurf/endian.git"
         ]
     },
     {
-        "name": "gbenchmark",
+        "name": "gbenchmark-source",
+        "internal": true,
+        "resolver": "git",
+        "method": "checkout",
+        "checkout": "v1.8.3",
+        "sources": [
+            "github.com/google/benchmark.git"
+        ]
+    },
+    {
+        "name": "toolchains",
         "internal": true,
         "resolver": "git",
         "method": "semver",
-        "major": 2,
+        "major": 1,
         "sources": [
-            "github.com/steinwurf/gbenchmark.git"
+            "github.com/steinwurf/cmake-toolchains.git"
         ]
     }
 ]

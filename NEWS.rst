@@ -6,7 +6,12 @@ every change, see the Git log.
 
 Latest
 ------
-* tbd
+* Major: Fix a bug where metrics may be initialized with the wrong type. The
+  check is now performed on initialization.
+* Major: Only builds with CMake
+* Major: Bumped bourne to v11. 
+* Major: Bumped endian to v14.
+* Major: Bumped protobuf to v3. 
 
 7.0.0
 -----

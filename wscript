@@ -3,104 +3,53 @@
 
 import os
 import shutil
-from waflib.Build import BuildContext
-
+import waflib
 
 APPNAME = "abacus"
 VERSION = "7.0.0"
-NO_RECURSE = False
 
 
-def configure(conf):
-    conf.set_cxx_std(17)
+def options(ctx):
+    ctx.load("cmake")
 
 
-def build(bld):
-    # Build static library if this is top-level, otherwise just .o files
-    features = ["cxx"]
-    if bld.is_toplevel():
-        features += ["cxxstlib"]
+def configure(ctx):
 
-    # Fix MSVC error C2131 about expression not being constexpr
-    cxxflags = []
-    compiler_binary = bld.env.get_flat("CXX").lower()
-    if "cl.exe" in compiler_binary:
-        cxxflags += ["/constexpr:steps10000000"]
+    ctx.load("cmake")
 
-    bld(
-        features=features,
-        source=bld.path.ant_glob("src/**/*.cpp") + bld.path.ant_glob("src/**/*.cc"),
-        target="abacus",
-        use=["protobuf", "endian_includes", "bourne"],
-        install_path="${PREFIX}/lib",
-        cxxflags=cxxflags,
-        includes=["src"],
-        export_includes=["src"],
-    )
+    if ctx.is_toplevel():
+        ctx.cmake_configure()
 
-    if bld.is_toplevel():
-        # Only build tests when executed from the top-level wscript,
-        # i.e. not when included as a dependency
-        bld.program(
-            features="cxx test",
-            source=bld.path.ant_glob("test/**/*.cpp")
-            + bld.path.ant_glob("src/**/*.cc"),
-            target="abacus_tests",
-            use=["abacus", "protobuf", "gtest"],
-        )
 
-        bld.program(
-            features="cxx",
-            source="examples/metrics_simple.cpp",
-            target="metrics_simple",
-            install_path=None,
-            use=["abacus"],
-        )
+def build(ctx):
 
-        bld.program(
-            features="cxx benchmark",
-            source=["benchmark/main.cpp"],
-            target="abacus_benchmark",
-            install_path=None,
-            use=["abacus", "gbenchmark"],
-        )
+    ctx.load("cmake")
 
-        sourcepath = bld.path.find_node("src")
-
-        bld.install_files(
-            dest="${PREFIX}/include",
-            files=sourcepath.ant_glob("**/*.hpp"),
-            cwd=sourcepath,
-            relative_trick=True,
-        )
-
-        bld.install_files(dest="${PREFIX}/", files=bld.path.ant_glob("NEWS.rst"))
+    if ctx.is_toplevel():
+        ctx.cmake_build()
 
 
 def protogen(ctx):
     # check if protec is available
-    protoc_location = "build_current/resolve_symlinks/protobuf/protoc"
-    if not os.path.isfile(protoc_location):
-        ctx.fatal(
-            "protoc not found. Make sure to configure waf with `--with_protoc` to include protoc in build."
-        )
-        return
+    ctx.load_environment()
+    protoc = ctx.search_executable("**/protoc", path_list=[ctx.env.CMAKE_BUILD_DIR])
+
     try:
         shutil.rmtree("src/abacus/protobuf")
     except:
         pass
     os.mkdir("src/abacus/protobuf")
 
-    ctx.exec_command(
-        f"(./{protoc_location} --cpp_out ./src --proto_path .. ../abacus/protobuf/*.proto)"
+    ctx.run_exectuable(
+        f"({protoc} --cpp_out ./src --proto_path .. ../abacus/protobuf/*.proto)"
     )
 
-    ctx.exec_command(
+    ctx.run_exectuable(
         "echo 'DisableFormat: true\nSortIncludes: false' > src/abacus/protobuf/.clang-format"
     )
 
 
-class ReleaseContext(BuildContext):
+class ReleaseContext(waflib.Build.BuildContext):
     cmd = "prepare_release"
     fun = "prepare_release"
 

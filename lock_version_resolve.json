@@ -1,18 +1,23 @@
 {
+    "abseil": {
+        "commit_id": "d6a9562e974b409cbc8d1e44b40f713a80ff7d6c",
+        "resolver_info": "1.0.2",
+        "sha1": "fbbadb116d16047bce4ad8e1726804a01eb8e98a"
+    },
+    "abseil-source": {
+        "commit_id": "bc257a88f7c1939f24e0379f14a3589e926c950c",
+        "resolver_info": "20250512.0",
+        "sha1": "8e016b57dd5361fe7f66ae47f3df42ab634321c5"
+    },
     "bourne": {
-        "commit_id": "1288fa220b92e6910d9e09643b92ccf8f7f99b4e",
-        "resolver_info": "10.1.0",
-        "sha1": "9c4ea9c707dda31fbd3e0c7b326ab97263e06ca3"
+        "commit_id": "cf4fed3ea15525a6608722db56f10ff4314c2354",
+        "resolver_info": "11.0.0",
+        "sha1": "f705097630cc09ecd747eaf3b5eef8966cfa4fba"
     },
     "endian": {
-        "commit_id": "4fedffac0c05181bcdf70c4d1e1f47794e7bd967",
-        "resolver_info": "13.0.0",
-        "sha1": "de39fa280dabb242134e095a1473495341165b70"
-    },
-    "gbenchmark": {
-        "commit_id": "a01cf3aaa4e3f6ebd90d95ab6ba168d351b3ab3c",
-        "resolver_info": "2.1.2",
-        "sha1": "eba056f72a8a4ddf957ced45237720337b7c2215"
+        "commit_id": "b3702d8d134a06b5829119934718a75f4e171699",
+        "resolver_info": "14.0.0",
+        "sha1": "ebfaeeec96922b484b061fd860c46ee1264eca21"
     },
     "gbenchmark-source": {
         "commit_id": "344117638c8ff7e239044fd0fa7085839fc03021",
@@ -20,28 +25,28 @@
         "sha1": "2f70f76f52ae610b201e6738e0e76260de2a7405"
     },
     "gtest": {
-        "commit_id": "da24468d2c5deb601d0f67196abe83d78a00f972",
-        "resolver_info": "5.0.0",
-        "sha1": "11e35e3559b3844fbe2fa6f045854cd2dcdf0f86"
+        "commit_id": "746b1c8a1e153a5df77be4bdbcd08f959f0bf798",
+        "resolver_info": "6.0.1",
+        "sha1": "44c35f8798a738692c902fe2b67dc0cb76a1df53"
     },
     "gtest-source": {
-        "commit_id": "e2239ee6043f73722e7aa812a459f54a28552929",
-        "resolver_info": "release-1.11.0",
-        "sha1": "ca969a1500e88a09de1cbfb8d8d3307a7773abfd"
+        "commit_id": "6910c9d9165801d8827d628cb72eb7ea9dd538c5",
+        "resolver_info": "v1.16.0",
+        "sha1": "272f0c49e3fa086a287f05194e6e5e0163bce162"
     },
     "protobuf": {
-        "commit_id": "1e7b3114dd9ed4fcfe5f0969033235d7295004c7",
-        "resolver_info": "2.0.12",
-        "sha1": "1cbce41d76e6829eb713e60eb7c3f46a1a350a32"
+        "commit_id": "a32b1956282c0e89a8e24cecfcb1e46606071750",
+        "resolver_info": "3.0.0",
+        "sha1": "4423b2b25fe48344a027237e34317898651b99cf"
     },
     "protobuf-source": {
-        "commit_id": "ee1355459c9ce7ffe264bc40cfdc7b7623d37e99",
-        "resolver_info": "v24.3",
-        "sha1": "d174e67f0c9d5baa3b731bdccab4471c272bbb82"
+        "commit_id": "3d4adad5c4c4e6a6f9f038769b8c90716065b0e4",
+        "resolver_info": "v31.0",
+        "sha1": "93bde6d21d12c24893dc159f0a51bbb717118abb"
     },
-    "waf-tools": {
-        "commit_id": "6379b83992885dcb148e2c8bf3677f315d623e8f",
-        "resolver_info": "5.4.0",
-        "sha1": "9dd4ab1d52c916572f45237d4e7450abc7c19a14"
+    "toolchains": {
+        "commit_id": "f7b9747ab22d7dbbeb23c9f863e735bac883566e",
+        "resolver_info": "1.0.3",
+        "sha1": "443cb23b0570dffd39283d8679ec393ed809302f"
     }
 }
