@@ -6,6 +6,10 @@ every change, see the Git log.
 
 Latest
 ------
+* tbd
+
+8.0.0
+-----
 * Major: Fix a bug where metrics may be initialized with the wrong type. The
   check is now performed on initialization.
 * Major: Only builds with CMake
