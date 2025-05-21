@@ -7,11 +7,6 @@ on:
     branches:
       - master
   pull_request:
-  workflow_dispatch:
-    inputs:
-      extra_resolve_options:
-        description: Extra Resolve Options
-        required: false
 
 jobs:
   linux_cmake:
