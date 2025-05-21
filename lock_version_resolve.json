@@ -1,0 +1,52 @@
+{
+    "abseil": {
+        "commit_id": "d6a9562e974b409cbc8d1e44b40f713a80ff7d6c",
+        "resolver_info": "1.0.2",
+        "sha1": "fbbadb116d16047bce4ad8e1726804a01eb8e98a"
+    },
+    "abseil-source": {
+        "commit_id": "bc257a88f7c1939f24e0379f14a3589e926c950c",
+        "resolver_info": "20250512.0",
+        "sha1": "8e016b57dd5361fe7f66ae47f3df42ab634321c5"
+    },
+    "bourne": {
+        "commit_id": "cf4fed3ea15525a6608722db56f10ff4314c2354",
+        "resolver_info": "11.0.0",
+        "sha1": "f705097630cc09ecd747eaf3b5eef8966cfa4fba"
+    },
+    "endian": {
+        "commit_id": "b3702d8d134a06b5829119934718a75f4e171699",
+        "resolver_info": "14.0.0",
+        "sha1": "ebfaeeec96922b484b061fd860c46ee1264eca21"
+    },
+    "gbenchmark-source": {
+        "commit_id": "344117638c8ff7e239044fd0fa7085839fc03021",
+        "resolver_info": "v1.8.3",
+        "sha1": "2f70f76f52ae610b201e6738e0e76260de2a7405"
+    },
+    "gtest": {
+        "commit_id": "746b1c8a1e153a5df77be4bdbcd08f959f0bf798",
+        "resolver_info": "6.0.1",
+        "sha1": "44c35f8798a738692c902fe2b67dc0cb76a1df53"
+    },
+    "gtest-source": {
+        "commit_id": "6910c9d9165801d8827d628cb72eb7ea9dd538c5",
+        "resolver_info": "v1.16.0",
+        "sha1": "272f0c49e3fa086a287f05194e6e5e0163bce162"
+    },
+    "protobuf": {
+        "commit_id": "a32b1956282c0e89a8e24cecfcb1e46606071750",
+        "resolver_info": "3.0.0",
+        "sha1": "4423b2b25fe48344a027237e34317898651b99cf"
+    },
+    "protobuf-source": {
+        "commit_id": "3d4adad5c4c4e6a6f9f038769b8c90716065b0e4",
+        "resolver_info": "v31.0",
+        "sha1": "93bde6d21d12c24893dc159f0a51bbb717118abb"
+    },
+    "toolchains": {
+        "commit_id": "f7b9747ab22d7dbbeb23c9f863e735bac883566e",
+        "resolver_info": "1.0.3",
+        "sha1": "443cb23b0570dffd39283d8679ec393ed809302f"
+    }
+}

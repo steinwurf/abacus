@@ -17,39 +17,34 @@ def configure(ctx):
 
     ctx.load("cmake")
 
+    if ctx.is_toplevel():
+        ctx.cmake_configure()
+
 
 def build(ctx):
 
     ctx.load("cmake")
 
-
-def clean(ctx):
-
-    ctx.load("cmake")
-
-    # Set the default clean paths
-    ctx.clean_paths = ["build", "build_current"]
+    if ctx.is_toplevel():
+        ctx.cmake_build()
 
 
 def protogen(ctx):
     # check if protec is available
-    protoc_location = "build_current/resolve_symlinks/protobuf/protoc"
-    if not os.path.isfile(protoc_location):
-        ctx.fatal(
-            "protoc not found. Make sure to configure waf with `--with_protoc` to include protoc in build."
-        )
-        return
+    ctx.load_environment()
+    protoc = ctx.search_executable("**/protoc", path_list=[ctx.env.CMAKE_BUILD_DIR])
+
     try:
         shutil.rmtree("src/abacus/protobuf")
     except:
         pass
     os.mkdir("src/abacus/protobuf")
 
-    ctx.exec_command(
-        f"(./{protoc_location} --cpp_out ./src --proto_path .. ../abacus/protobuf/*.proto)"
+    ctx.run_exectuable(
+        f"({protoc} --cpp_out ./src --proto_path .. ../abacus/protobuf/*.proto)"
     )
 
-    ctx.exec_command(
+    ctx.run_exectuable(
         "echo 'DisableFormat: true\nSortIncludes: false' > src/abacus/protobuf/.clang-format"
     )
 

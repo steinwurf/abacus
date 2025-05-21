@@ -318,7 +318,7 @@ metrics::initialize(const std::string& name) -> metric<Metric>
 {
     assert(m_initialized.find(name) == m_initialized.end());
     assert(m_offsets.find(name) != m_offsets.end());
-    assert(std::holds_alternative<Metric>(m_info.at(name)));
+    assert(std::holds_alternative<Metric>(m_info.at(abacus::name{name})));
 
     std::size_t offset = m_offsets.at(name);
     metric<Metric> m(m_data.data() + m_metadata_bytes + offset);
