@@ -275,8 +275,7 @@ metrics::metrics(const std::map<name, abacus::info>& info) : m_info(info)
                         m.value);
                     m_initialized[name_str] = true;
                 },
-                [&](const auto&)
-                { VERIFY(false, "Unsupported metric type"); }},
+                [&](const auto&) { VERIFY(false, "Unsupported metric type"); }},
             info);
 
         m_metadata.mutable_metrics()->insert({name.value, metric});

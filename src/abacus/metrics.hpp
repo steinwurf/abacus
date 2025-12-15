@@ -6,10 +6,10 @@
 #pragma once
 
 #include <any>
-#include <verify/verify.hpp>
 #include <map>
 #include <string>
 #include <vector>
+#include <verify/verify.hpp>
 
 #include "info.hpp"
 #include "name.hpp"

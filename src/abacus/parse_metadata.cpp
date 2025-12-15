@@ -5,8 +5,8 @@
 
 #include "parse_metadata.hpp"
 
-#include <verify/verify.hpp>
 #include <optional>
+#include <verify/verify.hpp>
 
 namespace abacus
 {

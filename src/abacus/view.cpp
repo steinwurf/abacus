@@ -17,9 +17,9 @@
 #include "uint32.hpp"
 #include "uint64.hpp"
 
-#include <verify/verify.hpp>
 #include <map>
 #include <vector>
+#include <verify/verify.hpp>
 
 #include <endian/big_endian.hpp>
 #include <endian/is_big_endian.hpp>
@@ -172,7 +172,8 @@ auto view::value(const std::string& name) const
     if constexpr (!detail::is_constant_v<Metric>)
     {
         auto offset = get_offset(m);
-        VERIFY(offset < m_value_bytes, "Offset out of bounds", offset, m_value_bytes);
+        VERIFY(offset < m_value_bytes, "Offset out of bounds", offset,
+               m_value_bytes);
         auto data = m_value_data + offset;
         VERIFY(data != nullptr);
         if (data[0] == 0)

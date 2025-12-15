@@ -5,10 +5,10 @@
 
 #pragma once
 
-#include <verify/verify.hpp>
 #include <cmath>
 #include <cstdint>
 #include <cstring>
+#include <verify/verify.hpp>
 
 #include "boolean.hpp"
 #include "enum8.hpp"
