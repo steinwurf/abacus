@@ -6,7 +6,7 @@
 #pragma once
 
 #include <any>
-#include <cassert>
+#include <verify/verify.hpp>
 #include <map>
 #include <string>
 #include <vector>

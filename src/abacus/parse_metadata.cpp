@@ -5,7 +5,7 @@
 
 #include "parse_metadata.hpp"
 
-#include <cassert>
+#include <verify/verify.hpp>
 #include <optional>
 
 namespace abacus
@@ -15,8 +15,8 @@ inline namespace STEINWURF_ABACUS_VERSION
 auto parse_metadata(const uint8_t* metadata_data, std::size_t metadata_bytes)
     -> std::optional<protobuf::MetricsMetadata>
 {
-    assert(metadata_data != nullptr);
-    assert(metadata_bytes > 0);
+    VERIFY(metadata_data != nullptr);
+    VERIFY(metadata_bytes > 0, "metadata_bytes must be > 0", metadata_bytes);
     protobuf::MetricsMetadata metadata;
     auto result = metadata.ParseFromArray(metadata_data, metadata_bytes);
     if (!result)

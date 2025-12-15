@@ -271,12 +271,12 @@ metrics::metrics(const std::map<name, abacus::info>& info) : m_info(info)
                             [typed_metric](constant::boolean c)
                             { typed_metric->set_boolean(c.value); },
                             [](const auto&)
-                            { assert(false && "Unsupported constant type"); }},
+                            { VERIFY(false, "Unsupported constant type"); }},
                         m.value);
                     m_initialized[name_str] = true;
                 },
                 [&](const auto&)
-                { assert(false && "Unsupported metric type"); }},
+                { VERIFY(false, "Unsupported metric type"); }},
             info);
 
         m_metadata.mutable_metrics()->insert({name.value, metric});
@@ -303,7 +303,9 @@ metrics::metrics(const std::map<name, abacus::info>& info) : m_info(info)
     metadata().SerializeToArray(m_data.data(), m_metadata_bytes);
 
     // Make sure the metadata didn't change unexpectedly
-    assert(metadata().ByteSizeLong() == m_metadata_bytes);
+    VERIFY(metadata().ByteSizeLong() == m_metadata_bytes,
+           "Metadata size changed unexpectedly", metadata().ByteSizeLong(),
+           m_metadata_bytes);
 
     // Write the sync value to the first byte of the value data (this
     // will be written as the endianess of the system) Consuming code
@@ -316,9 +318,11 @@ template <class Metric>
 [[nodiscard]] auto
 metrics::initialize(const std::string& name) -> metric<Metric>
 {
-    assert(m_initialized.find(name) == m_initialized.end());
-    assert(m_offsets.find(name) != m_offsets.end());
-    assert(std::holds_alternative<Metric>(m_info.at(abacus::name{name})));
+    VERIFY(m_initialized.find(name) == m_initialized.end(),
+           "Metric already initialized", name);
+    VERIFY(m_offsets.find(name) != m_offsets.end(), "Metric not found", name);
+    VERIFY(std::holds_alternative<Metric>(m_info.at(abacus::name{name})),
+           "Metric type mismatch", name);
 
     std::size_t offset = m_offsets.at(name);
     metric<Metric> m(m_data.data() + m_metadata_bytes + offset);

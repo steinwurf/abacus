@@ -17,7 +17,7 @@
 #include "uint32.hpp"
 #include "uint64.hpp"
 
-#include <cassert>
+#include <verify/verify.hpp>
 #include <map>
 #include <vector>
 
@@ -53,15 +53,15 @@ static inline std::size_t get_offset(const protobuf::Metric& m)
         return m.enum8().offset();
     case protobuf::Metric::kConstant:
         // This should never be reached
-        assert(false);
+        VERIFY(false, "Unexpected constant metric type");
         return 0;
     case protobuf::Metric::TYPE_NOT_SET:
         // This should never be reached
-        assert(false);
+        VERIFY(false, "Metric type not set");
         return 0;
     default:
         // This should never be reached
-        assert(false);
+        VERIFY(false, "Unknown metric type");
         return 0;
     }
 }
@@ -70,7 +70,7 @@ static inline std::size_t get_offset(const protobuf::Metric& m)
 [[nodiscard]] auto
 view::set_metadata(const protobuf::MetricsMetadata& metadata) -> bool
 {
-    assert(metadata.IsInitialized());
+    VERIFY(metadata.IsInitialized());
     m_metadata = metadata;
     if (m_metadata.protocol_version() != protocol_version())
     {
@@ -83,8 +83,8 @@ view::set_metadata(const protobuf::MetricsMetadata& metadata) -> bool
 [[nodiscard]] auto view::set_value_data(const uint8_t* value_data,
                                         std::size_t value_bytes) -> bool
 {
-    assert(m_metadata.IsInitialized());
-    assert(value_data != nullptr);
+    VERIFY(m_metadata.IsInitialized());
+    VERIFY(value_data != nullptr);
 
     // Check that the hash is correct
     uint32_t value_data_hash = 0;
@@ -97,7 +97,7 @@ view::set_metadata(const protobuf::MetricsMetadata& metadata) -> bool
         endian::little_endian::get(value_data_hash, value_data);
         break;
     default:
-        assert(false);
+        VERIFY(false, "Unknown endianness");
     }
 
     if (m_metadata.sync_value() != value_data_hash)
@@ -126,7 +126,7 @@ auto view::metadata() const -> const protobuf::MetricsMetadata&
 
 const protobuf::Metric& view::metric(const std::string& name) const
 {
-    assert(m_metadata.metrics().count(name) != 0);
+    VERIFY(m_metadata.metrics().count(name) != 0, "Metric not found", name);
     return m_metadata.metrics().at(name);
 }
 
@@ -135,13 +135,13 @@ auto view::value(const std::string& name) const
     -> std::conditional_t<detail::is_constant_v<Metric>, typename Metric::type,
                           std::optional<typename Metric::type>>
 {
-    assert(m_metadata.IsInitialized());
-    assert(m_value_data != nullptr);
+    VERIFY(m_metadata.IsInitialized());
+    VERIFY(m_value_data != nullptr);
     auto m = metric(name);
     if constexpr (detail::is_constant_v<Metric>)
     {
         // Check that Metric is constant
-        assert(m.has_constant());
+        VERIFY(m.has_constant(), "Expected constant metric", name);
         auto constant = m.constant();
         if constexpr (std::is_same_v<Metric, constant::str>)
         {
@@ -172,9 +172,9 @@ auto view::value(const std::string& name) const
     if constexpr (!detail::is_constant_v<Metric>)
     {
         auto offset = get_offset(m);
-        assert(offset < m_value_bytes);
+        VERIFY(offset < m_value_bytes, "Offset out of bounds", offset, m_value_bytes);
         auto data = m_value_data + offset;
-        assert(data != nullptr);
+        VERIFY(data != nullptr);
         if (data[0] == 0)
         {
             // The metric is unset

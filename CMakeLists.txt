@@ -19,6 +19,12 @@ if(NOT DEFINED STEINWURF_RESOLVE)
   set(STEINWURF_RESOLVE "${CMAKE_CURRENT_SOURCE_DIR}/resolve_symlinks")
 endif()
 
+
+# verify
+if(NOT TARGET steinwurf::verify)
+  add_subdirectory("${STEINWURF_RESOLVE}/verify" verify EXCLUDE_FROM_ALL)
+endif()
+
 # bourne dependency
 if(NOT TARGET steinwurf::bourne)
   add_subdirectory("${STEINWURF_RESOLVE}/bourne" 
@@ -69,6 +75,7 @@ else()
 endif()
 
 target_link_libraries(abacus PRIVATE steinwurf::endian)
+target_link_libraries(abacus PRIVATE steinwurf::verify)
 target_link_libraries(abacus PUBLIC protobuf::libprotobuf)
 
 target_include_directories(abacus PUBLIC src)
@@ -89,6 +96,7 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
   add_executable(metrics_simple examples/metrics_simple.cpp)
   target_link_libraries(metrics_simple abacus)
   target_link_libraries(metrics_simple steinwurf::endian)
+  target_link_libraries(metrics_simple steinwurf::verify)
   target_link_libraries(metrics_simple protobuf::libprotobuf)
 
   enable_testing()
@@ -104,6 +112,7 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
   target_link_libraries(abacus_tests
     steinwurf::abacus
     steinwurf::endian
+    steinwurf::verify
     steinwurf::bourne
     protobuf::libprotobuf)
 
@@ -125,6 +134,7 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
   target_link_libraries(abacus_benchmark
     steinwurf::abacus
     steinwurf::endian
+    steinwurf::verify
     steinwurf::bourne
     protobuf::libprotobuf)
 endif()
