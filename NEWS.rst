@@ -6,6 +6,10 @@ every change, see the Git log.
 
 Latest
 ------
+* tbd
+
+9.0.0
+-----
 * Major: Added verify as a dependency, replacing assert with VERIFY for improved
   runtime error diagnostics.
 
