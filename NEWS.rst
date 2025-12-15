@@ -6,7 +6,8 @@ every change, see the Git log.
 
 Latest
 ------
-* tbd
+* Major: Added verify as a dependency, replacing assert with VERIFY for improved
+  runtime error diagnostics.
 
 8.0.0
 -----

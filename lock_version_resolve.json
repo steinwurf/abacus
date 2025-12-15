@@ -25,14 +25,19 @@
         "sha1": "2f70f76f52ae610b201e6738e0e76260de2a7405"
     },
     "gtest": {
-        "commit_id": "746b1c8a1e153a5df77be4bdbcd08f959f0bf798",
-        "resolver_info": "6.0.1",
+        "commit_id": "8e1f80ae8618fdba4389f1b56c811ea7241569d1",
+        "resolver_info": "6.0.2",
         "sha1": "44c35f8798a738692c902fe2b67dc0cb76a1df53"
     },
     "gtest-source": {
-        "commit_id": "6910c9d9165801d8827d628cb72eb7ea9dd538c5",
-        "resolver_info": "v1.16.0",
-        "sha1": "272f0c49e3fa086a287f05194e6e5e0163bce162"
+        "commit_id": "52eb8108c5bdec04579160ae17225d66034bd723",
+        "resolver_info": "v1.17.0",
+        "sha1": "8600eafa3daedc694d3115677da0dda3af6a8633"
+    },
+    "libassert-source": {
+        "commit_id": "60667829264ae01241257df7f1c7d6dba668eb9d",
+        "resolver_info": "v2.1.5",
+        "sha1": "650d881b8cb6cc1adf354d47d6353db6ec4fd6a5"
     },
     "protobuf": {
         "commit_id": "a32b1956282c0e89a8e24cecfcb1e46606071750",
@@ -45,8 +50,18 @@
         "sha1": "93bde6d21d12c24893dc159f0a51bbb717118abb"
     },
     "toolchains": {
-        "commit_id": "f7b9747ab22d7dbbeb23c9f863e735bac883566e",
-        "resolver_info": "1.0.3",
+        "commit_id": "d771e98c84304735f43db13d50edffd8e7d5a9d6",
+        "resolver_info": "1.0.5",
         "sha1": "443cb23b0570dffd39283d8679ec393ed809302f"
+    },
+    "verify": {
+        "commit_id": "27b970938379a5a1bc1c9f4377c2686943763893",
+        "resolver_info": "6.0.4",
+        "sha1": "fed379602b6ea7bd611fc249daffa11b9e593800"
+    },
+    "zlib-source": {
+        "commit_id": "51b7f2abdade71cd9bb0e7a373ef2610ec6f9daf",
+        "resolver_info": "51b7f2abdade71cd9bb0e7a373ef2610ec6f9daf",
+        "sha1": "33283130debb8bf95a98929ff6cadd5bd9cb6a92"
     }
 }

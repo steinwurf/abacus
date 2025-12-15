@@ -5,10 +5,10 @@
 
 #pragma once
 
-#include <cassert>
 #include <cmath>
 #include <cstdint>
 #include <cstring>
+#include <verify/verify.hpp>
 
 #include "boolean.hpp"
 #include "enum8.hpp"
@@ -40,7 +40,7 @@ struct metric
     ///        must be at least sizeof(value_type) + 1 bytes long.
     metric(uint8_t* memory)
     {
-        assert(memory != nullptr);
+        VERIFY(memory != nullptr);
         m_memory = memory;
     }
 
@@ -55,7 +55,7 @@ struct metric
     /// @return true if the metric has a value
     auto has_value() const -> bool
     {
-        assert(is_initialized());
+        VERIFY(is_initialized());
         return m_memory[0] == 1;
     }
 
@@ -63,7 +63,7 @@ struct metric
     /// @return The value of the metric
     auto value() const -> value_type
     {
-        assert(has_value());
+        VERIFY(has_value());
         value_type value;
         std::memcpy(&value, m_memory + 1, sizeof(value_type));
         return value;
@@ -73,12 +73,12 @@ struct metric
     /// @param value The value to assign
     auto set_value(value_type value) -> metric&
     {
-        assert(is_initialized());
+        VERIFY(is_initialized());
 
         if constexpr (std::is_floating_point_v<value_type>)
         {
-            assert(!std::isnan(value) && "Cannot assign a NaN");
-            assert(!std::isinf(value) && "Cannot assign an Inf/-Inf value");
+            VERIFY(!std::isnan(value), "Cannot assign a NaN");
+            VERIFY(!std::isinf(value), "Cannot assign an Inf/-Inf value");
         }
 
         m_memory[0] = 1;
@@ -123,7 +123,7 @@ struct metric
     /// Reset the metric. This will cause the metric to not have a value
     auto reset() -> void
     {
-        assert(is_initialized());
+        VERIFY(is_initialized());
         m_memory[0] = 0;
     }
 
@@ -181,7 +181,7 @@ struct metric<enum8>
     ///        must be at least sizeof(value_type) + 1 bytes long.
     metric(uint8_t* memory)
     {
-        assert(memory != nullptr);
+        VERIFY(memory != nullptr);
         m_memory = memory;
     }
 
@@ -196,7 +196,7 @@ struct metric<enum8>
     /// @return true if the metric has a value
     auto has_value() const -> bool
     {
-        assert(is_initialized());
+        VERIFY(is_initialized());
         return m_memory[0] == 1;
     }
 
@@ -207,7 +207,7 @@ struct metric<enum8>
     {
         static_assert(std::is_enum_v<T>);
 
-        assert(has_value());
+        VERIFY(has_value());
 
         return static_cast<T>(m_memory[1]);
     }
@@ -219,14 +219,16 @@ struct metric<enum8>
     {
         static_assert(std::is_enum_v<T>);
 
-        assert(static_cast<int64_t>(value) <=
-                   std::numeric_limits<uint8_t>::max() &&
-               "The value is too large to fit in the enum");
-        assert(static_cast<int64_t>(value) >=
-                   std::numeric_limits<uint8_t>::min() &&
-               "The value is too small to fit in the enum");
+        VERIFY(static_cast<int64_t>(value) <=
+                   std::numeric_limits<uint8_t>::max(),
+               "The value is too large to fit in the enum",
+               static_cast<int64_t>(value));
+        VERIFY(static_cast<int64_t>(value) >=
+                   std::numeric_limits<uint8_t>::min(),
+               "The value is too small to fit in the enum",
+               static_cast<int64_t>(value));
 
-        assert(is_initialized());
+        VERIFY(is_initialized());
 
         m_memory[0] = 1;
         m_memory[1] = static_cast<uint8_t>(value);
@@ -271,7 +273,7 @@ struct metric<enum8>
     /// Reset the metric. This will cause the metric to not have a value
     auto reset() -> void
     {
-        assert(is_initialized());
+        VERIFY(is_initialized());
         m_memory[0] = 0;
     }
 
@@ -292,7 +294,7 @@ struct metric<boolean>
     ///        must be at least sizeof(value_type) + 1 bytes long.
     metric(uint8_t* memory)
     {
-        assert(memory != nullptr);
+        VERIFY(memory != nullptr);
         m_memory = memory;
     }
 
@@ -307,7 +309,7 @@ struct metric<boolean>
     /// @return true if the metric has a value
     auto has_value() const -> bool
     {
-        assert(is_initialized());
+        VERIFY(is_initialized());
         return m_memory[0] == 1;
     }
 
@@ -315,7 +317,7 @@ struct metric<boolean>
     /// @return The value of the metric
     auto value() const -> bool
     {
-        assert(has_value());
+        VERIFY(has_value());
         return static_cast<bool>(m_memory[1]);
     }
 
@@ -323,7 +325,7 @@ struct metric<boolean>
     /// @param value The value to assign
     auto set_value(bool value) -> metric&
     {
-        assert(is_initialized());
+        VERIFY(is_initialized());
         m_memory[0] = 1;
         m_memory[1] = static_cast<uint8_t>(value);
 
@@ -366,7 +368,7 @@ struct metric<boolean>
     /// Reset the metric. This will cause the metric to not have a value
     auto reset() -> void
     {
-        assert(is_initialized());
+        VERIFY(is_initialized());
         m_memory[0] = 0;
     }
 

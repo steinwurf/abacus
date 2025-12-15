@@ -19,6 +19,13 @@
         ]
     },
     {
+        "name": "verify",
+        "resolver": "git",
+        "method": "semver",
+        "major": 6,
+        "source": "github.com/steinwurf/verify.git"
+    },
+    {
         "name": "protobuf",
         "resolver": "git",
         "method": "semver",
