@@ -10,14 +10,24 @@
         "sha1": "8e016b57dd5361fe7f66ae47f3df42ab634321c5"
     },
     "bourne": {
-        "commit_id": "cf4fed3ea15525a6608722db56f10ff4314c2354",
-        "resolver_info": "11.0.0",
+        "commit_id": "b824b289f1d8cbfeecc26743ea5579e5d3051c8c",
+        "resolver_info": "11.1.0",
         "sha1": "f705097630cc09ecd747eaf3b5eef8966cfa4fba"
     },
     "endian": {
         "commit_id": "b3702d8d134a06b5829119934718a75f4e171699",
         "resolver_info": "14.0.0",
         "sha1": "ebfaeeec96922b484b061fd860c46ee1264eca21"
+    },
+    "fmt": {
+        "commit_id": "3fba272021d507b310f4d059e3a4c1883b65fbc4",
+        "resolver_info": "5.0.1",
+        "sha1": "160978c7e6571cc06d6c8a590e5e0c4f3c826fba"
+    },
+    "fmt-source": {
+        "commit_id": "0c9fce2ffefecfdce794e1859584e25877b7b592",
+        "resolver_info": "11.0.2",
+        "sha1": "f39ff778b3283f543cdfc9b1662ec101c453efce"
     },
     "gbenchmark-source": {
         "commit_id": "344117638c8ff7e239044fd0fa7085839fc03021",
@@ -34,11 +44,6 @@
         "resolver_info": "v1.17.0",
         "sha1": "8600eafa3daedc694d3115677da0dda3af6a8633"
     },
-    "libassert-source": {
-        "commit_id": "60667829264ae01241257df7f1c7d6dba668eb9d",
-        "resolver_info": "v2.1.5",
-        "sha1": "650d881b8cb6cc1adf354d47d6353db6ec4fd6a5"
-    },
     "protobuf": {
         "commit_id": "a32b1956282c0e89a8e24cecfcb1e46606071750",
         "resolver_info": "3.0.0",
@@ -50,18 +55,13 @@
         "sha1": "93bde6d21d12c24893dc159f0a51bbb717118abb"
     },
     "toolchains": {
-        "commit_id": "d771e98c84304735f43db13d50edffd8e7d5a9d6",
-        "resolver_info": "1.0.5",
+        "commit_id": "2200158cdc69c6de18d835b9b255867c946ad845",
+        "resolver_info": "1.5.1",
         "sha1": "443cb23b0570dffd39283d8679ec393ed809302f"
     },
     "verify": {
-        "commit_id": "27b970938379a5a1bc1c9f4377c2686943763893",
-        "resolver_info": "6.0.4",
-        "sha1": "fed379602b6ea7bd611fc249daffa11b9e593800"
-    },
-    "zlib-source": {
-        "commit_id": "51b7f2abdade71cd9bb0e7a373ef2610ec6f9daf",
-        "resolver_info": "51b7f2abdade71cd9bb0e7a373ef2610ec6f9daf",
-        "sha1": "33283130debb8bf95a98929ff6cadd5bd9cb6a92"
+        "commit_id": "133f7772e299aff46c1085342b528e380ec24924",
+        "resolver_info": "7.0.0",
+        "sha1": "0ba276173d789fe8ca0e0ca9ae115308a0f4b5f3"
     }
 }

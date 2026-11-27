@@ -6,7 +6,8 @@ every change, see the Git log.
 
 Latest
 ------
-* tbd
+* Major: Update verify to version 7.
+* Minor: Remove the GCC Oldest and Clang Oldest CI builds.
 
 9.0.0
 -----

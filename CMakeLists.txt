@@ -123,6 +123,11 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
     OFF
     CACHE INTERNAL "Disable gbenchmark test" FORCE)
 
+  # Warnings in gbenchmark's own code must not fail our build
+  set(BENCHMARK_ENABLE_WERROR
+    OFF
+    CACHE INTERNAL "Do not build gbenchmark with -Werror" FORCE)
+
   if(NOT TARGET benchmark)
     add_subdirectory("${STEINWURF_RESOLVE}/gbenchmark-source")
   endif()

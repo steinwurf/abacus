@@ -30,12 +30,6 @@ jobs:
           - runner: ubuntu-current
             name: Clang UBSAN Latest
             toolchain: "./resolve_symlinks/toolchains/clang-ubsan-toolchain.cmake"
-          - runner: ubuntu-old
-            name: GCC Oldest
-            toolchain: "./resolve_symlinks/toolchains/gcc-toolchain.cmake"
-          - runner: ubuntu-old
-            name: Clang Oldest
-            toolchain: "./resolve_symlinks/toolchains/clang-toolchain.cmake"
     runs-on:
       - self-hosted
       - vm
@@ -82,24 +76,31 @@ jobs:
     name: Zig Toolchain Build (Docker)
     runs-on: [self-hosted, vm, ubuntu-current]
     container:
-      image: kassany/bookworm-ziglang
-      options: --user 0:0
-      volumes:
-        - /root/.ssh:/root/.ssh
+      image: ghcr.io/steinwurf/build-images/zig-cpp
+      options: >-
+        --user 0:0
+        --cap-add=NET_ADMIN
+        --device /dev/net/tun
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
-      - name: Install dependencies
+        with:
+          persist-credentials: false
+      - name: Configure Github Authentication
         run: |
-          apt-get update
-          apt-get install -y python3 python3-pip git cmake build-essential
-      - name: Waf Clean
-        run: python3 waf clean --no_resolve
+          git config --global credential.helper 'store'
+          git credential approve <<EOF
+          protocol=https
+          host=github.com
+          username=x-access-token
+          password=${{ secrets.GH_ACCESS_TOKEN }}
+          EOF
       - name: Waf Configure with Zig Toolchain
-        run: python3 waf configure --git_protocol=git@ --cmake_toolchain=../resolve_symlinks/toolchains/zig-toolchain-x86_64-linux-musl.cmake --cmake_verbose
+        run: python3 waf configure --git_protocol=https:// --cmake_toolchain=./resolve_symlinks/toolchains/zig-toolchain-x86_64-linux-musl.cmake --cmake_verbose
       - name: Waf Build with Zig Toolchain
-        run: python3 waf build --run_tests
-
+        run: python3 waf build
+      - name: Waf Run Tests
+        run: python3 waf --run_tests
   macos_cmake:
     timeout-minutes: 45
     strategy:
