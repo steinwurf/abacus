@@ -6,7 +6,7 @@ import shutil
 import waflib
 
 APPNAME = "abacus"
-VERSION = "9.0.0"
+VERSION = "10.0.0"
 
 
 def options(ctx):
