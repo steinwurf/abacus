@@ -22,7 +22,7 @@
         "name": "verify",
         "resolver": "git",
         "method": "semver",
-        "major": 6,
+        "major": 7,
         "source": "github.com/steinwurf/verify.git"
     },
     {

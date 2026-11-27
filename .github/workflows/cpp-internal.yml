@@ -30,12 +30,6 @@ jobs:
           - runner: ubuntu-current
             name: Clang UBSAN Latest
             toolchain: "./resolve_symlinks/toolchains/clang-ubsan-toolchain.cmake"
-          - runner: ubuntu-old
-            name: GCC Oldest
-            toolchain: "./resolve_symlinks/toolchains/gcc-toolchain.cmake"
-          - runner: ubuntu-old
-            name: Clang Oldest
-            toolchain: "./resolve_symlinks/toolchains/clang-toolchain.cmake"
     runs-on:
       - self-hosted
       - vm
